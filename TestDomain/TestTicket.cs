@@ -171,4 +171,50 @@ public class TestTicket
         ticket.Category = Domain.DataTypes.Category.Electrician;
         Assert.AreEqual(Domain.DataTypes.Category.Electrician, ticket.Category);
     }
+
+
+    [TestMethod]
+    public void TestStatus()
+    {
+        Assert.AreEqual(Domain.DataTypes.Status.Open, ticket.Status);
+    }
+
+    [TestMethod]
+    public void TestChangeStatus_InProgress()
+    {
+        ticket.SetAttention(DateTime.Today);
+        ticket.ChangeStatus(Domain.DataTypes.Status.InProgress);
+        Assert.AreEqual(Domain.DataTypes.Status.InProgress, ticket.Status);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestChangeStatus_InProgress_NoAttentionDate()
+    {
+        ticket.ChangeStatus(Domain.DataTypes.Status.InProgress);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestChangeStatus_Open()
+    {
+        ticket.ChangeStatus(Domain.DataTypes.Status.Open);
+    }
+
+    [TestMethod]
+    public void TestChangeStatus_Closed()
+    {
+        ticket.SetAttention(DateTime.Today);
+        ticket.SetClosing(DateTime.Today.AddDays(1));
+        ticket.ChangeStatus(Domain.DataTypes.Status.Closed);
+        Assert.AreEqual(Domain.DataTypes.Status.Closed, ticket.Status);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestChangeStatus_Closed_NoClosingDate()
+    {
+        ticket.SetAttention(DateTime.Today);
+        ticket.ChangeStatus(Domain.DataTypes.Status.Closed);
+    }
 }

@@ -13,6 +13,8 @@ public class Ticket
     private TimeSpan _closingTime;
     private Apartment _apartment;
     public Category Category { get; set; }
+    public Status Status { get; set; } = Status.Open;
+
 
     public int Id
     {
@@ -158,4 +160,25 @@ public class Ticket
             _apartment = value;
         }
     }
+
+    public void ChangeStatus(Status newStatus)
+    {
+        if (newStatus == Status.Open)
+        {
+            throw new InvalidOperationException("No se puede cambiar el estado a abierto");
+        }
+        else if (newStatus == Status.Closed && _closingDate == default(DateTime))
+        {
+            throw new InvalidOperationException("No se puede cerrar un ticket sin fecha de cierre");
+        }
+        else if (newStatus == Status.InProgress && _attentionDate == default(DateTime))
+        {
+            throw new InvalidOperationException("No se puede cambiar el estado a En Progreso sin fecha de atención");
+        }
+        else
+        {
+            Status = newStatus;
+        }
+    }
+
 }
