@@ -64,57 +64,84 @@ public class TestTicket
     }
 
     [TestMethod]
-    public void TestSetAttentionDate_ValidDate()
+    public void TestSetAttention_ValidDateTime()
     {
-        DateTime validDate = DateTime.Today.AddDays(1).Date;
-        ticket.SetAttentionDate(validDate);
-        Assert.AreEqual(validDate, ticket.AttentionDate);
-    }
-
-    [TestMethod]
-    public void TestSetAttentionDate_InvalidDate_BeforeCreation()
-    {
-        DateTime invalidDate = DateTime.Today.AddDays(-1).Date;
-        Assert.ThrowsException<InvalidOperationException>(() => ticket.SetAttentionDate(invalidDate));
-    }
-
-    [TestMethod]
-    public void TestSetAttentionDate_InvalidDate_AlreadySet()
-    {
-        DateTime validDate = DateTime.Today.AddDays(1).Date;
-        ticket.SetAttentionDate(validDate);
-        DateTime invalidDate = DateTime.Today.AddDays(2).Date;
-        Assert.ThrowsException<InvalidOperationException>(() => ticket.SetAttentionDate(invalidDate));
-    }
-
-    [TestMethod]
-    public void TestSetClosingDate_ValidDate()
-    {
-        DateTime validDate = DateTime.Today.AddDays(1).Date;
-        ticket.SetAttentionDate(DateTime.Today.Date);
-        ticket.SetClosingDate(validDate);
-        Assert.AreEqual(validDate, ticket.ClosingDate);
+        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(10).AddMinutes(30); 
+        ticket.SetAttention(validDateTime);
+        Assert.AreEqual(validDateTime.Date, ticket.AttentionDate);
+        Assert.AreEqual(validDateTime.TimeOfDay, ticket.AttentionTime);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetClosingDate_InvalidDate_BeforeAttention()
+    public void TestSetAttention_InvalidDateTime_BeforeCreation()
     {
-        DateTime invalidDateClosing = DateTime.Today.AddDays(-1).Date;
-        DateTime validDateAttention = DateTime.Today.Date;
-        ticket.SetAttentionDate(validDateAttention);
-        ticket.SetClosingDate(invalidDateClosing);
+        DateTime invalidDateTime = DateTime.Today.AddDays(-1).AddHours(10).AddMinutes(30);
+        ticket.SetAttention(invalidDateTime);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetClosingDate_InvalidDate_AlreadySet()
+    public void TestSetAttention_InvalidDateTime_AlreadySet()
     {
-        DateTime validDate = DateTime.Today.AddDays(1).Date; 
-        ticket.SetAttentionDate(DateTime.Today.Date); 
-        ticket.SetClosingDate(validDate); 
-        DateTime invalidDate = DateTime.Today.AddDays(2).Date; 
-        ticket.SetClosingDate(invalidDate);
+        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(10).AddMinutes(30);
+        ticket.SetAttention(validDateTime);
+
+        DateTime invalidDateTime = DateTime.Today.AddDays(1).AddHours(12); 
+        ticket.SetAttention(invalidDateTime);
     }
 
+    [TestMethod]
+    public void TestSetClosing_ValidDateTime()
+    {
+        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45);
+        ticket.SetAttention(DateTime.Today);
+        ticket.SetClosing(validDateTime);
+        Assert.AreEqual(validDateTime.Date, ticket.ClosingDate);
+        Assert.AreEqual(validDateTime.TimeOfDay, ticket.ClosingTime);
+    }
+
+    [TestMethod]
+    public void TestSetClosing_ValidDateTime_SameDateLaterTime()
+    {
+        DateTime validDateTime = DateTime.Today.AddMinutes(45);
+        ticket.SetAttention(DateTime.Today);
+        ticket.SetClosing(validDateTime);
+        Assert.AreEqual(validDateTime.Date, ticket.ClosingDate);
+        Assert.AreEqual(validDateTime.TimeOfDay, ticket.ClosingTime);
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestSetClosing_InvalidDateTime_BeforeAttention()
+    {
+        DateTime invalidDateTime = DateTime.Today.AddDays(-1);
+        ticket.SetAttention(DateTime.Today);
+        ticket.SetClosing(invalidDateTime);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestSetClosing_InvalidDateTime_SameDateEarlierTime()
+    {
+        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45); 
+        ticket.SetAttention(DateTime.Today);
+        ticket.SetClosing(validDateTime);
+
+        DateTime invalidDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(30); 
+        ticket.SetClosing(invalidDateTime);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestSetClosing_InvalidDateTime_AlreadySet()
+    {
+        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45); 
+        ticket.SetAttention(DateTime.Today);
+        ticket.SetClosing(validDateTime);
+
+        DateTime invalidDateTime = DateTime.Today.AddDays(1).AddHours(15); 
+        ticket.SetClosing(invalidDateTime);
+    }
 }

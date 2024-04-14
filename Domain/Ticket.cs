@@ -8,6 +8,8 @@ public class Ticket
     public DateTime CreationDate { get; private set; } = DateTime.Now.Date;
     private DateTime _attentionDate;
     private DateTime _closingDate;
+    private TimeSpan _attentionTime;
+    private TimeSpan _closingTime;
 
     public int Id
     {
@@ -90,11 +92,24 @@ public class Ticket
         }
     }
 
-    public void SetAttentionDate(DateTime attentionDate)
+    public TimeSpan AttentionTime
     {
-        if (_attentionDate == default(DateTime) && attentionDate >= CreationDate)
+        get { return _attentionTime; }
+        private set { _attentionTime = value; }
+    }
+
+    public TimeSpan ClosingTime
+    {
+        get { return _closingTime; }
+        private set { _closingTime = value; }
+    }
+
+    public void SetAttention(DateTime attentionDateTime)
+    {
+        if (_attentionDate == default(DateTime) && attentionDateTime.Date >= CreationDate)
         {
-            _attentionDate = attentionDate;
+            _attentionDate = attentionDateTime.Date;
+            _attentionTime = attentionDateTime.TimeOfDay;
         }
         else if (_attentionDate != default(DateTime))
         {
@@ -106,11 +121,17 @@ public class Ticket
         }
     }
 
-    public void SetClosingDate(DateTime closingDate)
+    public void SetClosing(DateTime closingDateTime)
     {
-        if (_closingDate == default(DateTime) && closingDate >= _attentionDate)
+        if (_closingDate == default(DateTime) && closingDateTime >= _attentionDate)
         {
-            _closingDate = closingDate;
+            if (_closingDate == _attentionDate && _closingTime <= _attentionTime)
+            {
+                throw new ArgumentException("La hora de cierre debe ser posterior a la hora de atención");
+            }
+
+            _closingDate = closingDateTime.Date;
+            _closingTime = closingDateTime.TimeOfDay;
         }
         else if (_closingDate != default(DateTime))
         {
@@ -121,6 +142,4 @@ public class Ticket
             throw new InvalidOperationException("La fecha de cierre no puede ser anterior a la fecha de atención.");
         }
     }
-
-
 }
