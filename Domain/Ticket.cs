@@ -15,6 +15,7 @@ public class Ticket
     private Apartment _apartment;
     private float _totalCost;
     private User _assignedTo;
+    private User _createdBy;
     public Category Category { get; set; }
     public Status Status { get; set; } = Status.Open;
 
@@ -96,6 +97,19 @@ public class Ticket
                 throw new ArgumentNullException();
             }
             _assignedTo = value;
+        }
+    }
+
+    public User CreatedBy
+    {
+        get { return _createdBy; }
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException();
+            }
+            _createdBy = value;
         }
     }
 

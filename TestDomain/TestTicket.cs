@@ -252,4 +252,18 @@ public class TestTicket
     {
         ticket.AssignedTo = null;
     }
+
+    [TestMethod]
+    public void TestCreatedBy()
+    {
+        ticket.CreatedBy = new User();
+        Assert.IsNotNull(ticket.CreatedBy);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestCreatedByNull()
+    {
+        ticket.CreatedBy = null;
+    }
 }
