@@ -27,4 +27,36 @@ public class TestTicket
         Ticket ticket = new Ticket();
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ticket.Id = -1);
     }
+
+    [TestMethod]
+    public void TestDescription()
+    {
+        ticket.Description = "Descripción válida con más de 10 caracteres.";
+        Assert.AreEqual("Descripción válida con más de 10 caracteres.", ticket.Description);
+    }
+
+    [TestMethod]
+    public void TestDescriptionShort()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = "Corta");
+    }
+
+    [TestMethod]
+    public void TestDescriptionNull()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = null);
+    }
+
+    [TestMethod]
+    public void TestDescriptionEmpty()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = "");
+    }
+
+    [TestMethod]
+    public void TestDescriptionWhiteSpace()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = "             ");
+    }
+
 }
