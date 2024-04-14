@@ -1,5 +1,6 @@
 ﻿using Domain.DataTypes;
 using Exceptions;
+using System.Reflection.Metadata;
 namespace Domain;
 
 public class Ticket
@@ -13,6 +14,7 @@ public class Ticket
     private TimeSpan _closingTime;
     private Apartment _apartment;
     private float _totalCost;
+    private User _assignedTo;
     public Category Category { get; set; }
     public Status Status { get; set; } = Status.Open;
 
@@ -81,6 +83,19 @@ public class Ticket
                 throw new ArgumentOutOfRangeException();
             }
             _totalCost = value;
+        }
+    }
+
+    public User AssignedTo
+    {
+        get { return _assignedTo; }
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException();
+            }
+            _assignedTo = value;
         }
     }
 

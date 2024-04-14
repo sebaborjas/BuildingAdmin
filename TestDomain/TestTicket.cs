@@ -238,5 +238,18 @@ public class TestTicket
     {
         ticket.TotalCost = 0;
     }
-   
+
+    [TestMethod]
+    public void TestAssignedTo()
+    {
+        ticket.AssignedTo = new User();
+        Assert.IsNotNull(ticket.AssignedTo);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAssignedToNull()
+    {
+        ticket.AssignedTo = null;
+    }
 }
