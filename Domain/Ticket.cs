@@ -1,4 +1,5 @@
-﻿using Exceptions;
+﻿using Domain.DataTypes;
+using Exceptions;
 namespace Domain;
 
 public class Ticket
@@ -11,6 +12,7 @@ public class Ticket
     private TimeSpan _attentionTime;
     private TimeSpan _closingTime;
     private Apartment _apartment;
+    public Category Category { get; set; }
 
     public int Id
     {
