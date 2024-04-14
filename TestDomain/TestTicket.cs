@@ -16,7 +16,6 @@ public class TestTicket
     [TestMethod]
     public void TestId()
     {
-        Ticket ticket = new Ticket();
         ticket.Id = 1;
         Assert.AreEqual(1, ticket.Id);
     }
@@ -24,7 +23,6 @@ public class TestTicket
     [TestMethod]
     public void TestIdNegative()
     {
-        Ticket ticket = new Ticket();
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => ticket.Id = -1);
     }
 
