@@ -16,8 +16,15 @@ public class TestConstructionCompany
     [TestMethod]
     public void TestName()
     {
-        ConstructionCompany.Name = "ConstructionCompany1";
-        Assert.AreEqual("ConstructionCompany1", ConstructionCompany.Name);
+        ConstructionCompany.Name = "ConstructionCompany";
+        Assert.AreEqual("ConstructionCompany", ConstructionCompany.Name);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidName()
+    {
+        ConstructionCompany.Name = "ConstructionCompany123";
     }
 
     [TestMethod]

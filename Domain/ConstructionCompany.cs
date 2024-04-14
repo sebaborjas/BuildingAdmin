@@ -1,4 +1,5 @@
 ﻿using Exceptions;
+using System.Text.RegularExpressions;
 namespace Domain;
 
 public class ConstructionCompany
@@ -11,9 +12,13 @@ public class ConstructionCompany
         get => _name;
         set
         {
-            if (value == "")
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new EmptyFieldException();
+            }
+            else if (!Regex.IsMatch(value, @"^[a-zA-Z\s]*$"))
+            {
+                throw new InvalidDataException("El nombre debe contener solo letras y espacios.");
             }
             else
             {
