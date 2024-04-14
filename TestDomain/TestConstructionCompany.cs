@@ -26,4 +26,11 @@ public class TestConstructionCompany
     {
         ConstructionCompany.Name = "";
     }
+
+    [TestMethod]
+    public void TestId()
+    {
+        ConstructionCompany.Id = 1;
+        Assert.AreEqual(1, ConstructionCompany.Id);
+    }
 }

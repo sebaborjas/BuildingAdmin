@@ -4,6 +4,7 @@ namespace Domain;
 public class ConstructionCompany
 {
     private string _name;
+    public int Id { get; set; }
 
     public string Name
     {
