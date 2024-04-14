@@ -10,6 +10,7 @@ public class Ticket
     private DateTime _closingDate;
     private TimeSpan _attentionTime;
     private TimeSpan _closingTime;
+    private Apartment _apartment;
 
     public int Id
     {
@@ -140,6 +141,19 @@ public class Ticket
         else
         {
             throw new InvalidOperationException("La fecha de cierre no puede ser anterior a la fecha de atención.");
+        }
+    }
+
+    public Apartment Apartment
+    {
+        get { return _apartment; }
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException();
+            }
+            _apartment = value;
         }
     }
 }

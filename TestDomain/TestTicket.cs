@@ -149,4 +149,19 @@ public class TestTicket
         DateTime invalidDateTime = DateTime.Today.AddDays(1).AddHours(15); 
         ticket.SetClosing(invalidDateTime);
     }
+
+    [TestMethod]
+    public void TestApartment()
+    {
+        Apartment apartment = new Apartment();
+        ticket.Apartment = apartment;
+        Assert.AreEqual(apartment, ticket.Apartment);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestApartmentNull()
+    {
+        ticket.Apartment = null;
+    }
 }
