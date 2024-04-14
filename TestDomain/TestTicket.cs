@@ -21,9 +21,10 @@ public class TestTicket
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void TestIdNegative()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => ticket.Id = -1);
+        ticket.Id = -1;
     }
 
     [TestMethod]
@@ -34,27 +35,31 @@ public class TestTicket
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestDescriptionShort()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = "Corta");
+       ticket.Description = "Corta";
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestDescriptionNull()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = null);
+        ticket.Description = null;
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestDescriptionEmpty()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = "");
+        ticket.Description = "";
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestDescriptionWhiteSpace()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => ticket.Description = "             ");
+        ticket.Description = "             ";
     }
 
     [TestMethod]
