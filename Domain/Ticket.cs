@@ -12,6 +12,7 @@ public class Ticket
     private TimeSpan _attentionTime;
     private TimeSpan _closingTime;
     private Apartment _apartment;
+    private float _totalCost;
     public Category Category { get; set; }
     public Status Status { get; set; } = Status.Open;
 
@@ -54,6 +55,32 @@ public class Ticket
                 throw new ArgumentOutOfRangeException($"La descripción debe tener al menos {minLength} caracteres");
             }
             _description = value;
+        }
+    }
+
+    public Apartment Apartment
+    {
+        get { return _apartment; }
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException();
+            }
+            _apartment = value;
+        }
+    }
+
+    public float TotalCost
+    {
+        get { return _totalCost; }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            _totalCost = value;
         }
     }
 
@@ -145,19 +172,6 @@ public class Ticket
         else
         {
             throw new InvalidOperationException("La fecha de cierre no puede ser anterior a la fecha de atención.");
-        }
-    }
-
-    public Apartment Apartment
-    {
-        get { return _apartment; }
-        set
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException();
-            }
-            _apartment = value;
         }
     }
 

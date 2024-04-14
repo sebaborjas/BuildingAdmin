@@ -217,4 +217,26 @@ public class TestTicket
         ticket.SetAttention(DateTime.Today);
         ticket.ChangeStatus(Domain.DataTypes.Status.Closed);
     }
+
+    [TestMethod] 
+    public void TestTotalCost()
+    {
+        ticket.TotalCost = 100;
+        Assert.AreEqual(100, ticket.TotalCost);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestTotalCostNegative()
+    {
+        ticket.TotalCost = -1;
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestTotalCostZero()
+    {
+        ticket.TotalCost = 0;
+    }
+   
 }
