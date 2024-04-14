@@ -1,4 +1,5 @@
-﻿namespace Domain;
+﻿using Exceptions;
+namespace Domain;
 
 public class Ticket
 {
