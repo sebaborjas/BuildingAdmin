@@ -21,7 +21,13 @@ namespace Domain
         public int Rooms
         {
             get { return _rooms; }
-            set { _rooms = value; }
+            set { 
+                if(value < 0)
+                {
+                    throw new InvalidDataException();
+                }
+                _rooms = value; 
+            }
         }
 
         public short Bathrooms
