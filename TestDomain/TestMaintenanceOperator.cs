@@ -7,11 +7,22 @@ namespace TestDomain;
 public class TestMaintenanceOperator
 {
   MaintenanceOperator _operator;
+  ICollection<Ticket> _tickets;
+
+  Ticket _ticket;
 
   [TestInitialize]
   public void TestInitialize()
   {
     _operator = new MaintenanceOperator {Name = "John", Email = "test@test.com", Password ="Prueba.123"};
+
+    _tickets = new List<Ticket>();
+    
+    _ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
+
+    _tickets.Add(_ticket);
+
+    _operator.Tickets = _tickets;
   }
 
   [TestMethod]
@@ -110,46 +121,23 @@ public class TestMaintenanceOperator
   [TestMethod]
   public void GetTicketsCorrect()
   {
-    ICollection<Ticket> tickets = new List<Ticket>();
-    
-    Ticket ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
 
-    tickets.Add(ticket);
+    Assert.AreEqual(_operator.Tickets, _tickets);
 
-    _operator.Tickets = tickets;
-
-    Assert.AreEqual(_operator.Tickets, tickets);
-
-    
   }
   
   [TestMethod]
   public void CloseTicket()
   {
-    ICollection<Ticket> tickets = new List<Ticket>();
-    
-    Ticket ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
 
-    tickets.Add(ticket);
+    _operator.CloseTicket(_ticket);
 
-    _operator.Tickets = tickets;
-
-    _operator.CloseTicket(ticket);
-
-    Assert.AreEqual(ticket.Status, Status.Closed);
+    Assert.AreEqual(_ticket.Status, Status.Closed);
   }
   
   [TestMethod]
   public void TakeTicket()
   {
-    ICollection<Ticket> tickets = new List<Ticket>();
-    
-    Ticket ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
-
-    tickets.Add(ticket);
-
-    _operator.Tickets = tickets;
-
-    Assert.AreEqual(_operator.GetTicket(1), ticket);
+    Assert.AreEqual(_operator.GetTicket(1), _ticket);
   }
 }
