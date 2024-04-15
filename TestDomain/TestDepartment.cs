@@ -15,8 +15,10 @@ namespace TestDomain
         [TestMethod]
         public void TestDoorNumber()
         {
-            department = new Department();
-            department.DoorNumber = 1;
+            department = new Department() 
+            { 
+                DoorNumber = 1 
+            };
             Assert.AreEqual(1, department.DoorNumber);
         }
 
