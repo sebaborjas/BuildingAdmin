@@ -54,5 +54,11 @@ namespace Domain
             get { return _floor; }
             set { _floor = value; }
         }
+
+        public bool HasTerrace
+        {
+            get { return false; }
+            set { }
+        }
     }
 }

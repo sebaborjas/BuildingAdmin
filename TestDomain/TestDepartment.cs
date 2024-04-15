@@ -99,5 +99,12 @@ namespace TestDomain
             Assert.AreEqual(2, department.Floor);
         }
 
+        [TestMethod]
+        public void TestHasTerrace()
+        {
+            department.HasTerrace = true;
+            Assert.IsTrue(department.HasTerrace);
+        }
+
     }
 }
