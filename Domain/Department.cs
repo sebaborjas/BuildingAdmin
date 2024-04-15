@@ -10,6 +10,7 @@ namespace Domain
     {
         private int _doorNumber;
         private int _rooms;
+        private short _bathrooms;
         
         public int DoorNumber
         {
@@ -25,8 +26,8 @@ namespace Domain
 
         public short Bathrooms
         {
-            get { return 1; }
-            set { }
+            get { return _bathrooms; }
+            set { _bathrooms = value; }
         }
     }
 }
