@@ -10,7 +10,7 @@ namespace Domain
     {
         private int _id; 
         private int _doorNumber;
-        private int _rooms;
+        private short _rooms;
         private short _bathrooms;
         private short _floor;
         private bool _hasTerrace;
@@ -40,7 +40,7 @@ namespace Domain
             }
         }
 
-        public int Rooms
+        public short Rooms
         {
             get { return _rooms; }
             set { 
