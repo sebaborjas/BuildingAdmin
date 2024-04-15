@@ -144,5 +144,12 @@ namespace TestDomain
             department.Owner = null;
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestInvalidId()
+        {
+            department.Id = -1;
+        }
+
     }
 }
