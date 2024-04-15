@@ -9,6 +9,8 @@ namespace Domain
     public class Department
     {
         private int _doorNumber;
+        private int _rooms;
+        
         public int DoorNumber
         {
             get { return _doorNumber; }
@@ -17,8 +19,8 @@ namespace Domain
 
         public int Rooms
         {
-            get { return 3; }
-            set { }
+            get { return _rooms; }
+            set { _rooms = value; }
         }
     }
 }
