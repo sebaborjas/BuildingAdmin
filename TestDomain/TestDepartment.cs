@@ -136,5 +136,13 @@ namespace TestDomain
             Assert.AreEqual(1, department.Id);
         }
 
+        [TestMethod]
+        public void TestModifyId()
+        {
+            department.Id = 1;
+            department.Id = 2;
+            Assert.AreEqual(2, department.Id);
+        }
+
     }
 }
