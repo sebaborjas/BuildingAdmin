@@ -22,5 +22,16 @@ namespace TestDomain
             Assert.AreEqual(1, department.DoorNumber);
         }
 
+        [TestMethod]
+        public void TestModifyDoorNumber()
+        {
+            department = new Department()
+            {
+                DoorNumber = 1
+            };
+            department.DoorNumber = 2;
+            Assert.AreEqual(2, department.DoorNumber);
+        }
+
     }
 }
