@@ -140,4 +140,11 @@ public class TestMaintenanceOperator
   {
     Assert.AreEqual(_operator.GetTicket(1), _ticket);
   }
+  
+  [TestMethod]
+  [ExpectedException(typeof(ArgumentNullException))]
+  public void NotFoundTicketInList()
+  {
+    _operator.GetTicket(4);
+  }
 }
