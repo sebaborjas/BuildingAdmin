@@ -71,7 +71,8 @@ namespace Domain
                 {
                     throw new InvalidDataException();
                 }
-                _owner = value; }
+                _owner = value;
+            }
         }
     }
 }
