@@ -55,5 +55,13 @@ namespace TestDomain
             Assert.AreEqual(1, department.Bathrooms);
         }
 
+        [TestMethod]
+        public void TestModifyBathrooms()
+        {
+            department.Bathrooms = 1;
+            department.Bathrooms = 2;
+            Assert.AreEqual(2, department.Bathrooms);
+        }
+
     }
 }
