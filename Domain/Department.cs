@@ -24,7 +24,8 @@ namespace Domain
                 {
                     throw new InvalidDataException();
                 }
-                _id = value; }
+                _id = value; 
+            }
         }
 
         public int DoorNumber

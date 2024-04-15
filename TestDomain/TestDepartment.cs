@@ -34,6 +34,13 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestInvalidId()
+        {
+            department.Id = -1;
+        }
+
+        [TestMethod]
         public void TestDoorNumber()
         {
            department.DoorNumber = 1; 
@@ -142,13 +149,6 @@ namespace TestDomain
         public void TestInvalidOwner()
         {
             department.Owner = null;
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidDataException))]
-        public void TestInvalidId()
-        {
-            department.Id = -1;
         }
 
     }
