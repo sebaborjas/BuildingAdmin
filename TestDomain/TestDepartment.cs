@@ -122,5 +122,12 @@ namespace TestDomain
             Assert.AreEqual(owner, department.Owner);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestInvalidOwner()
+        {
+            department.Owner = null;
+        }
+
     }
 }
