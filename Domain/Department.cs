@@ -66,7 +66,12 @@ namespace Domain
         public Owner Owner
         {
             get { return _owner; }
-            set { _owner = value; }
+            set { 
+                if (value == null)
+                {
+                    throw new InvalidDataException();
+                }
+                _owner = value; }
         }
     }
 }
