@@ -8,14 +8,20 @@ namespace Domain
 {
     public class Department
     {
+        private int _id; 
         private int _doorNumber;
         private int _rooms;
         private short _bathrooms;
         private short _floor;
         private bool _hasTerrace;
         private Owner _owner;
-        private int _id;
         
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
         public int DoorNumber
         {
             get { return _doorNumber; }
@@ -76,10 +82,5 @@ namespace Domain
             }
         }
 
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
     }
 }

@@ -19,6 +19,21 @@ namespace TestDomain
         }
 
         [TestMethod]
+        public void TestId()
+        {
+            department.Id = 1;
+            Assert.AreEqual(1, department.Id);
+        }
+
+        [TestMethod]
+        public void TestModifyId()
+        {
+            department.Id = 1;
+            department.Id = 2;
+            Assert.AreEqual(2, department.Id);
+        }
+
+        [TestMethod]
         public void TestDoorNumber()
         {
            department.DoorNumber = 1; 
@@ -127,21 +142,6 @@ namespace TestDomain
         public void TestInvalidOwner()
         {
             department.Owner = null;
-        }
-
-        [TestMethod]
-        public void TestId()
-        {
-            department.Id = 1;
-            Assert.AreEqual(1, department.Id);
-        }
-
-        [TestMethod]
-        public void TestModifyId()
-        {
-            department.Id = 1;
-            department.Id = 2;
-            Assert.AreEqual(2, department.Id);
         }
 
     }
