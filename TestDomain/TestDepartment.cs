@@ -10,12 +10,12 @@ namespace TestDomain
     [TestClass]
     public  class TestDepartment
     {
-        private Department department;
+        private Apartment department;
 
         [TestInitialize]
         public void Setup()
         {
-            department = new Department();
+            department = new Apartment();
         }
 
         [TestMethod]

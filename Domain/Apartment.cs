@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Department
+    public class Apartment
     {
         private int _id; 
         private int _doorNumber;
