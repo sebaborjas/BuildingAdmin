@@ -19,7 +19,12 @@ namespace Domain
         public int Id
         {
             get { return _id; }
-            set { _id = value; }
+            set { 
+                if(value < 0)
+                {
+                    throw new InvalidDataException();
+                }
+                _id = value; }
         }
 
         public int DoorNumber
