@@ -91,5 +91,13 @@ namespace TestDomain
             Assert.AreEqual(1, department.Floor);
         }
 
+        [TestMethod]
+        public void TestModifyFloor()
+        {
+            department.Floor = 1;
+            department.Floor = 2;
+            Assert.AreEqual(2, department.Floor);
+        }
+
     }
 }
