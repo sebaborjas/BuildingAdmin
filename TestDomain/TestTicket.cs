@@ -30,8 +30,8 @@ public class TestTicket
     [TestMethod]
     public void TestDescription()
     {
-        ticket.Description = "Descripción válida con más de 10 caracteres.";
-        Assert.AreEqual("Descripción válida con más de 10 caracteres.", ticket.Description);
+        ticket.Description = "Descripciï¿½n vï¿½lida con mï¿½s de 10 caracteres.";
+        Assert.AreEqual("Descripciï¿½n vï¿½lida con mï¿½s de 10 caracteres.", ticket.Description);
     }
 
     [TestMethod]
@@ -242,7 +242,7 @@ public class TestTicket
     [TestMethod]
     public void TestAssignedTo()
     {
-        ticket.AssignedTo = new User();
+        ticket.AssignedTo = new MaintenanceOperator();
         Assert.IsNotNull(ticket.AssignedTo);
     }
 
@@ -256,7 +256,7 @@ public class TestTicket
     [TestMethod]
     public void TestCreatedBy()
     {
-        ticket.CreatedBy = new User();
+        ticket.CreatedBy = new MaintenanceOperator();
         Assert.IsNotNull(ticket.CreatedBy);
     }
 
