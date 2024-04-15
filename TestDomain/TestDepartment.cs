@@ -117,9 +117,9 @@ namespace TestDomain
         [TestMethod]
         public void TestOwner()
         {
-            Owner o = new Owner();
-            department.Owner = o;
-            Assert.AreEqual(o, department.Owner);
+            Owner owner = new Owner();
+            department.Owner = owner;
+            Assert.AreEqual(owner, department.Owner);
         }
 
     }
