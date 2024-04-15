@@ -34,6 +34,13 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestInvalidDoorNumber()
+        {
+            department.DoorNumber = -1;
+        }
+
+        [TestMethod]
         public void TestRooms()
         {
             department.Rooms = 3;
@@ -75,13 +82,6 @@ namespace TestDomain
         public void TestInvalidBathrooms()
         {
             department.Bathrooms = -1;
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidDataException))]
-        public void TestInvalidDoorNumber()
-        {
-            department.DoorNumber = -1;
         }
 
     }

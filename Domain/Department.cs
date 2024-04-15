@@ -20,7 +20,8 @@ namespace Domain
                 {
                     throw new InvalidDataException();
                 }
-                _doorNumber = value; }
+                _doorNumber = value;
+            }
         }
 
         public int Rooms
