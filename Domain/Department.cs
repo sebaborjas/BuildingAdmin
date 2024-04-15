@@ -17,7 +17,7 @@ namespace Domain
 
         public int Rooms
         {
-            get { return 0; }
+            get { return 3; }
             set { }
         }
     }
