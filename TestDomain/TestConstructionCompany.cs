@@ -1,0 +1,43 @@
+using Domain;
+using Exceptions;
+namespace TestDomain;
+
+[TestClass]
+public class TestConstructionCompany
+{
+    ConstructionCompany ConstructionCompany;
+
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        ConstructionCompany = new ConstructionCompany();
+    }
+
+    [TestMethod]
+    public void TestName()
+    {
+        ConstructionCompany.Name = "ConstructionCompany";
+        Assert.AreEqual("ConstructionCompany", ConstructionCompany.Name);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidName()
+    {
+        ConstructionCompany.Name = "ConstructionCompany123";
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void TestEmptyName()
+    {
+        ConstructionCompany.Name = "";
+    }
+
+    [TestMethod]
+    public void TestId()
+    {
+        ConstructionCompany.Id = 1;
+        Assert.AreEqual(1, ConstructionCompany.Id);
+    }
+}
