@@ -12,23 +12,23 @@ namespace TestDomain
     {
         private Department department;
 
+        [TestInitialize]
+        public void Setup()
+        {
+            department = new Department();
+        }
+
         [TestMethod]
         public void TestDoorNumber()
         {
-            department = new Department() 
-            { 
-                DoorNumber = 1 
-            };
-            Assert.AreEqual(1, department.DoorNumber);
+           department.DoorNumber = 1; 
+           Assert.AreEqual(1, department.DoorNumber);
         }
 
         [TestMethod]
         public void TestModifyDoorNumber()
         {
-            department = new Department()
-            {
-                DoorNumber = 1
-            };
+            department.DoorNumber = 1;
             department.DoorNumber = 2;
             Assert.AreEqual(2, department.DoorNumber);
         }
