@@ -11,6 +11,7 @@ namespace Domain
         private int _doorNumber;
         private int _rooms;
         private short _bathrooms;
+        private short _floor;
         
         public int DoorNumber
         {
@@ -50,8 +51,8 @@ namespace Domain
 
         public short Floor
         {
-            get { return 1; }
-            set { }
+            get { return _floor; }
+            set { _floor = value; }
         }
     }
 }
