@@ -14,6 +14,7 @@ namespace Domain
         private short _floor;
         private bool _hasTerrace;
         private Owner _owner;
+        private int _id;
         
         public int DoorNumber
         {
@@ -77,8 +78,8 @@ namespace Domain
 
         public int Id
         {
-            get { return 1; }
-            set { }
+            get { return _id; }
+            set { _id = value; }
         }
     }
 }
