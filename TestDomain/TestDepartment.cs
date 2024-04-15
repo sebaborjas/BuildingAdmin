@@ -33,5 +33,12 @@ namespace TestDomain
             Assert.AreEqual(2, department.DoorNumber);
         }
 
+        [TestMethod]
+        public void TestRooms()
+        {
+            department.Rooms = 3;
+            Assert.AreEqual(3, department.Rooms);
+        }
+
     }
 }

@@ -14,5 +14,11 @@ namespace Domain
             get { return _doorNumber; }
             set { _doorNumber = value; }
         }
+
+        public int Rooms
+        {
+            get { return 0; }
+            set { }
+        }
     }
 }
