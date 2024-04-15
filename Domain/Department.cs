@@ -10,7 +10,7 @@ namespace Domain
     {
         public int DoorNumber
         {
-            get { return 0; }
+            get { return 1; }
             set { }
         }
     }
