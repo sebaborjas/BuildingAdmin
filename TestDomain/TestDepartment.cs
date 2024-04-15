@@ -84,5 +84,12 @@ namespace TestDomain
             department.Bathrooms = -1;
         }
 
+        [TestMethod]
+        public void TestFloor()
+        {
+            department.Floor = 1;
+            Assert.AreEqual(1, department.Floor);
+        }
+
     }
 }

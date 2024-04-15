@@ -47,5 +47,11 @@ namespace Domain
                 _bathrooms = value; 
             }
         }
+
+        public short Floor
+        {
+            get { return 0; }
+            set { }
+        }
     }
 }
