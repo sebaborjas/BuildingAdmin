@@ -12,6 +12,7 @@ namespace Domain
         private int _rooms;
         private short _bathrooms;
         private short _floor;
+        private bool _hasTerrace;
         
         public int DoorNumber
         {
@@ -57,8 +58,8 @@ namespace Domain
 
         public bool HasTerrace
         {
-            get { return true; }
-            set { }
+            get { return _hasTerrace; }
+            set { _hasTerrace = value; }
         }
     }
 }
