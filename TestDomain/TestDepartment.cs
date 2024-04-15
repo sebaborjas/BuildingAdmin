@@ -106,5 +106,13 @@ namespace TestDomain
             Assert.IsTrue(department.HasTerrace);
         }
 
+        [TestMethod]
+        public void TestModifyHasTerrace()
+        {
+            department.HasTerrace = true;
+            department.HasTerrace = false;
+            Assert.IsFalse(department.HasTerrace);
+        }
+
     }
 }
