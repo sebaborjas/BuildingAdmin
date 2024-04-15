@@ -22,5 +22,11 @@ namespace Domain
             get { return _rooms; }
             set { _rooms = value; }
         }
+
+        public short Bathrooms
+        {
+            get { return 0; }
+            set { }
+        }
     }
 }
