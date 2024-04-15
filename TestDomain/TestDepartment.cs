@@ -63,5 +63,12 @@ namespace TestDomain
             Assert.AreEqual(2, department.Bathrooms);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestInvalidBathrooms()
+        {
+            department.Bathrooms = -1;
+        }
+
     }
 }
