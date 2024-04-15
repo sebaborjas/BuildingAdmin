@@ -49,7 +49,7 @@ public class Ticket
         {
             const int minLength = 10;
 
-            if (string.IsNullOrWhiteSpace(value) || value.Trim().Length < minLength)
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentNullException();
             }
