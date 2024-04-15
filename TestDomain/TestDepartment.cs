@@ -77,5 +77,12 @@ namespace TestDomain
             department.Bathrooms = -1;
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestInvalidDoorNumber()
+        {
+            department.DoorNumber = -1;
+        }
+
     }
 }
