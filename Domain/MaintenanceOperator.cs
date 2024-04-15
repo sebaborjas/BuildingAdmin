@@ -4,7 +4,7 @@ namespace Domain
 {
     public class MaintenanceOperator : User
     {
-        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
         
         public void TakeTicket(Ticket ticket){
             ticket.Status = Status.InProgress;
@@ -17,7 +17,9 @@ namespace Domain
         }
 
         public Ticket GetTicket(int id){
-        return Tickets.FirstOrDefault(t => t.Id == id);
+            var ticket = Tickets.FirstOrDefault(t => t.Id == id);
+            if (ticket == null) throw new ArgumentNullException("No se enontro el ticket");
+            return ticket;
         }
     }
 }
