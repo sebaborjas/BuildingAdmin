@@ -114,5 +114,13 @@ namespace TestDomain
             Assert.IsFalse(department.HasTerrace);
         }
 
+        [TestMethod]
+        public void TestOwner()
+        {
+            Owner o = new Owner();
+            department.Owner = o;
+            Assert.AreEqual(o, department.Owner);
+        }
+
     }
 }

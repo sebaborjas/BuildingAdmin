@@ -61,5 +61,11 @@ namespace Domain
             get { return _hasTerrace; }
             set { _hasTerrace = value; }
         }
+
+        public Owner Owner
+        {
+            get { return null; }
+            set { }
+        }
     }
 }
