@@ -11,7 +11,7 @@ namespace Domain
         }
 
         public List<Ticket> GetTickets(){
-
+            return new List<Ticket>();
         }
     }
 }

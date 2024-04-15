@@ -7,7 +7,7 @@ public abstract class User
   public int Id { 
     get { 
       return _id;
-        } 
+    } 
   }
   public string Name { get; set; }
 
