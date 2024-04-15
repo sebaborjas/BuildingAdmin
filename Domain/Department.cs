@@ -74,5 +74,11 @@ namespace Domain
                 _owner = value;
             }
         }
+
+        public int Id
+        {
+            get { return 0; }
+            set { }
+        }
     }
 }

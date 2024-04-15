@@ -129,5 +129,12 @@ namespace TestDomain
             department.Owner = null;
         }
 
+        [TestMethod]
+        public void TestId()
+        {
+            department.Id = 1;
+            Assert.AreEqual(1, department.Id);
+        }
+
     }
 }
