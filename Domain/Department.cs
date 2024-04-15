@@ -8,10 +8,11 @@ namespace Domain
 {
     public class Department
     {
+        private int _doorNumber;
         public int DoorNumber
         {
-            get { return 1; }
-            set { }
+            get { return _doorNumber; }
+            set { _doorNumber = value; }
         }
     }
 }
