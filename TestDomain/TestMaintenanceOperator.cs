@@ -1,4 +1,5 @@
 using Domain;
+using Domain.DataTypes;
 using Exceptions;
 namespace TestDomain;
 
@@ -10,29 +11,32 @@ public class TestMaintenanceOperator
   [TestInitialize]
   public void TestInitialize()
   {
-    // _operator = new MaintenanceOperator {Name = "John", Email = "test@test.com", Password ="Prueba.123"};
+    _operator = new MaintenanceOperator {Name = "John", Email = "test@test.com", Password ="Prueba.123"};
   }
 
   [TestMethod]
   [ExpectedException(typeof(EmptyFieldException))]
   public void EmptyNameException()
   {
-    _operator = new MaintenanceOperator {Name = "", Email = "test@test.com", Password ="Prueba.123"};
+    string name = "";
+    _operator.Name = name;
   }
 
   [TestMethod]
   public void CorrectName()
   {
-    _operator = new MaintenanceOperator {Name = "John", Email = "test@test.com", Password ="Prueba.123"};
+    string name = "NewName";
+    _operator.Name = name;
 
-    Assert.AreEqual("John", _operator.Name);
+    Assert.AreEqual("NewName", _operator.Name);
   }
   
   [TestMethod]
   [ExpectedException(typeof(EmptyFieldException))]
   public void EmptyEmailException()
   {
-    _operator = new MaintenanceOperator {Name = "John", Email = "", Password ="Prueba.123"};
+    string email = "";
+    _operator.Email = email;
   }
 
   [TestMethod]
@@ -40,14 +44,14 @@ public class TestMaintenanceOperator
   public void WrongEmailFormatException()
   {
     string email = "test.com";
-    _operator = new MaintenanceOperator {Name = "John", Email = email, Password ="Prueba.123"};
+    _operator.Email = email;
   }
 
   [TestMethod]
   public void CorrectEmail()
   {
     string email = "prueba@test.com";
-    _operator = new MaintenanceOperator {Name = "John", Email = email, Password ="Prueba.123"};
+    _operator.Email = email;
 
     Assert.AreEqual(email, _operator.Email);
   }
@@ -56,49 +60,96 @@ public class TestMaintenanceOperator
   [ExpectedException(typeof(EmptyFieldException))]
   public void EmptyPasswordException()
   {
-     _operator = new MaintenanceOperator {Name = "John", Email = "prueba@test.com", Password =""};
+    string password = "";
+     _operator.Password = password;
   }
   
   [TestMethod]
   [ExpectedException(typeof(PasswordNotFollowPolicy))]
   public void WrongPasswordLength()
   {
+    string password = "123456";
+    _operator.Password = password;
   }
   
   [TestMethod]
   [ExpectedException(typeof(PasswordNotFollowPolicy))]
   public void PasswordWithoutSpecialCharacter()
   {
+    string password = "Prueba123";
+    _operator.Password = password;
   }
 
   [TestMethod]
   [ExpectedException(typeof(PasswordNotFollowPolicy))]
   public void PasswordTooMuchLong()
   {
+    string password = "Prueba.123456789";
+    _operator.Password = password;
   }
   
   [TestMethod]
   public void CorrectPassword()
   {
+    string password = "Pru#eba.123$";
+    _operator.Password = password;
+
+    Assert.AreEqual(password, _operator.Password);
   }
   
   [TestMethod]
   public void GetEmptyListOfTickets()
   {
+    ICollection<Ticket> tickets = new List<Ticket>();
+
+    _operator.Tickets = tickets;
+
+    Assert.AreEqual(0, _operator.Tickets.Count);
   }
   
   [TestMethod]
   public void GetTicketsCorrect()
   {
+    ICollection<Ticket> tickets = new List<Ticket>();
+    
+    Ticket ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
+
+    tickets.Add(ticket);
+
+    _operator.Tickets = tickets;
+
+    Assert.AreEqual(_operator.Tickets, tickets);
+
+    
   }
   
   [TestMethod]
   public void CloseTicket()
   {
+    ICollection<Ticket> tickets = new List<Ticket>();
+    
+    Ticket ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
+
+    tickets.Add(ticket);
+
+    _operator.Tickets = tickets;
+
+    _operator.CloseTicket(ticket);
+
+    Assert.AreEqual(ticket.Status, Status.Closed);
   }
   
   [TestMethod]
   public void TakeTicket()
   {
+    ICollection<Ticket> tickets = new List<Ticket>();
+    
+    Ticket ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
+
+    tickets.Add(ticket);
+
+    _operator.Tickets = tickets;
+
+    Assert.AreEqual(_operator.GetTicket(1), ticket);
   }
 }
