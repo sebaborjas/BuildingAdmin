@@ -15,7 +15,12 @@ namespace Domain
         public int DoorNumber
         {
             get { return _doorNumber; }
-            set { _doorNumber = value; }
+            set {
+                if (value < 0)
+                {
+                    throw new InvalidDataException();
+                }
+                _doorNumber = value; }
         }
 
         public int Rooms
