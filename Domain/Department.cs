@@ -27,7 +27,13 @@ namespace Domain
         public short Bathrooms
         {
             get { return _bathrooms; }
-            set { _bathrooms = value; }
+            set {
+                if(value < 0)
+                {
+                    throw new InvalidDataException();
+                }
+                _bathrooms = value; 
+            }
         }
     }
 }
