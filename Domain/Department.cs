@@ -50,7 +50,7 @@ namespace Domain
 
         public short Floor
         {
-            get { return 0; }
+            get { return 1; }
             set { }
         }
     }
