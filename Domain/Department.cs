@@ -57,7 +57,7 @@ namespace Domain
 
         public bool HasTerrace
         {
-            get { return false; }
+            get { return true; }
             set { }
         }
     }
