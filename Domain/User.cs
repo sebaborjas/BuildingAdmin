@@ -74,7 +74,8 @@ public abstract class User
           throw new EmptyFieldException();
       }
 
-      string pattern = @"^(?=.*[A-Z])(?=.*[\W_]).{8,15}$";
+      //Password must have at least one uppercase letter, one special character and be between 6 and 15 characters
+      string pattern = @"^(?=.*[A-Z])(?=.*[\W_]).{6,15}$"; 
 
       bool passwordCorrect = IsValidFormat(pattern, value);
 
