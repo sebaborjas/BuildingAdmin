@@ -41,6 +41,23 @@ public class TestMaintenanceOperator
 
     Assert.AreEqual("NewName", _operator.Name);
   }
+
+  [TestMethod]
+  [ExpectedException(typeof(EmptyFieldException))]
+  public void EmptyLastNameException()
+  {
+    string lastName = "";
+    _operator.LastName = lastName;
+  }
+
+  [TestMethod]
+  public void CorrectLastName()
+  {
+    string lastName = "NewLastName";
+    _operator.LastName = lastName;
+
+    Assert.AreEqual("NewName", _operator.Name);
+  }
   
   [TestMethod]
   [ExpectedException(typeof(EmptyFieldException))]
