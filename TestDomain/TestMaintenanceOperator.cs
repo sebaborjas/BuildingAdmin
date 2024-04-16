@@ -56,7 +56,7 @@ public class TestMaintenanceOperator
     string lastName = "NewLastName";
     _operator.LastName = lastName;
 
-    Assert.AreEqual("NewName", _operator.Name);
+    Assert.AreEqual("NewLastName", _operator.LastName);
   }
   
   [TestMethod]
