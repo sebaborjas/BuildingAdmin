@@ -14,7 +14,7 @@ public class TestMaintenanceOperator
   [TestInitialize]
   public void TestInitialize()
   {
-    _operator = new MaintenanceOperator {Name = "John", Email = "test@test.com", Password ="Prueba.123"};
+    _operator = new MaintenanceOperator {Name = "John", LastName = "Doe", Email = "test@test.com", Password ="Prueba.123"};
 
     _tickets = new List<Ticket>();
     
