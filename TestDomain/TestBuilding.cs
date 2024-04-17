@@ -73,7 +73,7 @@ public class TestBuilding
     {
         building.Expenses = 100;
         building.Expenses = 200;
-        Assert.AreEqual(100, building.Expenses);
+        Assert.AreEqual(200, building.Expenses);
     }
 
 
