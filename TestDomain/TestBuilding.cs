@@ -77,27 +77,12 @@ public class TestBuilding
     }
 
     [TestMethod]
-    public void TestApartment()
+    public void TestApartments()
     {
-        Apartment apartment = new Apartment();
-        building.Apartment = apartment;
-        Assert.AreEqual(apartment, building.Apartment);
+        List<Apartment> apartments = new List<Apartment>();
+        building.Apartments = apartments;
+        Assert.AreEqual(apartments, building.Apartments);
     }
-
-    [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
-    public void TestInvalidApartment()
-    {
-        building.Apartment = null;
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
-    public void TestNullApartment()
-    {
-        building.Apartment = null;
-    }
-
 
     [TestMethod]
     public void TestConstructionCompany()

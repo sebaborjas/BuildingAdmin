@@ -11,7 +11,10 @@ public class Building
     private string _location;
     private List<Apartment> _apartment;
     private ConstructionCompany _constructionCompany;
-    public List<Apartment> Apartments { get; set; }
+    public List<Apartment> Apartments {
+        get { return null; }
+        set { }
+    }
 
     public int Id
     {
