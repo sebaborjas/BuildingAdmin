@@ -94,9 +94,20 @@ public class TestBuilding
     [TestMethod]
     public void TestConstructionCompany()
     {
-        ConstructionCompany c = new ConstructionCompany();
-        building.ConstructionCompany = c;
-        Assert.AreEqual(c, building.ConstructionCompany);
+        ConstructionCompany constructionCompany = new ConstructionCompany();
+        building.ConstructionCompany = constructionCompany;
+        Assert.AreEqual(constructionCompany, building.ConstructionCompany);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void TestInvalidConstructionCompany()
+    {
+        building.ConstructionCompany = null;
+    }
+
+
+
+
 
 }
