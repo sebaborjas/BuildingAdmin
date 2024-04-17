@@ -27,9 +27,9 @@ public class TestBuilding
     {
         building = new Building()
         {
-            Name = "New Building"
+            Name = "Building"
         };
-        Assert.AreEqual("New Building", building.Name);
+        Assert.AreEqual("Building", building.Name);
     }
 
 }
