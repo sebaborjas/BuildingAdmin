@@ -93,7 +93,10 @@ public class Building
         }
         set
         {
-
+            if(string.IsNullOrWhiteSpace(value))
+            {
+                throw new EmptyFieldException();
+            }
         }
     }
 

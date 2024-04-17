@@ -161,10 +161,10 @@ public class TestBuilding
     }
 
     [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
     public void TestEmptyAddress()
     {
         building.Address = "";
-        Assert.AreEqual("", building.Address);
     }
 
 }
