@@ -1,4 +1,5 @@
 ﻿using Exceptions;
+using System.Text.RegularExpressions;
 
 namespace Domain;
 
@@ -7,6 +8,7 @@ public class Building
     private int _id;
     private string _name;
     private float _expenses;
+    private string _location;
     private Apartment _apartment;
     private ConstructionCompany _constructionCompany;
 
@@ -80,18 +82,30 @@ public class Building
     }
 
     public string Location { 
-        get { return "location"; }
+        get { return _location; }
         set {
             if (string.IsNullOrWhiteSpace(value))
             {
                 throw new EmptyFieldException();
             }
+            else if (!IsLocationValid(value))
+            {
+                throw new InvalidDataException("Formato esperado: 'longitud, latitud'");
+            }
+            _location = value;
+
         }
     }
 
     private bool IsNameValid(string name)
     {
         return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
+    }
+
+    private bool IsLocationValid(string location)
+    {
+        string pattern = @"^\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*$";
+        return Regex.IsMatch(location, pattern);
     }
 
 }
