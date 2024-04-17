@@ -158,6 +158,6 @@ public class TestBuilding
     {
         building.Address = "Calle 123";
         Assert.AreEqual("Calle 123", building.Address);
-    }   
+    }
 
 }

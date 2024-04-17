@@ -85,7 +85,8 @@ public class Building
         }
     }
 
-    public string Address {
+    public string Address
+    {
         get
         {
             return "Calle 123";
@@ -94,7 +95,7 @@ public class Building
         {
 
         }
-            }
+    }
 
     private bool IsNameValid(string name)
     {
