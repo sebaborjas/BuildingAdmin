@@ -85,7 +85,7 @@ public class TestBuilding
     }
 
     [TestMethod]
-    [ExpectedException(typeof(InvalidDataException))]
+    [ExpectedException(typeof(EmptyFieldException))]
     public void TestInvalidApartment()
     {
         building.Apartment = null;

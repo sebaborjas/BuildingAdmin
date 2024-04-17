@@ -51,9 +51,15 @@ public class Building
         }
     }
 
-    public Apartment Apartment { 
-        get { return _apartment; }
-        set { _apartment = value; }
+    public Apartment Apartment {
+        get => _apartment;
+        set {
+            if (value == null)
+            {
+                throw new EmptyFieldException();
+            }
+            _apartment = value;
+        }
     }
 
     private bool IsNameValid(string name)
