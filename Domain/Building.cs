@@ -97,6 +97,11 @@ public class Building
             {
                 throw new EmptyFieldException();
             }
+            else if (!IsAddressValid(value))
+                {
+                throw new InvalidDataException("Formato esperado: calle principal, número de puerta, esquina");
+            }
+            
         }
     }
 
@@ -109,6 +114,12 @@ public class Building
     {
         string pattern = @"^\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*$";
         return Regex.IsMatch(location, pattern);
+    }
+
+    private bool IsAddressValid(string address)
+    {
+        string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
+        return Regex.IsMatch(address, pattern);
     }
 
 }
