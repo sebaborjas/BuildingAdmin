@@ -9,8 +9,9 @@ public class Building
     private string _name;
     private float _expenses;
     private string _location;
-    private Apartment _apartment;
+    private List<Apartment> _apartment;
     private ConstructionCompany _constructionCompany;
+    public List<Apartment> Apartments { get; set; }
 
     public int Id
     {
@@ -52,19 +53,6 @@ public class Building
                 throw new ArgumentOutOfRangeException();
             }
             _expenses = value;
-        }
-    }
-
-    public Apartment Apartment
-    {
-        get => _apartment;
-        set
-        {
-            if (value == null)
-            {
-                throw new EmptyFieldException();
-            }
-            _apartment = value;
         }
     }
 
