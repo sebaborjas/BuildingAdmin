@@ -18,4 +18,10 @@ public class Building
             id = value;
         }
     }
+
+    public string Name { 
+        get { return "Building"; }
+        set { }
+    }
+
 }

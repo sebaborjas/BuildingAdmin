@@ -22,4 +22,14 @@ public class TestBuilding
         Assert.AreEqual(1, building.Id);
     }
 
+    [TestMethod]
+    public void TestName()
+    {
+        building = new Building()
+        {
+            Name = "New Building"
+        };
+        Assert.AreEqual("New Building", building.Name);
+    }
+
 }
