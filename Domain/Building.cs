@@ -69,7 +69,13 @@ public class Building
     public ConstructionCompany ConstructionCompany
     {
         get { return _constructionCompany; }
-        set { _constructionCompany = value; }
+        set { 
+            if (value == null)
+            {
+                throw new EmptyFieldException();
+            }
+            _constructionCompany = value;
+        }
     }
 
     private bool IsNameValid(string name)
