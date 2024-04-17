@@ -65,6 +65,12 @@ public class Building
         }
     }
 
+    public ConstructionCompany ConstructionCompany
+    {
+        get { return null; }
+        set { }
+    }
+
     private bool IsNameValid(string name)
     {
         return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));

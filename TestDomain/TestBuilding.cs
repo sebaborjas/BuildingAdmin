@@ -91,4 +91,12 @@ public class TestBuilding
         building.Apartment = null;
     }
 
+    [TestMethod]
+    public void TestConstructionCompany()
+    {
+        ConstructionCompany c = new ConstructionCompany();
+        building.ConstructionCompany = c;
+        Assert.AreEqual(c, building.ConstructionCompany);
+    }
+
 }
