@@ -65,7 +65,7 @@ public class TestBuilding
     [ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void TestInvalidExpenses()
     {
-        building.Expenses = 1;
+        building.Expenses = -1;
     }
 
 }
