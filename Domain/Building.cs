@@ -81,7 +81,12 @@ public class Building
 
     public string Location { 
         get { return "location"; }
-        set { }
+        set {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new EmptyFieldException();
+            }
+        }
     }
 
     private bool IsNameValid(string name)
