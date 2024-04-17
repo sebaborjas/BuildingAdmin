@@ -57,8 +57,8 @@ public class TestBuilding
     [TestMethod]
     public void TestExpenses()
     {
-        building.expenses = 1;
-        Assert.AreEqual(1, building.expenses);
+        building.Expenses = 1;
+        Assert.AreEqual(1, building.Expenses);
     }
 
 }

@@ -6,6 +6,7 @@ public class Building
 {
     private int _id;
     private string _name;
+    private float _expenses;
 
     public int Id
     {
@@ -36,10 +37,17 @@ public class Building
         }
     }
 
-    public float expenses
+    public float Expenses
     {
-        get { return 1; }
-        set { }
+        get => _expenses;
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            _expenses = value;
+        }
     }
 
     private bool IsNameValid(string name)
