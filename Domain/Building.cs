@@ -9,7 +9,6 @@ public class Building
     private string _name;
     private float _expenses;
     private string _location;
-    private List<Apartment> _apartments;
     private ConstructionCompany _constructionCompany;
     public List<Apartment> Apartments { get; set; } = new List<Apartment>();
 
