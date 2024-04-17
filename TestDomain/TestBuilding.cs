@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Exceptions;
 using Domain;
 
 namespace TestDomain;
@@ -37,6 +38,13 @@ public class TestBuilding
     {
         building.Name = "Building";
         Assert.AreEqual("Building", building.Name);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void TestNameEmpty()
+    {
+        building.Name = "Empty";
     }
 
 }
