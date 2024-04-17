@@ -104,7 +104,7 @@ public class TestBuilding
         Apartment apartment = new Apartment();
         building.Apartments.Add(apartment);
         building.Apartments.Remove(apartment);
-        Assert.AreEqual(1, building.Apartments.Count);
+        Assert.AreEqual(0, building.Apartments.Count);
     }
 
     [TestMethod]
