@@ -68,8 +68,9 @@ public class Building
 
     public ConstructionCompany ConstructionCompany
     {
-        get { return _constructionCompany; }
-        set { 
+        get => _constructionCompany;
+        set
+        {
             if (value == null)
             {
                 throw new EmptyFieldException();
