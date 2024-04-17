@@ -91,6 +91,14 @@ public class TestBuilding
     }
 
     [TestMethod]
+    public void TestAddApartment()
+    {
+        Apartment apartment = new Apartment();
+        building.Apartments.Add(apartment);
+        Assert.AreEqual(0, building.Apartments.Count);
+    }
+
+    [TestMethod]
     public void TestConstructionCompany()
     {
         ConstructionCompany constructionCompany = new ConstructionCompany();
