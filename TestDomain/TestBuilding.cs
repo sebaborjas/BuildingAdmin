@@ -156,8 +156,8 @@ public class TestBuilding
     [TestMethod]
     public void TestAddress()
     {
-        building.Address = "Calle 123";
-        Assert.AreEqual("Calle 123", building.Address);
+        building.Address = "Cuareim, 1451, Mercedes";
+        Assert.AreEqual("Cuareim, 1451, Mercedes", building.Address);
     }
 
     [TestMethod]
