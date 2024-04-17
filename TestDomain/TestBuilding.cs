@@ -47,4 +47,12 @@ public class TestBuilding
         building.Name = "";
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestNameInvalid()
+    {
+        building.Name = "Building";
+    }
+
+
 }
