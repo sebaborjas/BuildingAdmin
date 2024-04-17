@@ -22,7 +22,7 @@ public class Building
         }
     }
 
-   public string Name
+    public string Name
     {
         get => _name;
         set
@@ -30,7 +30,8 @@ public class Building
             if (string.IsNullOrWhiteSpace(value))
             {
                 throw new EmptyFieldException();
-            }else if (!IsNameValid(value))
+            }
+            else if (!IsNameValid(value))
             {
                 throw new InvalidDataException("El nombre solo puede contener letras y espacios");
             }
@@ -51,9 +52,11 @@ public class Building
         }
     }
 
-    public Apartment Apartment {
+    public Apartment Apartment
+    {
         get => _apartment;
-        set {
+        set
+        {
             if (value == null)
             {
                 throw new EmptyFieldException();
