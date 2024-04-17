@@ -26,6 +26,13 @@ public class TestBuilding
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestIdNegative()
+    {
+        building.Id = 0;
+    }
+
+    [TestMethod]
     public void TestName()
     {
         building.Name = "Building";
