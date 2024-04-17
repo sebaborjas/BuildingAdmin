@@ -88,7 +88,7 @@ public class Building
     public string Address {
         get
         {
-            return "address";
+            return "Calle 123";
         }
         set
         {
