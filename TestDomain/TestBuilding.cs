@@ -29,7 +29,7 @@ public class TestBuilding
     [ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void TestIdNegative()
     {
-        building.Id = 0;
+        building.Id = -1;
     }
 
     [TestMethod]
