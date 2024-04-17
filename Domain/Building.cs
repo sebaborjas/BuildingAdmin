@@ -8,6 +8,7 @@ public class Building
     private string _name;
     private float _expenses;
     private Apartment _apartment;
+    private ConstructionCompany _constructionCompany;
 
     public int Id
     {
@@ -67,8 +68,8 @@ public class Building
 
     public ConstructionCompany ConstructionCompany
     {
-        get { return null; }
-        set { }
+        get { return _constructionCompany; }
+        set { _constructionCompany = value; }
     }
 
     private bool IsNameValid(string name)
