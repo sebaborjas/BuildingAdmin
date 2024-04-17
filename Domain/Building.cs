@@ -9,6 +9,7 @@ public class Building
     private string _name;
     private float _expenses;
     private string _location;
+    private string _address;
     private ConstructionCompany _constructionCompany;
     public List<Apartment> Apartments { get; set; } = new List<Apartment>();
 
@@ -89,7 +90,8 @@ public class Building
     {
         get
         {
-            return "Calle 123";
+            return _address;
+
         }
         set
         {
@@ -101,6 +103,10 @@ public class Building
                 {
                 throw new InvalidDataException("Formato esperado: calle principal, número de puerta, esquina");
             }
+            else
+                {
+                    _address = value;
+                }
             
         }
     }
