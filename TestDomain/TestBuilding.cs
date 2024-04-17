@@ -15,8 +15,10 @@ public class TestBuilding
     [TestMethod]
     public void TestId()
     {
-        building = new Building();
-        building.Id = 1;
+        building = new Building()
+        {
+            Id = 1
+        };
         Assert.AreEqual(1, building.Id);
     }
 
