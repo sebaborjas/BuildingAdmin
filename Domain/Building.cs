@@ -11,18 +11,7 @@ public class Building
     private string _location;
     private List<Apartment> _apartments;
     private ConstructionCompany _constructionCompany;
-    public List<Apartment> Apartments
-    {
-        get => _apartments;
-        set
-        {
-            if (value == null)
-            {
-                throw new EmptyFieldException();
-            }
-            _apartments = value;
-        }
-    }
+    public List<Apartment> Apartments { get; set; } = new List<Apartment>();
 
     public int Id
     {
