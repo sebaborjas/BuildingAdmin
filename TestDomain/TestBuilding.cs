@@ -91,6 +91,14 @@ public class TestBuilding
         building.Apartment = null;
     }
 
+    [TestMethod] 
+    public void TestNullApartment()
+    {
+        building.Apartment = null;
+        Assert.IsNull(building.Apartment);
+    }
+
+
     [TestMethod]
     public void TestConstructionCompany()
     {
