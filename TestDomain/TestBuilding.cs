@@ -68,4 +68,13 @@ public class TestBuilding
         building.Expenses = -1;
     }
 
+    [TestMethod]
+    public void TestModifyExpenses()
+    {
+        building.Expenses = 100;
+        building.Expenses = 200;
+        Assert.AreEqual(100, building.Expenses);
+    }
+
+
 }
