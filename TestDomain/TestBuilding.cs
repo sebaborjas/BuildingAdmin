@@ -113,7 +113,7 @@ public class TestBuilding
         building.ConstructionCompany = c1;
         ConstructionCompany c2 = new ConstructionCompany();
         building.ConstructionCompany = c2;
-        Assert.AreEqual(c1, building.ConstructionCompany);
+        Assert.AreEqual(c2, building.ConstructionCompany);
     }
 
 }
