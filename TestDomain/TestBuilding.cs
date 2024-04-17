@@ -76,5 +76,13 @@ public class TestBuilding
         Assert.AreEqual(200, building.Expenses);
     }
 
+    [TestMethod]
+    public void TestApartment()
+    {
+        Apartment apartment = new Apartment();
+        building.Apartment = apartment;
+        Assert.AreEqual(apartment, building.Apartment);
+    }
+
 
 }
