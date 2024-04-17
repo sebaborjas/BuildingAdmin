@@ -119,8 +119,8 @@ public class TestBuilding
     [TestMethod]
     public void TestLocation()
     {
-       building.Location = "location";
-       Assert.AreEqual("location", building.Location);
+        building.Location = "10.123456, 10.123456";
+       Assert.AreEqual("10.123456, 10.123456", building.Location);
     }
 
     [TestMethod]
