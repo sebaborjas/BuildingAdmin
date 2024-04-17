@@ -91,11 +91,11 @@ public class TestBuilding
         building.Apartment = null;
     }
 
-    [TestMethod] 
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
     public void TestNullApartment()
     {
         building.Apartment = null;
-        Assert.IsNull(building.Apartment);
     }
 
 
