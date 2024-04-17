@@ -38,7 +38,7 @@ public class Building
 
     public float expenses
     {
-        get { return 0; }
+        get { return 1; }
         set { }
     }
 
