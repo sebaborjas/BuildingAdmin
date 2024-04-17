@@ -160,4 +160,11 @@ public class TestBuilding
         Assert.AreEqual("Calle 123", building.Address);
     }
 
+    [TestMethod]
+    public void TestEmptyAddress()
+    {
+        building.Address = "";
+        Assert.AreEqual("", building.Address);
+    }
+
 }
