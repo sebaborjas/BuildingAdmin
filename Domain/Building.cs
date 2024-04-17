@@ -5,6 +5,7 @@ namespace Domain;
 public class Building
 {
     private int id;
+    private string name;
 
     public int Id
     {
@@ -19,9 +20,17 @@ public class Building
         }
     }
 
-    public string Name { 
-        get { return "Building"; }
-        set { }
-    }
+   public string Name
+    {
+        get => name;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException();
+            }
+            name = value;
+        }
+    }   
 
 }
