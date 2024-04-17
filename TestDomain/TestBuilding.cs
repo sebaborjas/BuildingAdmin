@@ -84,5 +84,11 @@ public class TestBuilding
         Assert.AreEqual(apartment, building.Apartment);
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidApartment()
+    {
+        building.Apartment = null;
+    }
 
 }
