@@ -167,4 +167,11 @@ public class TestBuilding
         building.Address = "";
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidAddress()
+    {
+        building.Address = "Invalid Address";
+    }
+
 }
