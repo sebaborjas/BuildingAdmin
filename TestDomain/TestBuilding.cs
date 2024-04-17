@@ -122,4 +122,12 @@ public class TestBuilding
        building.Location = "location";
        Assert.AreEqual("location", building.Location);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void TestInvalidLocation()
+    {
+        building.Location = "";
+    }
+
 }
