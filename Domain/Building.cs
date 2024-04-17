@@ -9,11 +9,19 @@ public class Building
     private string _name;
     private float _expenses;
     private string _location;
-    private List<Apartment> _apartment;
+    private List<Apartment> _apartments;
     private ConstructionCompany _constructionCompany;
-    public List<Apartment> Apartments {
-        get { return null; }
-        set { }
+    public List<Apartment> Apartments
+    {
+        get => _apartments;
+        set
+        {
+            if (value == null)
+            {
+                throw new EmptyFieldException();
+            }
+            _apartments = value;
+        }
     }
 
     public int Id
