@@ -106,8 +106,14 @@ public class TestBuilding
         building.ConstructionCompany = null;
     }
 
-
-
-
+    [TestMethod]
+    public void TestModifyConstructionCompany()
+    {
+        ConstructionCompany c1 = new ConstructionCompany();
+        building.ConstructionCompany = c1;
+        ConstructionCompany c2 = new ConstructionCompany();
+        building.ConstructionCompany = c2;
+        Assert.AreEqual(c1, building.ConstructionCompany);
+    }
 
 }
