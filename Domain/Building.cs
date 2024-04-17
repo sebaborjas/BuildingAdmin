@@ -88,26 +88,18 @@ public class Building
 
     public string Address
     {
-        get
-        {
-            return _address;
-
-        }
+        get => _address;
         set
         {
-            if(string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new EmptyFieldException();
             }
             else if (!IsAddressValid(value))
-                {
+            {
                 throw new InvalidDataException("Formato esperado: calle principal, número de puerta, esquina");
             }
-            else
-                {
-                    _address = value;
-                }
-            
+            _address = value;
         }
     }
 
@@ -127,5 +119,4 @@ public class Building
         string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
         return Regex.IsMatch(address, pattern);
     }
-
 }
