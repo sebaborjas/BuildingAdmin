@@ -125,9 +125,16 @@ public class TestBuilding
 
     [TestMethod]
     [ExpectedException(typeof(EmptyFieldException))]
-    public void TestInvalidLocation()
+    public void TestEmptyLocation()
     {
         building.Location = "";
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidLocation()
+    {
+        building.Location = "location1";
     }
 
 }
