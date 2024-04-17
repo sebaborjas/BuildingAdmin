@@ -79,6 +79,11 @@ public class Building
         }
     }
 
+    public string Location { 
+        get { return "location"; }
+        set { }
+    }
+
     private bool IsNameValid(string name)
     {
         return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));

@@ -115,4 +115,11 @@ public class TestBuilding
         building.ConstructionCompany = newConstructionCompany;
         Assert.AreEqual(newConstructionCompany, building.ConstructionCompany);
     }
+
+    [TestMethod]
+    public void TestLocation()
+    {
+       building.Location = "new location";
+       Assert.AreEqual("new location", building.Location);
+    }
 }
