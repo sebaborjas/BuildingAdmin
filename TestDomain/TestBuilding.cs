@@ -153,4 +153,11 @@ public class TestBuilding
         building.Location = "location1";
     }
 
+    [TestMethod]
+    public void TestAddress()
+    {
+        building.Address = "Calle 123";
+        Assert.AreEqual("Calle 123", building.Address);
+    }   
+
 }
