@@ -51,7 +51,7 @@ public class TestBuilding
     [ExpectedException(typeof(InvalidDataException))]
     public void TestNameInvalid()
     {
-        building.Name = "Building";
+        building.Name = "Building1";
     }
 
 
