@@ -44,7 +44,7 @@ public class TestBuilding
     [ExpectedException(typeof(EmptyFieldException))]
     public void TestNameEmpty()
     {
-        building.Name = "Empty";
+        building.Name = "";
     }
 
 }
