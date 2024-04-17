@@ -57,8 +57,15 @@ public class TestBuilding
     [TestMethod]
     public void TestExpenses()
     {
+        building.Expenses = 100;
+        Assert.AreEqual(100, building.Expenses);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestInvalidExpenses()
+    {
         building.Expenses = 1;
-        Assert.AreEqual(1, building.Expenses);
     }
 
 }
