@@ -54,5 +54,11 @@ public class TestBuilding
         building.Name = "Building1";
     }
 
+    [TestMethod]
+    public void TestExpenses()
+    {
+        building.expenses = 1;
+        Assert.AreEqual(1, building.expenses);
+    }
 
 }

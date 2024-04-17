@@ -34,7 +34,13 @@ public class Building
             }
             _name = value;
         }
-    }   
+    }
+
+    public float expenses
+    {
+        get { return 0; }
+        set { }
+    }
 
     private bool IsNameValid(string name)
     {
