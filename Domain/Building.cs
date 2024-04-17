@@ -81,9 +81,11 @@ public class Building
         }
     }
 
-    public string Location { 
-        get { return _location; }
-        set {
+    public string Location
+    {
+        get => _location;
+        set
+        {
             if (string.IsNullOrWhiteSpace(value))
             {
                 throw new EmptyFieldException();
@@ -93,7 +95,6 @@ public class Building
                 throw new InvalidDataException("Formato esperado: 'longitud, latitud'");
             }
             _location = value;
-
         }
     }
 
