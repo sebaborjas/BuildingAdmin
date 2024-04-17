@@ -119,7 +119,7 @@ public class TestBuilding
     [TestMethod]
     public void TestLocation()
     {
-       building.Location = "new location";
-       Assert.AreEqual("new location", building.Location);
+       building.Location = "location";
+       Assert.AreEqual("location", building.Location);
     }
 }
