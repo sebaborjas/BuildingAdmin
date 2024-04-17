@@ -109,11 +109,10 @@ public class TestBuilding
     [TestMethod]
     public void TestModifyConstructionCompany()
     {
-        ConstructionCompany c1 = new ConstructionCompany();
-        building.ConstructionCompany = c1;
-        ConstructionCompany c2 = new ConstructionCompany();
-        building.ConstructionCompany = c2;
-        Assert.AreEqual(c2, building.ConstructionCompany);
+        ConstructionCompany constructionCompany = new ConstructionCompany();
+        building.ConstructionCompany = constructionCompany;
+        ConstructionCompany newConstructionCompany = new ConstructionCompany();
+        building.ConstructionCompany = newConstructionCompany;
+        Assert.AreEqual(newConstructionCompany, building.ConstructionCompany);
     }
-
 }
