@@ -10,9 +10,9 @@ namespace TestDomain
     public void TestSetEmail()
     {
       string email = "hola@hola.com";
-      Invitation i = new Invitation();
-      i.Email = email;
-      Assert.AreEqual(email, i.Email);
+      Invitation invitation = new Invitation();
+      invitation.Email = email;
+      Assert.AreEqual(email, invitation.Email);
     }
   }
   
