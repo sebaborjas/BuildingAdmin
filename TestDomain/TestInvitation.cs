@@ -68,6 +68,14 @@ namespace TestDomain
       _invitation.ExpirationDate = date;
       Assert.AreEqual(date, _invitation.ExpirationDate);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestSetPastExpirationDate()
+    {
+      DateTime date = DateTime.Now.Date.AddDays(-2);
+      _invitation.ExpirationDate = date;
+    }
   }
   
 }
