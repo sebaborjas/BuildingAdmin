@@ -47,4 +47,18 @@ public class TestCategory
     {
         Category.Name = "Category!";
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidNameWithLessThan3Characters()
+    {
+        Category.Name = "Ca";
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidNameWithMoreThan20Characters()
+    {
+        Category.Name = "Nombre de categoría muy largo largo";
+    }
 }

@@ -20,9 +20,9 @@ namespace Domain
                 {
                     throw new EmptyFieldException();
                 }
-                else if (!IsCategoryValid(value))
+                else if (!IsCategoryValid(value) || !IsCategoryLengthValid(value))
                 {
-                    throw new InvalidDataException("Solo se permiten letras y espacios en blanco");
+                    throw new InvalidDataException("Solo se permiten letras y espacios, mínimo 3 y máximo 20 caracteres.");
                 }
                 _name = value;
             }
@@ -32,7 +32,11 @@ namespace Domain
         {
             string pattern = @"^[a-zA-Z\s]*$";
             return Regex.IsMatch(name, pattern);
+        }
 
+        private bool IsCategoryLengthValid(string name)
+        {
+            return name.Length >= 3 && name.Length <= 20;
         }
 
     }
