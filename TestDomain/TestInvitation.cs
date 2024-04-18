@@ -73,8 +73,8 @@ namespace TestDomain
     [ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void TestSetPastExpirationDate()
     {
-      DateTime d = DateTime.Now.Date.AddDays(-2);
-      _invitation.ExpirationDate = d;
+      DateTime date = DateTime.Now.Date.AddDays(-2);
+      _invitation.ExpirationDate = date;
     }
   }
   
