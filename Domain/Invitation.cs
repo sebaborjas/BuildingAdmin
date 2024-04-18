@@ -4,30 +4,35 @@ namespace Domain
 {
   public class Invitation
   {
+    private string _email;
     public string Email { 
       get 
       {
-        return "hola@hola.com";
+        return _email;
       } 
       set
       {
-        if (value == "")
+        if (string.IsNullOrEmpty(value))
         {
           throw new EmptyFieldException();
         }
-        if (!value.Contains("@"))
-        {
-          throw new WrongEmailFormatException(); 
-        }
-        if (!value.Contains("."))
-        {
-          throw new WrongEmailFormatException();
-        }
-        if(Regex.IsMatch(value, @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$") == false)
+        string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
+
+        bool correctEmail = IsValidFormat(pattern, value);
+        if (!correctEmail)
         {
           throw new WrongEmailFormatException();
         }
+
+        _email = value;
       } 
     }
+
+  private bool IsValidFormat(string pattern, string value)
+  {
+    Regex regex = new(pattern, RegexOptions.IgnoreCase);
+
+    return regex.IsMatch(value);
+  }
   }
 }
