@@ -28,7 +28,7 @@ namespace Domain
       } 
     }
 
-    public DateTime D { 
+    public DateTime ExpirationDate { 
       get 
       {
         return DateTime.Now.Date;
