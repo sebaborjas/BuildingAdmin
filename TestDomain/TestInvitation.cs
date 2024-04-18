@@ -23,6 +23,15 @@ namespace TestDomain
       Invitation invitation = new Invitation();
       invitation.Email = email;
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(WrongEmailFormatException))]
+    public void TestWrongEmailFormat()
+    {
+      string e = "hola";
+      Invitation i = new Invitation();
+      i.Email = e;
+    }
   }
   
 }
