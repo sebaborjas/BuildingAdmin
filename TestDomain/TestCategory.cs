@@ -34,4 +34,17 @@ public class TestCategory
         Category.Name = null;
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidNameWithNumbers()
+    {
+        Category.Name = "Category1";
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidNameWithSpecialCharacters()
+    {
+        Category.Name = "Category!";
+    }
 }

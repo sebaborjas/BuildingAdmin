@@ -20,8 +20,19 @@ namespace Domain
                 {
                     throw new EmptyFieldException();
                 }
+                else if (!IsCategoryValid(value))
+                {
+                    throw new InvalidDataException("Solo se permiten letras y espacios en blanco");
+                }
                 _name = value;
             }
+        }
+
+        private bool IsCategoryValid(string name)
+        {
+            string pattern = @"^[a-zA-Z\s]*$";
+            return Regex.IsMatch(name, pattern);
+
         }
 
     }
