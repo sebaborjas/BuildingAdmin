@@ -61,4 +61,25 @@ public class TestCategory
     {
         Category.Name = "Nombre de categoría muy largo largo";
     }
+
+    [TestMethod]
+    public void TestId()
+    {
+        Category.Id = 1;
+        Assert.AreEqual(1, Category.Id);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidId()
+    {
+        Category.Id = 0;
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidDataException))]
+    public void TestInvalidIdNegative()
+    {
+        Category.Id = -1;
+    }
 }

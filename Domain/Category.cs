@@ -11,6 +11,8 @@ namespace Domain
     public class Category
     {
         private string _name;
+        private int _id;
+
         public string Name
         {
             get { return _name; }
@@ -25,6 +27,19 @@ namespace Domain
                     throw new InvalidDataException("Solo se permiten letras y espacios, mínimo 3 y máximo 20 caracteres.");
                 }
                 _name = value;
+            }
+        }
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new InvalidDataException("El id debe ser mayor a 0");
+                }
+                _id = value;
             }
         }
 
