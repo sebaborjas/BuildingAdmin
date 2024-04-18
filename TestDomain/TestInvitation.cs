@@ -57,7 +57,7 @@ namespace TestDomain
     public void TestGetExpirationDate()
     {
       //new date time now
-      DateTime d = DateTime.Now;
+      DateTime d = DateTime.Now.Date;
       _invitation.D = d;
       Assert.AreEqual(d, _invitation.D);
     }

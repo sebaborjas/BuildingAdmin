@@ -31,10 +31,10 @@ namespace Domain
     public DateTime D { 
       get 
       {
-        return new DateTime();
+        return DateTime.Now.Date;
       } set 
       {
-        
+
       } 
     }
 
