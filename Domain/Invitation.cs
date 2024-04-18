@@ -37,6 +37,10 @@ namespace Domain
       } 
       set 
       {
+        if (value < DateTime.Now.Date)
+        {
+          throw new ArgumentOutOfRangeException();
+        }
         _expirationDate = value;
       } 
     }
