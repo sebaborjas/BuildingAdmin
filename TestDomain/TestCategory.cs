@@ -20,4 +20,11 @@ public class TestCategory
         Assert.AreEqual("Category", Category.Name);
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void TestEmptyName()
+    {
+        Category.Name = "";
+    }
+
 }
