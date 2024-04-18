@@ -27,4 +27,11 @@ public class TestCategory
         Category.Name = "";
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void TestNullName()
+    {
+        Category.Name = null;
+    }
+
 }

@@ -10,7 +10,19 @@ namespace Domain
 {
     public class Category
     {
-        public string Name { get; set; }
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new EmptyFieldException();
+                }
+                _name = value;
+            }
+        }
 
     }
 
