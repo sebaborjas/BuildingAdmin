@@ -14,6 +14,10 @@ namespace Domain
         {
           throw new EmptyFieldException();
         }
+        if (!value.Contains("@"))
+        {
+          throw new WrongEmailFormatException();
+        }
       } 
     }
   }
