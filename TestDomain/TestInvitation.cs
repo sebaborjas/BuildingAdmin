@@ -19,9 +19,9 @@ namespace TestDomain
     [ExpectedException(typeof(EmptyFieldException))]	
     public void SetEmptyEmailException()
     {
-      string e = "";
-      Invitation i = new Invitation();
-      i.Email = e;
+      string email = "";
+      Invitation invitation = new Invitation();
+      invitation.Email = email;
     }
   }
   
