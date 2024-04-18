@@ -33,11 +33,11 @@ namespace Domain
     public DateTime ExpirationDate { 
       get 
       {
-        return DateTime.Now.Date;
+        return _expirationDate;
       } 
-      
       set 
       {
+        _expirationDate = value;
       } 
     }
 
