@@ -6,13 +6,19 @@ namespace TestDomain
   [TestClass]
   public class TestInvitation
   {
+    private Invitation _invitation;
+
+    [TestInitialize]
+    public void SetUp()
+    {
+      _invitation = new Invitation();
+    }
     [TestMethod]
     public void TestSetEmail()
     {
       string email = "hola@hola.com";
-      Invitation invitation = new Invitation();
-      invitation.Email = email;
-      Assert.AreEqual(email, invitation.Email);
+      _invitation.Email = email;
+      Assert.AreEqual(email, _invitation.Email);
     }
 
     [TestMethod]
@@ -20,17 +26,15 @@ namespace TestDomain
     public void SetEmptyEmailException()
     {
       string email = "";
-      Invitation invitation = new Invitation();
-      invitation.Email = email;
+      _invitation.Email = email;
     }
 
     [TestMethod]
     [ExpectedException(typeof(WrongEmailFormatException))]
-    public void TestWrongEmailFormat()
+    public void TestEmailWithoutAt()
     {
-      string e = "hola";
-      Invitation i = new Invitation();
-      i.Email = e;
+      string email = "hola";
+      _invitation.Email = email;
     }
   }
   
