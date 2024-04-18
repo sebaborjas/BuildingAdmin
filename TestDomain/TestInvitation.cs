@@ -60,6 +60,14 @@ namespace TestDomain
       _invitation.ExpirationDate = date;
       Assert.AreEqual(date, _invitation.ExpirationDate);
     }
+
+    [TestMethod]
+    public void TestSetExpirationDate()
+    {
+      DateTime date = DateTime.Now.Date.AddDays(14);
+      _invitation.ExpirationDate = date;
+      Assert.AreEqual(date, _invitation.ExpirationDate);
+    }
   }
   
 }
