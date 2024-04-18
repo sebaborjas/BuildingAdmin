@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Exceptions;
 namespace Domain
 {
@@ -16,9 +17,13 @@ namespace Domain
         }
         if (!value.Contains("@"))
         {
-          throw new WrongEmailFormatException();
+          throw new WrongEmailFormatException(); 
         }
         if (!value.Contains("."))
+        {
+          throw new WrongEmailFormatException();
+        }
+        if(Regex.IsMatch(value, @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$") == false)
         {
           throw new WrongEmailFormatException();
         }
