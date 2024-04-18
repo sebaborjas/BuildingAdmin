@@ -52,6 +52,15 @@ namespace TestDomain
       string email = "hola@.com";
       _invitation.Email = email;
     }
+
+    [TestMethod]
+    public void TestGetExpirationDate()
+    {
+      //new date time now
+      DateTime d = DateTime.Now;
+      _invitation.D = d;
+      Assert.AreEqual(d, _invitation.D);
+    }
   }
   
 }

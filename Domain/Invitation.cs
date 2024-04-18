@@ -28,6 +28,16 @@ namespace Domain
       } 
     }
 
+    public DateTime D { 
+      get 
+      {
+        return new DateTime();
+      } set 
+      {
+        
+      } 
+    }
+
   private bool IsValidFormat(string pattern, string value)
   {
     Regex regex = new(pattern, RegexOptions.IgnoreCase);
