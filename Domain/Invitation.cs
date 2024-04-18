@@ -18,6 +18,10 @@ namespace Domain
         {
           throw new WrongEmailFormatException();
         }
+        if (!value.Contains("."))
+        {
+          throw new WrongEmailFormatException();
+        }
       } 
     }
   }
