@@ -44,6 +44,14 @@ namespace TestDomain
       string email = "hola@hola";
       _invitation.Email = email;
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(WrongEmailFormatException))]
+    public void TestEmailWrongFormat()
+    {
+      string email = "hola@.com";
+      _invitation.Email = email;
+    }
   }
   
 }
