@@ -14,6 +14,15 @@ namespace TestDomain
       invitation.Email = email;
       Assert.AreEqual(email, invitation.Email);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]	
+    public void SetEmptyEmailException()
+    {
+      string e = "";
+      Invitation i = new Invitation();
+      i.Email = e;
+    }
   }
   
 }
