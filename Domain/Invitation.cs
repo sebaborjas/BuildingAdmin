@@ -5,6 +5,8 @@ namespace Domain
   public class Invitation
   {
     private string _email;
+
+    private DateTime _expirationDate;
     public string Email { 
       get 
       {
@@ -32,9 +34,10 @@ namespace Domain
       get 
       {
         return DateTime.Now.Date;
-      } set 
+      } 
+      
+      set 
       {
-
       } 
     }
 
