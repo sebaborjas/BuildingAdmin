@@ -26,7 +26,7 @@ namespace Domain
 
         public string LastName
         {
-            get { return ""; }
+            get { return "Rodriguez"; }
             set { }
         }
     }
