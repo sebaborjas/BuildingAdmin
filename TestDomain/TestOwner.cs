@@ -78,5 +78,12 @@ namespace TestDomain
             owner.Email = "correo2@mail.com";
             Assert.AreEqual("correo2@mail.com", owner.Email);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(EmptyFieldException))]
+        public void TestEmptyEmail()
+        {
+            owner.Email = "";
+        }
     }
 }
