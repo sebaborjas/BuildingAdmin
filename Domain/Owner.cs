@@ -13,12 +13,17 @@ namespace Domain
         public string Name
         {
             get { return _name; }
-            set {
-                if (value == "")
+            
+            set 
+            {
+                if (value == String.Empty)
                 {
                     throw new EmptyFieldException();
                 }
-                _name = value; } 
+                _name = value; 
+            }
+            
+
         }
     }
 }
