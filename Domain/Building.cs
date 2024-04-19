@@ -35,7 +35,9 @@ public class Building
             {
                 throw new EmptyFieldException();
             }
-            else if (!IsNameValid(value))
+
+            bool isValid = value.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
+            if (!isValid)
             {
                 throw new InvalidDataException("El nombre solo puede contener letras y espacios");
             }
@@ -78,7 +80,11 @@ public class Building
             {
                 throw new EmptyFieldException();
             }
-            else if (!IsLocationValid(value))
+
+            string pattern = @"^\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*$";
+            
+            bool isValid = IsValidFormat(pattern, value);
+            if (!isValid)
             {
                 throw new InvalidDataException("Formato esperado: 'longitud, latitud'");
             }
@@ -95,7 +101,11 @@ public class Building
             {
                 throw new EmptyFieldException();
             }
-            else if (!IsAddressValid(value))
+            
+            string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
+
+            bool isValid = IsValidFormat(pattern, value);
+            if (!isValid)
             {
                 throw new InvalidDataException("Formato esperado: calle principal, número de puerta, esquina");
             }
@@ -103,20 +113,10 @@ public class Building
         }
     }
 
-    private bool IsNameValid(string name)
+     private bool IsValidFormat(string pattern, string value)
     {
-        return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
-    }
+      Regex regex = new(pattern, RegexOptions.IgnoreCase);
 
-    private bool IsLocationValid(string location)
-    {
-        string pattern = @"^\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*$";
-        return Regex.IsMatch(location, pattern);
-    }
-
-    private bool IsAddressValid(string address)
-    {
-        string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
-        return Regex.IsMatch(address, pattern);
+      return regex.IsMatch(value);
     }
 }
