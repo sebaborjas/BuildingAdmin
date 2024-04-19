@@ -39,7 +39,7 @@ namespace TestDomain
     [TestMethod]
     public void TestGetEmail()
     {
-      string email = "test@test";
+      string email = "test@test.com";
       Assert.AreEqual(email, _invitation.Email);
     }
 
