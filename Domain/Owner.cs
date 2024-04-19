@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Exceptions;
 
 namespace Domain
 {
@@ -12,7 +13,12 @@ namespace Domain
         public string Name
         {
             get { return _name; }
-            set { _name = value; } 
+            set {
+                if (value == "")
+                {
+                    throw new EmptyFieldException();
+                }
+                _name = value; } 
         }
     }
 }
