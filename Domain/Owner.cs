@@ -10,7 +10,7 @@ namespace Domain
     {
         public string Name
         {
-            get { return String.Empty; }
+            get { return "Norberto"; }
             set { } 
         }
     }
