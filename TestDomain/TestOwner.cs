@@ -56,5 +56,12 @@ namespace TestDomain
             owner.LastName = "Gonzalez";
             Assert.AreEqual("Gonzalez", owner.LastName);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(EmptyFieldException))]
+        public void TestEmptyLastName()
+        {
+            owner.LastName = "";
+        }
     }
 }
