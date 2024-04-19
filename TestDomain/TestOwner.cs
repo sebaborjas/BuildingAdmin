@@ -10,10 +10,18 @@ namespace TestDomain
     [TestClass]
     public class TestOwner
     {
+
+        Owner owner;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            owner = new Owner();
+        }
+
         [TestMethod]
         public void TestName()
         {
-            var owner = new Owner();
             owner.Name = "Norberto";
             Assert.AreEqual("Norberto", owner.Name);
         }
@@ -21,7 +29,6 @@ namespace TestDomain
         [TestMethod]
         public void TestModifyName()
         {
-            var owner = new Owner();
             owner.Name = "Norberto";
             owner.Name = "Magela";
             Assert.AreEqual("Magela", owner.Name);
