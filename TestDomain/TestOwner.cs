@@ -70,5 +70,13 @@ namespace TestDomain
             owner.Email = "correo@mail.com";
             Assert.AreEqual("correo@mail.com", owner.Email);
         }
+
+        [TestMethod]
+        public void TestModifyEmail()
+        {
+            owner.Email = "correo@mail.com";
+            owner.Email = "correo2@mail.com";
+            Assert.AreEqual("correo2@mail.com", owner.Email);
+        }
     }
 }
