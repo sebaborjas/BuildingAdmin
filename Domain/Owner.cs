@@ -8,10 +8,11 @@ namespace Domain
 {
     public class Owner
     {
+        private string _name;
         public string Name
         {
-            get { return "Norberto"; }
-            set { } 
+            get { return _name; }
+            set { _name = value; } 
         }
     }
 }
