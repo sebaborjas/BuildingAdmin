@@ -83,7 +83,7 @@ namespace TestDomain
         [ExpectedException(typeof(EmptyFieldException))]
         public void TestEmptyEmail()
         {
-            owner.Email = "";
+            owner.Email = String.Empty;
         }
     }
 }
