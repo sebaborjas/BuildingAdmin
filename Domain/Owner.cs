@@ -8,5 +8,10 @@ namespace Domain
 {
     public class Owner
     {
+        public string Name
+        {
+            get { return String.Empty; }
+            set { } 
+        }
     }
 }
