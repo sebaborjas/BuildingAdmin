@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Exceptions;
 
 namespace TestDomain
 {
@@ -32,6 +33,13 @@ namespace TestDomain
             owner.Name = "Norberto";
             owner.Name = "Magela";
             Assert.AreEqual("Magela", owner.Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EmptyFieldException))]
+        public void TestEmptyName()
+        {
+            owner.Name = "";
         }
     }
 }
