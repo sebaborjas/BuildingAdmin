@@ -39,7 +39,7 @@ namespace Domain
 
         public string Email
         {
-            get { return ""; }
+            get { return "correo@mail.com"; }
             set { }
         }
     }
