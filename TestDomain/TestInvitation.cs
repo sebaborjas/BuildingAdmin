@@ -79,8 +79,7 @@ namespace TestDomain
     [TestMethod]
     public void TestGetExpirationDate()
     {
-      DateTime date = DateTime.Now.Date;
-      _invitation.ExpirationDate = date;
+      DateTime date = DateTime.Now.Date.AddDays(14);
       Assert.AreEqual(date, _invitation.ExpirationDate);
     }
 
