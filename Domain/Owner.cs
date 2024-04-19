@@ -22,8 +22,12 @@ namespace Domain
                 }
                 _name = value; 
             }
-            
+        }
 
+        public string LastName
+        {
+            get { return ""; }
+            set { }
         }
     }
 }
