@@ -9,6 +9,9 @@ namespace Domain
     private string _email;
 
     private DateTime _expirationDate;
+
+    private InvitationStatus _status;
+    
     public string Email { 
       get 
       {
@@ -52,6 +55,10 @@ namespace Domain
       get
       {
         return InvitationStatus.Rejected;
+      }
+      set
+      {
+        _status = value;
       }
     }
 
