@@ -10,6 +10,8 @@ namespace Domain
     public class Owner
     {
         private string _name;
+        private string _lastName;
+
         public string Name
         {
             get { return _name; }
@@ -26,8 +28,8 @@ namespace Domain
 
         public string LastName
         {
-            get { return "Rodriguez"; }
-            set { }
+            get { return _lastName; }
+            set { _lastName = value; }
         }
     }
 }
