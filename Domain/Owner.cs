@@ -30,7 +30,7 @@ namespace Domain
         {
             get { return _lastName; }
             set {
-                if (value == "")
+                if (value == String.Empty)
                 {
                     throw new EmptyFieldException();
                 }

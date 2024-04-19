@@ -61,7 +61,7 @@ namespace TestDomain
         [ExpectedException(typeof(EmptyFieldException))]
         public void TestEmptyLastName()
         {
-            owner.LastName = "";
+            owner.LastName = String.Empty;
         }
     }
 }
