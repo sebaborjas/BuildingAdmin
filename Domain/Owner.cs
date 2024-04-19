@@ -41,7 +41,14 @@ namespace Domain
         public string Email
         {
             get { return _email; }
-            set { _email = value; }
+            set 
+            {
+                if (value == String.Empty)
+                {
+                    throw new EmptyFieldException();
+                }
+                _email = value; 
+            }
         }
     }
 
