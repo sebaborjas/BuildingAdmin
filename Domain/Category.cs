@@ -15,24 +15,30 @@ namespace Domain
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new EmptyFieldException();
                 }
-                else if (!IsCategoryValid(value) || !IsCategoryLengthValid(value))
+
+                string pattern = @"^[a-zA-Z\s]*$";
+
+                bool isValid = IsValidFormat(pattern, value);
+                bool isLengthValid = (value.Length >= 3 && value.Length <= 20);
+                if (!isValid || !isLengthValid)
                 {
                     throw new InvalidDataException("Solo se permiten letras y espacios, mínimo 3 y máximo 20 caracteres.");
                 }
+
                 _name = value;
             }
         }
 
         public int Id
         {
-            get { return _id; }
+            get  => _id;
             set
             {
                 if (value <= 0)
@@ -43,15 +49,11 @@ namespace Domain
             }
         }
 
-        private bool IsCategoryValid(string name)
+        private bool IsValidFormat(string pattern, string value)
         {
-            string pattern = @"^[a-zA-Z\s]*$";
-            return Regex.IsMatch(name, pattern);
-        }
+            Regex regex = new(pattern, RegexOptions.IgnoreCase);
 
-        private bool IsCategoryLengthValid(string name)
-        {
-            return name.Length >= 3 && name.Length <= 20;
+            return regex.IsMatch(value);
         }
 
     }
