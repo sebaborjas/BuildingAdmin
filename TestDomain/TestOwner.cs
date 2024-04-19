@@ -48,5 +48,13 @@ namespace TestDomain
             owner.LastName = "Rodriguez";
             Assert.AreEqual("Rodriguez", owner.LastName);
         }
+
+        [TestMethod]
+        public void TestModifyLastName()
+        {
+            owner.LastName = "Rodriguez";
+            owner.LastName = "Gonzalez";
+            Assert.AreEqual("Gonzalez", owner.LastName);
+        }
     }
 }
