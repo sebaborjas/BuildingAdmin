@@ -11,6 +11,7 @@ namespace Domain
     {
         private string _name;
         private string _lastName;
+        private string _email;
 
         public string Name
         {
@@ -39,8 +40,8 @@ namespace Domain
 
         public string Email
         {
-            get { return "correo@mail.com"; }
-            set { }
+            get { return _email; }
+            set { _email = value; }
         }
     }
 
