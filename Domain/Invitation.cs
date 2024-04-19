@@ -1,4 +1,6 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
+using Domain.DataTypes;
 using Exceptions;
 namespace Domain
 {
@@ -45,11 +47,13 @@ namespace Domain
       } 
     }
 
-  private bool IsValidFormat(string pattern, string value)
-  {
-    Regex regex = new(pattern, RegexOptions.IgnoreCase);
+    public InvitationStatus s = InvitationStatus.Pending;
 
-    return regex.IsMatch(value);
-  }
+    private bool IsValidFormat(string pattern, string value)
+    {
+      Regex regex = new(pattern, RegexOptions.IgnoreCase);
+
+      return regex.IsMatch(value);
+    }
   }
 }

@@ -1,4 +1,5 @@
 using Domain;
+using Domain.DataTypes;
 using Exceptions;
 
 namespace TestDomain
@@ -75,6 +76,13 @@ namespace TestDomain
     {
       DateTime date = DateTime.Now.Date.AddDays(-2);
       _invitation.ExpirationDate = date;
+    }
+
+    [TestMethod]
+    public void TestGetStatus()
+    {
+      InvitationStatus s = InvitationStatus.Rejected;
+      Assert.AreEqual(s, _invitation.s);
     }
   }
   
