@@ -19,6 +19,10 @@ namespace Domain
       get => _id;
       set 
         {
+          if (value < 0)
+          {
+            throw new ArgumentOutOfRangeException();
+          }
           _id = value;
         } 
     }
