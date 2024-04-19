@@ -37,6 +37,13 @@ namespace TestDomain
     }
 
     [TestMethod]
+    public void TestGetEmail()
+    {
+      string email = "test@test";
+      Assert.AreEqual(email, _invitation.Email);
+    }
+
+    [TestMethod]
     public void TestSetEmail()
     {
       string email = "hola@hola.com";
