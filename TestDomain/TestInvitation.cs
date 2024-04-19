@@ -14,6 +14,14 @@ namespace TestDomain
     {
       _invitation = new Invitation();
     }
+
+    [TestMethod]
+    public void TestGetId()
+    {
+      int id = 1;
+      Assert.AreEqual(id, _invitation.Id);
+    }
+
     [TestMethod]
     public void TestSetEmail()
     {

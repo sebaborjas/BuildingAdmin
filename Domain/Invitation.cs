@@ -12,6 +12,8 @@ namespace Domain
 
     private InvitationStatus _status;
 
+    public int Id { get {return 0;} set{} }
+
     public string Email { 
       get 
       {
