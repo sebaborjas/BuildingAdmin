@@ -17,5 +17,14 @@ namespace TestDomain
             owner.Name = "Norberto";
             Assert.AreEqual("Norberto", owner.Name);
         }
+
+        [TestMethod]
+        public void TestModifyName()
+        {
+            var owner = new Owner();
+            owner.Name = "Norberto";
+            owner.Name = "Magela";
+            Assert.AreEqual("Magela", owner.Name);
+        }
     }
 }
