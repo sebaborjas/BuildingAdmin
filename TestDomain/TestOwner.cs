@@ -63,5 +63,12 @@ namespace TestDomain
         {
             owner.LastName = String.Empty;
         }
+
+        [TestMethod]
+        public void TestEmail()
+        {
+            owner.Email = "correo@mail.com";
+            Assert.AreEqual("correo@mail.com", owner.Email);
+        }
     }
 }

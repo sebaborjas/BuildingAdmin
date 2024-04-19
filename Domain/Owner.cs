@@ -36,5 +36,13 @@ namespace Domain
                 }
                 _lastName = value; }
         }
+
+        public string Email
+        {
+            get { return ""; }
+            set { }
+        }
     }
+
+    
 }
