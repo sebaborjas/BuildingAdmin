@@ -12,7 +12,13 @@ namespace TestDomain
     [TestInitialize]
     public void SetUp()
     {
-      _invitation = new Invitation();
+      _invitation = new Invitation
+      {
+        Id = 1, 
+        Email = "test@test.com", 
+        ExpirationDate = DateTime.Now.Date.AddDays(14), 
+        Status = InvitationStatus.Pending
+      };
     }
 
     [TestMethod]
@@ -97,8 +103,7 @@ namespace TestDomain
     [TestMethod]
     public void TestGetStatus()
     {
-      InvitationStatus status = InvitationStatus.Rejected;
-      _invitation.Status = status;
+      InvitationStatus status = InvitationStatus.Pending;
       Assert.AreEqual(status, _invitation.Status);
     }
     
