@@ -6,6 +6,8 @@ namespace Domain
 {
   public class Invitation
   {
+    private int _id;
+
     private string _email;
 
     private DateTime _expirationDate;
@@ -20,7 +22,7 @@ namespace Domain
         } 
       set 
         {
-          
+          _id = value;
         } 
     }
 

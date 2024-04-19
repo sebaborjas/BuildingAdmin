@@ -23,6 +23,14 @@ namespace TestDomain
     }
 
     [TestMethod]
+    public void TestSetId()
+    {
+      int id = 3;
+      _invitation.Id = id;
+      Assert.AreEqual(id, _invitation.Id);
+    }
+
+    [TestMethod]
     public void TestSetEmail()
     {
       string email = "hola@hola.com";
