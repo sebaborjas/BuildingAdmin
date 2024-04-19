@@ -37,6 +37,14 @@ namespace TestDomain
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestSetNegativeId()
+    {
+      int id = -1;
+      _invitation.Id = id;
+    }
+
+    [TestMethod]
     public void TestGetEmail()
     {
       string email = "test@test.com";
