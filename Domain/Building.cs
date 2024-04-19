@@ -82,7 +82,7 @@ public class Building
             }
 
             string pattern = @"^\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*$";
-            
+
             bool isValid = IsValidFormat(pattern, value);
             if (!isValid)
             {
@@ -101,7 +101,7 @@ public class Building
             {
                 throw new EmptyFieldException();
             }
-            
+
             string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
 
             bool isValid = IsValidFormat(pattern, value);
@@ -113,10 +113,10 @@ public class Building
         }
     }
 
-     private bool IsValidFormat(string pattern, string value)
+    private bool IsValidFormat(string pattern, string value)
     {
-      Regex regex = new(pattern, RegexOptions.IgnoreCase);
+        Regex regex = new(pattern, RegexOptions.IgnoreCase);
 
-      return regex.IsMatch(value);
+        return regex.IsMatch(value);
     }
 }
