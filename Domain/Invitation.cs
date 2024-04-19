@@ -47,7 +47,13 @@ namespace Domain
       } 
     }
 
-    public InvitationStatus s = InvitationStatus.Rejected;
+    public InvitationStatus Status
+    {
+      get
+      {
+        return InvitationStatus.Rejected;
+      }
+    }
 
     private bool IsValidFormat(string pattern, string value)
     {

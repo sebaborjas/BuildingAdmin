@@ -81,8 +81,8 @@ namespace TestDomain
     [TestMethod]
     public void TestGetStatus()
     {
-      InvitationStatus s = InvitationStatus.Rejected;
-      Assert.AreEqual(s, _invitation.s);
+      InvitationStatus status = InvitationStatus.Rejected;
+      Assert.AreEqual(status, _invitation.Status);
     }
   }
   
