@@ -22,10 +22,7 @@ public class Ticket
 
     public int Id
     {
-        get
-        {
-            return _id;
-        }
+        get => _id;
         set
         {
             if (value < 0)
@@ -41,10 +38,7 @@ public class Ticket
 
     public string Description
     {
-        get
-        {
-            return _description;
-        }
+        get => _description;
         set
         {
             const int minLength = 10;
@@ -57,7 +51,9 @@ public class Ticket
             {
                 throw new ArgumentOutOfRangeException($"La descripción debe tener al menos {minLength} caracteres");
             }
+
             _description = value;
+
         }
     }
 
