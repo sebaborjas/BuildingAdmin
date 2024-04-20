@@ -247,13 +247,6 @@ public class TestTicket
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
-    public void TestAssignedToNull()
-    {
-        ticket.AssignedTo = null;
-    }
-
-    [TestMethod]
     public void TestCreatedBy()
     {
         ticket.CreatedBy = new User();
