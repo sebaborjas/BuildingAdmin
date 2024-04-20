@@ -22,29 +22,21 @@ public class Ticket
 
     public int Id
     {
-        get
-        {
-            return _id;
-        }
+        get => _id;
         set
         {
             if (value < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
-            else
-            {
-                _id = value;
-            }
+            _id = value;
+
         }
     }
 
     public string Description
     {
-        get
-        {
-            return _description;
-        }
+        get => _description;
         set
         {
             const int minLength = 10;
@@ -63,7 +55,7 @@ public class Ticket
 
     public Apartment Apartment
     {
-        get { return _apartment; }
+        get => _apartment;
         set
         {
             if (value == null)
@@ -76,7 +68,7 @@ public class Ticket
 
     public float TotalCost
     {
-        get { return _totalCost; }
+        get => _totalCost;
         set
         {
             if (value <= 0)
@@ -89,7 +81,7 @@ public class Ticket
 
     public User AssignedTo
     {
-        get { return _assignedTo; }
+        get => _assignedTo;
         set
         {
             if (value == null)
@@ -102,7 +94,7 @@ public class Ticket
 
     public User CreatedBy
     {
-        get { return _createdBy; }
+        get => _createdBy;
         set
         {
             if (value == null)
@@ -155,14 +147,14 @@ public class Ticket
 
     public TimeSpan AttentionTime
     {
-        get { return _attentionTime; }
-        private set { _attentionTime = value; }
+        get => _attentionTime;
+        set => _attentionTime = value;
     }
 
     public TimeSpan ClosingTime
     {
-        get { return _closingTime; }
-        private set { _closingTime = value; }
+        get => _closingTime;
+        set => _closingTime = value;
     }
 
     public void SetAttention(DateTime attentionDateTime)
@@ -218,10 +210,8 @@ public class Ticket
         {
             throw new InvalidOperationException("No se puede cambiar el estado a En Progreso sin fecha de atención");
         }
-        else
-        {
-            Status = newStatus;
-        }
+        Status = newStatus;
+
     }
 
 }
