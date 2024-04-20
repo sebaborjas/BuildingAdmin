@@ -10,14 +10,20 @@ namespace TestDomain
     [TestInitialize]
     public void SetUp()
     {
-     _administrator = new Administrator(); 
+     _administrator = new Administrator{Id = 1}; 
+    }
+
+    [TestMethod]
+    public void TestGetId()
+    {
+      Assert.AreEqual(1, _administrator.Id);
     }
     
     [TestMethod]
-    public void TestId()
+    public void TestSetId()
     {
-      _administrator.Id = 1;
-      Assert.AreEqual(1, _administrator.Id);
+      _administrator.Id = 4;
+      Assert.AreEqual(4, _administrator.Id);
     }
   }
 }
