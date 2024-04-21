@@ -30,15 +30,15 @@ public class TestTicket
     [TestMethod]
     public void TestDescription()
     {
-        ticket.Description = "Descripción válida con más de 10 caracteres.";
-        Assert.AreEqual("Descripción válida con más de 10 caracteres.", ticket.Description);
+        ticket.Description = "Descripcion valida con mas de 10 caracteres.";
+        Assert.AreEqual("Descripcion valida con mas de 10 caracteres.", ticket.Description);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestDescriptionShort()
     {
-       ticket.Description = "Corta";
+        ticket.Description = "Corta";
     }
 
     [TestMethod]
@@ -66,88 +66,6 @@ public class TestTicket
     public void TestCreationDate()
     {
         Assert.AreEqual(DateTime.Today.Date, ticket.CreationDate);
-    }
-
-    [TestMethod]
-    public void TestSetAttention_ValidDateTime()
-    {
-        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(10).AddMinutes(30); 
-        ticket.SetAttention(validDateTime);
-        Assert.AreEqual(validDateTime.Date, ticket.AttentionDate);
-        Assert.AreEqual(validDateTime.TimeOfDay, ticket.AttentionTime);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetAttention_InvalidDateTime_BeforeCreation()
-    {
-        DateTime invalidDateTime = DateTime.Today.AddDays(-1).AddHours(10).AddMinutes(30);
-        ticket.SetAttention(invalidDateTime);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetAttention_InvalidDateTime_AlreadySet()
-    {
-        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(10).AddMinutes(30);
-        ticket.SetAttention(validDateTime);
-
-        DateTime invalidDateTime = DateTime.Today.AddDays(1).AddHours(12); 
-        ticket.SetAttention(invalidDateTime);
-    }
-
-    [TestMethod]
-    public void TestSetClosing_ValidDateTime()
-    {
-        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45);
-        ticket.SetAttention(DateTime.Today);
-        ticket.SetClosing(validDateTime);
-        Assert.AreEqual(validDateTime.Date, ticket.ClosingDate);
-        Assert.AreEqual(validDateTime.TimeOfDay, ticket.ClosingTime);
-    }
-
-    [TestMethod]
-    public void TestSetClosing_ValidDateTime_SameDateLaterTime()
-    {
-        DateTime validDateTime = DateTime.Today.AddMinutes(45);
-        ticket.SetAttention(DateTime.Today);
-        ticket.SetClosing(validDateTime);
-        Assert.AreEqual(validDateTime.Date, ticket.ClosingDate);
-        Assert.AreEqual(validDateTime.TimeOfDay, ticket.ClosingTime);
-    }
-
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetClosing_InvalidDateTime_BeforeAttention()
-    {
-        DateTime invalidDateTime = DateTime.Today.AddDays(-1);
-        ticket.SetAttention(DateTime.Today);
-        ticket.SetClosing(invalidDateTime);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetClosing_InvalidDateTime_SameDateEarlierTime()
-    {
-        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45); 
-        ticket.SetAttention(DateTime.Today);
-        ticket.SetClosing(validDateTime);
-
-        DateTime invalidDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(30); 
-        ticket.SetClosing(invalidDateTime);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetClosing_InvalidDateTime_AlreadySet()
-    {
-        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45); 
-        ticket.SetAttention(DateTime.Today);
-        ticket.SetClosing(validDateTime);
-
-        DateTime invalidDateTime = DateTime.Today.AddDays(1).AddHours(15); 
-        ticket.SetClosing(invalidDateTime);
     }
 
     [TestMethod]
@@ -181,45 +99,6 @@ public class TestTicket
     }
 
     [TestMethod]
-    public void TestChangeStatus_InProgress()
-    {
-        ticket.SetAttention(DateTime.Today);
-        ticket.ChangeStatus(Domain.DataTypes.Status.InProgress);
-        Assert.AreEqual(Domain.DataTypes.Status.InProgress, ticket.Status);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestChangeStatus_InProgress_NoAttentionDate()
-    {
-        ticket.ChangeStatus(Domain.DataTypes.Status.InProgress);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestChangeStatus_Open()
-    {
-        ticket.ChangeStatus(Domain.DataTypes.Status.Open);
-    }
-
-    [TestMethod]
-    public void TestChangeStatus_Closed()
-    {
-        ticket.SetAttention(DateTime.Today);
-        ticket.SetClosing(DateTime.Today.AddDays(1));
-        ticket.ChangeStatus(Domain.DataTypes.Status.Closed);
-        Assert.AreEqual(Domain.DataTypes.Status.Closed, ticket.Status);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void TestChangeStatus_Closed_NoClosingDate()
-    {
-        ticket.SetAttention(DateTime.Today);
-        ticket.ChangeStatus(Domain.DataTypes.Status.Closed);
-    }
-
-    [TestMethod] 
     public void TestTotalCost()
     {
         ticket.TotalCost = 100;
@@ -248,13 +127,6 @@ public class TestTicket
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
-    public void TestAssignedToNull()
-    {
-        ticket.AssignedTo = null;
-    }
-
-    [TestMethod]
     public void TestCreatedBy()
     {
         ticket.CreatedBy = new User();
@@ -266,5 +138,62 @@ public class TestTicket
     public void TestCreatedByNull()
     {
         ticket.CreatedBy = null;
+    }
+
+    [TestMethod]
+    public void TestSetAttention_ValidDateTime()
+    {
+        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(10).AddMinutes(30);
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, validDateTime);
+        Assert.AreEqual(validDateTime, ticket.AttentionDate);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestSetAttention_NullDateTime()
+    {
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, null);
+    }
+
+    [TestMethod]
+    public void TestSetClosing_ValidDateTime()
+    {
+        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45);
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, validDateTime);
+        Assert.AreEqual(validDateTime, ticket.ClosingDate);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestSetClosing_NullDateTime()
+    {
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, null);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestSetClosing_InvalidDateTime_BeforeAttention()
+    {
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(-1));
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestSetClosing_InvalidDateTime_EarlierThanAttentionTime()
+    {
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddHours(-5));
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestSetClosing_InvalidDateTime_AlreadySet()
+    {
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(1));
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(2));
     }
 }
