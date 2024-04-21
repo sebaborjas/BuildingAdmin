@@ -62,6 +62,12 @@ namespace Domain
             Regex regex = new(EMAIL_PATTERN, RegexOptions.IgnoreCase);
             return regex.IsMatch(email);
         }
+
+        public int Id
+        {
+            get { return 0; }
+            set { }
+        }
     }
 
     
