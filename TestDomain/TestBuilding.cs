@@ -174,4 +174,11 @@ public class TestBuilding
         building.Address = "Invalid Address";
     }
 
+    [TestMethod]
+    public void TestTickets()
+    {
+        List<Ticket> tickets = new List<Ticket>();
+        building.Tickets = tickets;
+        Assert.AreEqual(tickets, building.Tickets);
+    }
 }

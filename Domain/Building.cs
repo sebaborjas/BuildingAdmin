@@ -12,6 +12,10 @@ public class Building
     private string _address;
     private ConstructionCompany _constructionCompany;
     public List<Apartment> Apartments { get; set; } = new List<Apartment>();
+    public List<Ticket> Tickets {
+        get { return null; }
+        set { }
+    }
 
     public int Id
     {
