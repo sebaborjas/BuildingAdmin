@@ -82,5 +82,11 @@ namespace TestDomain
             manager.Password = "password";
         }
 
+        [TestMethod]
+        public void PasswordWithoutSpecialCharacter()
+        {
+            manager.Password = "Prueba123";
+        }
+
     }
 }
