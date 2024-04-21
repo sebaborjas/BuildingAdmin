@@ -33,5 +33,12 @@ namespace TestDomain
             Assert.AreEqual("NewName", manager.Name);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(EmptyFieldException))]
+        public void EmptyLastName()
+        {
+            manager.LastName = "";
+        }
+
     }
 }
