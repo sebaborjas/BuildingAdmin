@@ -2,15 +2,14 @@ namespace Domain
 {
   public class Administrator : User
   {
-    private int _id;
+    private string _lastName;
 
-    public int Id
-    {
-      get => _id;
-      set 
-      { 
-        _id = value; 
-      }
+    public override string LastName { 
+      get => _lastName; 
+      set {
+          if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
+          _lastName = value;
+      }  
     }
   }
 }
