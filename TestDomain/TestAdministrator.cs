@@ -130,12 +130,12 @@ namespace TestDomain
     [TestMethod]
     public void TestInviteManager()
     {
-      DateTime d = DateTime.Today.AddDays(15);
-      string e = "test@invitation.ort";
-      Invitation i = new Invitation{Id=1, Email = e, ExpirationDate = d};
-      _administrator.InviteManager(i);
+      DateTime exiprationDate = DateTime.Today.AddDays(15);
+      string managerEmail = "test@invitation.ort";
+      Invitation invitation = new Invitation{Id=1, Email = managerEmail, ExpirationDate = exiprationDate};
+      _administrator.InviteManager(invitation);
 
-      Assert.AreEqual(i, _administrator.invitations.First());
+      Assert.AreEqual(invitation, _administrator.invitations.First());
     }
   }
 }
