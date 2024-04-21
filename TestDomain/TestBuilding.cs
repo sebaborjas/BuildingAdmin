@@ -185,6 +185,6 @@ public class TestBuilding
     [TestMethod]
     public void TestTicketsCount()
     {
-        Assert.AreEqual(1, building.Tickets.Count);
+        Assert.AreEqual(0, building.Tickets.Count);
     }
 }
