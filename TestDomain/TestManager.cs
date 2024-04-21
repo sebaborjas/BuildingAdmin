@@ -68,5 +68,11 @@ namespace TestDomain
             manager.Password = "";
         }
 
+        [TestMethod]
+        public void WrongPasswordLength()
+        {
+            manager.Password = "123";
+        }
+
     }
 }
