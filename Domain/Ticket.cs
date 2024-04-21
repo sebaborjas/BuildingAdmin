@@ -38,7 +38,7 @@ public class Ticket
         {
             const int minLength = 10;
 
-            if (string.IsNullOrWhiteSpace(value) || value.Trim().Length < minLength)
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentNullException();
             }
@@ -46,7 +46,9 @@ public class Ticket
             {
                 throw new ArgumentOutOfRangeException($"La descripción debe tener al menos {minLength} caracteres");
             }
+
             _description = value;
+
         }
     }
 

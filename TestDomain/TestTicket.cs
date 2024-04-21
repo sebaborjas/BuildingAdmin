@@ -83,12 +83,13 @@ public class TestTicket
         ticket.Apartment = null;
     }
 
+    
     [TestMethod]
     public void TestCategory()
     {
-        Category category = new Category();
-        ticket.Category = category;
-        Assert.AreEqual(category, ticket.Category);
+    	Category category = new Category();
+    	ticket.Category = category;
+    	Assert.AreEqual(category, ticket.Category);
     }
 
 
