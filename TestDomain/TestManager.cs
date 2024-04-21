@@ -89,5 +89,12 @@ namespace TestDomain
             manager.Password = "Prueba123";
         }
 
+        [TestMethod]
+        public void PasswordTooMuchLong()
+        {
+            manager.Password = "Prueba.123456789";
+        }
+
+
     }
 }
