@@ -5,7 +5,7 @@ namespace Exceptions
     [Serializable]
     public class WrongEmailFormatException : Exception
     {
-        public static string Message = "El email ingresado no es correcto";
+        private static string Message = "El email ingresado no es correcto";
 
         public WrongEmailFormatException() : this(Message)
         {

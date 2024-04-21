@@ -126,5 +126,16 @@ namespace TestDomain
 
       Assert.AreEqual(password, _administrator.Password);
     }
+
+    [TestMethod]
+    public void TestInviteManager()
+    {
+      DateTime d = DateTime.Today.AddDays(15);
+      string e = "test@invitation.ort";
+      Invitation i = new Invitation{Id=1, Email = e, ExpirationDate = d};
+      _administrator.InviteManager(i);
+
+      Assert.AreEqual(i, _administrator.invitations.First());
+    }
   }
 }

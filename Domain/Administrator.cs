@@ -11,5 +11,9 @@ namespace Domain
           _lastName = value;
       }  
     }
+
+    public ICollection<Invitation> invitations { get; set; }
+
+    public void InviteManager(Invitation i) {}
   }
 }
