@@ -89,7 +89,7 @@ public class Ticket
         }
     }
 
-    public void ProcessRequest(Status newStatus, DateTime? dateTime)
+    public void ProcessTicket(Status newStatus, DateTime? dateTime)
     {
         if (newStatus == Status.Open)
         {

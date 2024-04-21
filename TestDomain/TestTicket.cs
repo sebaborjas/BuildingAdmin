@@ -143,7 +143,7 @@ public class TestTicket
     public void TestSetAttention_ValidDateTime()
     {
         DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(10).AddMinutes(30);
-        ticket.ProcessRequest(Domain.DataTypes.Status.InProgress, validDateTime);
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, validDateTime);
         Assert.AreEqual(validDateTime, ticket.AttentionDate);
     }
 
@@ -151,15 +151,15 @@ public class TestTicket
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestSetAttention_NullDateTime()
     {
-        ticket.ProcessRequest(Domain.DataTypes.Status.InProgress, null);
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, null);
     }
 
     [TestMethod]
     public void TestSetClosing_ValidDateTime()
     {
         DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45);
-        ticket.ProcessRequest(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessRequest(Domain.DataTypes.Status.Closed, validDateTime);
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, validDateTime);
         Assert.AreEqual(validDateTime, ticket.ClosingDate);
     }
 
@@ -167,32 +167,32 @@ public class TestTicket
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestSetClosing_NullDateTime()
     {
-        ticket.ProcessRequest(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessRequest(Domain.DataTypes.Status.Closed, null);
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, null);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void TestSetClosing_InvalidDateTime_BeforeAttention()
     {
-        ticket.ProcessRequest(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessRequest(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(-1));
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(-1));
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
     public void TestSetClosing_InvalidDateTime_EarlierThanAttentionTime()
     {
-        ticket.ProcessRequest(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessRequest(Domain.DataTypes.Status.Closed, DateTime.Today.AddHours(-5));
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddHours(-5));
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public void TestSetClosing_InvalidDateTime_AlreadySet()
     {
-        ticket.ProcessRequest(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessRequest(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(1));
-        ticket.ProcessRequest(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(2));
+        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(1));
+        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(2));
     }
 }
