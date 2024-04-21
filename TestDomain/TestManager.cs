@@ -26,5 +26,12 @@ namespace TestDomain
             manager.Name = "";
         }
 
+        [TestMethod]
+        public void CorrectName()
+        {
+            manager.Name = "NewName";
+            Assert.AreEqual("", manager.Name);
+        }
+
     }
 }
