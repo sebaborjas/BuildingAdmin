@@ -76,6 +76,7 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(PasswordNotFollowPolicy))]
         public void WrongPasswordFormat()
         {
             manager.Password = "password";
