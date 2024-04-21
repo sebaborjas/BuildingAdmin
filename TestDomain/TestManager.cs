@@ -30,7 +30,7 @@ namespace TestDomain
         public void CorrectName()
         {
             manager.Name = "NewName";
-            Assert.AreEqual("", manager.Name);
+            Assert.AreEqual("NewName", manager.Name);
         }
 
     }
