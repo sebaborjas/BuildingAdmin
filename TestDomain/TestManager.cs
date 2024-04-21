@@ -11,14 +11,19 @@ namespace TestDomain
     [TestClass]
     public class TestManager
     {
+        private Manager manager;
+
+        [TestInitialize]
+        public void setUp()
+        {
+            manager = new Manager();
+        }
 
         [TestMethod]
         [ExpectedException(typeof(EmptyFieldException))]
         public void EmptyName()
         {
-            Manager m = new Manager();
-            string name = "";
-            m.Name = name;
+            manager.Name = "";
         }
 
     }
