@@ -62,6 +62,7 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(EmptyFieldException))]
         public void EmptyPassword()
         {
             manager.Password = "";
