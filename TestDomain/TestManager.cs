@@ -61,5 +61,11 @@ namespace TestDomain
             Assert.AreEqual(email, manager.Email);
         }
 
+        [TestMethod]
+        public void EmptyPassword()
+        {
+            manager.Password = "";
+        }
+
     }
 }
