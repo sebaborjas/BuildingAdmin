@@ -18,18 +18,5 @@ namespace Domain
         }
 
         public Building building { get; set; }
-        
-        public void TakeTicket(Ticket ticket){
-            //TODO
-        }
-
-        public void CloseTicket(Ticket ticket){
-            ticket.Status = Status.Closed;
-        }
-
-        public Ticket GetTicket(int id){
-            //TODO
-            return new Ticket();
-        }
     }
 }
