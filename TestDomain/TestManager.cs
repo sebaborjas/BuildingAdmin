@@ -53,5 +53,14 @@ namespace TestDomain
             manager.Email = "test";
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(WrongEmailFormatException))]
+        public void CorrectEmail()
+        {
+            string email = "prueba@test.com";
+            manager.Email = email;
+            Assert.AreEqual(email, manager.Email);
+        }
+
     }
 }
