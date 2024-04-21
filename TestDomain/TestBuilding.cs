@@ -196,4 +196,13 @@ public class TestBuilding
         Assert.AreEqual(1, building.Tickets.Count);
     }
 
+    [TestMethod]
+    public void TestRemoveTicket()
+    {
+        Ticket ticket = new Ticket();
+        building.Tickets.Add(ticket);
+        building.Tickets.Remove(ticket);
+        Assert.AreEqual(1, building.Tickets.Count);
+    }
+
 }
