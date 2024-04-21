@@ -96,6 +96,13 @@ namespace TestDomain
             manager.Password = "Prueba.123456789";
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(PasswordNotFollowPolicy))]
+        public void CorrectPassword()
+        {
+            manager.Password = "Pru#eba.123$";
+        }
+
 
     }
 }
