@@ -75,5 +75,11 @@ namespace TestDomain
             manager.Password = "123";
         }
 
+        [TestMethod]
+        public void WrongPasswordFormat()
+        {
+            manager.Password = "password";
+        }
+
     }
 }
