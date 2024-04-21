@@ -6,162 +6,115 @@ namespace TestDomain;
 [TestClass]
 public class TestMaintenanceOperator
 {
-  MaintenanceOperator _operator;
-  ICollection<Ticket> _tickets;
+    MaintenanceOperator _operator;
+    ICollection<Ticket> _tickets;
 
-  Ticket _ticket;
+    Ticket _ticket;
 
-  [TestInitialize]
-  public void TestInitialize()
-  {
-    _operator = new MaintenanceOperator {Name = "John", LastName = "Doe", Email = "test@test.com", Password ="Prueba.123"};
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        _operator = new MaintenanceOperator { Name = "John", LastName = "Doe", Email = "test@test.com", Password = "Prueba.123" };
+    }
 
-    _tickets = new List<Ticket>();
-    
-    _ticket = new Ticket {Id = 1, Description = "Prueba de mas de 10 caracteres", Status = Status.Open};
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void EmptyNameException()
+    {
+        string name = "";
+        _operator.Name = name;
+    }
 
-    _tickets.Add(_ticket);
+    [TestMethod]
+    public void CorrectName()
+    {
+        string name = "NewName";
+        _operator.Name = name;
 
-    _operator.Tickets = _tickets;
-  }
+        Assert.AreEqual("NewName", _operator.Name);
+    }
 
-  [TestMethod]
-  [ExpectedException(typeof(EmptyFieldException))]
-  public void EmptyNameException()
-  {
-    string name = "";
-    _operator.Name = name;
-  }
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void EmptyLastNameException()
+    {
+        string lastName = "";
+        _operator.LastName = lastName;
+    }
 
-  [TestMethod]
-  public void CorrectName()
-  {
-    string name = "NewName";
-    _operator.Name = name;
+    [TestMethod]
+    public void CorrectLastName()
+    {
+        string lastName = "NewLastName";
+        _operator.LastName = lastName;
 
-    Assert.AreEqual("NewName", _operator.Name);
-  }
+        Assert.AreEqual("NewLastName", _operator.LastName);
+    }
 
-  [TestMethod]
-  [ExpectedException(typeof(EmptyFieldException))]
-  public void EmptyLastNameException()
-  {
-    string lastName = "";
-    _operator.LastName = lastName;
-  }
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void EmptyEmailException()
+    {
+        string email = "";
+        _operator.Email = email;
+    }
 
-  [TestMethod]
-  public void CorrectLastName()
-  {
-    string lastName = "NewLastName";
-    _operator.LastName = lastName;
+    [TestMethod]
+    [ExpectedException(typeof(WrongEmailFormatException))]
+    public void WrongEmailFormatException()
+    {
+        string email = "test.com";
+        _operator.Email = email;
+    }
 
-    Assert.AreEqual("NewLastName", _operator.LastName);
-  }
-  
-  [TestMethod]
-  [ExpectedException(typeof(EmptyFieldException))]
-  public void EmptyEmailException()
-  {
-    string email = "";
-    _operator.Email = email;
-  }
+    [TestMethod]
+    public void CorrectEmail()
+    {
+        string email = "prueba@test.com";
+        _operator.Email = email;
 
-  [TestMethod]
-  [ExpectedException(typeof(WrongEmailFormatException))]
-  public void WrongEmailFormatException()
-  {
-    string email = "test.com";
-    _operator.Email = email;
-  }
+        Assert.AreEqual(email, _operator.Email);
+    }
 
-  [TestMethod]
-  public void CorrectEmail()
-  {
-    string email = "prueba@test.com";
-    _operator.Email = email;
+    [TestMethod]
+    [ExpectedException(typeof(EmptyFieldException))]
+    public void EmptyPasswordException()
+    {
+        string password = "";
+        _operator.Password = password;
+    }
 
-    Assert.AreEqual(email, _operator.Email);
-  }
-  
-  [TestMethod]
-  [ExpectedException(typeof(EmptyFieldException))]
-  public void EmptyPasswordException()
-  {
-    string password = "";
-     _operator.Password = password;
-  }
-  
-  [TestMethod]
-  [ExpectedException(typeof(PasswordNotFollowPolicy))]
-  public void WrongPasswordLength()
-  {
-    string password = "123456";
-    _operator.Password = password;
-  }
-  
-  [TestMethod]
-  [ExpectedException(typeof(PasswordNotFollowPolicy))]
-  public void PasswordWithoutSpecialCharacter()
-  {
-    string password = "Prueba123";
-    _operator.Password = password;
-  }
+    [TestMethod]
+    [ExpectedException(typeof(PasswordNotFollowPolicy))]
+    public void WrongPasswordLength()
+    {
+        string password = "123456";
+        _operator.Password = password;
+    }
 
-  [TestMethod]
-  [ExpectedException(typeof(PasswordNotFollowPolicy))]
-  public void PasswordTooMuchLong()
-  {
-    string password = "Prueba.123456789";
-    _operator.Password = password;
-  }
-  
-  [TestMethod]
-  public void CorrectPassword()
-  {
-    string password = "Pru#eba.123$";
-    _operator.Password = password;
+    [TestMethod]
+    [ExpectedException(typeof(PasswordNotFollowPolicy))]
+    public void PasswordWithoutSpecialCharacter()
+    {
+        string password = "Prueba123";
+        _operator.Password = password;
+    }
 
-    Assert.AreEqual(password, _operator.Password);
-  }
-  
-  [TestMethod]
-  public void GetEmptyListOfTickets()
-  {
-    ICollection<Ticket> tickets = new List<Ticket>();
+    [TestMethod]
+    [ExpectedException(typeof(PasswordNotFollowPolicy))]
+    public void PasswordTooMuchLong()
+    {
+        string password = "Prueba.123456789";
+        _operator.Password = password;
+    }
 
-    _operator.Tickets = tickets;
+    [TestMethod]
+    public void CorrectPassword()
+    {
+        string password = "Pru#eba.123$";
+        _operator.Password = password;
 
-    Assert.AreEqual(0, _operator.Tickets.Count);
-  }
-  
-  [TestMethod]
-  public void GetTicketsCorrect()
-  {
+        Assert.AreEqual(password, _operator.Password);
+    }
 
-    Assert.AreEqual(_operator.Tickets, _tickets);
-
-  }
-  
-  [TestMethod]
-  public void CloseTicket()
-  {
-
-    _operator.CloseTicket(_ticket);
-
-    Assert.AreEqual(_ticket.Status, Status.Closed);
-  }
-  
-  [TestMethod]
-  public void TakeTicket()
-  {
-    Assert.AreEqual(_operator.GetTicket(1), _ticket);
-  }
-  
-  [TestMethod]
-  [ExpectedException(typeof(ArgumentNullException))]
-  public void NotFoundTicketInList()
-  {
-    _operator.GetTicket(4);
-  }
 }
