@@ -39,5 +39,11 @@ namespace TestDomain
             manager.LastName = "";
         }
 
+        [TestMethod]
+        public void EmptyEmail()
+        {
+            manager.Email = "";
+        }
+
     }
 }
