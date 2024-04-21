@@ -35,6 +35,13 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TestNegativeId()
+        {
+            owner.Id = -1;
+        }
+
+        [TestMethod]
         public void TestName()
         {
             owner.Name = "Norberto";
