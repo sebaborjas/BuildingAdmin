@@ -23,9 +23,5 @@ namespace Domain
         _invitations = value;
       } 
     }
-
-    public void InviteManager(Invitation i) {
-      Invitations.Add(i);
-    }
   }
 }
