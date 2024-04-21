@@ -202,7 +202,7 @@ public class TestBuilding
         Ticket ticket = new Ticket();
         building.Tickets.Add(ticket);
         building.Tickets.Remove(ticket);
-        Assert.AreEqual(1, building.Tickets.Count);
+        Assert.AreEqual(0, building.Tickets.Count);
     }
 
 }
