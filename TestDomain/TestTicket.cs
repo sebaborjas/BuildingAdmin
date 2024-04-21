@@ -83,11 +83,13 @@ public class TestTicket
         ticket.Apartment = null;
     }
 
+    
     [TestMethod]
     public void TestCategory()
     {
-        ticket.Category = Domain.DataTypes.Category.Electrician;
-        Assert.AreEqual(Domain.DataTypes.Category.Electrician, ticket.Category);
+    	Category category = new Category();
+    	ticket.Category = category;
+    	Assert.AreEqual(category, ticket.Category);
     }
 
 
