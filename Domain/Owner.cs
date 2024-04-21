@@ -16,6 +16,12 @@ namespace Domain
         private string _lastName;
         private string _email;
 
+        public int Id
+        {
+            get { return 1; }
+            set { }
+        }
+
         public string Name
         {
             get { return _name; }
@@ -62,12 +68,7 @@ namespace Domain
             Regex regex = new(EMAIL_PATTERN, RegexOptions.IgnoreCase);
             return regex.IsMatch(email);
         }
-
-        public int Id
-        {
-            get { return 1; }
-            set { }
-        }
+ 
     }
 
     

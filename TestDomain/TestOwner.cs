@@ -21,6 +21,13 @@ namespace TestDomain
         }
 
         [TestMethod]
+        public void TestGetId()
+        {
+            owner.Id = 1;
+            Assert.AreEqual(1, owner.Id);
+        }
+
+        [TestMethod]
         public void TestName()
         {
             owner.Name = "Norberto";
@@ -93,11 +100,5 @@ namespace TestDomain
             owner.Email = "probando";
         }
 
-        [TestMethod]
-        public void TestGetId()
-        {
-            owner.Id = 1;
-            Assert.AreEqual(1, owner.Id);
-        }
     }
 }
