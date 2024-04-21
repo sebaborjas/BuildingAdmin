@@ -20,7 +20,13 @@ namespace Domain
         public int Id
         {
             get { return _id; }
-            set { _id = value; }
+            set { 
+                if(value < 0)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                _id = value; 
+            }
         }
 
         public string Name
