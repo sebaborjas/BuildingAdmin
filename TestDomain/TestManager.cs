@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Exceptions;
 
 namespace TestDomain
 {
@@ -12,6 +13,7 @@ namespace TestDomain
     {
 
         [TestMethod]
+        [ExpectedException(typeof(EmptyFieldException))]
         public void EmptyName()
         {
             Manager m = new Manager();
