@@ -47,6 +47,7 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(WrongEmailFormatException))]
         public void WrongEmail()
         {
             manager.Email = "test";
