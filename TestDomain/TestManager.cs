@@ -46,5 +46,11 @@ namespace TestDomain
             manager.Email = "";
         }
 
+        [TestMethod]
+        public void WrongEmail()
+        {
+            manager.Email = "test";
+        }
+
     }
 }
