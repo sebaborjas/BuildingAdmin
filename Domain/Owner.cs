@@ -10,6 +10,8 @@ namespace Domain
 {
     public class Owner
     {
+        private const string EMAIL_PATTERN = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
+
         private string _name;
         private string _lastName;
         private string _email;
@@ -44,18 +46,21 @@ namespace Domain
             get { return _email; }
             set 
             {
-                Regex regex = new(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", RegexOptions.IgnoreCase);
-
-                
                 if (value == String.Empty)
                 {
                     throw new EmptyFieldException();
-                } else if (!regex.IsMatch(value))
+                } else if (!IsValidEmail(value))
                 {
                     throw new InvalidDataException();
                 }
                 _email = value; 
             }
+        }
+
+        public bool IsValidEmail(string email)
+        {
+            Regex regex = new(EMAIL_PATTERN, RegexOptions.IgnoreCase);
+            return regex.IsMatch(email);
         }
     }
 
