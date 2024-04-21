@@ -181,4 +181,10 @@ public class TestBuilding
         building.Tickets = tickets;
         Assert.AreEqual(tickets, building.Tickets);
     }
+
+    [TestMethod]
+    public void TestTicketsCount()
+    {
+        Assert.AreEqual(1, building.Tickets.Count);
+    }
 }
