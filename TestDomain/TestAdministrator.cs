@@ -128,14 +128,20 @@ namespace TestDomain
     }
 
     [TestMethod]
-    public void TestInviteManager()
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void SetEmptyInvitationList()
     {
-      DateTime exiprationDate = DateTime.Today.AddDays(15);
-      string managerEmail = "test@invitation.ort";
-      Invitation invitation = new Invitation{Id=1, Email = managerEmail, ExpirationDate = exiprationDate};
-      _administrator.InviteManager(invitation);
+      List<Invitation> invitations = null;
+      _administrator.Invitations = invitations;
+    }
 
-      Assert.AreEqual(invitation, _administrator.Invitations.First());
+    [TestMethod]
+    public void SetInvitationList()
+    {
+      List<Invitation> invitations = new List<Invitation>();
+      _administrator.Invitations = invitations;
+
+      Assert.AreEqual(invitations, _administrator.Invitations);
     }
   }
 }

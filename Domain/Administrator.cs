@@ -4,6 +4,8 @@ namespace Domain
   {
     private string _lastName;
 
+    private ICollection<Invitation> _invitations = new List<Invitation>();
+
     public override string LastName { 
       get => _lastName; 
       set {
@@ -12,7 +14,15 @@ namespace Domain
       }  
     }
 
-    public ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
+    public ICollection<Invitation> Invitations 
+    {  
+      get => _invitations;
+
+      set {
+        if (value == null) throw new ArgumentNullException();
+        _invitations = value;
+      } 
+    }
 
     public void InviteManager(Invitation i) {
       Invitations.Add(i);
