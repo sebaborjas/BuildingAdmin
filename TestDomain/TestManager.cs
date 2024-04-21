@@ -83,6 +83,7 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(PasswordNotFollowPolicy))]
         public void PasswordWithoutSpecialCharacter()
         {
             manager.Password = "Prueba123";
