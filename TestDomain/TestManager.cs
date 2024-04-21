@@ -97,7 +97,6 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(PasswordNotFollowPolicy))]
         public void CorrectPassword()
         {
             manager.Password = "Pru#eba.123$";
