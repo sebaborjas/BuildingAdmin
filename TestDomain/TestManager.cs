@@ -54,7 +54,6 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(WrongEmailFormatException))]
         public void CorrectEmail()
         {
             string email = "prueba@test.com";
