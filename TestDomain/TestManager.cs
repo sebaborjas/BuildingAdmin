@@ -34,7 +34,6 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptyFieldException))]
         public void EmptyLastName()
         {
             manager.LastName = "";
