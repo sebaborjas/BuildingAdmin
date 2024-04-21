@@ -90,6 +90,7 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(PasswordNotFollowPolicy))]
         public void PasswordTooMuchLong()
         {
             manager.Password = "Prueba.123456789";
