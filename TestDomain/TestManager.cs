@@ -40,6 +40,7 @@ namespace TestDomain
         }
 
         [TestMethod]
+        [ExpectedException(typeof(EmptyFieldException))]
         public void EmptyEmail()
         {
             manager.Email = "";
