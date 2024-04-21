@@ -193,7 +193,7 @@ public class TestBuilding
     {
         Ticket ticket = new Ticket();
         building.Tickets.Add(ticket);
-        Assert.AreEqual(0, building.Tickets.Count);
+        Assert.AreEqual(1, building.Tickets.Count);
     }
 
 }
