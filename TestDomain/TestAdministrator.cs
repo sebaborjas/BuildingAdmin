@@ -135,7 +135,7 @@ namespace TestDomain
       Invitation invitation = new Invitation{Id=1, Email = managerEmail, ExpirationDate = exiprationDate};
       _administrator.InviteManager(invitation);
 
-      Assert.AreEqual(invitation, _administrator.invitations.First());
+      Assert.AreEqual(invitation, _administrator.Invitations.First());
     }
   }
 }

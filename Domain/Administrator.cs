@@ -12,10 +12,10 @@ namespace Domain
       }  
     }
 
-    public ICollection<Invitation> invitations { get; set; } = new List<Invitation>();
+    public ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
 
     public void InviteManager(Invitation i) {
-      invitations.Add(i);
+      Invitations.Add(i);
     }
   }
 }
