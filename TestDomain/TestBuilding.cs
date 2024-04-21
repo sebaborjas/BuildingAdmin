@@ -187,4 +187,13 @@ public class TestBuilding
     {
         Assert.AreEqual(0, building.Tickets.Count);
     }
+
+    [TestMethod]
+    public void TestAddTicket()
+    {
+        Ticket ticket = new Ticket();
+        building.Tickets.Add(ticket);
+        Assert.AreEqual(0, building.Tickets.Count);
+    }
+
 }
