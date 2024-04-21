@@ -28,6 +28,13 @@ namespace TestDomain
         }
 
         [TestMethod]
+        public void TestSetId()
+        {
+            owner.Id = 2;
+            Assert.AreEqual(2, owner.Id);
+        }
+
+        [TestMethod]
         public void TestName()
         {
             owner.Name = "Norberto";
