@@ -12,14 +12,15 @@ namespace Domain
     {
         private const string EMAIL_PATTERN = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
 
+        private int _id;
         private string _name;
         private string _lastName;
         private string _email;
 
         public int Id
         {
-            get { return 1; }
-            set { }
+            get { return _id; }
+            set { _id = value; }
         }
 
         public string Name
