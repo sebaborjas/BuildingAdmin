@@ -85,5 +85,12 @@ namespace TestDomain
         {
             owner.Email = String.Empty;
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestInvalidEmail()
+        {
+            owner.Email = "probando";
+        }
     }
 }
