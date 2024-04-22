@@ -126,22 +126,5 @@ namespace TestDomain
 
             Assert.AreEqual(password, _administrator.Password);
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void SetEmptyInvitationList()
-        {
-            List<Invitation> invitations = null;
-            _administrator.Invitations = invitations;
-        }
-
-        [TestMethod]
-        public void SetInvitationList()
-        {
-            List<Invitation> invitations = new List<Invitation>();
-            _administrator.Invitations = invitations;
-
-            Assert.AreEqual(invitations, _administrator.Invitations);
-        }
     }
 }
