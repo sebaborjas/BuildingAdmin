@@ -102,6 +102,13 @@ namespace TestDomain
             manager.Password = "Pru#eba.123$";
         }
 
+        [TestMethod]
+        public void TestBuildings()
+        {
+            List<Building> b = new List<Building>();
+            manager.Buildings = b;
+            Assert.AreEqual(b, manager.Buildings);
+        }
 
     }
 }

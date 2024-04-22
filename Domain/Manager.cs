@@ -8,6 +8,10 @@ namespace Domain
 {
     public class Manager : User
     {
-
+        public List<Building> Buildings
+        {
+            get { return null; }
+            set { }
+        }
     }
 }
