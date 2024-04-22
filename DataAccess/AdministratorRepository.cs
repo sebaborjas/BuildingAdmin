@@ -1,8 +1,9 @@
 using DataAccess;
+using Domain;
 
 namespace TestDataAccess;
 
-public class AdministratorRepository
+public class AdministratorRepository : GenericRepository<Administrator>
 {
     private readonly BuildingAdminContext _context;
 

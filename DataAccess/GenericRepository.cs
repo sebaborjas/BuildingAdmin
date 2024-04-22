@@ -1,28 +1,27 @@
-using DataAccess;
 using Microsoft.EntityFrameworkCore;
 
-namespace TestDataAccess;
+namespace DataAccess;
 
 public abstract class GenericRepository<T> where T : class
 {
     protected DbContext Context { get; set; }
 
-    IEnumerable<U> GetAll<U>() where U : class{
+    public IEnumerable<U> GetAll<U>() where U : class{
       return null;
     }
     
-    void Insert(T entity){}
+    public void Insert(T entity){}
 
-    void Update(T entity){}
+    public void Update(T entity){}
 
-    T Get(int id){
+    public T Get(int id){
       return null;
     }
-    void Save(){}
+    public void Save(){}
 
-    void Delete(T entity){}
+    public void Delete(T entity){}
 
-    bool CheckConnection(){
+    public bool CheckConnection(){
       return false;
     }
 }
