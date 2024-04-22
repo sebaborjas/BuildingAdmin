@@ -9,11 +9,13 @@ public abstract class GenericRepository<T> where T : class
     public void Insert(T entity)
     {
         Context.Set<T>().Add(entity);
+        Save();
     }
 
     public void Update(T entity)
     {
         Context.Set<T>().Update(entity);
+        Save();
     }
 
     public T Get(int id){
@@ -32,7 +34,7 @@ public abstract class GenericRepository<T> where T : class
     public void Delete(T entity)
     {
         Context.Set<T>().Remove(entity);
-        this.Save();
+        Save();
     }
 
     public bool CheckConnection(){
