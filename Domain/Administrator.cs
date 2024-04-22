@@ -4,8 +4,6 @@ namespace Domain
     {
         private string _lastName;
 
-        private ICollection<Invitation> _invitations = new List<Invitation>();
-
         public override string LastName
         {
             get => _lastName;
@@ -13,17 +11,6 @@ namespace Domain
             {
                 if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
                 _lastName = value;
-            }
-        }
-
-        public ICollection<Invitation> Invitations
-        {
-            get => _invitations;
-
-            set
-            {
-                if (value == null) throw new ArgumentNullException();
-                _invitations = value;
             }
         }
     }
