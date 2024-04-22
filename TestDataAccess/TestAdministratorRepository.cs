@@ -1,3 +1,4 @@
+using Domain;
 using DataAccess;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -29,9 +30,20 @@ namespace TestDataAccess
         }
 
         [TestMethod]
-        public void TestCreate()
+        public void TestInsert()
         {
-            
+            Administrator admin = new Administrator
+            {
+                Id = 1,
+                Name = "John",
+                LastName = "Doe",
+                Email = "test@test.com",
+                Password = "Prueba.1234"
+            };
+
+            _repository.Insert(admin);
+
+            Assert.AreEqual(admin, _context.Administrators.Find(1));
         }
 
         [TestMethod]
