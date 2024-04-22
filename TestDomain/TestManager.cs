@@ -130,7 +130,7 @@ namespace TestDomain
             Building building = new Building();
             manager.Buildings.Add(building);
             manager.Buildings.Remove(building);
-            Assert.AreEqual(1, manager.Buildings.Count);
+            Assert.AreEqual(0, manager.Buildings.Count);
         }
 
     }
