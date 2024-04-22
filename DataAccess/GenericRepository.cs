@@ -5,10 +5,6 @@ namespace DataAccess;
 public abstract class GenericRepository<T> where T : class
 {
     protected DbContext Context { get; set; }
-
-    public IEnumerable<U> GetAll<U>() where U : class{
-      return null;
-    }
     
     public void Insert(T entity)
     {
@@ -18,8 +14,13 @@ public abstract class GenericRepository<T> where T : class
     public void Update(T entity){}
 
     public T Get(int id){
+      return Context.Set<T>().Find(id);
+    }
+
+    public IEnumerable<U> GetAll<U>() where U : class{
       return null;
     }
+
     public void Save(){}
 
     public void Delete(T entity){}

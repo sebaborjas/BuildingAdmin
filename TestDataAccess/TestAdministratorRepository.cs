@@ -2,6 +2,7 @@ using Domain;
 using DataAccess;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace TestDataAccess
 {
@@ -30,26 +31,81 @@ namespace TestDataAccess
             _repository = new AdministratorRepository(_context);
         }
 
+        private List<Administrator> Data()
+        {
+            List<Administrator> list = new List<Administrator>
+            {
+                new Administrator
+                {
+                    Id = 1,
+                    Name = "John",
+                    LastName = "Doe",
+                    Email = "test@test.com",
+                    Password = "Prueba.1234"
+                },
+
+                new Administrator
+                {
+                    Id = 2,
+                    Name = "Test",
+                    LastName = "Test",
+                    Email = "prueba@test.com",
+                    Password = "Prueba.1234"
+                },
+
+                new Administrator
+                {
+                    Id = 3,
+                    Name = "Admin",
+                    LastName = "Building",
+                    Email = "prueba@adinet.com",
+                    Password = "Prueba.1234"
+                },
+            };
+
+            return list;
+        }
+
+        private void LoadConext( List<Administrator> list)
+        {
+            _context.Administrators.AddRange(list);
+            _context.SaveChanges();
+        }
+
+        [TestCleanup]
+        public void CleanUp()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+            _connection.Close();
+        }
+
         [TestMethod]
         public void TestInsert()
         {
             Administrator admin = new Administrator
             {
-                Id = 1,
-                Name = "John",
-                LastName = "Doe",
-                Email = "test@test.com",
+                Id = 4,
+                Name = "Jonny",
+                LastName = "Bravo",
+                Email = "nuevo@test.com",
                 Password = "Prueba.1234"
             };
 
             _repository.Insert(admin);
 
-            Assert.AreEqual(admin, _context.Administrators.Find(1));
+            Assert.AreEqual(admin, _context.Administrators.Find(4));
         }
 
         [TestMethod]
         public void TestGet()
         {
+            var adminList = Data();
+            LoadConext(adminList);
+
+            var getAdmin = _repository.Get(1);
+
+            Assert.AreEqual(getAdmin, adminList[0]);
             
         }
 
