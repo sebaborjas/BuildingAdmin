@@ -11,7 +11,10 @@ public abstract class GenericRepository<T> where T : class
         Context.Set<T>().Add(entity);
     }
 
-    public void Update(T entity){}
+    public void Update(T entity)
+    {
+        Context.Set<T>().Update(entity);
+    }
 
     public T Get(int id){
       return Context.Set<T>().Find(id);

@@ -126,18 +126,15 @@ namespace TestDataAccess
             var adminList = Data();
             LoadConext(adminList);
 
-            Administrator admin = new Administrator
-            {
-                Id = 1,
-                Name = "Nuevo Nombre",
-                LastName = "Nuevo Apellido",
-                Email = "nuevo@test.com",
-                Password = "Prueba.1234"
-            };
+            var admin = _context.Administrators.Find(1);
+
+            string nuevoEmail = "pepe@nuevo.uy";
+
+            admin.Email = nuevoEmail;
 
             _repository.Update(admin);
 
-            Assert.AreEqual(admin, _context.Administrators.Find(1));   
+            Assert.AreEqual(nuevoEmail, _context.Administrators.Find(1).Email);   
         }
 
         [TestMethod]
