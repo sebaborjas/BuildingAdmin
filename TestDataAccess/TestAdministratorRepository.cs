@@ -1,4 +1,6 @@
 using DataAccess;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestDataAccess
 {
@@ -7,14 +9,14 @@ namespace TestDataAccess
     {
         private BuildingAdminContext _context;
 
-        private SqlLiteConnection _connection;
+        private SqliteConnection _connection;
 
         private AdministratorRepository _repository;
 
         [TestInitialize]
         public void SetUp()
         {
-            _connection = new SqlLiteConnection("DataSource=:memory:");
+            _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
 
             var options = new DbContextOptionsBuilder<BuildingAdminContext>()
