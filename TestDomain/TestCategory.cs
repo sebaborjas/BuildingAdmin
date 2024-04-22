@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Exceptions;
 namespace TestDomain;
 
 [TestClass]
@@ -21,14 +20,14 @@ public class TestCategory
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestEmptyName()
     {
         Category.Name = "";
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestNullName()
     {
         Category.Name = null;

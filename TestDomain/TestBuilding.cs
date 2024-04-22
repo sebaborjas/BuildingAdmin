@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Exceptions;
 using Domain;
 
 namespace TestDomain;
@@ -41,7 +40,7 @@ public class TestBuilding
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestNameEmpty()
     {
         building.Name = "";
@@ -116,7 +115,7 @@ public class TestBuilding
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestInvalidConstructionCompany()
     {
         building.ConstructionCompany = null;
@@ -140,7 +139,7 @@ public class TestBuilding
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestEmptyLocation()
     {
         building.Location = "";
@@ -161,7 +160,7 @@ public class TestBuilding
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestEmptyAddress()
     {
         building.Address = "";

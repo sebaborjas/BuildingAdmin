@@ -1,6 +1,6 @@
 using Domain;
-using Domain.DataTypes;
-using Exceptions;
+using Domain.Exceptions;
+
 namespace TestDomain;
 
 [TestClass]
@@ -35,7 +35,7 @@ public class TestMaintenanceOperator
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void EmptyLastNameException()
     {
         string lastName = "";
