@@ -20,10 +20,8 @@ namespace Domain
             get => _id;
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
+                if (value < 0) throw new ArgumentOutOfRangeException();
+
                 _id = value;
             }
         }
@@ -33,17 +31,13 @@ namespace Domain
             get => _email;
             set
             {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentNullException();
-                }
+                if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
+
                 string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
 
                 bool correctEmail = IsValidFormat(pattern, value);
-                if (!correctEmail)
-                {
-                    throw new WrongEmailFormatException();
-                }
+
+                if (!correctEmail) throw new WrongEmailFormatException();
 
                 _email = value;
             }
@@ -54,10 +48,8 @@ namespace Domain
             get => _expirationDate;
             set
             {
-                if (value < DateTime.Now.Date)
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
+                if (value < DateTime.Now.Date) throw new ArgumentOutOfRangeException();
+
                 _expirationDate = value;
             }
         }
