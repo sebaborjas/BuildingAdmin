@@ -10,7 +10,10 @@ public abstract class GenericRepository<T> where T : class
       return null;
     }
     
-    public void Insert(T entity){}
+    public void Insert(T entity)
+    {
+        Context.Set<T>().Add(entity);
+    }
 
     public void Update(T entity){}
 

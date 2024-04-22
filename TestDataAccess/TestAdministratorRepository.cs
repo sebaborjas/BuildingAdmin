@@ -25,6 +25,7 @@ namespace TestDataAccess
                 .Options;
 
             _context = new BuildingAdminContext(options);
+            _context.Database.EnsureCreated();
 
             _repository = new AdministratorRepository(_context);
         }
