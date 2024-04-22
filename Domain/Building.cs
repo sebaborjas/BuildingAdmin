@@ -1,4 +1,4 @@
-﻿using Exceptions;
+﻿using Domain.Exceptions;
 using System.Text.RegularExpressions;
 
 namespace Domain;
@@ -34,7 +34,7 @@ public class Building
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new EmptyFieldException();
+                throw new ArgumentNullException();
             }
 
             bool isValid = value.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
@@ -66,7 +66,7 @@ public class Building
         {
             if (value == null)
             {
-                throw new EmptyFieldException();
+                throw new ArgumentNullException();
             }
             _constructionCompany = value;
         }
@@ -79,7 +79,7 @@ public class Building
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new EmptyFieldException();
+                throw new ArgumentNullException();
             }
 
             string pattern = @"^\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*$";
@@ -100,7 +100,7 @@ public class Building
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new EmptyFieldException();
+                throw new ArgumentNullException();
             }
 
             string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
