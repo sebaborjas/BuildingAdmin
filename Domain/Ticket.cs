@@ -16,6 +16,7 @@ public class Ticket
     public Status Status { get; set; } = Status.Open;
     public DateTime AttentionDate { get; private set; }
     public DateTime ClosingDate { get; private set; }
+    public float TotalCost { get => _totalCost;}
 
     public int Id
     {
@@ -27,7 +28,6 @@ public class Ticket
                 throw new ArgumentOutOfRangeException();
             }
             _id = value;
-
         }
     }
 
@@ -65,19 +65,6 @@ public class Ticket
         }
     }
 
-    public float TotalCost
-    {
-        get => _totalCost;
-        set
-        {
-            if (value <= 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-            _totalCost = value;
-        }
-    }
-
     public User CreatedBy
     {
         get => _createdBy;
@@ -91,63 +78,26 @@ public class Ticket
         }
     }
 
-    public void ProcessTicket(Status newStatus, DateTime? dateTime)
-    {
-        if (newStatus == Status.Open)
-        {
-            ProcessOpenStatus();
-        }
-        else if (newStatus == Status.InProgress)
-        {
-            ProcessInProgressStatus(dateTime);
-        }
-        else if (newStatus == Status.Closed)
-        {
-            ProcessClosedStatus(dateTime);
-        }
-        else
-        {
-            throw new ArgumentException("Estado de solicitud no válido");
-        }
-    }
-
-    private void ProcessOpenStatus()
+    public void AttendTicket()
     {
         if (Status != Status.Open)
         {
-            throw new InvalidOperationException("No se puede cambiar el estado a abierto");
-        }
-    }
-
-    private void ProcessInProgressStatus(DateTime? dateTime)
-    {
-        if (dateTime == null)
-        {
-            throw new ArgumentNullException(nameof(dateTime), "La fecha de inicio es requerida");
+            throw new InvalidOperationException("No se puede cambiar el estado de un ticket que no está abierto");
         }
 
-        AttentionDate = dateTime.Value;
+        AttentionDate = DateTime.Now;
         Status = Status.InProgress;
     }
 
-    private void ProcessClosedStatus(DateTime? dateTime)
+    public void CloseTicket(float totalCost)
     {
         if (Status != Status.InProgress)
         {
-            throw new InvalidOperationException("No se puede cambiar el estado a cerrado sin estar en progreso");
+            throw new InvalidOperationException("No se puede cerrar un ticket sin estar en progreso");
         }
 
-        if (dateTime == null)
-        {
-            throw new ArgumentNullException(nameof(dateTime), "La fecha de cierre es requerida");
-        }
-
-        if (dateTime.Value < AttentionDate)
-        {
-            throw new ArgumentException("La fecha de cierre no puede ser anterior a la fecha de atención");
-        }
-
-        ClosingDate = dateTime.Value;
+        ClosingDate = DateTime.Now;
+        _totalCost = totalCost;
         Status = Status.Closed;
     }
 }
