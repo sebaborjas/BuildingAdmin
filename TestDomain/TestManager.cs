@@ -20,7 +20,7 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptyFieldException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void EmptyName()
         {
             manager.Name = "";
@@ -40,7 +40,7 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptyFieldException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void EmptyEmail()
         {
             manager.Email = "";
@@ -62,7 +62,7 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptyFieldException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void EmptyPassword()
         {
             manager.Password = "";
