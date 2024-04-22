@@ -110,5 +110,11 @@ namespace TestDomain
             Assert.AreEqual(buildings, manager.Buildings);
         }
 
+        [TestMethod]
+        public void TestApartmentsEmpty()
+        {
+            Assert.AreEqual(0, manager.Buildings.Count);
+        }
+
     }
 }
