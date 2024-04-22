@@ -140,7 +140,17 @@ namespace TestDataAccess
         [TestMethod]
         public void TestDelete()
         {
-            
+            var adminList = Data();
+            LoadConext(adminList);
+
+            var admin = _context.Administrators.Find(1);
+
+            _repository.Delete(admin);
+
+            _context.SaveChanges();
+
+            Assert.IsNull(_context.Administrators.Find(1));   
+
         }
     }
 }

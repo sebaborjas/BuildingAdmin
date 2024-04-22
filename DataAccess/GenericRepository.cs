@@ -26,7 +26,10 @@ public abstract class GenericRepository<T> where T : class
 
     public void Save(){}
 
-    public void Delete(T entity){}
+    public void Delete(T entity)
+    {
+        Context.Set<T>().Remove(entity);
+    }
 
     public bool CheckConnection(){
       return false;
