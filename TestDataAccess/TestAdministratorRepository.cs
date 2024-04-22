@@ -29,7 +29,31 @@ namespace TestDataAccess
         }
 
         [TestMethod]
-        public void ListAllAdministrators()
+        public void TestCreate()
+        {
+            
+        }
+
+        [TestMethod]
+        public void TestGet()
+        {
+            
+        }
+
+        [TestMethod]
+        public void TestGetAll()
+        {
+            
+        }
+        
+        [TestMethod]
+        public void TestUpdate()
+        {
+            
+        }
+
+        [TestMethod]
+        public void TestDelete()
         {
             
         }
