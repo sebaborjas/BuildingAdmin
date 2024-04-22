@@ -121,7 +121,7 @@ namespace TestDomain
         {
             Building building = new Building();
             manager.Buildings.Add(building);
-            Assert.AreEqual(0, manager.Buildings.Count);
+            Assert.AreEqual(1, manager.Buildings.Count);
         }
 
     }
