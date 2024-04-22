@@ -124,5 +124,14 @@ namespace TestDomain
             Assert.AreEqual(1, manager.Buildings.Count);
         }
 
+        [TestMethod]
+        public void TestRemoveBuilding()
+        {
+            Building building = new Building();
+            manager.Buildings.Add(building);
+            manager.Buildings.Remove(building);
+            Assert.AreEqual(1, manager.Buildings.Count);
+        }
+
     }
 }
