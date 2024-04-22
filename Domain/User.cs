@@ -1,7 +1,7 @@
 namespace Domain;
 
 using System.Text.RegularExpressions;
-using Exceptions;
+using Domain.Exceptions;
 
 public abstract class User
 {
@@ -16,10 +16,8 @@ public abstract class User
         get => _id;
         set
         {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            if (value < 0) throw new ArgumentOutOfRangeException();
+
             _id = value;
         }
     }
@@ -29,17 +27,14 @@ public abstract class User
         get => _name;
         set
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException();
-            }
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
+
             _name = value;
         }
     }
 
     public virtual string LastName
     {
-
         get => _lastName;
         set => _lastName = "";
     }
@@ -49,19 +44,13 @@ public abstract class User
         get => _email;
         set
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException();
-            }
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
 
             string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
 
             bool correctEmail = IsValidFormat(pattern, value);
 
-            if (!correctEmail)
-            {
-                throw new WrongEmailFormatException();
-            }
+            if (!correctEmail) throw new WrongEmailFormatException();
 
             _email = value;
         }
@@ -73,10 +62,7 @@ public abstract class User
         set
         {
 
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException();
-            }
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
 
             //Password must have at least one uppercase letter, one special character and be between 6 and 15 characters
             string pattern = @"^(?=.*[A-Z])(?=.*[\W_]).{6,15}$";
@@ -84,10 +70,7 @@ public abstract class User
             bool passwordCorrect = IsValidFormat(pattern, value);
 
 
-            if (!passwordCorrect)
-            {
-                throw new PasswordNotFollowPolicy();
-            }
+            if (!passwordCorrect) throw new PasswordNotFollowPolicy();
 
             _password = value;
         }
