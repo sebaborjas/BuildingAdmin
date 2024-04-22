@@ -110,6 +110,17 @@ namespace TestDataAccess
         }
 
         [TestMethod]
+        public void TestGetNotFound()
+        {
+            var adminList = Data();
+            LoadConext(adminList);
+
+            var getAdmin = _repository.Get(6);
+
+            Assert.IsNull(getAdmin);          
+        }
+
+        [TestMethod]
         public void TestGetAll()
         {
             var adminList = Data();
@@ -147,8 +158,6 @@ namespace TestDataAccess
 
             _repository.Delete(admin);
 
-            _context.SaveChanges();
-
             Assert.IsNull(_context.Administrators.Find(1));   
 
         }
@@ -160,6 +169,15 @@ namespace TestDataAccess
             var adminList = Data();
             LoadConext(adminList);
 
+            var admin = _context.Administrators.Find(5);
+
+            _repository.Delete(admin);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteEmptyList()
+        {
             var admin = _context.Administrators.Find(5);
 
             _repository.Delete(admin);

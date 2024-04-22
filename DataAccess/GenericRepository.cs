@@ -32,6 +32,7 @@ public abstract class GenericRepository<T> where T : class
     public void Delete(T entity)
     {
         Context.Set<T>().Remove(entity);
+        this.Save();
     }
 
     public bool CheckConnection(){
