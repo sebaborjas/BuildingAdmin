@@ -24,7 +24,10 @@ public abstract class GenericRepository<T> where T : class
       return Context.Set<U>().ToList();
     }
 
-    public void Save(){}
+    public void Save()
+    {
+        Context.SaveChanges();
+    }
 
     public void Delete(T entity)
     {

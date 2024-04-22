@@ -152,5 +152,20 @@ namespace TestDataAccess
             Assert.IsNull(_context.Administrators.Find(1));   
 
         }
+        [TestMethod]
+        public void TestSaveChanges()
+        {
+            var adminList = Data();
+            LoadConext(adminList);
+
+            var admin = _context.Administrators.Find(3);
+
+            _repository.Delete(admin);
+
+            _repository.Save();
+
+            Assert.IsNull(_context.Administrators.Find(3));   
+
+        }
     }
 }
