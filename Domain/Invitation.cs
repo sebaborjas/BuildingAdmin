@@ -1,87 +1,72 @@
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using Domain.DataTypes;
-using Exceptions;
+using Domain.Exceptions;
+
 namespace Domain
 {
-  public class Invitation
-  {
-    private int _id;
-
-    private string _email;
-
-    private DateTime _expirationDate;
-
-    private InvitationStatus _status;
-
-    public int Id 
-    { 
-      get => _id;
-      set 
-        {
-          if (value < 0)
-          {
-            throw new ArgumentOutOfRangeException();
-          }
-          _id = value;
-        } 
-    }
-
-    public string Email { 
-      get 
-      {
-        return _email;
-      } 
-      set
-      {
-        if (string.IsNullOrEmpty(value))
-        {
-          throw new EmptyFieldException();
-        }
-        string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
-
-        bool correctEmail = IsValidFormat(pattern, value);
-        if (!correctEmail)
-        {
-          throw new WrongEmailFormatException();
-        }
-
-        _email = value;
-      } 
-    }
-
-    public DateTime ExpirationDate { 
-      get 
-      {
-        return _expirationDate;
-      } 
-      set 
-      {
-        if (value < DateTime.Now.Date)
-        {
-          throw new ArgumentOutOfRangeException();
-        }
-        _expirationDate = value;
-      } 
-    }
-
-    public InvitationStatus Status
+    public class Invitation
     {
-      get
-      {
-        return _status;
-      }
-      set
-      {
-        _status = value;
-      }
-    }
+        private int _id;
 
-    private bool IsValidFormat(string pattern, string value)
-    {
-      Regex regex = new(pattern, RegexOptions.IgnoreCase);
+        private string _email;
 
-      return regex.IsMatch(value);
+        private DateTime _expirationDate;
+
+        public InvitationStatus Status { get; set; }
+
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                _id = value;
+            }
+        }
+
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentNullException();
+                }
+                string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
+
+                bool correctEmail = IsValidFormat(pattern, value);
+                if (!correctEmail)
+                {
+                    throw new WrongEmailFormatException();
+                }
+
+                _email = value;
+            }
+        }
+
+        public DateTime ExpirationDate
+        {
+            get => _expirationDate;
+            set
+            {
+                if (value < DateTime.Now.Date)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                _expirationDate = value;
+            }
+        }
+
+        private bool IsValidFormat(string pattern, string value)
+        {
+            Regex regex = new(pattern, RegexOptions.IgnoreCase);
+
+            return regex.IsMatch(value);
+        }
     }
-  }
 }
