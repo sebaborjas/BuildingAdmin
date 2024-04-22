@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Domain.Exceptions;
 
 namespace Domain
 {
@@ -22,10 +21,8 @@ namespace Domain
             get => _id;
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
+                if (value < 0) throw new ArgumentOutOfRangeException();
+
                 _id = value;
             }
         }
@@ -36,10 +33,8 @@ namespace Domain
 
             set
             {
-                if (value == String.Empty)
-                {
-                    throw new ArgumentNullException();
-                }
+                if (value == String.Empty) throw new ArgumentNullException();
+
                 _name = value;
             }
         }
@@ -49,10 +44,8 @@ namespace Domain
             get => _lastName;
             set
             {
-                if (value == String.Empty)
-                {
-                    throw new ArgumentNullException();
-                }
+                if (value == String.Empty) throw new ArgumentNullException();
+
                 _lastName = value;
             }
         }
@@ -62,14 +55,9 @@ namespace Domain
             get => _email;
             set
             {
-                if (value == String.Empty)
-                {
-                    throw new ArgumentNullException();
-                }
-                else if (!IsValidEmail(value))
-                {
-                    throw new InvalidDataException();
-                }
+                if (value == String.Empty) throw new ArgumentNullException();
+                else if (!IsValidEmail(value)) throw new InvalidDataException();
+
                 _email = value;
             }
         }
