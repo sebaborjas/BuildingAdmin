@@ -1,8 +1,9 @@
+using IDataAcess;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public abstract class GenericRepository<T> where T : class
+public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected DbContext Context { get; set; }
     
