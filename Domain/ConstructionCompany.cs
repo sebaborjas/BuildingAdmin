@@ -1,4 +1,4 @@
-﻿using Exceptions;
+﻿using Domain.Exceptions;
 using System.Text.RegularExpressions;
 namespace Domain;
 
@@ -14,7 +14,7 @@ public class ConstructionCompany
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new EmptyFieldException();
+                throw new ArgumentNullException();
             }
             else if (!Regex.IsMatch(value, @"^[a-zA-Z\s]*$"))
             {
