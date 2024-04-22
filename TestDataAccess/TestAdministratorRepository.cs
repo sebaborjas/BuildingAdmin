@@ -115,10 +115,9 @@ namespace TestDataAccess
             var adminList = Data();
             LoadConext(adminList);
 
-            var repositoryList = _repository.GetAll<Administrator>().ToList();
+            var getAdmins = _repository.GetAll<Administrator>().ToList();
 
-            CollectionAssert.AreEqual(repositoryList, adminList);
-            
+            CollectionAssert.AreEqual(adminList, getAdmins);
         }
         
         [TestMethod]
