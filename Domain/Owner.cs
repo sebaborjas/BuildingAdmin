@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Exceptions;
+using Domain.Exceptions;
 
 namespace Domain
 {
@@ -19,54 +19,58 @@ namespace Domain
 
         public int Id
         {
-            get { return _id; }
-            set { 
-                if(value < 0)
+            get => _id;
+            set
+            {
+                if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException();
                 }
-                _id = value; 
+                _id = value;
             }
         }
 
         public string Name
         {
-            get { return _name; }
-            
-            set 
+            get => _name;
+
+            set
             {
                 if (value == String.Empty)
                 {
-                    throw new EmptyFieldException();
+                    throw new ArgumentNullException();
                 }
-                _name = value; 
+                _name = value;
             }
         }
 
         public string LastName
         {
-            get { return _lastName; }
-            set {
+            get => _lastName;
+            set
+            {
                 if (value == String.Empty)
                 {
-                    throw new EmptyFieldException();
+                    throw new ArgumentNullException();
                 }
-                _lastName = value; }
+                _lastName = value;
+            }
         }
 
         public string Email
         {
-            get { return _email; }
-            set 
+            get => _email;
+            set
             {
                 if (value == String.Empty)
                 {
-                    throw new EmptyFieldException();
-                } else if (!IsValidEmail(value))
+                    throw new ArgumentNullException();
+                }
+                else if (!IsValidEmail(value))
                 {
                     throw new InvalidDataException();
                 }
-                _email = value; 
+                _email = value;
             }
         }
 
@@ -75,8 +79,8 @@ namespace Domain
             Regex regex = new(EMAIL_PATTERN, RegexOptions.IgnoreCase);
             return regex.IsMatch(email);
         }
- 
+
     }
 
-    
+
 }
