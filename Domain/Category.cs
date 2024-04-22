@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Exceptions;
+using Domain.Exceptions;
 
 namespace Domain
 {
@@ -20,7 +20,7 @@ namespace Domain
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new EmptyFieldException();
+                    throw new ArgumentNullException();
                 }
 
                 string pattern = @"^[a-zA-Z\s]*$";
@@ -38,7 +38,7 @@ namespace Domain
 
         public int Id
         {
-            get  => _id;
+            get => _id;
             set
             {
                 if (value <= 0)
