@@ -19,7 +19,7 @@ public abstract class User
     set {
       if (string.IsNullOrEmpty(value))
       {
-          throw new EmptyFieldException();
+          throw new ArgumentNullException();
       }
       _name = value;
     } 
@@ -36,7 +36,7 @@ public abstract class User
     set {
       if (string.IsNullOrEmpty(value))
       {
-          throw new EmptyFieldException();
+          throw new ArgumentNullException();
       }
 
       string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
@@ -58,7 +58,7 @@ public abstract class User
 
       if (string.IsNullOrEmpty(value))
       {
-          throw new EmptyFieldException();
+          throw new ArgumentNullException();
       }
 
       //Password must have at least one uppercase letter, one special character and be between 6 and 15 characters

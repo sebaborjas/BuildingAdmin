@@ -174,4 +174,35 @@ public class TestBuilding
         building.Address = "Invalid Address";
     }
 
+    [TestMethod]
+    public void TestTickets()
+    {
+        List<Ticket> tickets = new List<Ticket>();
+        building.Tickets = tickets;
+        Assert.AreEqual(tickets, building.Tickets);
+    }
+
+    [TestMethod]
+    public void TestTicketsCount()
+    {
+        Assert.AreEqual(0, building.Tickets.Count);
+    }
+
+    [TestMethod]
+    public void TestAddTicket()
+    {
+        Ticket ticket = new Ticket();
+        building.Tickets.Add(ticket);
+        Assert.AreEqual(1, building.Tickets.Count);
+    }
+
+    [TestMethod]
+    public void TestRemoveTicket()
+    {
+        Ticket ticket = new Ticket();
+        building.Tickets.Add(ticket);
+        building.Tickets.Remove(ticket);
+        Assert.AreEqual(0, building.Tickets.Count);
+    }
+
 }
