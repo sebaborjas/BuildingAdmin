@@ -152,6 +152,19 @@ namespace TestDataAccess
             Assert.IsNull(_context.Administrators.Find(1));   
 
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteNotFound()
+        {
+            var adminList = Data();
+            LoadConext(adminList);
+
+            var admin = _context.Administrators.Find(5);
+
+            _repository.Delete(admin);
+        }
+
         [TestMethod]
         public void TestSaveChanges()
         {
