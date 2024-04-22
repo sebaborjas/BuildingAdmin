@@ -18,7 +18,7 @@ public class TestMaintenanceOperator
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void EmptyNameException()
     {
         string name = "";
@@ -52,7 +52,7 @@ public class TestMaintenanceOperator
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void EmptyEmailException()
     {
         string email = "";
@@ -77,7 +77,7 @@ public class TestMaintenanceOperator
     }
 
     [TestMethod]
-    [ExpectedException(typeof(EmptyFieldException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void EmptyPasswordException()
     {
         string password = "";
