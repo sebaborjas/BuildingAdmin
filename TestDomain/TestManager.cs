@@ -105,9 +105,9 @@ namespace TestDomain
         [TestMethod]
         public void TestBuildings()
         {
-            List<Building> b = new List<Building>();
-            manager.Buildings = b;
-            Assert.AreEqual(b, manager.Buildings);
+            List<Building> buildings = new List<Building>();
+            manager.Buildings = buildings;
+            Assert.AreEqual(buildings, manager.Buildings);
         }
 
     }
