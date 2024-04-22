@@ -12,17 +12,10 @@ public abstract class User
   private string _password;
   
   public int Id { 
-    get { 
-      return _id;
-    }
-     set {
-      _id = value;
-    }
+    get => _id;
   }
   public string Name { 
-    get {
-      return _name;
-    }
+    get => _name;
     set {
       if (string.IsNullOrEmpty(value))
       {
@@ -34,19 +27,12 @@ public abstract class User
 
   public virtual string LastName { 
 
-    get {
-      return _lastName;
-    }
-
-    set {
-      _lastName = "";
-    }
+    get => _lastName;
+    set => _lastName = "";
   }
 
   public string Email { 
-    get {
-      return _email;
-    } 
+    get => _email; 
     set {
       if (string.IsNullOrEmpty(value))
       {
@@ -67,9 +53,7 @@ public abstract class User
   }
 
   public string Password { 
-    get {
-      return _password;
-    }   
+    get => _password;  
     set {
 
       if (string.IsNullOrEmpty(value))

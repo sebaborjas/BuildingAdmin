@@ -123,14 +123,14 @@ public class TestTicket
     [TestMethod]
     public void TestAssignedTo()
     {
-        ticket.AssignedTo = new User();
+        ticket.AssignedTo = new MaintenanceOperator();
         Assert.IsNotNull(ticket.AssignedTo);
     }
 
     [TestMethod]
     public void TestCreatedBy()
     {
-        ticket.CreatedBy = new User();
+        ticket.CreatedBy = new Manager();
         Assert.IsNotNull(ticket.CreatedBy);
     }
 
