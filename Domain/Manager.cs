@@ -8,6 +8,6 @@ namespace Domain
 {
     public class Manager : User
     {
-        public List<Building> Buildings { get; set; }
+        public List<Building> Buildings { get; set; } = new List<Building>();
     }
 }
