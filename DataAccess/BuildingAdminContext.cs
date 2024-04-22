@@ -6,7 +6,7 @@ namespace DataAccess
 {
     public class BuildingAdminContext : DbContext
     {
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Administrator> Administrators { get; set; }
 
         public virtual DbSet<Invitation> Invitations { get; set; }
 
