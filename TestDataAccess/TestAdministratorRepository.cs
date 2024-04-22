@@ -130,6 +130,16 @@ namespace TestDataAccess
 
             CollectionAssert.AreEqual(adminList, getAdmins);
         }
+
+        [TestMethod]
+        public void TestGetAllNoList()
+        {
+            var getAdmins = _repository.GetAll<Administrator>().ToList();
+
+            int count = getAdmins.Count;
+
+            Assert.AreEqual(0, count);
+        }
         
         [TestMethod]
         public void TestUpdate()
