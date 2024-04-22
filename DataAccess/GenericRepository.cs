@@ -36,6 +36,6 @@ public abstract class GenericRepository<T> where T : class
     }
 
     public bool CheckConnection(){
-      return false;
+      return Context.Database.CanConnect();
     }
 }
