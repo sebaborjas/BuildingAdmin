@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
-using Exceptions;
 
 namespace TestDomain
 {
@@ -57,7 +56,7 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptyFieldException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestEmptyName()
         {
             owner.Name = String.Empty;
@@ -79,7 +78,7 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptyFieldException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestEmptyLastName()
         {
             owner.LastName = String.Empty;
@@ -101,7 +100,7 @@ namespace TestDomain
         }
 
         [TestMethod]
-        [ExpectedException(typeof(EmptyFieldException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestEmptyEmail()
         {
             owner.Email = String.Empty;

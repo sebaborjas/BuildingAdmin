@@ -1,5 +1,4 @@
 using Domain.DataTypes;
-using Exceptions;
 
 namespace Domain
 {
@@ -7,14 +6,14 @@ namespace Domain
     {
         private string _lastName;
 
-        public override string LastName { 
-            get {
-                return _lastName;
-            } 
-            set {
-                if (string.IsNullOrEmpty(value)) throw new EmptyFieldException();
+        public override string LastName
+        {
+            get => _lastName;
+            set
+            {
+                if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
                 _lastName = value;
-            } 
+            }
         }
 
         public Building building { get; set; }
