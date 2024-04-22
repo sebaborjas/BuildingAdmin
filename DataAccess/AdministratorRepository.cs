@@ -1,14 +1,13 @@
-using DataAccess;
+using Microsoft.EntityFrameworkCore;
+using Domain;
 
-namespace TestDataAccess;
+namespace DataAccess;
 
-public class AdministratorRepository
+public class AdministratorRepository : GenericRepository<Administrator>
 {
-    private readonly BuildingAdminContext _context;
-
-    public AdministratorRepository(BuildingAdminContext context)
+    public AdministratorRepository(DbContext context)
     {
-        _context = context;
+        Context = context;
     }
   
 }

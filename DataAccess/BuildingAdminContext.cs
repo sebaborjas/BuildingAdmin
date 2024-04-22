@@ -6,14 +6,12 @@ namespace DataAccess
 {
     public class BuildingAdminContext : DbContext
     {
-        public virtual DbSet<User> Users { get; set; }
+        public BuildingAdminContext() { }
+        
+        public BuildingAdminContext(DbContextOptions options) : base(options){ }
 
+        public virtual DbSet<Administrator> Administrators { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
-
-
-        public BuildingAdminContext(DbContextOptions<BuildingAdminContext> options) : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
