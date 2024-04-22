@@ -1,5 +1,4 @@
 ﻿using Domain.DataTypes;
-using Exceptions;
 using System.Reflection.Metadata;
 namespace Domain;
 
@@ -16,17 +15,15 @@ public class Ticket
     public Status Status { get; set; } = Status.Open;
     public DateTime AttentionDate { get; private set; }
     public DateTime ClosingDate { get; private set; }
-    public float TotalCost { get => _totalCost;}
+    public float TotalCost { get => _totalCost; }
 
     public int Id
     {
         get => _id;
         set
         {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            if (value < 0) throw new ArgumentOutOfRangeException();
+
             _id = value;
         }
     }
@@ -38,14 +35,9 @@ public class Ticket
         {
             const int minLength = 10;
 
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentNullException();
-            }
-            else if (value.Length < minLength)
-            {
-                throw new ArgumentOutOfRangeException($"La descripción debe tener al menos {minLength} caracteres");
-            }
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
+
+            else if (value.Length < minLength) throw new ArgumentOutOfRangeException($"La descripción debe tener al menos {minLength} caracteres");
 
             _description = value;
 
@@ -57,10 +49,8 @@ public class Ticket
         get => _apartment;
         set
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException();
-            }
+            if (value == null) throw new ArgumentNullException();
+
             _apartment = value;
         }
     }
@@ -70,20 +60,15 @@ public class Ticket
         get => _createdBy;
         set
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException();
-            }
+            if (value == null) throw new ArgumentNullException();
+
             _createdBy = value;
         }
     }
 
     public void AttendTicket()
     {
-        if (Status != Status.Open)
-        {
-            throw new InvalidOperationException("No se puede cambiar el estado de un ticket que no está abierto");
-        }
+        if (Status != Status.Open) throw new InvalidOperationException("No se puede cambiar el estado de un ticket que no está abierto");
 
         AttentionDate = DateTime.Now;
         Status = Status.InProgress;
@@ -91,10 +76,7 @@ public class Ticket
 
     public void CloseTicket(float totalCost)
     {
-        if (Status != Status.InProgress)
-        {
-            throw new InvalidOperationException("No se puede cerrar un ticket sin estar en progreso");
-        }
+        if (Status != Status.InProgress) throw new InvalidOperationException("No se puede cerrar un ticket sin estar en progreso");
 
         ClosingDate = DateTime.Now;
         _totalCost = totalCost;

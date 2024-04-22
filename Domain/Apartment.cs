@@ -8,30 +8,32 @@ namespace Domain
 {
     public class Apartment
     {
-        private int _id; 
+        private int _id;
         private int _doorNumber;
         private short _rooms;
         private short _bathrooms;
-        private short _floor;
-        private bool _hasTerrace;
         private Owner _owner;
-        
+        public short Floor { get; set; }
+        public bool HasTerrace { get; set; }
+
         public int Id
         {
-            get { return _id; }
-            set { 
-                if(value < 0)
+            get => _id;
+            set
+            {
+                if (value < 0)
                 {
                     throw new InvalidDataException();
                 }
-                _id = value; 
+                _id = value;
             }
         }
 
         public int DoorNumber
         {
-            get { return _doorNumber; }
-            set {
+            get => _doorNumber;
+            set
+            {
                 if (value < 0)
                 {
                     throw new InvalidDataException();
@@ -42,48 +44,38 @@ namespace Domain
 
         public short Rooms
         {
-            get { return _rooms; }
-            set { 
-                if(value < 0)
+            get => _rooms;
+            set
+            {
+                if (value < 0)
                 {
                     throw new InvalidDataException();
                 }
-                _rooms = value; 
+                _rooms = value;
             }
         }
 
         public short Bathrooms
         {
-            get { return _bathrooms; }
-            set {
-                if(value < 0)
+            get => _bathrooms;
+            set
+            {
+                if (value < 0)
                 {
                     throw new InvalidDataException();
                 }
-                _bathrooms = value; 
+                _bathrooms = value;
             }
         }
 
-        public short Floor
-        {
-            get { return _floor; }
-            set { _floor = value; }
-        }
-
-        public bool HasTerrace
-        {
-            get { return _hasTerrace; }
-            set { _hasTerrace = value; }
-        }
 
         public Owner Owner
         {
-            get { return _owner; }
-            set { 
-                if (value == null)
-                {
-                    throw new InvalidDataException();
-                }
+            get => _owner;
+            set
+            {
+                if (value == null) throw new InvalidDataException();
+
                 _owner = value;
             }
         }

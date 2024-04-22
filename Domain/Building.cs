@@ -1,5 +1,4 @@
-﻿using Exceptions;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Domain;
 
@@ -19,10 +18,8 @@ public class Building
         get => _id;
         set
         {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            if (value < 0) throw new ArgumentOutOfRangeException();
+
             _id = value;
         }
     }
@@ -32,16 +29,12 @@ public class Building
         get => _name;
         set
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new EmptyFieldException();
-            }
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
             bool isValid = value.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
-            if (!isValid)
-            {
-                throw new InvalidDataException("El nombre solo puede contener letras y espacios");
-            }
+
+            if (!isValid) throw new InvalidDataException("El nombre solo puede contener letras y espacios");
+
             _name = value;
         }
     }
@@ -51,10 +44,8 @@ public class Building
         get => _expenses;
         set
         {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            if (value < 0) throw new ArgumentOutOfRangeException();
+
             _expenses = value;
         }
     }
@@ -64,10 +55,8 @@ public class Building
         get => _constructionCompany;
         set
         {
-            if (value == null)
-            {
-                throw new EmptyFieldException();
-            }
+            if (value == null) throw new ArgumentNullException();
+
             _constructionCompany = value;
         }
     }
@@ -77,18 +66,13 @@ public class Building
         get => _location;
         set
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new EmptyFieldException();
-            }
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
             string pattern = @"^\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*$";
 
             bool isValid = IsValidFormat(pattern, value);
-            if (!isValid)
-            {
-                throw new InvalidDataException("Formato esperado: 'longitud, latitud'");
-            }
+            if (!isValid) throw new InvalidDataException("Formato esperado: 'longitud, latitud'");
+
             _location = value;
         }
     }
@@ -98,18 +82,14 @@ public class Building
         get => _address;
         set
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new EmptyFieldException();
-            }
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
             string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
 
             bool isValid = IsValidFormat(pattern, value);
-            if (!isValid)
-            {
-                throw new InvalidDataException("Formato esperado: calle principal, número de puerta, esquina");
-            }
+
+            if (!isValid) throw new InvalidDataException("Formato esperado: calle principal, número de puerta, esquina");
+
             _address = value;
         }
     }

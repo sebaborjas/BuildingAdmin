@@ -8,7 +8,7 @@ using Domain;
 namespace TestDomain
 {
     [TestClass]
-    public  class TestDepartment
+    public class TestDepartment
     {
         private Apartment department;
 
@@ -43,8 +43,8 @@ namespace TestDomain
         [TestMethod]
         public void TestDoorNumber()
         {
-           department.DoorNumber = 1; 
-           Assert.AreEqual(1, department.DoorNumber);
+            department.DoorNumber = 1;
+            Assert.AreEqual(1, department.DoorNumber);
         }
 
         [TestMethod]
