@@ -111,8 +111,16 @@ namespace TestDomain
         }
 
         [TestMethod]
-        public void TestApartmentsEmpty()
+        public void TestBuildingEmpty()
         {
+            Assert.AreEqual(0, manager.Buildings.Count);
+        }
+
+        [TestMethod]
+        public void TestAddBuilding()
+        {
+            Building building = new Building();
+            manager.Buildings.Add(building);
             Assert.AreEqual(0, manager.Buildings.Count);
         }
 
