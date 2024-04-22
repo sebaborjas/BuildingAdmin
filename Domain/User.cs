@@ -5,97 +5,98 @@ using Exceptions;
 
 public abstract class User
 {
-  private int _id;
-  private string _name;
-  private string _lastName;
-  private string _email;
-  private string _password;
-  
-  public int Id { 
-    get { 
-      return _id;
-    }
-     set {
-      _id = value;
-    }
-  }
-  public string Name { 
-    get {
-      return _name;
-    }
-    set {
-      if (string.IsNullOrEmpty(value))
-      {
-          throw new ArgumentNullException();
-      }
-      _name = value;
-    } 
-  }
+    private int _id;
+    private string _name;
+    private string _lastName;
+    private string _email;
+    private string _password;
 
-  public virtual string LastName { 
-
-    get {
-      return _lastName;
+    public int Id
+    {
+        get => _id;
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            _id = value;
+        }
     }
 
-    set {
-      _lastName = "";
+    public string Name
+    {
+        get => _name;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException();
+            }
+            _name = value;
+        }
     }
-  }
 
-  public string Email { 
-    get {
-      return _email;
-    } 
-    set {
-      if (string.IsNullOrEmpty(value))
-      {
-          throw new ArgumentNullException();
-      }
+    public virtual string LastName
+    {
 
-      string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
-
-      bool correctEmail = IsValidFormat(pattern, value);
-
-      if (!correctEmail)
-      {
-          throw new WrongEmailFormatException();
-      }
-
-      _email = value;
+        get => _lastName;
+        set => _lastName = "";
     }
-  }
 
-  public string Password { 
-    get {
-      return _password;
-    }   
-    set {
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException();
+            }
 
-      if (string.IsNullOrEmpty(value))
-      {
-          throw new ArgumentNullException();
-      }
+            string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
 
-      //Password must have at least one uppercase letter, one special character and be between 6 and 15 characters
-      string pattern = @"^(?=.*[A-Z])(?=.*[\W_]).{6,15}$"; 
+            bool correctEmail = IsValidFormat(pattern, value);
 
-      bool passwordCorrect = IsValidFormat(pattern, value);
+            if (!correctEmail)
+            {
+                throw new WrongEmailFormatException();
+            }
+
+            _email = value;
+        }
+    }
+
+    public string Password
+    {
+        get => _password;
+        set
+        {
+
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException();
+            }
+
+            //Password must have at least one uppercase letter, one special character and be between 6 and 15 characters
+            string pattern = @"^(?=.*[A-Z])(?=.*[\W_]).{6,15}$";
+
+            bool passwordCorrect = IsValidFormat(pattern, value);
 
 
-      if (!passwordCorrect)
-      {
-          throw new PasswordNotFollowPolicy();
-      }
+            if (!passwordCorrect)
+            {
+                throw new PasswordNotFollowPolicy();
+            }
 
-      _password = value;
-    } 
-  }
+            _password = value;
+        }
+    }
 
-  private bool IsValidFormat(string pattern, string value)
-  {
-    Regex regex = new(pattern, RegexOptions.IgnoreCase);
+    private bool IsValidFormat(string pattern, string value)
+    {
+        Regex regex = new(pattern, RegexOptions.IgnoreCase);
 
-    return regex.IsMatch(value);
-  }
+        return regex.IsMatch(value);
+    }
 }

@@ -35,7 +35,7 @@ public class TestTicket
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
     public void TestDescriptionShort()
     {
         ticket.Description = "Corta";
@@ -83,15 +83,13 @@ public class TestTicket
         ticket.Apartment = null;
     }
 
-    
     [TestMethod]
     public void TestCategory()
     {
-    	Category category = new Category();
-    	ticket.Category = category;
-    	Assert.AreEqual(category, ticket.Category);
+        Category category = new Category();
+        ticket.Category = category;
+        Assert.AreEqual(category, ticket.Category);
     }
-
 
     [TestMethod]
     public void TestStatus()
@@ -100,101 +98,93 @@ public class TestTicket
     }
 
     [TestMethod]
-    public void TestTotalCost()
-    {
-        ticket.TotalCost = 100;
-        Assert.AreEqual(100, ticket.TotalCost);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException))]
-    public void TestTotalCostNegative()
-    {
-        ticket.TotalCost = -1;
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException))]
-    public void TestTotalCostZero()
-    {
-        ticket.TotalCost = 0;
-    }
-
-    [TestMethod]
     public void TestAssignedTo()
     {
-        ticket.AssignedTo = new User();
+        ticket.AssignedTo = new MaintenanceOperator();
         Assert.IsNotNull(ticket.AssignedTo);
     }
 
     [TestMethod]
     public void TestCreatedBy()
     {
-        ticket.CreatedBy = new User();
+        ticket.CreatedBy = new Manager();
         Assert.IsNotNull(ticket.CreatedBy);
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void TestCreatedByNull()
+    public void TestNullCreatedBy()
     {
         ticket.CreatedBy = null;
     }
 
     [TestMethod]
-    public void TestSetAttention_ValidDateTime()
+    public void TestAttendTicket()
     {
-        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(10).AddMinutes(30);
-        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, validDateTime);
-        Assert.AreEqual(validDateTime, ticket.AttentionDate);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
-    public void TestSetAttention_NullDateTime()
-    {
-        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, null);
-    }
-
-    [TestMethod]
-    public void TestSetClosing_ValidDateTime()
-    {
-        DateTime validDateTime = DateTime.Today.AddDays(1).AddHours(15).AddMinutes(45);
-        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, validDateTime);
-        Assert.AreEqual(validDateTime, ticket.ClosingDate);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
-    public void TestSetClosing_NullDateTime()
-    {
-        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, null);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void TestSetClosing_InvalidDateTime_BeforeAttention()
-    {
-        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(-1));
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void TestSetClosing_InvalidDateTime_EarlierThanAttentionTime()
-    {
-        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddHours(-5));
+        ticket.AttendTicket();
+        Assert.AreEqual(Domain.DataTypes.Status.InProgress, ticket.Status);
+        Assert.IsNotNull(ticket.AttentionDate);
     }
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
-    public void TestSetClosing_InvalidDateTime_AlreadySet()
+    public void TestAttendTicketTwice()
     {
-        ticket.ProcessTicket(Domain.DataTypes.Status.InProgress, DateTime.Today);
-        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(1));
-        ticket.ProcessTicket(Domain.DataTypes.Status.Closed, DateTime.Today.AddDays(2));
+        ticket.AttendTicket();
+        ticket.AttendTicket();
+    }
+
+    [TestMethod]
+    public void TestCloseTicket()
+    {
+        ticket.AttendTicket();
+        float totalCost = 100.0f;
+        ticket.CloseTicket(totalCost);
+        Assert.AreEqual(Domain.DataTypes.Status.Closed, ticket.Status);
+        Assert.IsNotNull(ticket.ClosingDate);
+        Assert.AreEqual(totalCost, ticket.TotalCost);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestCloseTicketWithoutAttending()
+    {
+        float totalCost = 100.0f;
+        ticket.CloseTicket(totalCost);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestCloseTicketTwice()
+    {
+        ticket.AttendTicket();
+        float totalCost = 100.0f;
+        ticket.CloseTicket(totalCost);
+        ticket.CloseTicket(totalCost);
+    }
+
+    [TestMethod]
+    public void TestTotalCost()
+    {
+        ticket.AttendTicket();
+        float totalCost = 100.0f;
+        ticket.CloseTicket(totalCost);
+        Assert.AreEqual(totalCost, ticket.TotalCost);
+    }
+
+    [TestMethod]
+    public void TestAttentionDate()
+    {
+        ticket.AttendTicket();
+        Assert.IsNotNull(ticket.AttentionDate);
+    }
+
+    [TestMethod]
+    public void TestClosingDate()
+    {
+        ticket.AttendTicket();
+        float totalCost = 100.0f;
+        ticket.CloseTicket(totalCost);
+        Assert.IsNotNull(ticket.ClosingDate);
     }
 }
