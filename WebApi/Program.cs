@@ -1,3 +1,6 @@
+using Factory;
+using Microsoft.EntityFrameworkCore.Metadata;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +18,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+ServicesFactory factory = new ServicesFactory(builder.Services);
+factory.AddDbContextService();
 
 app.UseHttpsRedirection();
 

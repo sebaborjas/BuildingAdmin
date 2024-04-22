@@ -7,6 +7,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+.github
+appsettings.json
+
 # User-specific files
 *.rsuser
 *.suo
@@ -603,3 +606,4 @@ obj/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,visualstudio,csharp,dotnetcore
+appsettings.json
