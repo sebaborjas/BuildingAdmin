@@ -18,7 +18,7 @@ public abstract class GenericRepository<T> where T : class
     }
 
     public IEnumerable<U> GetAll<U>() where U : class{
-      return null;
+      return Context.Set<U>().ToList();
     }
 
     public void Save(){}
