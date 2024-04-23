@@ -131,6 +131,16 @@ namespace TestDataAccess
             CollectionAssert.AreEqual(managerList, getAllManagers);
         }
 
+        [TestMethod]
+        public void TestGetAllNoList()
+        {
+            var getManagers = _repository.GetAll<Manager>().ToList();
+
+            int count = getManagers.Count;
+
+            Assert.AreEqual(1, count);
+        }
+
 
     }
 }
