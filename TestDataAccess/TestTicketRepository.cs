@@ -20,6 +20,8 @@ namespace TestDataAccess
 
         private TicketRepository _repository;
 
+        private List<Ticket> _tickets;
+
         [TestInitialize]
         public void Setup()
         {
@@ -34,45 +36,29 @@ namespace TestDataAccess
             _context.Database.EnsureCreated();
 
             _repository = new TicketRepository(_context);
+
+            LoadData();
         }
 
         [TestMethod]
         public void TestGetAllTickets()
         {
-            var tickets = new List<Ticket>
-            {
-                new Ticket
-                { 
-                    Id = 1,
-                    Apartment = new Apartment(),
-                    AssignedTo = new MaintenanceOperator(),
-                    Category = new Category(),
-                    CreatedBy = new MaintenanceOperator(),
-                    Description = "Descripcion ticket 2",
-                    Status = Domain.DataTypes.Status.Open
-                },
-                new Ticket
-                {
-                    Id = 2,
-                    Apartment = new Apartment(),
-                    AssignedTo = new MaintenanceOperator(),
-                    Category = new Category(),
-                    CreatedBy = new MaintenanceOperator(),
-                    Description = "Descripcion ticket 1",
-                    Status = Domain.DataTypes.Status.Open
-                }
-            };
-            _context.Tickets.AddRange(tickets);
-            _context.SaveChanges();
-
             var retrievedTickets = _repository.GetAll<Ticket>();
-            CollectionAssert.AreEqual(tickets, retrievedTickets.ToList());
+            CollectionAssert.AreEqual(_tickets, retrievedTickets.ToList());
         }
 
         [TestMethod]
         public void TestGetTicket()
         {
-            var tickets = new List<Ticket>
+            var firstTicket = _context.Tickets.Find(1);
+
+            var retrievedTicket = _repository.Get(1);
+            Assert.AreEqual(firstTicket, retrievedTicket);
+        }
+
+        private void LoadData()
+        {
+            _tickets = new List<Ticket>
             {
                 new Ticket
                 {
@@ -95,13 +81,8 @@ namespace TestDataAccess
                     Status = Domain.DataTypes.Status.Open
                 }
             };
-            _context.Tickets.AddRange(tickets);
+            _context.Tickets.AddRange(_tickets);
             _context.SaveChanges();
-
-            var firstTicket = _context.Tickets.Find(1);
-
-            var retrievedTicket = _repository.Get(1);
-            Assert.AreEqual(firstTicket, retrievedTicket);
         }
     }
 }
