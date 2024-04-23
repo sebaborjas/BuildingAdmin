@@ -115,7 +115,7 @@ namespace TestDataAccess
             var managerList = Data();
             LoadConext(managerList);
 
-            var getManager = _repository.Get(3);
+            var getManager = _repository.Get(4);
 
             Assert.IsNull(getManager);
         }
