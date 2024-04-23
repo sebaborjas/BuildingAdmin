@@ -110,6 +110,8 @@ public class TestInvitationRepository
 
     _repository.Delete(invitation);
 
+    _context.SaveChanges();
+
     Assert.IsNull(_context.Invitations.Find(2));
   }
   private List<Invitation> Data()
