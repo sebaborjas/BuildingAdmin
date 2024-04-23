@@ -35,12 +35,29 @@ namespace TestDataAccess
             _context.Database.EnsureCreated();
             _repository = new ApartmentRepository(_context);
 
+            LoadData();
         }
 
         [TestMethod]
         public void TestGetAllApartments()
         {
+            var retrievedApartments = _repository.GetAll<Apartment>();
 
+            CollectionAssert.AreEqual(apartments, retrievedApartments.ToList());
+        }
+
+        [TestMethod]
+        public void TestGetApartment()
+        {
+            var firstApartment = apartments.Find(apartment => apartment.Id == 1);
+
+            var retrievedApartment = _repository.Get(1);
+
+            Assert.AreEqual(retrievedApartment, firstApartment);
+        }
+
+        private void LoadData()
+        {
             apartments = new List<Apartment>
             {
                 new Apartment()
@@ -67,10 +84,6 @@ namespace TestDataAccess
 
             _context.Apartments.AddRange(apartments);
             _context.SaveChanges();
-
-            var retrievedApartments = _repository.GetAll<Apartment>();
-
-            CollectionAssert.AreEqual(apartments, retrievedApartments.ToList());
         }
     }
 }
