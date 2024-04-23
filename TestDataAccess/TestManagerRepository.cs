@@ -49,7 +49,7 @@ namespace TestDataAccess
 
             _repository.Insert(manager);
 
-            Assert.AreEqual(manager, _context.Managers.Find(0));
+            Assert.AreEqual(manager, _context.Managers.Find(1));
         }
     }
 }
