@@ -173,5 +173,21 @@ namespace TestDataAccess
             _categoryRepository.Delete(category);
         }
 
+        [TestMethod]
+        public void TestSaveChanges()
+        {
+            var categories = Data();
+            LoadContext(categories);
+
+            var category = _context.Categories.Find(2);
+
+            _categoryRepository.Delete(category);
+
+            _categoryRepository.Save();
+
+            Assert.IsNull(_context.Categories.Find(2));
+
+        }
+
     }
 }
