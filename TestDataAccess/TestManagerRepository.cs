@@ -172,5 +172,17 @@ namespace TestDataAccess
 
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteNotFound()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
+
+            var manager = _context.Managers.Find(3);
+
+            _repository.Delete(manager);
+        }
+
     }
 }
