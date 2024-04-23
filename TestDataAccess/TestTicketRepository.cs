@@ -74,6 +74,15 @@ namespace TestDataAccess
             Assert.AreEqual(retrievedTicket, newTicket);
         }
 
+        [TestMethod]
+        public void TestDeleteTicket()
+        {
+            var ticketToDelete = _context.Tickets.Find(1);
+            _repository.Delete(ticketToDelete);
+            bool ticketExists = _context.Tickets.Any(ticket => ticket.Id == 1);
+            Assert.IsFalse(ticketExists);
+        }
+
         private void LoadData()
         {
             _tickets = new List<Ticket>
