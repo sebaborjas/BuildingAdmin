@@ -90,6 +90,15 @@ public class TestInvitationRepository
     CollectionAssert.AreEqual(list, invitations);
   }
 
+  [TestMethod]
+  public void TestGetAllNoList()
+  {
+    var invitations = _repository.GetAll<Invitation>().ToList();
+
+    int count = invitations.Count;
+
+    Assert.AreEqual(0, count);
+  }
   private List<Invitation> Data()
   {
     List<Invitation> list = new()
