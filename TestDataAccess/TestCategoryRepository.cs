@@ -36,5 +36,31 @@ namespace TestDataAccess
             _categoryRepository = new CategoryRepository(_context);
         }
 
+
+        private List<Category> Data()
+        {
+            List<Category> listData = new List<Category>
+            {
+                new Category { Id = 1, Name = "Electricista" },
+                new Category { Id = 2, Name = "Plomero" },
+                new Category { Id = 3, Name = "Vecino Molesto" }
+
+            };
+            return listData;
+        }
+
+        private void LoadContext(List<Category> data) {
+        
+            _context.Categories.AddRange(data);
+            _context.SaveChanges();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+            _connection.Close();
+        }
     }
 }
