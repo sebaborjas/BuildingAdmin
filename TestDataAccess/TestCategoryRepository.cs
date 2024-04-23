@@ -100,5 +100,16 @@ namespace TestDataAccess
             Assert.IsNull(getCategory);
         }
 
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var categoryList = Data();
+            LoadContext(categoryList);
+
+            var getCategories = _categoryRepository.GetAll<Category>().ToList();
+
+            CollectionAssert.AreEqual(categoryList, getCategories);
+        }
+
     }
 }
