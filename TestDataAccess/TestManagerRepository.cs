@@ -108,5 +108,18 @@ namespace TestDataAccess
 
             Assert.AreEqual(getManager, managerList[0]);
         }
+
+        [TestMethod]
+        public void TestGetManagerNotFound()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
+
+            var getManager = _repository.Get(3);
+
+            Assert.IsNull(getManager);
+        }
+
+
     }
 }
