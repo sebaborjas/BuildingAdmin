@@ -164,5 +164,14 @@ namespace TestDataAccess
             _categoryRepository.Delete(category);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteEmptyList()
+        {
+            var category = _context.Categories.Find(4);
+
+            _categoryRepository.Delete(category);
+        }
+
     }
 }
