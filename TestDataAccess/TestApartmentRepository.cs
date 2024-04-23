@@ -113,6 +113,14 @@ namespace TestDataAccess
             Assert.AreEqual(retrievedApartment.Owner, newOwner);
         }
 
+        [TestMethod]
+        public void TestCheckConnection()
+        {
+            bool connected = _repository.CheckConnection();
+
+            Assert.IsTrue(connected);
+        }
+
         private void LoadData()
         {
             apartments = new List<Apartment>
