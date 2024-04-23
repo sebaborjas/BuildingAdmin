@@ -99,6 +99,19 @@ public class TestInvitationRepository
 
     Assert.AreEqual(0, count);
   }
+
+  [TestMethod]
+  public void TestDeleteInvitation()
+  {
+    List<Invitation> list = Data();
+    LoadConext(list);
+
+    Invitation invitation = list[1];
+
+    _repository.Delete(invitation);
+
+    Assert.IsNull(_context.Invitations.Find(2));
+  }
   private List<Invitation> Data()
   {
     List<Invitation> list = new()
