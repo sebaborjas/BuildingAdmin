@@ -89,6 +89,30 @@ namespace TestDataAccess
             Assert.IsFalse(exists);
         }
 
+        [TestMethod]
+        public void TestUpdateApartment()
+        {
+            var apartmentToModify = _context.Apartments.Find(1);
+
+            var newOwner = new Owner();
+            apartmentToModify.Rooms = 5;
+            apartmentToModify.Bathrooms = 3;
+            apartmentToModify.DoorNumber = 5;
+            apartmentToModify.HasTerrace = true;
+            apartmentToModify.Floor = 3;
+            apartmentToModify.Owner = newOwner;
+            _repository.Update(apartmentToModify);
+            _repository.Save();
+
+            var retrievedApartment = _context.Apartments.Find(1);
+            Assert.AreEqual(retrievedApartment.Rooms, 5);
+            Assert.AreEqual(retrievedApartment.Bathrooms, 3);
+            Assert.AreEqual(retrievedApartment.DoorNumber, 5);
+            Assert.IsTrue(retrievedApartment.HasTerrace);
+            Assert.AreEqual(retrievedApartment.Floor, 3);
+            Assert.AreEqual(retrievedApartment.Owner, newOwner);
+        }
+
         private void LoadData()
         {
             apartments = new List<Apartment>
