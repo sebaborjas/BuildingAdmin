@@ -56,6 +56,27 @@ namespace TestDataAccess
             Assert.AreEqual(retrievedApartment, firstApartment);
         }
 
+        [TestMethod]
+        public void TestAddApartment()
+        {
+            var newApartment = new Apartment
+            {
+                Id = 5,
+                Bathrooms = 2,
+                DoorNumber = 5,
+                Floor = 2,
+                HasTerrace = true,
+                Owner = new Owner(),
+                Rooms = 2
+            };
+
+            _repository.Insert(newApartment);
+            _repository.Save();
+            var retrievedApartment = _context.Apartments.Find(5);
+
+            Assert.AreEqual(retrievedApartment, newApartment);
+        }
+
         private void LoadData()
         {
             apartments = new List<Apartment>
