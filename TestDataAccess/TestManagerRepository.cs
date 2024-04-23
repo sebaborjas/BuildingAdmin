@@ -155,7 +155,7 @@ namespace TestDataAccess
 
             _repository.Update(manager);
 
-            Assert.AreEqual(nuevoEmail, _context.Managers.Find(0).Email);
+            Assert.AreEqual(nuevoEmail, _context.Managers.Find(1).Email);
         }
 
 
