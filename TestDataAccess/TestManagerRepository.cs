@@ -158,8 +158,19 @@ namespace TestDataAccess
             Assert.AreEqual(nuevoEmail, _context.Managers.Find(1).Email);
         }
 
+        [TestMethod]
+        public void TestDelete()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
 
+            var manager = _context.Managers.Find(1);
 
+            _repository.Delete(manager);
+
+            Assert.IsNotNull(_context.Managers.Find(1));
+
+        }
 
     }
 }
