@@ -165,7 +165,7 @@ namespace TestDataAccess
             var managerList = Data();
             LoadConext(managerList);
 
-            var manager = _context.Managers.Find(2);
+            var manager = _context.Managers.Find(4);
 
             _repository.Update(manager);
         }
