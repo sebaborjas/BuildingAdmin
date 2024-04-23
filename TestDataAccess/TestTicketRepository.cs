@@ -83,6 +83,20 @@ namespace TestDataAccess
             Assert.IsFalse(ticketExists);
         }
 
+        [TestMethod]
+        public void TestUpdateTicket()
+        {
+            var ticketToUpdate = _context.Tickets.Find(2);
+            ticketToUpdate.Description = "Descripcion del ticket modificada";
+            ticketToUpdate.Apartment = new Apartment();
+            ticketToUpdate.Status = Domain.DataTypes.Status.InProgress;
+            ticketToUpdate.AssignedTo = new MaintenanceOperator();
+            _repository.Update(ticketToUpdate);
+
+            var retrievedTicket = _context.Tickets.Find(2);
+            Assert.AreEqual(retrievedTicket, ticketToUpdate);
+        }
+
         private void LoadData()
         {
             _tickets = new List<Ticket>
