@@ -56,6 +56,24 @@ namespace TestDataAccess
             Assert.AreEqual(firstTicket, retrievedTicket);
         }
 
+        [TestMethod]
+        public void TestAddTicket()
+        {
+            var newTicket = new Ticket
+            {
+                Apartment = new Apartment(),
+                AssignedTo = null,
+                Category = new Category(),
+                Id = 5,
+                Description = "Descripcion ticket 5",
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = new Manager()
+            };
+            _repository.Insert(newTicket);
+            var retrievedTicket = _context.Tickets.Find(5);
+            Assert.AreEqual(retrievedTicket, newTicket);
+        }
+
         private void LoadData()
         {
             _tickets = new List<Ticket>
