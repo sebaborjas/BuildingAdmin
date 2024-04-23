@@ -220,6 +220,17 @@ namespace TestDataAccess
             Assert.IsNull(_context.Managers.Find(3));
         }
 
+        [TestMethod]
+        public void TestSaveChangesNoChanges()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
+
+            _repository.Save();
+
+            Assert.AreEqual(3, _context.Managers.Count());  
+        }
+
 
     }
 }
