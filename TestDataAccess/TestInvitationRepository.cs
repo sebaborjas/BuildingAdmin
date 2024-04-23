@@ -123,6 +123,14 @@ public class TestInvitationRepository
     _connection.Close();
   }
 
+  [TestMethod]
+  public void TestCheckConnection()
+  {
+    bool connection = _repository.CheckConnection();
+
+    Assert.IsTrue(connection);
+  }
+
   private List<Invitation> Data()
   {
     List<Invitation> list = new()
