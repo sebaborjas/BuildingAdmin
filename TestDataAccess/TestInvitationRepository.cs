@@ -114,6 +114,15 @@ public class TestInvitationRepository
 
     Assert.IsNull(_context.Invitations.Find(2));
   }
+
+  [TestCleanup]
+  public void CleanUp()
+  {
+    _context.Database.EnsureDeleted();
+    _context.Dispose();
+    _connection.Close();
+  }
+
   private List<Invitation> Data()
   {
     List<Invitation> list = new()
