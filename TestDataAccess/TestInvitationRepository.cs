@@ -131,6 +131,17 @@ public class TestInvitationRepository
     Assert.IsTrue(connection);
   }
 
+  [TestMethod]
+  public void TestSave()
+  {
+    List<Invitation> list = Data();
+    LoadConext(list);
+
+    _repository.Save();
+
+    Assert.AreEqual(3, _context.Invitations.Count());
+  }
+
   private List<Invitation> Data()
   {
     List<Invitation> list = new()
