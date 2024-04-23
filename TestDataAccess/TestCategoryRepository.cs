@@ -111,5 +111,15 @@ namespace TestDataAccess
             CollectionAssert.AreEqual(categoryList, getCategories);
         }
 
+        [TestMethod]
+        public void TestGetAllNoList()
+        {
+            var getCategories = _categoryRepository.GetAll<Category>().ToList();
+
+            int count = getCategories.Count;
+
+            Assert.AreEqual(0, count);
+        }
+
     }
 }
