@@ -106,7 +106,7 @@ namespace TestDataAccess
 
             var getManager = _repository.Get(1);
 
-            Assert.AreEqual(getManager, managerList[1]);
+            Assert.AreEqual(getManager, managerList[0]);
         }
     }
 }
