@@ -76,5 +76,17 @@ namespace TestDataAccess
 
             Assert.AreEqual(category, _context.Categories.Find(4));
         }
+
+        [TestMethod]
+        public void TestGet()
+        {
+            var categoryList = Data();
+            LoadContext(categoryList);
+
+            var getCategory = _categoryRepository.Get(1);
+
+            Assert.AreEqual(getCategory, categoryList[0]);
+          
+        }
     }
 }
