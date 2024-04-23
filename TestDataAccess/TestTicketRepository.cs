@@ -68,5 +68,40 @@ namespace TestDataAccess
             var retrievedTickets = _repository.GetAll<Ticket>();
             CollectionAssert.AreEqual(tickets, retrievedTickets.ToList());
         }
+
+        [TestMethod]
+        public void TestGetTicket()
+        {
+            var tickets = new List<Ticket>
+            {
+                new Ticket
+                {
+                    Id = 1,
+                    Apartment = new Apartment(),
+                    AssignedTo = new MaintenanceOperator(),
+                    Category = new Category(),
+                    CreatedBy = new MaintenanceOperator(),
+                    Description = "Descripcion ticket 2",
+                    Status = Domain.DataTypes.Status.Open
+                },
+                new Ticket
+                {
+                    Id = 2,
+                    Apartment = new Apartment(),
+                    AssignedTo = new MaintenanceOperator(),
+                    Category = new Category(),
+                    CreatedBy = new MaintenanceOperator(),
+                    Description = "Descripcion ticket 1",
+                    Status = Domain.DataTypes.Status.Open
+                }
+            };
+            _context.Tickets.AddRange(tickets);
+            _context.SaveChanges();
+
+            var firstTicket = _context.Tickets.Find(1);
+
+            var retrievedTicket = _repository.Get(1);
+            Assert.AreEqual(firstTicket, retrievedTicket);
+        }
     }
 }
