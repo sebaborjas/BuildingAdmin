@@ -128,7 +128,7 @@ namespace TestDataAccess
 
             var getAllManagers = _repository.GetAll<Manager>().ToList();
 
-            CollectionAssert.AreNotEqual(managerList, getAllManagers);
+            CollectionAssert.AreEqual(managerList, getAllManagers);
         }
 
 
