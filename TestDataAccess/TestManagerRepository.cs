@@ -68,9 +68,9 @@ namespace TestDataAccess
             return list;
         }
 
-        public void InsertData()
+        public void LoadConext(List<Manager> list)
         {
-            _context.Managers.AddRange(Data());
+            _context.Managers.AddRange(list);
             _context.SaveChanges();
         }
 
