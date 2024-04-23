@@ -13,6 +13,8 @@ namespace DataAccess
         public virtual DbSet<Administrator> Administrators { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
 
+        public virtual DbSet<Apartment> Apartments {  get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }
