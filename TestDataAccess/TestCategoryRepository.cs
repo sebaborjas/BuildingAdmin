@@ -62,5 +62,19 @@ namespace TestDataAccess
             _context.Dispose();
             _connection.Close();
         }
+
+        [TestMethod]
+        public void TestInsert()
+        {
+            Category category = new Category
+            {
+                Id = 4,
+                Name = "Pintor"
+            };
+
+            _categoryRepository.Insert(category);
+
+            Assert.AreEqual(category, _context.Categories.Find(4));
+        }
     }
 }
