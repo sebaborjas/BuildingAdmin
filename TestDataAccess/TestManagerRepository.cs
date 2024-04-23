@@ -97,5 +97,16 @@ namespace TestDataAccess
 
             Assert.AreEqual(manager, _context.Managers.Find(4));
         }
+
+        [TestMethod]
+        public void TestGet()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
+
+            var getManager = _repository.Get(1);
+
+            Assert.AreEqual(getManager, managerList[1]);
+        }
     }
 }
