@@ -205,6 +205,21 @@ namespace TestDataAccess
             _repository.Delete(manager);
         }
 
+        [TestMethod]
+        public void TestSaveChanges()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
+
+            var manager = _context.Managers.Find(3);
+
+            _repository.Delete(manager);
+
+            _repository.Save();
+
+            Assert.IsNull(_context.Managers.Find(3));
+        }
+
 
     }
 }
