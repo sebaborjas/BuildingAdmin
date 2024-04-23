@@ -179,7 +179,7 @@ namespace TestDataAccess
             var managerList = Data();
             LoadConext(managerList);
 
-            var manager = _context.Managers.Find(3);
+            var manager = _context.Managers.Find(5);
 
             _repository.Delete(manager);
         }
