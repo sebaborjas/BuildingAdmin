@@ -72,4 +72,24 @@ public class TestInvitationRepository
 
     Assert.AreEqual(nuevoEmail, _context.Invitations.Find(1).Email);
   }
+
+  [TestMethod]
+  public void TestGetInvitation()
+  {
+    Invitation invitation = new Invitation
+    {
+      Id = 1,
+      Email = "test@test.com",
+      ExpirationDate = DateTime.Now.AddDays(15),
+      Status = InvitationStatus.Pending
+    };
+
+    _context.Invitations.Add(invitation);
+
+    _context.SaveChanges();
+
+    var admin = _repository.Get(1);
+
+    Assert.AreEqual(invitation, admin);
+  }
 }
