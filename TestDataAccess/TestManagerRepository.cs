@@ -196,6 +196,14 @@ namespace TestDataAccess
             _repository.Delete(manager);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteEmptyList()
+        {
+            var manager = _context.Managers.Find(5);
+
+            _repository.Delete(manager);
+        }
 
 
     }
