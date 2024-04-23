@@ -152,5 +152,17 @@ namespace TestDataAccess
             Assert.IsNull(_context.Categories.Find(2)); 
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteNotFound()
+        {
+            var categories = Data();
+            LoadContext(categories);
+
+            var category = _context.Categories.Find(6);
+
+            _categoryRepository.Delete(category);
+        }
+
     }
 }
