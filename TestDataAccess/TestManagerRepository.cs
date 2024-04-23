@@ -120,6 +120,17 @@ namespace TestDataAccess
             Assert.IsNull(getManager);
         }
 
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
+
+            var getAllManagers = _repository.GetAll<Manager>().ToList();
+
+            CollectionAssert.AreNotEqual(managerList, getAllManagers);
+        }
+
 
     }
 }
