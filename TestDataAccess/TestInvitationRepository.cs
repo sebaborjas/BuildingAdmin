@@ -50,17 +50,10 @@ public class TestInvitationRepository
   [TestMethod]
   public void TestUpdateInvitation()
   {
-    Invitation invitation = new Invitation
-    {
-      Id = 1,
-      Email = "test@test.com",
-      ExpirationDate = DateTime.Now.AddDays(15),
-      Status = InvitationStatus.Pending
-    };
+    List<Invitation> list = Data();
+    LoadConext(list);
 
-    _context.Invitations.Add(invitation);
-
-    _context.SaveChanges();
+    Invitation invitation = list[2];
 
     string nuevoEmail = "nuevo@email.com";
 
@@ -70,26 +63,54 @@ public class TestInvitationRepository
 
     _context.SaveChanges();
 
-    Assert.AreEqual(nuevoEmail, _context.Invitations.Find(1).Email);
+    Assert.AreEqual(nuevoEmail, _context.Invitations.Find(3).Email);
   }
 
   [TestMethod]
   public void TestGetInvitation()
   {
-    Invitation invitation = new Invitation
-    {
-      Id = 1,
-      Email = "test@test.com",
-      ExpirationDate = DateTime.Now.AddDays(15),
-      Status = InvitationStatus.Pending
-    };
+    List<Invitation> list = Data();
+    LoadConext(list);
 
-    _context.Invitations.Add(invitation);
-
-    _context.SaveChanges();
+    Invitation invitation = list[0];
 
     var admin = _repository.Get(1);
 
     Assert.AreEqual(invitation, admin);
+  }
+
+  private List<Invitation> Data()
+  {
+    List<Invitation> list = new()
+    {
+      new Invitation
+      {
+        Id = 1,
+        Email = "manager1@email.com",
+        ExpirationDate = DateTime.Now.AddDays(15),
+        Status = InvitationStatus.Pending
+      },
+      new Invitation
+      {
+        Id = 2,
+        Email = "manager2@email.com",
+        ExpirationDate = DateTime.Now.AddDays(15),
+        Status = InvitationStatus.Pending
+      },
+      new Invitation
+      {
+        Id = 3,
+        Email = "manager3@email.com",
+        ExpirationDate = DateTime.Now.AddDays(15),
+        Status = InvitationStatus.Pending
+      }
+    };
+    return list;
+  }
+
+  private void LoadConext(List<Invitation> list)
+  {
+    _context.Invitations.AddRange(list);
+    _context.SaveChanges();
   }
 }
