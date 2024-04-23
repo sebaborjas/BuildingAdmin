@@ -189,5 +189,13 @@ namespace TestDataAccess
 
         }
 
+        [TestMethod]
+        public void TestCheckConnection()
+        {
+            bool connection = _categoryRepository.CheckConnection();
+
+            Assert.IsTrue(connection);
+        }
+
     }
 }
