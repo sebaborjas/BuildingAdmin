@@ -77,6 +77,18 @@ namespace TestDataAccess
             Assert.AreEqual(retrievedApartment, newApartment);
         }
 
+        [TestMethod]
+        public void TestDeleteApartment()
+        {
+            var apartmentToDelete = _context.Apartments.Find(1);
+
+            _repository.Delete(apartmentToDelete);
+            _repository.Save();
+
+            bool exists = _context.Apartments.Find(1) != null;
+            Assert.IsFalse(exists);
+        }
+
         private void LoadData()
         {
             apartments = new List<Apartment>
