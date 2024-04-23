@@ -139,5 +139,18 @@ namespace TestDataAccess
             Assert.AreEqual(newName, _context.Categories.Find(1).Name);
         }
 
+        [TestMethod]
+        public void TestDelete()
+        {
+            var categoryList = Data();
+            LoadContext(categoryList);
+
+            var category = _context.Categories.Find(2);
+
+            _categoryRepository.Delete(category);
+
+            Assert.IsNull(_context.Categories.Find(2)); 
+        }
+
     }
 }
