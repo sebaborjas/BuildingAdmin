@@ -36,12 +36,58 @@ namespace TestDataAccess
             _repository = new ManagerRepository(_context);
         }
 
+        private List<Manager> Data()
+        {
+            List<Manager> list = new List<Manager>
+            {
+                new Manager
+                {
+                    Id = 1,
+                    Name = "Seba Borjas",
+                    Email = "seba@test.com",
+                    Password = "SebaB.1234"
+                },
+
+                new Manager
+                {
+                    Id = 2,
+                    Name = "Rodri Conze",
+                    Email = "rodri@test.com",
+                    Password = "Conze.1234"
+                },
+
+                new Manager
+                {
+                    Id = 3,
+                    Name = "Agus Martinez",
+                    Email = "agus@test.com",
+                    Password = "AgusM.1234"
+                }
+            };
+
+            return list;
+        }
+
+        public void InsertData()
+        {
+            _context.Managers.AddRange(Data());
+            _context.SaveChanges();
+        }
+
+        [TestCleanup]
+        public void CleanUp()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+            _connection.Close();
+        }
+
         [TestMethod]
         public void TestInsert()
         {
             Manager manager = new Manager
             {
-                Id = 1,
+                Id = 4,
                 Name = "Luis Perez",
                 Email = "luis@test.com",
                 Password = "Prueba.1234"
@@ -49,7 +95,7 @@ namespace TestDataAccess
 
             _repository.Insert(manager);
 
-            Assert.AreEqual(manager, _context.Managers.Find(1));
+            Assert.AreEqual(manager, _context.Managers.Find(4));
         }
     }
 }
