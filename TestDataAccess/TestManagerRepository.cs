@@ -168,7 +168,7 @@ namespace TestDataAccess
 
             _repository.Delete(manager);
 
-            Assert.IsNotNull(_context.Managers.Find(1));
+            Assert.IsNull(_context.Managers.Find(1));
 
         }
 
