@@ -121,5 +121,23 @@ namespace TestDataAccess
             Assert.AreEqual(0, count);
         }
 
+
+        [TestMethod]
+        public void TestUpdate()
+        {
+            var categoryList = Data();
+            LoadContext(categoryList);
+
+            var category = _context.Categories.Find(1);
+
+            string newName = "Fontantero";
+
+            category.Name = newName;
+
+            _categoryRepository.Update(category);
+
+            Assert.AreEqual(newName, _context.Categories.Find(1).Name);
+        }
+
     }
 }
