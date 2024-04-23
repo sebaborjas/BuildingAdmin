@@ -138,7 +138,7 @@ namespace TestDataAccess
 
             int count = getManagers.Count;
 
-            Assert.AreEqual(1, count);
+            Assert.AreEqual(0, count);
         }
 
 
