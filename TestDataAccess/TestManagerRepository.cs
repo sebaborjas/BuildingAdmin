@@ -141,6 +141,25 @@ namespace TestDataAccess
             Assert.AreEqual(0, count);
         }
 
+        [TestMethod]
+        public void TestUpdate()
+        {
+            var managerList = Data();
+            LoadConext(managerList);
+
+            var manager = _context.Managers.Find(1);
+
+            string nuevoEmail = "juanperez@test.com";
+
+            manager.Email = nuevoEmail;
+
+            _repository.Update(manager);
+
+            Assert.AreEqual(nuevoEmail, _context.Managers.Find(0).Email);
+        }
+
+
+
 
     }
 }
