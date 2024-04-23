@@ -79,6 +79,17 @@ public class TestInvitationRepository
     Assert.AreEqual(invitation, admin);
   }
 
+  [TestMethod]
+  public void TestGetAllInvitations()
+  {
+    List<Invitation> list = Data();
+    LoadConext(list);
+
+    var invitations = _repository.GetAll<Invitation>().ToList();
+
+    CollectionAssert.AreEqual(list, invitations);
+  }
+
   private List<Invitation> Data()
   {
     List<Invitation> list = new()
