@@ -88,5 +88,17 @@ namespace TestDataAccess
             Assert.AreEqual(getCategory, categoryList[0]);
           
         }
+
+        [TestMethod]
+        public void TestGetNotFound()
+        {
+            var categoryList = Data();
+            LoadContext(categoryList);
+
+            var getCategory = _categoryRepository.Get(5);
+
+            Assert.IsNull(getCategory);
+        }
+
     }
 }
