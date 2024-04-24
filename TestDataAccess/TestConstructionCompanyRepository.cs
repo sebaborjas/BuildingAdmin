@@ -105,5 +105,16 @@ namespace TestDataAccess
 
             Assert.IsNull(constructionCompany);
         }
+
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var constructionCompanies = Data();
+            LoadConext(constructionCompanies);
+
+            var gerConstructionCompanies = _repository.GetAll<ConstructionCompany>().ToList();
+
+            CollectionAssert.AreEqual(constructionCompanies, gerConstructionCompanies);
+        }
     }
 }
