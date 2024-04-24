@@ -116,5 +116,22 @@ namespace TestDataAccess
 
             CollectionAssert.AreEqual(constructionCompanies, gerConstructionCompanies);
         }
+
+        [TestMethod]
+        public void TestUpdate()
+        {
+            var constructionCompanies = Data();
+            LoadConext(constructionCompanies);
+
+            var constructionCompany = _context.ConstructionCompanies.Find(1);
+
+            string newName = "Building SA";
+
+            constructionCompany.Name = newName;
+
+            _repository.Update(constructionCompany);
+
+            Assert.AreEqual(newName, _context.ConstructionCompanies.Find(1).Name);
+        }
     }
 }
