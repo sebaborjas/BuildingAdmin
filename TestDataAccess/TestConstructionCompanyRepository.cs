@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace TestDataAccess
 {
+    [TestClass]
     public class TestConstructionCompanyRepository
     {
         private BuildingAdminContext _context;
@@ -46,7 +47,7 @@ namespace TestDataAccess
 
                 new ConstructionCompany{
                     Id = 2,
-                    Name="Construction Divisions S.A."
+                    Name="Construction Divisions SA"
                 }
 
             };
@@ -80,6 +81,18 @@ namespace TestDataAccess
             _repository.Insert(company);
 
             Assert.AreEqual(company, _context.ConstructionCompanies.Find(3));
+        }
+
+        [TestMethod]
+        public void TestGet()
+        {
+            var constructionCompanies = Data();
+            LoadConext(constructionCompanies);
+
+            var constructionCompany = _repository.Get(1);
+
+            Assert.AreEqual(constructionCompany, constructionCompanies[0]);
+
         }
     }
 }
