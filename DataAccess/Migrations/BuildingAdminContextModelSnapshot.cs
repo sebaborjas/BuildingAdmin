@@ -111,7 +111,7 @@ namespace DataAccess.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+             modelBuilder.Entity("Domain.ConstructionCompany", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,6 +125,22 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ConstructionCompany");
+                });
+
+            modelBuilder.Entity("Domain.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>
@@ -340,6 +356,7 @@ namespace DataAccess.Migrations
                 {
                     b.Navigation("Buildings");
                 });
+
 #pragma warning restore 612, 618
         }
     }
