@@ -133,5 +133,19 @@ namespace TestDataAccess
 
             Assert.AreEqual(newName, _context.ConstructionCompanies.Find(1).Name);
         }
+
+        [TestMethod]
+        public void TestDelete()
+        {
+            var constructionCompanies = Data();
+            LoadConext(constructionCompanies);
+
+            var constructionCompany = _context.ConstructionCompanies.Find(1);
+
+            _repository.Delete(constructionCompany);
+
+            Assert.IsNull(_context.ConstructionCompanies.Find(1));
+
+        }
     }
 }
