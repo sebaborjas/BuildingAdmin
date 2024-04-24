@@ -94,5 +94,16 @@ namespace TestDataAccess
             Assert.AreEqual(constructionCompany, constructionCompanies[0]);
 
         }
+
+        [TestMethod]
+        public void TestGetNotFound()
+        {
+            var constructionCompanies = Data();
+            LoadConext(constructionCompanies);
+
+            var constructionCompany = _repository.Get(5);
+
+            Assert.IsNull(constructionCompany);
+        }
     }
 }
