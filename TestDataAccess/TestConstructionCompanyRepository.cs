@@ -67,5 +67,19 @@ namespace TestDataAccess
             _context.Dispose();
             _connection.Close();
         }
+
+        [TestMethod]
+        public void TestInsert()
+        {
+            ConstructionCompany company = new ConstructionCompany
+            {
+                Id = 3,
+                Name = "Norte Construcciones"
+            };
+
+            _repository.Insert(company);
+
+            Assert.AreEqual(company, _context.ConstructionCompanies.Find(3));
+        }
     }
 }
