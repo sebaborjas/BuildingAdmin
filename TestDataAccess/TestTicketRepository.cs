@@ -125,5 +125,12 @@ namespace TestDataAccess
             _context.Tickets.AddRange(_tickets);
             _context.SaveChanges();
         }
+
+        [TestMethod]
+        public void TestCheckConnection()
+        {
+            bool connected = _repository.CheckConnection();
+            Assert.IsTrue(connected);
+        }
     }
 }
