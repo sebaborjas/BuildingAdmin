@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    partial class BuildingAdminContextModelSnapshot : ModelSnapshot
+    [Migration("20240423000617_addManager")]
+    partial class addManager
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +114,7 @@ namespace DataAccess.Migrations
                     b.ToTable("Category");
                 });
 
-             modelBuilder.Entity("Domain.ConstructionCompany", b =>
+            modelBuilder.Entity("Domain.ConstructionCompany", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,23 +130,7 @@ namespace DataAccess.Migrations
                     b.ToTable("ConstructionCompany");
                 });
 
-            modelBuilder.Entity("Domain.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+            modelBuilder.Entity("Domain.Invitation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,21 +214,134 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdministratorId");
+                    b.HasIndex("ApartmentId");
 
-                    b.ToTable("Invitations");
+                    b.HasIndex("AssignedToId");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Ticket");
                 });
 
-            modelBuilder.Entity("Domain.Invitation", b =>
+            modelBuilder.Entity("Domain.User", b =>
                 {
-                    b.HasOne("Domain.Administrator", null)
-                        .WithMany("Invitations")
-                        .HasForeignKey("AdministratorId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Administrator", b =>
                 {
-                    b.Navigation("Invitations");
+                    b.HasBaseType("Domain.User");
+
+                    b.HasDiscriminator().HasValue("Administrator");
+                });
+
+            modelBuilder.Entity("Domain.Manager", b =>
+                {
+                    b.HasBaseType("Domain.User");
+
+                    b.HasDiscriminator().HasValue("Manager");
+                });
+
+            modelBuilder.Entity("Domain.Apartment", b =>
+                {
+                    b.HasOne("Domain.Building", null)
+                        .WithMany("Apartments")
+                        .HasForeignKey("BuildingId");
+
+                    b.HasOne("Domain.Owner", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.Building", b =>
+                {
+                    b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
+                        .WithMany()
+                        .HasForeignKey("ConstructionCompanyId");
+
+                    b.HasOne("Domain.Manager", null)
+                        .WithMany("Buildings")
+                        .HasForeignKey("ManagerId");
+
+                    b.Navigation("ConstructionCompany");
+                });
+
+            modelBuilder.Entity("Domain.Ticket", b =>
+                {
+                    b.HasOne("Domain.Apartment", "Apartment")
+                        .WithMany()
+                        .HasForeignKey("ApartmentId");
+
+                    b.HasOne("Domain.User", "AssignedTo")
+                        .WithMany()
+                        .HasForeignKey("AssignedToId");
+
+                    b.HasOne("Domain.Building", null)
+                        .WithMany("Tickets")
+                        .HasForeignKey("BuildingId");
+
+                    b.HasOne("Domain.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Domain.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.Navigation("Apartment");
+
+                    b.Navigation("AssignedTo");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Domain.Building", b =>
+                {
+                    b.Navigation("Apartments");
+
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Domain.Manager", b =>
+                {
+                    b.Navigation("Buildings");
                 });
 #pragma warning restore 612, 618
         }
