@@ -159,5 +159,21 @@ namespace TestDataAccess
 
             _repository.Delete(constructionCompany);
         }
+
+        [TestMethod]
+        public void TestSaveChanges()
+        {
+            var constructionCompanies = Data();
+            LoadConext(constructionCompanies);
+
+            var constructionCompany = _context.ConstructionCompanies.Find(2);
+
+            _repository.Delete(constructionCompany);
+
+            _repository.Save();
+
+            Assert.IsNull(_context.ConstructionCompanies.Find(2));
+
+        }
     }
 }
