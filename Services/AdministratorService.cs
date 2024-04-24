@@ -4,8 +4,8 @@ using Domain;
 
 public class AdministratorService : IService<Administrator>
 {
-  public int Create(Administrator entity)
+  public Administrator Create(Administrator entity)
   {
-    return 3;
+    return new NotImplementedException();
   }
 }

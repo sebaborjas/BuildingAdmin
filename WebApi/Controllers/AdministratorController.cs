@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Domain;
 using IServices;
+using DTO.In;
+using DTO.Out;
 
 namespace WebApi;
 
@@ -16,8 +18,10 @@ public class AdministratorController : ControllerBase
   }
 
   [HttpPost]
-  public IActionResult Create(Administrator entity)
+  public IActionResult Create([FromBody] AdministratorCreateModel newAdministrator)
   {
-    return Ok();
+    var administrator = _service.Create(newAdministrator.ToEntity());
+    
+    return Ok(new AdministratorModel(administrator));
   }
 }
