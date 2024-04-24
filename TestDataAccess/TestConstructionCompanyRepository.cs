@@ -175,5 +175,13 @@ namespace TestDataAccess
             Assert.IsNull(_context.ConstructionCompanies.Find(2));
 
         }
+
+        [TestMethod]
+        public void TestCheckConnection()
+        {
+            bool connection = _repository.CheckConnection();
+
+            Assert.IsTrue(connection);
+        }
     }
 }
