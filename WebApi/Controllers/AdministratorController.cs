@@ -20,8 +20,8 @@ public class AdministratorController : ControllerBase
   [HttpPost]
   public IActionResult Create([FromBody] AdministratorCreateModel newAdministrator)
   {
-    var administrator = _service.Create(newAdministrator.ToEntity());
+    AdministratorModel administrator = new AdministratorModel(_service.Create(newAdministrator.ToEntity()));
     
-    return Ok(new AdministratorModel(administrator));
+    return Ok(administrator);
   }
 }
