@@ -179,5 +179,17 @@ namespace TestDataAccess
             Assert.AreEqual(0, count);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestUpdateNotFound()
+        {
+            var owners = Data();
+            LoadConext(owners);
+
+            var owner = _context.Owners.Find(4);
+
+            _repository.Update(owner);
+        }
+
     }
 }
