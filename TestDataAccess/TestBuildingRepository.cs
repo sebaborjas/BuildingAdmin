@@ -169,5 +169,17 @@ namespace TestDataAccess
 
             Assert.IsNull(_context.Buildings.Find(1));
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteNotFound()
+        {
+            var buildings = Data();
+            LoadContext(buildings);
+
+            var building = _context.Buildings.Find(3);
+
+            _repository.Delete(building);
+        }
     }
 }
