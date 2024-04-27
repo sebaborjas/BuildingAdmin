@@ -51,8 +51,15 @@ namespace WebApi.Controllers
             {
                 return BadRequest();
             }
-            _invitationServices.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
-            return Ok();
+            try
+            {
+                _invitationServices.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
+                return Ok();
+            } catch (Exception exception)
+            {
+                return NotFound();
+            }
+            
         }
 
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
