@@ -192,5 +192,19 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestModifyInvitationWithGoneDeadline()
+        {
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            var input = new ModifyInvitationInput()
+            {
+                ExpirationDate = DateTime.Now.AddDays(-1),
+            };
+
+            var result = controller.ModifyInvitation(1, input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
