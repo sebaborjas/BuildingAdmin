@@ -20,6 +20,10 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
+            if(createBuildingInput == null)
+            {
+                return BadRequest();
+            }
             var newBuilding = _buildingServices.CreateBuilding(createBuildingInput.ToEntity());
             var response = new CreateBuildingOutput(newBuilding);
             return Ok(response);
