@@ -30,6 +30,7 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpDelete("{id}")]
         public IActionResult DeleteInvitation(int id)
         {
             try
