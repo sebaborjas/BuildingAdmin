@@ -139,5 +139,22 @@ namespace TestDataAccess
             CollectionAssert.AreEqual(buildings, allBuildings);
 
         }
+
+        [TestMethod]
+        public void TestUpdate()
+        {
+            var buildings = Data();
+            LoadContext(buildings);
+
+            var building = _context.Buildings.Find(1);
+
+            string newName = "Building Este";
+
+            building.Name = newName;
+
+            _repository.Update(building);
+
+            Assert.AreEqual(building, _context.Buildings.Find(1));
+        }
     }
 }
