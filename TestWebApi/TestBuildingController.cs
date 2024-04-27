@@ -108,5 +108,25 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestCreateBuildingWithEmptyName()
+        {
+            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
+            var buildingController = new BuildingController(_buildingServices.Object);
+            CreateBuildingInput input = new CreateBuildingInput()
+            {
+                Name = "",
+                Address = "Calle, 123, esquina",
+                Location = "111,111",
+                ConstructionCompany = "Empresa constructora",
+                Expenses = 1000,
+                Apartments = new List<NewApartmentInput>()
+            };
+
+            var result = buildingController.CreateBuilding(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
