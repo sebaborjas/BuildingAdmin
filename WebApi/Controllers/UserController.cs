@@ -20,6 +20,10 @@ public class UserController : ControllerBase
   [HttpPost("administrator")]
   public IActionResult CreateAdministrator([FromBody] AdministratorCreateModel newAdministrator)
   {
+    if (newAdministrator == null)
+    {
+      return BadRequest();
+    }
     AdministratorModel administrator = new AdministratorModel(_service.CreateAdministrator(newAdministrator.ToEntity()));
     
     return Ok(administrator);

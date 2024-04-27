@@ -60,15 +60,12 @@ public class TestUserController
   {
     Administrator admin = new Administrator
     {
-      Id = 1,
       Name = "John",
       LastName = "Doe",
-      Email = ""
+      Email = "test@test.com"
     };
 
     AdministratorCreateModel administratorCreateModel = null;
-
-    _userServiceMock.Setup(r => r.CreateAdministrator(It.IsAny<Administrator>())).Returns(admin);
 
     var userController = new UserController(_userServiceMock.Object);
 
