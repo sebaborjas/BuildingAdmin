@@ -18,7 +18,7 @@ public class UserController : ControllerBase
   }
 
   [HttpPost("administrator")]
-  public IActionResult Create([FromBody] AdministratorCreateModel newAdministrator)
+  public IActionResult CreateAdministrator([FromBody] AdministratorCreateModel newAdministrator)
   {
     AdministratorModel administrator = new AdministratorModel(_service.CreateAdministrator(newAdministrator.ToEntity()));
     
