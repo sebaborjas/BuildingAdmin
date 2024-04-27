@@ -20,14 +20,19 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
-            if(createBuildingInput == null || string.IsNullOrWhiteSpace(createBuildingInput.Name) || string.IsNullOrWhiteSpace(createBuildingInput.Address) ||
-                string.IsNullOrWhiteSpace(createBuildingInput.Location) || createBuildingInput.ConstructionCompany == null || createBuildingInput.ConstructionCompany =="")
+            if (!IsValidCreateBuildingInput(createBuildingInput))
             {
                 return BadRequest();
             }
             var newBuilding = _buildingServices.CreateBuilding(createBuildingInput.ToEntity());
             var response = new CreateBuildingOutput(newBuilding);
             return Ok(response);
+        }
+
+        private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)
+        {
+            return createBuildingInput != null && !string.IsNullOrWhiteSpace(createBuildingInput.Name) && !string.IsNullOrWhiteSpace(createBuildingInput.Address) &&
+                !string.IsNullOrWhiteSpace(createBuildingInput.Location) && !string.IsNullOrWhiteSpace(createBuildingInput.ConstructionCompany);
         }
     }
 }
