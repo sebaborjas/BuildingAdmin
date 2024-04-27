@@ -9,6 +9,8 @@ namespace DTO.In
         public string Email { get; set; }
         public string Password { get; set; }
 
+        public Building Building { get; set; }
+
         public MaintenanceOperator ToEntity()
         {
             return new MaintenanceOperator
@@ -16,7 +18,8 @@ namespace DTO.In
                 Name = Name,
                 LastName = LastName,
                 Email = Email,
-                Password = Password
+                Password = Password,
+                Building = Building
             };
         }
     }

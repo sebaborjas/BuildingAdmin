@@ -16,6 +16,6 @@ namespace Domain
             }
         }
 
-        public Building building { get; set; }
+        public Building Building { get; set; }
     }
 }
