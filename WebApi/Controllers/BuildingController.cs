@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
-            if (!IsValidCreateBuildingInput(createBuildingInput))
+            if (!IsValidCreateBuildingInput(createBuildingInput) || !AreValidApartments(createBuildingInput.Apartments))
             {
                 return BadRequest();
             }
@@ -33,6 +33,23 @@ namespace WebApi.Controllers
         {
             return createBuildingInput != null && !string.IsNullOrWhiteSpace(createBuildingInput.Name) && !string.IsNullOrWhiteSpace(createBuildingInput.Address) &&
                 !string.IsNullOrWhiteSpace(createBuildingInput.Location) && !string.IsNullOrWhiteSpace(createBuildingInput.ConstructionCompany) && createBuildingInput.Expenses >= 0;
+        }
+
+
+        private bool AreValidApartments(List<NewApartmentInput> apartments)
+        {
+            try
+            {
+                apartments.ForEach(apartment =>
+                {
+                    apartment.ToEntity();
+                });
+                return true;
+            } catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
     }
 }
