@@ -345,5 +345,16 @@ namespace TestWebApi
             _invitationServicesMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
         }
+
+        [TestMethod]
+        public void TestRejectInvitationWithoutBody()
+        {
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            RejectInvitationInput input = null;
+
+            var result = controller.RejectInvitation(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }

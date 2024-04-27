@@ -82,6 +82,10 @@ namespace WebApi.Controllers
         [HttpPut("reject")]
         public IActionResult RejectInvitation(RejectInvitationInput rejectInvitationInput)
         {
+            if (rejectInvitationInput == null)
+            {
+                return BadRequest();
+            }
             _invitationServices.RejectInvitation(rejectInvitationInput.Email);
             return Ok();
         }
