@@ -32,6 +32,7 @@ namespace WebApi.Controllers
 
         public IActionResult DeleteInvitation(int id)
         {
+            _invitationServices.DeleteInvitation(id);
             return Ok();
         }
 
