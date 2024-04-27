@@ -33,6 +33,11 @@ public class UserService : IUserServices
   public void DeleteManager(int id)
   {
     Manager managerToDelete = _managerRepository.Get(id);
+
+    if(managerToDelete == null)
+    {
+      throw new ArgumentNullException("Manager not found");
+    }
     _managerRepository.Delete(managerToDelete);
   }
 }

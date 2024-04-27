@@ -66,6 +66,7 @@ public class TestUserService
   [TestMethod]
   public void TestDeleteManager()
   {
+    _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(new Manager()).Verifiable();
     _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Verifiable();
 
     _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
@@ -76,9 +77,11 @@ public class TestUserService
   }
 
   [TestMethod]
+  [ExpectedException(typeof(ArgumentNullException))]
   public void TestDeleteManagerNotFound()
   {
-    _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Throws(new NullReferenceException());
+    _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Manager)null);
+    _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Throws(new ArgumentNullException());
 
     _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
 
