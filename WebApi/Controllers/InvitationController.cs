@@ -21,7 +21,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody]CreateInvitationInput newInvitationInput)
         {
-            if(newInvitationInput == null || string.IsNullOrWhiteSpace(newInvitationInput.Email) || newInvitationInput.Name == null)
+            if(newInvitationInput == null || string.IsNullOrWhiteSpace(newInvitationInput.Email) || newInvitationInput.Name == null || newInvitationInput.Name == "")
             {
                 return BadRequest();
             }
