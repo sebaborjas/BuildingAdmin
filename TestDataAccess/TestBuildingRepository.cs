@@ -116,5 +116,17 @@ namespace TestDataAccess
 
             Assert.AreEqual(buildings[0], building);
         }
-    }   
+
+        [TestMethod]
+        public void TestGetNotFound()
+        {
+            var buildings = Data();
+            LoadContext(buildings);
+
+            var building = _repository.Get(3);
+
+            Assert.IsNull(building);
+        }
+
+    }
 }
