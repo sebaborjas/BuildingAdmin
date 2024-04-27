@@ -367,5 +367,20 @@ namespace TestWebApi
             _buildingServices.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
+
+        [TestMethod]
+        public void TestModifyBuildingWithInvalidData()
+        {
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var input = new ModifyBuildingInput()
+            {
+                ConstructionCompany = "",
+                Expenses = -1000
+            };
+            var result = buildingController.ModifyBuilding(100, input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
