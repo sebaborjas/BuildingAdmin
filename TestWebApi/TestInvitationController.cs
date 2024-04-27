@@ -367,5 +367,19 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestRejectInvitationWithEmptyEmail()
+        {
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            RejectInvitationInput input = new RejectInvitationInput()
+            {
+                Email = ""
+            };
+
+            var result = controller.RejectInvitation(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
