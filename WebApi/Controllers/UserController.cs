@@ -20,19 +20,7 @@ public class UserController : ControllerBase
   [HttpPost("administrator")]
   public IActionResult CreateAdministrator([FromBody] AdministratorCreateModel newAdministrator)
   {
-    if (newAdministrator == null)
-    {
-      return BadRequest();
-    }
-    if (newAdministrator.Name == null)
-    {
-      return BadRequest();
-    }
-    if (newAdministrator.LastName == null)
-    {
-      return BadRequest();
-    }
-    if (newAdministrator.Email == null)
+    if(newAdministrator == null  || newAdministrator.Name == null || newAdministrator.LastName == null || newAdministrator.Email == null)
     {
       return BadRequest();
     }
