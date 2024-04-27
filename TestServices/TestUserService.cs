@@ -93,6 +93,28 @@ public class TestUserService
   }
 
   [TestMethod]
+  [ExpectedException(typeof(ArgumentException))]
+  public void CreateCorrectMaintenanceOperatorAlreadyExist()
+  {
+    _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<MaintenanceOperator, bool>> predicate, List<string> includes) => new MaintenanceOperator());
+
+    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+
+    var maintenanceOperator = new MaintenanceOperator
+    {
+      Name = "Valentino",
+      LastName = "Rossi",
+      Email = "yamaha@goat.es",
+      Password = "Yamaha.1234"
+    };
+
+    var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+
+    _operatorRepositoryMock.VerifyAll();
+  }
+
+  [TestMethod]
   public void TestDeleteManager()
   {
     _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(new Manager()).Verifiable();
