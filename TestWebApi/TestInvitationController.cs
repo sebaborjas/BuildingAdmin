@@ -297,5 +297,20 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestAcceptInvitationWithEmptyPassword()
+        {
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            AcceptInvitationInput input = new AcceptInvitationInput()
+            {
+                Password = "",
+                Email = "newManager@correo.com",
+            }; ;
+
+            var result = controller.AcceptInvitation(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
