@@ -335,4 +335,20 @@ public class TestUserController
 
     Assert.IsInstanceOfType(result, typeof(OkResult));
   }
+
+  [TestMethod]
+  public void TestDeleteManagerNotFound()
+  {
+    int id = 1;
+
+    _userServiceMock.Setup(r => r.DeleteManager(id)).Throws(new ArgumentOutOfRangeException("Manager not found"));
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.DeleteManager(id);
+
+    _userServiceMock.VerifyAll();
+
+    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+  }
 }
