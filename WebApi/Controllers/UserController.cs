@@ -24,6 +24,10 @@ public class UserController : ControllerBase
     {
       return BadRequest();
     }
+    if (newAdministrator.Name == null)
+    {
+      return BadRequest();
+    }
     AdministratorModel administrator = new AdministratorModel(_service.CreateAdministrator(newAdministrator.ToEntity()));
     
     return Ok(administrator);
