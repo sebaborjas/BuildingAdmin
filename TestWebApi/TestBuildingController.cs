@@ -11,6 +11,7 @@ using WebApi.Controllers;
 using DTO.Out;
 using Microsoft.AspNetCore.Mvc;
 using DTO.In;
+using System.Net;
 
 namespace TestWebApi
 {
@@ -83,6 +84,25 @@ namespace TestWebApi
             _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = null;
+
+            var result = buildingController.CreateBuilding(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
+
+        [TestMethod]
+        public void TestCreateBuildingWithoutName()
+        {
+            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
+            var buildingController = new BuildingController(_buildingServices.Object);
+            CreateBuildingInput input = new CreateBuildingInput()
+            {
+                Address = "Calle, 123, esquina",
+                Location = "111,111",
+                ConstructionCompany = "Empresa constructora",
+                Expenses = 1000,
+                Apartments = new List<NewApartmentInput>()
+            };
 
             var result = buildingController.CreateBuilding(input);
 
