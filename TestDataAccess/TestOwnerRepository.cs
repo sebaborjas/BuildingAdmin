@@ -64,5 +64,19 @@ namespace TestDataAccess
             return list;
         }
 
+        public void LoadConext(List<Owner> list)
+        {
+            _context.Owners.AddRange(list);
+            _context.SaveChanges();
+        }
+
+        [TestCleanup]
+        public void CleanUp()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+            _connection.Close();
+        }
+
     }
 }
