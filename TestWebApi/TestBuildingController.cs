@@ -294,5 +294,17 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void DeleteBuilding()
+        {
+            _buildingServices.Setup(r => r.DeleteBuilding(It.IsAny<int>()));
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.DeleteBuilding(10);
+
+            _buildingServices.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace IServices
     public interface IBuildingServices
     {
         Building CreateBuilding(Building building);
+
+        void DeleteBuilding(int id);
     }
 }

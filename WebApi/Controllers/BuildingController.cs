@@ -29,6 +29,12 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBuilding(int id)
+        {
+            return Ok();
+        }
+
         private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)
         {
             return createBuildingInput != null && !string.IsNullOrWhiteSpace(createBuildingInput.Name) && !string.IsNullOrWhiteSpace(createBuildingInput.Address) &&
@@ -49,7 +55,7 @@ namespace WebApi.Controllers
             {
                 return false;
             }
-            
+
         }
     }
 }
