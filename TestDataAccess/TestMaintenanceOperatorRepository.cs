@@ -160,6 +160,19 @@ namespace TestDataAccess
 
             Assert.AreEqual(newName, _context.MaintenanceOperators.Find(1).Name);
         }
+
+        [TestMethod]
+        public void TestDelete()
+        {
+            var maintenanceOperators = Data();
+            LoadConext(maintenanceOperators);
+
+            var maintenanceOperator = _context.MaintenanceOperators.Find(1);
+
+            _repository.Delete(maintenanceOperator);
+
+            Assert.IsNull(_context.MaintenanceOperators.Find(1));
+        }
     }
 }
 
