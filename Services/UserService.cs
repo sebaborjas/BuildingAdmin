@@ -32,6 +32,7 @@ public class UserService : IUserServices
 
   public void DeleteManager(int id)
   {
-    throw new System.NotImplementedException();
+    Manager managerToDelete = _managerRepository.Get(id);
+    _managerRepository.Delete(managerToDelete);
   }
 }
