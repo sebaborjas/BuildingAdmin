@@ -43,7 +43,7 @@ public class TestUserController
 
     var userController = new UserController(_userServiceMock.Object);
 
-    var result = userController.Create(administratorCreateModel);
+    var result = userController.CreateAdministrator(administratorCreateModel);
     var okResult = result as OkObjectResult;
     var administratorModel = okResult.Value as AdministratorModel;
 
@@ -53,5 +53,28 @@ public class TestUserController
 
     _userServiceMock.VerifyAll();
     Assert.AreEqual(administratorModel, expectedContent);
+  }
+
+  [TestMethod]
+  public void TestCreateAdministratorWirhNoBody()
+  {
+    Administrator admin = new Administrator
+    {
+      Id = 1,
+      Name = "John",
+      LastName = "Doe",
+      Email = ""
+    };
+
+    AdministratorCreateModel administratorCreateModel = null;
+
+    _userServiceMock.Setup(r => r.CreateAdministrator(It.IsAny<Administrator>())).Returns(admin);
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.CreateAdministrator(administratorCreateModel);
+
+    _userServiceMock.VerifyAll();
+    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
   }
 }
