@@ -39,7 +39,7 @@ namespace TestWebApi
                 Location = "111,111",
                 Name = "Edificio nuevo"
             };
-            
+
             _buildingServices.Setup(r => r.CreateBuilding(It.IsAny<Building>())).Returns(newBuilding);
             var buildingController = new BuildingController(_buildingServices.Object);
             var input = new CreateBuildingInput()
@@ -262,7 +262,7 @@ namespace TestWebApi
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
-        
+
         [TestMethod]
         public void TestCreateBuildingWithInvalidApartment()
         {
@@ -317,6 +317,38 @@ namespace TestWebApi
 
             _buildingServices.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
+        }
+
+        [TestMethod]
+        public void TestModifyBuilding()
+        {
+            var buildingModified = new Building()
+            {
+                Id = 10,
+                Expenses = 1000,
+                ConstructionCompany = new ConstructionCompany(),
+            };
+            _buildingServices.Setup(r => r.ModifyBuilding(It.IsAny<int>(), It.IsAny<Building>())).Returns(buildingModified);
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var input = new ModifyBuildingInput()
+            {
+                ConstructionCompany = "Empresa nueva",
+                Expenses = 4000,
+                Apartments = new List<ModifyApartmentInput>() {
+                    new ModifyApartmentInput()
+                    {
+                        Id = 1,
+                        OwnerName = "Nuevo dueño",
+                        OwnerLastName = "Apellido nuevo dueño",
+                        OwnerEmail = "nuevoCorreo@mail.com"
+                    }
+                }
+            };
+            var result = buildingController.ModifyBuilding(10, input);
+
+            _buildingServices.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
         }
     }
 }

@@ -40,7 +40,12 @@ namespace WebApi.Controllers
             {
                 return NotFound();
             }
-            
+        }
+
+        [HttpPost("{id}")]
+        public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
+        {
+            return Ok();
         }
 
         private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)

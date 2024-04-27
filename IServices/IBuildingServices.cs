@@ -12,5 +12,7 @@ namespace IServices
         Building CreateBuilding(Building building);
 
         void DeleteBuilding(int id);
+
+        Building ModifyBuilding(int id,  Building building);
     }
 }
