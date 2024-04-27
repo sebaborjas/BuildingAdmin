@@ -116,6 +116,17 @@ namespace TestDataAccess
             CollectionAssert.AreEqual(ownersData, allOwners);
         }
 
+        [TestMethod]
+        public void TestGetOwnerNotFound()
+        {
+            var owners = Data();
+            LoadConext(owners);
+
+            var owner = _repository.Get(4);
+
+            Assert.IsNull(owner);
+        }
+
 
     }
 }
