@@ -34,7 +34,8 @@ public class UserController : ControllerBase
     return administrator != null && 
     administrator.Name != null && 
     administrator.LastName != null && 
-    administrator.Email != null ;
+    administrator.Email != null &&
+    administrator.Password != null;
   }
 
   [HttpPost("maintenance-operator")]
