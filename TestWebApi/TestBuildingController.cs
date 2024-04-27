@@ -245,5 +245,25 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestCreateBuildingWithInvalidExpenses()
+        {
+            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
+            var buildingController = new BuildingController(_buildingServices.Object);
+            CreateBuildingInput input = new CreateBuildingInput()
+            {
+                Name = "Edificio nuevo",
+                Address = "Calle, 123, esquina",
+                Location = "111,111",
+                Expenses = -1000,
+                ConstructionCompany = "Empresa constructora",
+                Apartments = new List<NewApartmentInput>()
+            };
+
+            var result = buildingController.CreateBuilding(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
