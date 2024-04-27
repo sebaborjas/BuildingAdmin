@@ -144,6 +144,18 @@ namespace TestDataAccess
             Assert.AreEqual(newName, _context.Owners.Find(1).Name);
         }
 
+        [TestMethod]
+        public void TestDeleteOwner()
+        {
+            var owners = Data();
+            LoadConext(owners);
+
+            var owner = _context.Owners.Find(1);
+
+            _repository.Delete(owner);
+
+            Assert.IsNull(_context.Owners.Find(1));
+        }
 
     }
 }
