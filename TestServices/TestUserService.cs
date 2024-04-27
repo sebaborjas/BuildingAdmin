@@ -42,4 +42,25 @@ public class TestUserService
     Assert.AreEqual(administrator, createdAdmin);
   }
 
+  [TestMethod]
+  public void CreateCorrectMaintenanceOperator()
+  {
+    _operatorRepositoryMock.Setup(r => r.Insert(It.IsAny<MaintenanceOperator>())).Verifiable();
+
+    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+
+    var maintenanceOperator = new MaintenanceOperator
+    {
+      Name = "Marc",
+      LastName = "Marquez",
+      Email = "papa@devalentino.es",
+      Password = "Honda.1234"
+    };
+
+    var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+
+    _operatorRepositoryMock.VerifyAll();
+    Assert.AreEqual(maintenanceOperator, createdOperator);
+  }
+
 }
