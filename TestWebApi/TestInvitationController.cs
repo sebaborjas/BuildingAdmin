@@ -19,10 +19,15 @@ namespace TestWebApi
 
         private Mock<IInvitationServices> _invitationServicesMock;
 
+        [TestInitialize]
+        public void Setup()
+        {
+            _invitationServicesMock = new Mock<IInvitationServices>(MockBehavior.Strict);
+        }
+
         [TestMethod]
         public void TestCreateInvitation()
         {
-            _invitationServicesMock = new Mock<IInvitationServices>(MockBehavior.Strict);
             Invitation invitationCreated = new Invitation()
             {
                 Id = 11,
@@ -51,7 +56,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateInvitationWithoutBody()
         {
-            _invitationServicesMock = new Mock<IInvitationServices>(MockBehavior.Strict);
             InvitationController controller = new InvitationController(_invitationServicesMock.Object);
             CreateInvitationInput input = null;
 
