@@ -190,5 +190,19 @@ namespace TestDataAccess
 
             _repository.Delete(building);
         }
+
+        [TestMethod]
+        public void TestSaveChanges()
+        {
+            var buildings = Data();
+            LoadContext(buildings);
+
+            var building = _context.Buildings.Find(2);
+
+            _repository.Delete(building);
+            _repository.Save();
+
+            Assert.IsNull(_context.Buildings.Find(2));
+        }
     }
 }
