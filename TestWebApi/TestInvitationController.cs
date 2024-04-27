@@ -47,5 +47,17 @@ namespace TestWebApi
             _invitationServicesMock.VerifyAll();
             Assert.AreEqual(11, mewInvitationResponse.InvitationId);
         }
+
+        [TestMethod]
+        public void TestCreateInvitationWithoutBody()
+        {
+            _invitationServicesMock = new Mock<IInvitationServices>(MockBehavior.Strict);
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            CreateInvitationInput input = null;
+
+            var result = controller.CreateInvitation(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
