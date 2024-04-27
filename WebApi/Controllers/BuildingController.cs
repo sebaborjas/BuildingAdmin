@@ -32,6 +32,7 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBuilding(int id)
         {
+            _buildingServices.DeleteBuilding(id);
             return Ok();
         }
 
