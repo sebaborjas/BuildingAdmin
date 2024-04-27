@@ -44,7 +44,14 @@ public class UserController : ControllerBase
   [HttpDelete("manager/{id}")]
   public IActionResult DeleteManager([FromBody] int id)
   {
-    _service.DeleteManager(id);
-    return Ok();
+    try
+    {
+      _service.DeleteManager(id);
+      return Ok("Se eliminó con éxito el encargado del sistema.");
+    }
+    catch (ArgumentOutOfRangeException)
+    {
+      return NotFound("No se encontró el encargado especificado.");
+    }
   }
 }
