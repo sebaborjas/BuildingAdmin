@@ -78,5 +78,21 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestCreateInvitationWithEmptyEmail()
+        {
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            var input = new CreateInvitationInput()
+            {
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Email = "",
+                Name = "Nombre Invitado"
+            };
+
+            var result = controller.CreateInvitation(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
