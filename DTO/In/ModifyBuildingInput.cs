@@ -9,23 +9,30 @@ namespace DTO.In
 {
     public class ModifyBuildingInput
     {
-        public string ConstructionCompany {  get; set; }
-        public float Expenses { get; set; }
-        public List<ModifyApartmentInput> Apartments { get; set; }
+        public string? ConstructionCompany {  get; set; }
+        public float? Expenses { get; set; }
+        public List<ModifyApartmentInput> Apartments { get; set; } = new List<ModifyApartmentInput>();
 
         public Building ToEntity()
         {
+            var newBuilding = new Building();
+            if (this.ConstructionCompany != null)
+            {
+                newBuilding.ConstructionCompany = new ConstructionCompany() { Name = this.ConstructionCompany };
+            }
+            
+            if(this.Expenses != null)
+            {
+                newBuilding.Expenses = (float)this.Expenses;
+            }
+            
             var apartments = new List<Apartment>();
-            foreach (var apartment in Apartments)
+            foreach (var apartment in this.Apartments)
             {
                 apartments.Add(apartment.ToEntity());
             }
-            return new Building()
-            {
-                ConstructionCompany = new ConstructionCompany() { Name = ConstructionCompany },
-                Expenses = Expenses,
-                Apartments = apartments
-            };
+
+            return newBuilding;
         }
     }
 }
