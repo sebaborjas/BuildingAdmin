@@ -85,5 +85,26 @@ namespace TestDataAccess
             _context.Dispose();
             _connection.Close();
         }
-    }
+
+        [TestMethod]
+        public void TestInsert()
+        {
+            Building building = new Building
+            {
+                Id = 3,
+                Name = "Building Sur",
+                Address = "Calle, 3333, esquina",
+                Location = "3.234, 3.234",
+                Expenses = 3000,
+                ConstructionCompany = _constructionCompany,
+                Apartments = new List<Apartment>(),
+                Tickets = new List<Ticket>()
+            };
+
+            _repository.Insert(building);
+
+            Assert.AreEqual(building, _context.Buildings.Find(3));
+        }
+        
+    }   
 }
