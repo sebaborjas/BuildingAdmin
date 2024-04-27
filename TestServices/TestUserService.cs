@@ -75,4 +75,16 @@ public class TestUserService
     _managerRepositoryMock.VerifyAll();
   }
 
+  [TestMethod]
+  public void TestDeleteManagerNotFound()
+  {
+    _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Throws(new NullReferenceException());
+
+    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+
+    _service.DeleteManager(1);
+
+    _managerRepositoryMock.VerifyAll();
+  }
+
 }
