@@ -1,8 +1,10 @@
 using IDataAcess;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DataAccess;
 
+[ExcludeFromCodeCoverage]
 public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected DbContext Context { get; set; }

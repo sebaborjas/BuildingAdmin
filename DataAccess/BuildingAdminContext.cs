@@ -17,6 +17,7 @@ namespace DataAccess
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<ConstructionCompany> ConstructionCompanies { get; set; }
         public virtual DbSet<Owner> Owners { get; set; }
+        public virtual DbSet<MaintenanceOperator> MaintenanceOperators { get; set; }
 
         public virtual DbSet<Apartment> Apartments {  get; set; }
 
