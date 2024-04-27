@@ -1,4 +1,5 @@
 ﻿using DTO.In;
+using DTO.Out;
 using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,9 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
-            return Ok();
+            var newBuilding = _buildingServices.CreateBuilding(createBuildingInput.ToEntity());
+            var response = new CreateBuildingOutput(newBuilding);
+            return Ok(response);
         }
     }
 }
