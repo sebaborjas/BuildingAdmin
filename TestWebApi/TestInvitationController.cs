@@ -141,5 +141,17 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestDeleteInvitation()
+        {
+            _invitationServicesMock.Setup(r => r.DeleteInvitation(It.IsAny<int>()));
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+
+            var result = controller.DeleteInvitation(11);
+
+            _invitationServicesMock.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
+        }
     }
 }

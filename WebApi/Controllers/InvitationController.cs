@@ -30,6 +30,11 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        public IActionResult DeleteInvitation(int id)
+        {
+            return Ok();
+        }
+
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
         {
             return newInvitationInput != null && !string.IsNullOrWhiteSpace(newInvitationInput.Email) && !string.IsNullOrWhiteSpace(newInvitationInput.Name) && newInvitationInput.ExpirationDate > DateTime.Now;

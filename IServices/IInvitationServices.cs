@@ -10,5 +10,7 @@ namespace IServices
     public interface IInvitationServices
     {
         Invitation CreateInvitation(Invitation newInvitation);
+
+        void DeleteInvitation(int id);
     }
 }
