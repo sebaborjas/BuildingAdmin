@@ -157,5 +157,17 @@ namespace TestDataAccess
             Assert.IsNull(_context.Owners.Find(1));
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteOwnerNotFound()
+        {
+            var owners = Data();
+            LoadConext(owners);
+
+            var owner = _context.Owners.Find(4);
+
+            _repository.Delete(owner);
+        }
+
     }
 }
