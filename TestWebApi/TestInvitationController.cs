@@ -194,7 +194,7 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        public void TestModifyInvitationWithGoneDeadline()
+        public void TestModifyInvitationWithGoneExpirationDate()
         {
             InvitationController controller = new InvitationController(_invitationServicesMock.Object);
             var input = new ModifyInvitationInput()

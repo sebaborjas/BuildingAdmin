@@ -47,7 +47,7 @@ namespace WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult ModifyInvitation(int id, [FromBody]ModifyInvitationInput modifyInvitationInput)
         {
-            if(modifyInvitationInput == null || modifyInvitationInput.ExpirationDate < DateTime.Now)
+            if(!IsValidModifyInvitationInput(modifyInvitationInput))
             {
                 return BadRequest();
             }
@@ -58,6 +58,11 @@ namespace WebApi.Controllers
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
         {
             return newInvitationInput != null && !string.IsNullOrWhiteSpace(newInvitationInput.Email) && !string.IsNullOrWhiteSpace(newInvitationInput.Name) && newInvitationInput.ExpirationDate > DateTime.Now;
+        }
+
+        private bool IsValidModifyInvitationInput(ModifyInvitationInput modifyInvitationInput)
+        {
+            return modifyInvitationInput != null && modifyInvitationInput.ExpirationDate > DateTime.Now;
         }
     }
 }
