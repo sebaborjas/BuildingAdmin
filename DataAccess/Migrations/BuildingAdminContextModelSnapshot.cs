@@ -92,7 +92,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Building");
+                    b.ToTable("Buildings");
                 });
 
             modelBuilder.Entity("Domain.Category", b =>

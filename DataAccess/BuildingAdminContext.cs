@@ -18,8 +18,8 @@ namespace DataAccess
         public virtual DbSet<ConstructionCompany> ConstructionCompanies { get; set; }
         public virtual DbSet<Owner> Owners { get; set; }
         public virtual DbSet<MaintenanceOperator> MaintenanceOperators { get; set; }
-
         public virtual DbSet<Apartment> Apartments {  get; set; }
+        public virtual DbSet<Building> Buildings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
