@@ -21,7 +21,7 @@ namespace WebApi.Controllers
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
             if(createBuildingInput == null || string.IsNullOrWhiteSpace(createBuildingInput.Name) || string.IsNullOrWhiteSpace(createBuildingInput.Address) ||
-                createBuildingInput.Location == null || createBuildingInput.Location == "")
+                string.IsNullOrWhiteSpace(createBuildingInput.Location))
             {
                 return BadRequest();
             }
