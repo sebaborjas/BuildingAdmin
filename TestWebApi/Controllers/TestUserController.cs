@@ -72,7 +72,7 @@ public class TestUserController
     var result = userController.CreateAdministrator(administratorCreateModel);
 
     _userServiceMock.VerifyAll();
-    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
   }
 
   [TestMethod]
@@ -95,7 +95,7 @@ public class TestUserController
     var result = userController.CreateAdministrator(administratorCreateModel);
 
     _userServiceMock.VerifyAll();
-    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
   }
 
   [TestMethod]
@@ -118,7 +118,7 @@ public class TestUserController
     var result = userController.CreateAdministrator(administratorCreateModel);
 
     _userServiceMock.VerifyAll();
-    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
   }
 
   [TestMethod]
@@ -141,7 +141,7 @@ public class TestUserController
     var result = userController.CreateAdministrator(administratorCreateModel);
 
     _userServiceMock.VerifyAll();
-    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
   }
 
   

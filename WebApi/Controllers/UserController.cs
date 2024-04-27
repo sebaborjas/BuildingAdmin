@@ -20,13 +20,21 @@ public class UserController : ControllerBase
   [HttpPost("administrator")]
   public IActionResult CreateAdministrator([FromBody] AdministratorCreateModel newAdministrator)
   {
-    if(newAdministrator == null  || newAdministrator.Name == null || newAdministrator.LastName == null || newAdministrator.Email == null)
+    if(!IsNewAdministratorValid(newAdministrator))
     {
-      return BadRequest();
+      return BadRequest("La solcitud no es válida.");
     }
-    AdministratorModel administrator = new AdministratorModel(_service.CreateAdministrator(newAdministrator.ToEntity()));
+    AdministratorModel administratorModel = new AdministratorModel(_service.CreateAdministrator(newAdministrator.ToEntity()));
     
-    return Ok(administrator);
+    return Ok(administratorModel);
+  }
+
+  private bool IsNewAdministratorValid(AdministratorCreateModel administrator)
+  {
+    return administrator != null && 
+    administrator.Name != null && 
+    administrator.LastName != null && 
+    administrator.Email != null;
   }
 
   [HttpPost("maintenance-operator")]
