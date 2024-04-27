@@ -47,6 +47,10 @@ namespace WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult ModifyInvitation(int id, [FromBody]ModifyInvitationInput modifyInvitationInput)
         {
+            if(modifyInvitationInput == null)
+            {
+                return BadRequest();
+            }
             _invitationServices.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
             return Ok();
         }
