@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
-            if(createBuildingInput == null)
+            if(createBuildingInput == null || createBuildingInput.Name == null)
             {
                 return BadRequest();
             }
