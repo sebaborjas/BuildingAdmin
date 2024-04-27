@@ -144,6 +144,31 @@ public class TestUserController
     Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
   }
 
+
+  [TestMethod]
+  public void TestCreateAdministratorWithNoPassword()
+  {
+    Administrator admin = new Administrator
+    {
+      Name = "John",
+      LastName = "Doe",
+      Email = "test@test.com",
+    };
+
+    AdministratorCreateModel administratorCreateModel = new AdministratorCreateModel
+    {
+      Name = admin.Name,
+      LastName = admin.LastName,
+      Email = admin.Email
+    };
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.CreateAdministrator(administratorCreateModel);
+
+    _userServiceMock.VerifyAll();
+    Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+  }
   
   [TestMethod]
   public void TestCreateMaintenanceOperator()
