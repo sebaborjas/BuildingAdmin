@@ -12,6 +12,11 @@ namespace DataAccess
 
         public virtual DbSet<Administrator> Administrators { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<Manager> Managers { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<ConstructionCompany> ConstructionCompanies { get; set; }
+        public virtual DbSet<Owner> Owners { get; set; }
 
         public virtual DbSet<Apartment> Apartments {  get; set; }
 
