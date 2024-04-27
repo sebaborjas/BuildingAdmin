@@ -64,6 +64,10 @@ namespace WebApi.Controllers
         [HttpPut("accept")]
         public IActionResult AcceptInvitation(AcceptInvitationInput acceptInvitationInput)
         {
+            if(acceptInvitationInput == null)
+            {
+                return BadRequest();
+            }
             var newManager = _invitationServices.AcceptInvitation(acceptInvitationInput.ToEntity());
             var result = new AcceptInvitationOutput(newManager);
             return Ok(result);

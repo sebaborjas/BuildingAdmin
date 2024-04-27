@@ -243,5 +243,16 @@ namespace TestWebApi
             _invitationServicesMock.VerifyAll();
             Assert.AreEqual(10, acceptInvitationResponse.ManagerId);
         }
+
+        [TestMethod]
+        public void TestAcceptInvitationWithoutBody()
+        {
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            AcceptInvitationInput input = null;
+
+            var result = controller.AcceptInvitation(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
