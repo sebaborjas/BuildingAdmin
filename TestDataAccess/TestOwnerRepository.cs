@@ -191,5 +191,14 @@ namespace TestDataAccess
             _repository.Update(owner);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteEmpty()
+        {
+            var owner = _context.Owners.Find(6);
+
+            _repository.Delete(owner);
+        }
+
     }
 }
