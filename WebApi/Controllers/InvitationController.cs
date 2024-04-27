@@ -21,6 +21,10 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody]CreateInvitationInput newInvitationInput)
         {
+            if(newInvitationInput == null)
+            {
+                return BadRequest();
+            }
             var newInvitation = _invitationServices.CreateInvitation(newInvitationInput.ToEntity());
             var response = new CreateInvitationOutput(newInvitation);
             return Ok(response);
