@@ -20,6 +20,7 @@ public class UserService : IUserServices
   public Administrator CreateAdministrator(Administrator administrator)
   {
     Administrator administratorAlreadyExist = _adminRepository.GetByCondition(a => a.Email == administrator.Email);
+    
     if(administratorAlreadyExist != null)
     {
       throw new ArgumentException("Administrator already exist");

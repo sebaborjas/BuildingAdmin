@@ -50,8 +50,11 @@ public class TestUserService
   [ExpectedException(typeof(ArgumentException))]
   public void CreateAdministratorAlreadyExist()
   {
+    _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => new Administrator());
+
     _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
-    _adminRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Verifiable();
+
 
     _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
 
