@@ -181,4 +181,17 @@ public class TestUserController
     _userServiceMock.VerifyAll();
     Assert.AreEqual(maintenanceOperatorModel, expectedContent);
   }
+
+  [TestMethod]
+  public void TestCreateMaintenanceOperatorWithNoBody()
+  {
+    MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = null;
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
+
+    _userServiceMock.VerifyAll();
+    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+  }
 }
