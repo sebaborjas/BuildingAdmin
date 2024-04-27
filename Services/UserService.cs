@@ -19,16 +19,18 @@ public class UserService : IUserServices
 
   public Administrator CreateAdministrator(Administrator administrator)
   {
-    return new NotImplementedException();
+    _adminRepository.Insert(administrator);
+    return administrator;
   }
 
   public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator)
   {
-    return new NotImplementedException();
+    throw new System.NotImplementedException();
+    
   }
 
   public void DeleteManager(int id)
   {
-    return new NotImplementedException();
+    throw new System.NotImplementedException();
   }
 }
