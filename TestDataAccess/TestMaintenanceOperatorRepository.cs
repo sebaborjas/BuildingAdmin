@@ -63,7 +63,7 @@ namespace TestDataAccess
                     Id = 1,
                     Name = "Seba",
                     LastName = "Borjas",
-                    Email = "sebaQborjas.com",
+                    Email = "seba@borjas.com",
                     building = building
                 },
                 new MaintenanceOperator
@@ -71,7 +71,7 @@ namespace TestDataAccess
                     Id = 2,
                     Name = "Rodri",
                     LastName = "Conze",
-                    Email = "rodriQconze.com",
+                    Email = "rodri@conze.com",
                     building = building
                 }
 
@@ -110,6 +110,17 @@ namespace TestDataAccess
             _repository.Insert(maintenanceOperator);
 
             Assert.AreEqual(maintenanceOperator, _context.MaintenanceOperators.Find(3));
+        }
+
+        [TestMethod]
+        public void TestGet()
+        {
+            var maintenanceOperators = Data();
+            LoadConext(maintenanceOperators);
+
+            var maintenanceOperator = _repository.Get(1);
+
+            Assert.AreEqual(maintenanceOperators[0], maintenanceOperator);
         }
     }
 }
