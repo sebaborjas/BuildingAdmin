@@ -78,5 +78,21 @@ namespace TestDataAccess
             _connection.Close();
         }
 
+        [TestMethod]
+        public void TestInsertOwner()
+        {
+            Owner owner = new Owner
+            {
+                Id = 4,
+                Name = "Juan",
+                LastName = "Perez",
+                Email = "juan@test.com"
+            };
+
+            _repository.Insert(owner);
+
+            Assert.AreEqual(owner, _context.Owners.Find(4));
+        }
+
     }
 }
