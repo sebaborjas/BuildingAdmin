@@ -194,6 +194,21 @@ namespace TestDataAccess
             var maintenanceOperator = _context.MaintenanceOperators.Find(4);
             _repository.Delete(maintenanceOperator);
         }
+
+        [TestMethod]
+        public void TestSaveChanges()
+        {
+            var maintenanceOperators = Data();
+            LoadConext(maintenanceOperators);
+
+            var maintenanceOperator = _context.MaintenanceOperators.Find(1);
+
+
+            _repository.Delete(maintenanceOperator);
+            _repository.Save();
+
+            Assert.IsNull(_context.MaintenanceOperators.Find(1));
+        }
     }
 }
 
