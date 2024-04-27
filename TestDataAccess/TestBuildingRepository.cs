@@ -156,5 +156,18 @@ namespace TestDataAccess
 
             Assert.AreEqual(building, _context.Buildings.Find(1));
         }
+
+        [TestMethod]
+        public void TestDelete()
+        {
+            var buildings = Data();
+            LoadContext(buildings);
+
+            var building = _context.Buildings.Find(1);
+
+            _repository.Delete(building);
+
+            Assert.IsNull(_context.Buildings.Find(1));
+        }
     }
 }
