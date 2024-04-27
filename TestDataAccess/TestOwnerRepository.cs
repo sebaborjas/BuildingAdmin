@@ -94,5 +94,16 @@ namespace TestDataAccess
             Assert.AreEqual(owner, _context.Owners.Find(4));
         }
 
+        [TestMethod]
+        public void TestGet()
+        {
+            var owners = Data();
+            LoadConext(owners);
+
+            var owner = _repository.Get(1);
+
+            Assert.AreEqual(owners[0], owner);
+        }
+
     }
 }
