@@ -173,6 +173,16 @@ namespace TestDataAccess
 
             Assert.IsNull(_context.MaintenanceOperators.Find(1));
         }
+
+        [TestMethod]
+        public void TestGetAllNoList()
+        {
+            var maintenanceOperators = _repository.GetAll<MaintenanceOperator>().ToList();
+
+            int count = maintenanceOperators.Count;
+
+            Assert.AreEqual(0, count);
+        }
     }
 }
 
