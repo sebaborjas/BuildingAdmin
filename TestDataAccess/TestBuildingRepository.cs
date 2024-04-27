@@ -66,7 +66,7 @@ namespace TestDataAccess
                     Apartments = new List<Apartment>(),
                     Tickets = new List<Ticket>()
                 }
-                
+
             };
 
             return list;
@@ -128,5 +128,16 @@ namespace TestDataAccess
             Assert.IsNull(building);
         }
 
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var buildings = Data();
+            LoadContext(buildings);
+
+            var allBuildings = _repository.GetAll<Building>().ToList();
+
+            CollectionAssert.AreEqual(buildings, allBuildings);
+
+        }
     }
 }
