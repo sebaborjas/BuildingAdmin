@@ -154,7 +154,8 @@ public class TestUserController
       Name = "John",
       LastName = "Doe",
       Email = "test@test.com",
-      Password = "Prueba.1234"
+      Password = "Prueba.1234",
+      Building = new Building()
     };
 
     var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
@@ -162,7 +163,8 @@ public class TestUserController
       Name = maintenanceOperator.Name,
       LastName = maintenanceOperator.LastName,
       Email = maintenanceOperator.Email,
-      Password = maintenanceOperator.Password
+      Password = maintenanceOperator.Password,
+      Building = maintenanceOperator.Building
     };
 
     _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
@@ -273,7 +275,6 @@ public class TestUserController
       LastName = "Doe",
       Email = "test@test.com",
       Password = "Prueba.1234",
-      Building = new Building()
     };
 
     MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
@@ -282,7 +283,6 @@ public class TestUserController
       LastName = maintenanceOperator.LastName,
       Email = maintenanceOperator.Email,
       Password = maintenanceOperator.Password,
-      Building = maintenanceOperator.Building
     };
 
     var userController = new UserController(_userServiceMock.Object);
