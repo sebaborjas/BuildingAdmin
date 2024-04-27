@@ -15,6 +15,7 @@ namespace DataAccess
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public DbSet<Owner> Owners { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
