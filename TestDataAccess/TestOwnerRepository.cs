@@ -169,5 +169,15 @@ namespace TestDataAccess
             _repository.Delete(owner);
         }
 
+        [TestMethod]
+        public void TestGetAllNoList()
+        {
+            var getOwners = _repository.GetAll<Owner>().ToList();
+
+            int count = getOwners.Count;
+
+            Assert.AreEqual(0, count);
+        }
+
     }
 }
