@@ -26,21 +26,7 @@ namespace DTO.In
             var apartments = new List<Apartment>();
             foreach (var apartment in Apartments)
             {
-                var owner = new Owner()
-                {
-                    Name = apartment.OwnerName,
-                    LastName = apartment.OwnerLastName,
-                    Email = apartment.OwnerEmail,
-                };
-                apartments.Add(new Apartment()
-                {
-                    Bathrooms = apartment.Bathrooms,
-                    DoorNumber = apartment.DoorNumber,
-                    Floor = apartment.Floor,
-                    HasTerrace = apartment.HasTerrace,
-                    Owner = owner,
-                    Rooms = apartment.Rooms
-                });
+                apartments.Add(apartment.ToEntity());
             };
             return new Building()
             {

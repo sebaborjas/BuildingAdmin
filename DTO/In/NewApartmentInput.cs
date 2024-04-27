@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,24 @@ namespace DTO.In
         public short Bathrooms { get; set; }
         public bool HasTerrace { get; set; }
 
+        public Apartment ToEntity()
+        {
+            var owner = new Owner()
+            {
+                Email = OwnerEmail,
+                LastName = OwnerLastName,
+                Name = OwnerName
+            };
+
+            return new Apartment()
+            {
+                Bathrooms = Bathrooms,
+                DoorNumber = DoorNumber,
+                Floor = Floor,
+                HasTerrace = HasTerrace,
+                Owner = owner,
+                Rooms = Rooms
+            };
+        }
     }
 }
