@@ -1,8 +1,10 @@
 using IDataAcess;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DataAccess;
 
+[ExcludeFromCodeCoverage]
 public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected DbContext Context { get; set; }
@@ -10,13 +12,11 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
     public void Insert(T entity)
     {
         Context.Set<T>().Add(entity);
-        Save();
     }
 
     public void Update(T entity)
     {
         Context.Set<T>().Update(entity);
-        Save();
     }
 
     public T Get(int id){
