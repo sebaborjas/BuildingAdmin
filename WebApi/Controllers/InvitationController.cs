@@ -64,7 +64,7 @@ namespace WebApi.Controllers
         [HttpPut("accept")]
         public IActionResult AcceptInvitation(AcceptInvitationInput acceptInvitationInput)
         {
-            if(acceptInvitationInput == null || acceptInvitationInput.Email == null || acceptInvitationInput.Email == "" || acceptInvitationInput.Password == null || acceptInvitationInput.Password =="")
+            if(!IsValidAcceptInvitationInput(acceptInvitationInput))
             {
                 return BadRequest();
             }
@@ -88,6 +88,11 @@ namespace WebApi.Controllers
         private bool IsValidModifyInvitationInput(ModifyInvitationInput modifyInvitationInput)
         {
             return modifyInvitationInput != null && modifyInvitationInput.ExpirationDate > DateTime.Now;
+        }
+
+        private bool IsValidAcceptInvitationInput(AcceptInvitationInput acceptInvitationInput)
+        {
+            return acceptInvitationInput != null && !string.IsNullOrWhiteSpace(acceptInvitationInput.Email) && !string.IsNullOrWhiteSpace(acceptInvitationInput.Password);
         }
     }
 }
