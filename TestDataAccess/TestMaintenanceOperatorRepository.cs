@@ -64,7 +64,7 @@ namespace TestDataAccess
                     Name = "Seba",
                     LastName = "Borjas",
                     Email = "seba@borjas.com",
-                    building = building
+                    Building = building
                 },
                 new MaintenanceOperator
                 {
@@ -72,7 +72,7 @@ namespace TestDataAccess
                     Name = "Rodri",
                     LastName = "Conze",
                     Email = "rodri@conze.com",
-                    building = building
+                    Building = building
                 }
 
             };
@@ -104,7 +104,7 @@ namespace TestDataAccess
                 LastName = "Perez",
                 Email = "juan@perez.com",
                 Password = "Juan.1234",
-                building = building
+                Building = building
             };
 
             _repository.Insert(maintenanceOperator);
