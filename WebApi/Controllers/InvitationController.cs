@@ -64,7 +64,7 @@ namespace WebApi.Controllers
         [HttpPut("accept")]
         public IActionResult AcceptInvitation(AcceptInvitationInput acceptInvitationInput)
         {
-            if(acceptInvitationInput == null)
+            if(acceptInvitationInput == null || acceptInvitationInput.Email == null)
             {
                 return BadRequest();
             }
