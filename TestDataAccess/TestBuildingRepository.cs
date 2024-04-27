@@ -16,6 +16,7 @@ namespace TestDataAccess
         private BuildingAdminContext _context;
         private SqliteConnection _connection;
         private BuildingRepository _repository;
+        private ConstructionCompany _constructionCompany;
 
         [TestInitialize]
         public void SetUp()
@@ -31,6 +32,50 @@ namespace TestDataAccess
             _context.Database.EnsureCreated();
 
             _repository = new BuildingRepository(_context);
+
+            _constructionCompany = new ConstructionCompany
+            {
+                Id = 1,
+                Name = "Constructorea SA",
+            };
+        }
+
+        private List<Building> Data()
+        {
+            List<Building> list = new List<Building>
+            {
+                new Building
+                {
+                    Id = 1,
+                    Name = "Building Central",
+                    Address = "Calle, 1111, esquina",
+                    Location = "1.234, 1.234",
+                    Expenses = 1000,
+                    ConstructionCompany = _constructionCompany,
+                    Apartments = new List<Apartment>(),
+                    Tickets = new List<Ticket>()
+                },
+                new Building
+                {
+                    Id = 2,
+                    Name = "Building Norte",
+                    Address = "Calle, 2222, esquina",
+                    Location = "2.234, 2.234",
+                    Expenses = 2000,
+                    ConstructionCompany = _constructionCompany,
+                    Apartments = new List<Apartment>(),
+                    Tickets = new List<Ticket>()
+                }
+                
+            };
+
+            return list;
+        }
+
+        private void LoadContext(List<Building> list)
+        {
+            _context.Buildings.AddRange(list);
+            _context.SaveChanges();
         }
     }
 }
