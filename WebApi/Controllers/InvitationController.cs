@@ -86,8 +86,16 @@ namespace WebApi.Controllers
             {
                 return BadRequest();
             }
-            _invitationServices.RejectInvitation(rejectInvitationInput.Email);
-            return Ok();
+            try
+            {
+                _invitationServices.RejectInvitation(rejectInvitationInput.Email);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return NotFound();
+            }
+            
         }
 
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
