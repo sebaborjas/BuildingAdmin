@@ -40,4 +40,10 @@ public class UserController : ControllerBase
     
     return Ok(maintenanceOperator);
   }
+
+  [HttpDelete("manager/{id}")]
+  public IActionResult DeleteManager([FromBody] int id)
+  {
+    return BadRequest();
+  }
 }

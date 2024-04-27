@@ -319,4 +319,20 @@ public class TestUserController
     _userServiceMock.VerifyAll();
     Assert.IsInstanceOfType(result, typeof(BadRequestResult));
   }
+
+  [TestMethod]
+  public void TestDeleteManager()
+  {
+    int id = 1;
+
+    _userServiceMock.Setup(r => r.DeleteManager(id));
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.DeleteManager(id);
+
+    _userServiceMock.VerifyAll();
+
+    Assert.IsInstanceOfType(result, typeof(OkResult));
+  }
 }
