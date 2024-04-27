@@ -38,14 +38,14 @@ namespace TestDataAccess
             constructionCompany = new ConstructionCompany
             {
                 Id = 1,
-                Name = "Constructora 1"
+                Name = "Constructora SA"
             };
 
             building = new Building
             {
                 Id = 1,
-                Name = "Edificio 1",
-                Address = "Calle 1",
+                Name = "Edificio central",
+                Address = "Calle, 2222, esquina",
                 Expenses = 1000,
                 Location = "1.000, 1.000",
                 ConstructionCompany = constructionCompany,
@@ -92,6 +92,24 @@ namespace TestDataAccess
             _context.Database.EnsureDeleted();
             _context.Dispose();
             _connection.Close();
+        }
+
+        [TestMethod]
+        public void TestInsert()
+        {
+            MaintenanceOperator maintenanceOperator = new MaintenanceOperator
+            {
+                Id = 3,
+                Name = "Juan",
+                LastName = "Perez",
+                Email = "juan@perez.com",
+                Password = "Juan.1234",
+                building = building
+            };
+
+            _repository.Insert(maintenanceOperator);
+
+            Assert.AreEqual(maintenanceOperator, _context.MaintenanceOperators.Find(3));
         }
     }
 }
