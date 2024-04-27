@@ -2,6 +2,7 @@ using Domain;
 using Services;
 using Moq;
 using IDataAcess;
+using System.Linq.Expressions;
 
 namespace TestServices;
 
@@ -24,6 +25,9 @@ public class TestUserService
   [TestMethod]
   public void CreateCorrectAdministrator()
   {
+    _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => null);
+  
     _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
 
     _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
@@ -40,6 +44,28 @@ public class TestUserService
 
     _adminRepositoryMock.VerifyAll();
     Assert.AreEqual(administrator, createdAdmin);
+  }
+
+  [TestMethod]
+  [ExpectedException(typeof(ArgumentException))]
+  public void CreateAdministratorAlreadyExist()
+  {
+    _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
+    _adminRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Verifiable();
+
+    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+
+    var administrator = new Administrator
+    {
+      Name = "Fernando",
+      LastName = "Alonso",
+      Email = "elnano@padre.com",
+      Password = "Nano.1234"
+    };
+
+    var createdAdmin = _service.CreateAdministrator(administrator);
+
+    _adminRepositoryMock.VerifyAll();
   }
 
   [TestMethod]
