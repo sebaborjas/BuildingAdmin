@@ -34,5 +34,35 @@ namespace TestDataAccess
             _repository = new OwnerRepository(_context);
         }
 
+        private List<Owner> Data()
+        {
+            List<Owner> list = new List<Owner>
+            {
+                new Owner
+                {
+                    Id = 1,
+                    Name = "Seba",
+                    LastName = "Borjas",
+                    Email = "seba@test.com"
+                },
+                new Owner
+                {
+                    Id = 2,
+                    Name = "Rodri",
+                    LastName = "Conze",
+                    Email = "rodri@test.com"
+                },
+                new Owner
+                {
+                    Id = 3,
+                    Name = "Agus",
+                    LastName = "Martinez",
+                    Email = "agus@test.com"
+                }
+            };
+
+            return list;
+        }
+
     }
 }
