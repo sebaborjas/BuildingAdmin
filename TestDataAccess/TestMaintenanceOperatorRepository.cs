@@ -133,6 +133,17 @@ namespace TestDataAccess
 
             CollectionAssert.AreEqual(maintenanceOperators, maintenanceOperatorsList);
         }
+
+        [TestMethod]
+        public void TestGetNotFound()
+        {
+            var maintenanceOperators = Data();
+            LoadConext(maintenanceOperators);
+
+            var maintenanceOperator = _repository.Get(6);
+
+            Assert.IsNull(maintenanceOperator);
+        }
     }
 }
 
