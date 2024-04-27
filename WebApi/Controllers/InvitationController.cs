@@ -21,13 +21,18 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody]CreateInvitationInput newInvitationInput)
         {
-            if(newInvitationInput == null || string.IsNullOrWhiteSpace(newInvitationInput.Email) || string.IsNullOrWhiteSpace(newInvitationInput.Name) || newInvitationInput.ExpirationDate < DateTime.Now)
+            if(!IsValidCreateInvitationInput(newInvitationInput))
             {
                 return BadRequest();
             }
             var newInvitation = _invitationServices.CreateInvitation(newInvitationInput.ToEntity());
             var response = new CreateInvitationOutput(newInvitation);
             return Ok(response);
+        }
+
+        private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
+        {
+            return newInvitationInput != null && !string.IsNullOrWhiteSpace(newInvitationInput.Email) && !string.IsNullOrWhiteSpace(newInvitationInput.Name) && newInvitationInput.ExpirationDate > DateTime.Now;
         }
     }
 }
