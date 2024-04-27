@@ -32,7 +32,7 @@ public class UserController : ControllerBase
   [HttpPost("maintenance-operator")]
   public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateModel newMaintenanceOperator)
   {
-    if(newMaintenanceOperator == null)
+    if(newMaintenanceOperator == null || newMaintenanceOperator.Name == null)
     {
       return BadRequest();
     }
