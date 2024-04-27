@@ -127,6 +127,23 @@ namespace TestDataAccess
             Assert.IsNull(owner);
         }
 
+        [TestMethod]
+        public void TestUpdateOwner()
+        {
+            var owners = Data();
+            LoadConext(owners);
+
+            var owner = _context.Owners.Find(1);
+
+            string newName = "Sebastian";
+
+            owner.Name = newName;
+
+            _repository.Update(owner);
+
+            Assert.AreEqual(newName, _context.Owners.Find(1).Name);
+        }
+
 
     }
 }
