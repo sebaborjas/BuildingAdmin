@@ -82,7 +82,7 @@ namespace WebApi.Controllers
         [HttpPut("reject")]
         public IActionResult RejectInvitation(RejectInvitationInput rejectInvitationInput)
         {
-            if (rejectInvitationInput == null || rejectInvitationInput.Email == null || rejectInvitationInput.Email == "")
+            if (!IsValidRejectInvitationInput(rejectInvitationInput))
             {
                 return BadRequest();
             }
@@ -111,6 +111,11 @@ namespace WebApi.Controllers
         private bool IsValidAcceptInvitationInput(AcceptInvitationInput acceptInvitationInput)
         {
             return acceptInvitationInput != null && !string.IsNullOrWhiteSpace(acceptInvitationInput.Email) && !string.IsNullOrWhiteSpace(acceptInvitationInput.Password);
+        }
+
+        private bool IsValidRejectInvitationInput(RejectInvitationInput rejectInvitationInput)
+        {
+            return rejectInvitationInput != null && !string.IsNullOrWhiteSpace(rejectInvitationInput.Email);
         }
     }
 }
