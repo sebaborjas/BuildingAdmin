@@ -144,6 +144,22 @@ namespace TestDataAccess
 
             Assert.IsNull(maintenanceOperator);
         }
+
+        [TestMethod]
+        public void TestUpdate()
+        {
+            var maintenanceOperators = Data();
+            LoadConext(maintenanceOperators);
+
+            var maintenanceOperator = _repository.Get(1);
+           
+            string newName = "Sebastian";
+            maintenanceOperator.Name = newName;
+
+            _repository.Update(maintenanceOperator);
+
+            Assert.AreEqual(newName, _context.MaintenanceOperators.Find(1).Name);
+        }
     }
 }
 
