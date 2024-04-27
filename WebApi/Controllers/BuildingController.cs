@@ -32,8 +32,15 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBuilding(int id)
         {
-            _buildingServices.DeleteBuilding(id);
-            return Ok();
+            try
+            {
+                _buildingServices.DeleteBuilding(id);
+                return Ok();
+            } catch (Exception exception)
+            {
+                return NotFound();
+            }
+            
         }
 
         private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)
