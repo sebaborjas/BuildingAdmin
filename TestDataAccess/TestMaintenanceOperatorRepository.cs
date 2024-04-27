@@ -122,6 +122,17 @@ namespace TestDataAccess
 
             Assert.AreEqual(maintenanceOperators[0], maintenanceOperator);
         }
+
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var maintenanceOperators = Data();
+            LoadConext(maintenanceOperators);
+
+            var maintenanceOperatorsList = _repository.GetAll<MaintenanceOperator>().ToList();
+
+            CollectionAssert.AreEqual(maintenanceOperators, maintenanceOperatorsList);
+        }
     }
 }
 
