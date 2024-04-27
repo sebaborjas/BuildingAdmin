@@ -28,4 +28,10 @@ public class UserController : ControllerBase
     
     return Ok(administrator);
   }
+
+  [HttpPost("maintenance-operator")]
+  public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateModel newMaintenanceOperator)
+  {
+    return BadRequest();
+  }
 }

@@ -2,9 +2,14 @@
 using IServices;
 using Domain;
 
-public class AdministratorService : IService<Administrator>
+public class UserService : IUserServices
 {
-  public Administrator Create(Administrator entity)
+  public Administrator CreateAdministrator(Administrator administrator)
+  {
+    return new NotImplementedException();
+  }
+
+  public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator)
   {
     return new NotImplementedException();
   }

@@ -143,4 +143,42 @@ public class TestUserController
     _userServiceMock.VerifyAll();
     Assert.IsInstanceOfType(result, typeof(BadRequestResult));
   }
+
+  
+  [TestMethod]
+  public void TestCreateMaintenanceOperator()
+  {
+    MaintenanceOperator maintenanceOperator = new MaintenanceOperator
+    {
+      Id = 1,
+      Name = "John",
+      LastName = "Doe",
+      Email = "test@test.com",
+      Password = "Prueba.1234"
+    };
+
+    var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+    {
+      Name = maintenanceOperator.Name,
+      LastName = maintenanceOperator.LastName,
+      Email = maintenanceOperator.Email,
+      Password = maintenanceOperator.Password
+    };
+
+    _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
+
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
+    var okResult = result as OkObjectResult;
+    var maintenanceOperatorModel = okResult.Value as MaintenanceOperatorModel;
+
+    var expectedContent = new MaintenanceOperatorModel(maintenanceOperator);
+
+    
+
+    _userServiceMock.VerifyAll();
+    Assert.AreEqual(maintenanceOperatorModel, expectedContent);
+  }
 }
