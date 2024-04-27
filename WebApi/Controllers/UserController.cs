@@ -32,6 +32,8 @@ public class UserController : ControllerBase
   [HttpPost("maintenance-operator")]
   public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateModel newMaintenanceOperator)
   {
-    return BadRequest();
+    MaintenanceOperatorModel maintenanceOperator = new MaintenanceOperatorModel(_service.CreateMaintenanceOperator(newMaintenanceOperator.ToEntity()));
+    
+    return Ok(maintenanceOperator);
   }
 }
