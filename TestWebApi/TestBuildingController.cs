@@ -21,6 +21,12 @@ namespace TestWebApi
 
         private Mock<IBuildingServices> _buildingServices;
 
+        [TestInitialize]
+        public void Setup()
+        {
+            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
+        }
+
         [TestMethod]
         public void TestCreateBuilding()
         {
@@ -33,7 +39,7 @@ namespace TestWebApi
                 Location = "111,111",
                 Name = "Edificio nuevo"
             };
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
+            
             _buildingServices.Setup(r => r.CreateBuilding(It.IsAny<Building>())).Returns(newBuilding);
             var buildingController = new BuildingController(_buildingServices.Object);
             var input = new CreateBuildingInput()
@@ -81,7 +87,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithoutBody()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = null;
 
@@ -93,7 +98,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithoutName()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -112,7 +116,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithEmptyName()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -132,7 +135,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithoutAddress()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -151,7 +153,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithEmptyAddress()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -171,7 +172,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithoutLocation()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -190,7 +190,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithEmptyLocation()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -210,7 +209,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithoutConstructionCompany()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -229,7 +227,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithEmptyConstructionCompany()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
@@ -249,7 +246,6 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateBuildingWithInvalidExpenses()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = new CreateBuildingInput()
             {
