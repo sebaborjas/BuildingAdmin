@@ -56,7 +56,7 @@ public class TestUserController
   }
 
   [TestMethod]
-  public void TestCreateAdministratorWirhNoBody()
+  public void TestCreateAdministratorWithNoBody()
   {
     Administrator admin = new Administrator
     {
@@ -66,6 +66,29 @@ public class TestUserController
     };
 
     AdministratorCreateModel administratorCreateModel = null;
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.CreateAdministrator(administratorCreateModel);
+
+    _userServiceMock.VerifyAll();
+    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+  }
+
+  [TestMethod]
+  public void TestCreateAdministratorWithNoName()
+  {
+    Administrator admin = new Administrator
+    {
+      LastName = "Doe",
+      Email = "test@test.com"
+    };
+
+    AdministratorCreateModel administratorCreateModel = new AdministratorCreateModel
+    {
+      LastName = admin.LastName,
+      Email = admin.Email
+    };
 
     var userController = new UserController(_userServiceMock.Object);
 
