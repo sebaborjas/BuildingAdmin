@@ -152,7 +152,7 @@ namespace TestDataAccess
             LoadConext(maintenanceOperators);
 
             var maintenanceOperator = _repository.Get(1);
-           
+
             string newName = "Sebastian";
             maintenanceOperator.Name = newName;
 
@@ -208,6 +208,13 @@ namespace TestDataAccess
             _repository.Save();
 
             Assert.IsNull(_context.MaintenanceOperators.Find(1));
+        }
+
+        [TestMethod]
+        public void TestCheckConnection()
+        {
+            bool connection = _repository.CheckConnection();
+            Assert.IsTrue(connection);
         }
     }
 }
