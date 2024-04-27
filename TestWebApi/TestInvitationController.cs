@@ -22,6 +22,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateInvitation()
         {
+            _invitationServicesMock = new Mock<IInvitationServices>(MockBehavior.Strict);
             Invitation invitationCreated = new Invitation()
             {
                 Id = 11,

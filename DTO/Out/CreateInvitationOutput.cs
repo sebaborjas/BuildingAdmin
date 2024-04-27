@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace DTO.Out
 {
     public class CreateInvitationOutput
     {
+        public CreateInvitationOutput(Invitation invitation)
+        {
+            InvitationId = invitation.Id;
+        }
         public int InvitationId {  get; set; }
     }
 }

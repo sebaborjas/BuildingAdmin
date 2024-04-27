@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DTO.In;
+using DTO.Out;
 
 namespace WebApi.Controllers
 {
@@ -17,9 +18,12 @@ namespace WebApi.Controllers
             _invitationServices = invitationServices;
         }
 
-        public IActionResult CreateInvitation(CreateInvitationInput newInvitationInput)
+        [HttpPost]
+        public IActionResult CreateInvitation([FromBody]CreateInvitationInput newInvitationInput)
         {
-            return Ok();
+            var newInvitation = _invitationServices.CreateInvitation(newInvitationInput.ToEntity());
+            var response = new CreateInvitationOutput(newInvitation);
+            return Ok(response);
         }
     }
 }
