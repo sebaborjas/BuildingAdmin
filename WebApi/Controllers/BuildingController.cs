@@ -45,8 +45,15 @@ namespace WebApi.Controllers
         [HttpPost("{id}")]
         public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
         {
-            _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
-            return Ok();
+            try
+            {
+                _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
+                return Ok();
+            } catch(KeyNotFoundException exception)
+            {
+                return NotFound();
+            }
+            
         }
 
         private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)
