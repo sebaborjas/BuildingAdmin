@@ -68,9 +68,16 @@ namespace WebApi.Controllers
             {
                 return BadRequest();
             }
-            var newManager = _invitationServices.AcceptInvitation(acceptInvitationInput.ToEntity());
-            var result = new AcceptInvitationOutput(newManager);
-            return Ok(result);
+            try
+            {
+                var newManager = _invitationServices.AcceptInvitation(acceptInvitationInput.ToEntity());
+                var result = new AcceptInvitationOutput(newManager);
+                return Ok(result);
+            } catch (Exception exception)
+            {
+                return NotFound();
+            }
+            
         }
 
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)

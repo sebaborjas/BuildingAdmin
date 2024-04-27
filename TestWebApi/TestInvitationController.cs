@@ -312,5 +312,22 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestAcceptInvalidInvitation()
+        {
+            _invitationServicesMock.Setup(r => r.AcceptInvitation(It.IsAny<Invitation>())).Throws(new Exception());
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            var input = new AcceptInvitationInput()
+            {
+                Email = "correoSinInvitacion@correo.com",
+                Password = "Contrasena1234*!"
+            };
+
+            var result = controller.AcceptInvitation(input);
+
+            _invitationServicesMock.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
+        }
     }
 }
