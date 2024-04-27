@@ -63,4 +63,16 @@ public class TestUserService
     Assert.AreEqual(maintenanceOperator, createdOperator);
   }
 
+  [TestMethod]
+  public void TestDeleteManager()
+  {
+    _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Verifiable();
+
+    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+
+    _service.DeleteManager(1);
+
+    _managerRepositoryMock.VerifyAll();
+  }
+
 }
