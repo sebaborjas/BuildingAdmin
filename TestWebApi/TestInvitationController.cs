@@ -165,5 +165,21 @@ namespace TestWebApi
             _invitationServicesMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
+
+        [TestMethod]
+        public void TestModifyInvitation()
+        {
+            _invitationServicesMock.Setup(r => r.ModifyInvitation(It.IsAny<int>(), It.IsAny<DateTime>()));
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            var input = new ModifyInvitationInput()
+            {
+                ExpirationDate = DateTime.Now.AddDays(3),
+            };
+
+            var result = controller.ModifyInvitation(1, input);
+
+            _invitationServicesMock.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
+        }
     }
 }

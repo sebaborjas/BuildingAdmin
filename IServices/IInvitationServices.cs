@@ -12,5 +12,7 @@ namespace IServices
         Invitation CreateInvitation(Invitation newInvitation);
 
         void DeleteInvitation(int id);
+
+        void ModifyInvitation(int id, DateTime newExpirationDate);
     }
 }

@@ -41,7 +41,12 @@ namespace WebApi.Controllers
             {
                 return NotFound();
             }
+        }
 
+        [HttpPut("{id}")]
+        public IActionResult ModifyInvitation(int id, [FromBody]ModifyInvitationInput modifyInvitationInput)
+        {
+            return Ok();
         }
 
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
