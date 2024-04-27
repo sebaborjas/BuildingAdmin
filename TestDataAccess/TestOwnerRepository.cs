@@ -105,5 +105,17 @@ namespace TestDataAccess
             Assert.AreEqual(owners[0], owner);
         }
 
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var ownersData = Data();
+            LoadConext(ownersData);
+
+            var allOwners = _repository.GetAll<Owner>().ToList();
+
+            CollectionAssert.AreEqual(ownersData, allOwners);
+        }
+
+
     }
 }
