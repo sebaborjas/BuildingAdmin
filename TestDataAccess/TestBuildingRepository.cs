@@ -181,5 +181,14 @@ namespace TestDataAccess
 
             _repository.Delete(building);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteEmptyList()
+        {
+            var building = _context.Buildings.Find(3);
+
+            _repository.Delete(building);
+        }
     }
 }
