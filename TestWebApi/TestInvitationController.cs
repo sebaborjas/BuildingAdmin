@@ -329,5 +329,21 @@ namespace TestWebApi
             _invitationServicesMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
+
+        [TestMethod]
+        public void TestRejectInvitation()
+        {
+            _invitationServicesMock.Setup(r => r.RejectInvitation(It.IsAny<string>())).Verifiable();
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            var input = new RejectInvitationInput()
+            {
+                Email = "correoParaRechazar@correo.com",
+            };
+
+            var result = controller.RejectInvitation(input);
+
+            _invitationServicesMock.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
+        }
     }
 }

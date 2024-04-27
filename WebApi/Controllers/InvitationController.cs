@@ -77,7 +77,13 @@ namespace WebApi.Controllers
             {
                 return NotFound();
             }
-            
+        }
+
+        [HttpPut("reject")]
+        public IActionResult RejectInvitation(RejectInvitationInput rejectInvitationInput)
+        {
+            _invitationServices.RejectInvitation(rejectInvitationInput.Email);
+            return Ok();
         }
 
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
