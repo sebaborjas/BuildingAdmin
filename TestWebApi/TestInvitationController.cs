@@ -125,5 +125,21 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestCreateInvitationWithGoneExpirationDate()
+        {
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            var input = new CreateInvitationInput()
+            {
+                Email = "correoInvitado@correo.com",
+                Name = "Nombre invitado",
+                ExpirationDate = DateTime.Now.AddDays(-1),
+            };
+
+            var result = controller.CreateInvitation(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
