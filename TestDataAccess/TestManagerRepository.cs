@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-
 using Domain;
 using DataAccess;
 
@@ -19,6 +17,10 @@ namespace TestDataAccess
         private BuildingAdminContext _context;
         private SqliteConnection _connection;
         private ManagerRepository _repository;
+        private ConstructionCompany constructionCompany;
+        private Building building1;
+        private Building building2;
+
 
         [TestInitialize]
         public void SetUp()
@@ -34,6 +36,36 @@ namespace TestDataAccess
             _context.Database.EnsureCreated();
 
             _repository = new ManagerRepository(_context);
+
+            constructionCompany = new ConstructionCompany
+            {
+                Id = 1,
+                Name = "Constructora"
+            };
+
+            building1 = new Building
+            {
+                Id = 1,
+                Name = "Edificio Principal",
+                Address = "Calle, 0000, esquina",
+                Expenses = 1000,
+                Location = "1.000, 1.000",
+                ConstructionCompany = constructionCompany,
+                Tickets = new List<Ticket>(),
+                Apartments = new List<Apartment>(),
+            };
+
+            building2 = new Building
+            {
+                Id = 2,
+                Name = "Edificio Secundario",
+                Address = "Calle, 1111, esquina",
+                Expenses = 2000,
+                Location = "2.000, 2.000",
+                ConstructionCompany = constructionCompany,
+                Tickets = new List<Ticket>(),
+                Apartments = new List<Apartment>(),
+            };
         }
 
         private List<Manager> Data()
@@ -45,7 +77,8 @@ namespace TestDataAccess
                     Id = 1,
                     Name = "Seba Borjas",
                     Email = "seba@test.com",
-                    Password = "SebaB.1234"
+                    Password = "SebaB.1234",
+                    Buildings = new List<Building> { building1, building2}
                 },
 
                 new Manager
@@ -53,7 +86,8 @@ namespace TestDataAccess
                     Id = 2,
                     Name = "Rodri Conze",
                     Email = "rodri@test.com",
-                    Password = "Conze.1234"
+                    Password = "Conze.1234",
+                    Buildings = new List<Building> { building2 }
                 },
 
                 new Manager
@@ -61,7 +95,8 @@ namespace TestDataAccess
                     Id = 3,
                     Name = "Agus Martinez",
                     Email = "agus@test.com",
-                    Password = "AgusM.1234"
+                    Password = "AgusM.1234",
+                    Buildings = new List<Building> { building1 }
                 }
             };
 
@@ -90,7 +125,8 @@ namespace TestDataAccess
                 Id = 4,
                 Name = "Luis Perez",
                 Email = "luis@test.com",
-                Password = "Prueba.1234"
+                Password = "Prueba.1234",
+                Buildings = new List<Building>()
             };
 
             _repository.Insert(manager);
