@@ -25,7 +25,8 @@ public class UserService : IUserServices
 
   public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator)
   {
-    throw new System.NotImplementedException();
+    _operatorRepository.Insert(maintenanceOperator);
+    return maintenanceOperator;
     
   }
 
