@@ -120,4 +120,27 @@ public class TestUserController
     _userServiceMock.VerifyAll();
     Assert.IsInstanceOfType(result, typeof(BadRequestResult));
   }
+
+  [TestMethod]
+  public void TestCreateAdministratorWithNoEmail()
+  {
+    Administrator admin = new Administrator
+    {
+      Name = "John",
+      LastName = "Doe"
+    };
+
+    AdministratorCreateModel administratorCreateModel = new AdministratorCreateModel
+    {
+      Name = admin.Name,
+      LastName = admin.LastName
+    };
+
+    var userController = new UserController(_userServiceMock.Object);
+
+    var result = userController.CreateAdministrator(administratorCreateModel);
+
+    _userServiceMock.VerifyAll();
+    Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+  }
 }
