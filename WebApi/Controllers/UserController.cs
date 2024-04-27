@@ -44,6 +44,7 @@ public class UserController : ControllerBase
   [HttpDelete("manager/{id}")]
   public IActionResult DeleteManager([FromBody] int id)
   {
-    return BadRequest();
+    _service.DeleteManager(id);
+    return Ok();
   }
 }
