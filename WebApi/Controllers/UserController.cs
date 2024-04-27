@@ -41,9 +41,9 @@ public class UserController : ControllerBase
   [HttpPost("maintenance-operator")]
   public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateModel newMaintenanceOperator)
   {
-    if(newMaintenanceOperator == null || newMaintenanceOperator.Name == null || newMaintenanceOperator.LastName == null || newMaintenanceOperator.Email == null || newMaintenanceOperator.Password == null || newMaintenanceOperator.Building == null)
+    if(!IsNewMaintenanceOperatorValid(newMaintenanceOperator))
     {
-      return BadRequest();
+      return BadRequest("La solcitud no es válida.");
     }
     MaintenanceOperatorModel maintenanceOperator = new MaintenanceOperatorModel(_service.CreateMaintenanceOperator(newMaintenanceOperator.ToEntity()));
     
