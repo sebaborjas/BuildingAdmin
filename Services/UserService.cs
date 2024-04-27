@@ -20,7 +20,7 @@ public class UserService : IUserServices
   public Administrator CreateAdministrator(Administrator administrator)
   {
     Administrator administratorAlreadyExist = _adminRepository.GetByCondition(a => a.Email == administrator.Email);
-    
+
     if(administratorAlreadyExist != null)
     {
       throw new ArgumentException("Administrator already exist");
@@ -31,6 +31,12 @@ public class UserService : IUserServices
 
   public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator)
   {
+    MaintenanceOperator maintenanceOperatorAlreadyExist = _operatorRepository.GetByCondition(a => a.Email == maintenanceOperator.Email);
+
+    if(maintenanceOperatorAlreadyExist != null)
+    {
+      throw new ArgumentException("Maintenance Operator already exist");
+    }
     _operatorRepository.Insert(maintenanceOperator);
     return maintenanceOperator;
     
