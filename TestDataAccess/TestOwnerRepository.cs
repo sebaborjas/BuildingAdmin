@@ -200,5 +200,20 @@ namespace TestDataAccess
             _repository.Delete(owner);
         }
 
+        [TestMethod]
+        public void TestSaveChanges()
+        {
+            var owners = Data();
+            LoadConext(owners);
+
+            var owner = _context.Owners.Find(1);
+
+            _repository.Delete(owner);
+
+            _repository.Save();
+
+            Assert.IsNull(_context.Owners.Find(1));
+        }
+
     }
 }
