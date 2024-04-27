@@ -183,6 +183,17 @@ namespace TestDataAccess
 
             Assert.AreEqual(0, count);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestDeleteNotFound()
+        {
+            var maintenanceOperators = Data();
+            LoadConext(maintenanceOperators);
+
+            var maintenanceOperator = _context.MaintenanceOperators.Find(4);
+            _repository.Delete(maintenanceOperator);
+        }
     }
 }
 
