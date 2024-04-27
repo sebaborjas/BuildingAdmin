@@ -49,9 +49,14 @@ namespace WebApi.Controllers
             {
                 _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
                 return Ok();
-            } catch(KeyNotFoundException exception)
+            } 
+            catch(KeyNotFoundException exception)
             {
                 return NotFound();
+            } 
+            catch(Exception exception)
+            {
+                return BadRequest();
             }
             
         }
