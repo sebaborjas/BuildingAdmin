@@ -32,8 +32,16 @@ namespace WebApi.Controllers
 
         public IActionResult DeleteInvitation(int id)
         {
-            _invitationServices.DeleteInvitation(id);
-            return Ok();
+            try
+            {
+                _invitationServices.DeleteInvitation(id);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return NotFound();
+            }
+
         }
 
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
