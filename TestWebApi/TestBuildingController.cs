@@ -76,5 +76,17 @@ namespace TestWebApi
             _buildingServices.VerifyAll();
             Assert.AreEqual(11, newBuildingResponse.BuildingId);
         }
+
+        [TestMethod]
+        public void TestCreateBuildingWithoutBody()
+        {
+            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
+            var buildingController = new BuildingController(_buildingServices.Object);
+            CreateBuildingInput input = null;
+
+            var result = buildingController.CreateBuilding(input);
+
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+        }
     }
 }
