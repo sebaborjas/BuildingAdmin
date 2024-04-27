@@ -47,7 +47,7 @@ namespace WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult ModifyInvitation(int id, [FromBody]ModifyInvitationInput modifyInvitationInput)
         {
-            if(modifyInvitationInput == null)
+            if(modifyInvitationInput == null || modifyInvitationInput.ExpirationDate < DateTime.Now)
             {
                 return BadRequest();
             }
