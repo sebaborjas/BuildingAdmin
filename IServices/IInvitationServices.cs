@@ -14,5 +14,7 @@ namespace IServices
         void DeleteInvitation(int id);
 
         void ModifyInvitation(int id, DateTime newExpirationDate);
+
+        Manager AcceptInvitation(Invitation invitation);
     }
 }

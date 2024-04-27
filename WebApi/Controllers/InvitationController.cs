@@ -59,7 +59,14 @@ namespace WebApi.Controllers
             {
                 return NotFound();
             }
-            
+        }
+
+        [HttpPut("accept")]
+        public IActionResult AcceptInvitation(AcceptInvitationInput acceptInvitationInput)
+        {
+            var newManager = _invitationServices.AcceptInvitation(acceptInvitationInput.ToEntity());
+            var result = new AcceptInvitationOutput(newManager);
+            return Ok(result);
         }
 
         private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)

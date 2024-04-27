@@ -222,5 +222,26 @@ namespace TestWebApi
             _invitationServicesMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
+
+        [TestMethod]
+        public void TestAcceptInvitation()
+        {
+            var createdManager = new Manager() { Id = 10 };
+            _invitationServicesMock.Setup(r => r.AcceptInvitation(It.IsAny<Invitation>())).Returns(createdManager);
+            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            var input = new AcceptInvitationInput()
+            {
+                Email = "newManager@correo.com",
+                Password = "Contrasena1234*!"
+            };
+
+            var result = controller.AcceptInvitation(input);
+            var okResult = result as OkObjectResult;
+            var acceptInvitationResponse = okResult.Value as AcceptInvitationOutput;
+
+
+            _invitationServicesMock.VerifyAll();
+            Assert.AreEqual(10, acceptInvitationResponse.ManagerId);
+        }
     }
 }
