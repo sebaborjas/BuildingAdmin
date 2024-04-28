@@ -82,5 +82,13 @@ namespace TestDataAccess
             CollectionAssert.Contains(_adminContext.Sessions.ToList(), session);
         }
 
+        [TestMethod]
+        public void TestGetNotFound()
+        {
+            var session = _repository.Get(5);
+
+            Assert.IsNull(session);
+        }
+
     }
 }
