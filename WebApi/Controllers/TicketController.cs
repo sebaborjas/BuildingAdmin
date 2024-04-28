@@ -55,6 +55,18 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPost("{id}/start")]
+        public IActionResult StartTicket(int id)
+        {
+            var ticket = _ticketServices.StartTicket(id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            var response = new TicketModel(ticket);
+            return Ok(response);
+        }
+
         private bool IsValidCreateTicketModel(TicketCreateModel createTicketModel)
         {
             return createTicketModel != null && createTicketModel.Apartment != null && createTicketModel.Category != null && !string.IsNullOrEmpty(createTicketModel.Description);

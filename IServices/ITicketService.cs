@@ -15,6 +15,8 @@ namespace IServices
 
         Ticket AssignTicket(int id, MaintenanceOperator maintenanceOperator);
 
+        Ticket StartTicket(int id);
+
 
 
     }

@@ -214,17 +214,36 @@ namespace TestWebApi
                     Expenses = 20000
 
                 }
-
             };
 
             var result = ticketController.AssignTicket(1, maintenanceOperatorCreateModel);
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
-
-
-
         }
-    
+
+        [TestMethod]
+        public void TestStartTicket()
+        {
+            Ticket ticket = new Ticket()
+            {
+                Description = "Ventana rota",
+                Apartment = _apartment,
+                Category = new Category() { Id = 1, Name = "Maintenance" }
+            };
+
+            _ticketServiceMock.Setup(x => x.StartTicket(It.IsAny<int>())).Returns(ticket);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var result = ticketController.StartTicket(1);
+            var okResult = result as OkObjectResult;
+            var ticketResponse = okResult.Value as TicketModel;
+            Assert.IsNotNull(ticketResponse);
+
+            var expectedTicket = new TicketModel(ticket);
+            _ticketServiceMock.VerifyAll();
+            Assert.AreEqual(ticketResponse, expectedTicket);
+        }
+
     }
 
-    
+
 }
