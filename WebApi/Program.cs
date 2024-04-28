@@ -10,6 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+ServicesFactory factory = new ServicesFactory(builder.Services);
+factory.AddCustomServices();
+factory.AddDbContextService();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,9 +23,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-ServicesFactory factory = new ServicesFactory(builder.Services);
-factory.AddDbContextService();
 
 app.UseHttpsRedirection();
 
