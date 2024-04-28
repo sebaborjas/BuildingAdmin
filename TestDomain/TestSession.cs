@@ -10,13 +10,26 @@ namespace TestDomain
     [TestClass]
     public class TestSession
     {
+        private Session _session;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _session = new Session();
+        }
 
         [TestMethod]
         public void TestId()
         {
-            var session = new Session();
-            session.Id = 10;
-            Assert.AreEqual(10, session.Id);
+            _session.Id = 10;
+            Assert.AreEqual(10, _session.Id);
+        }
+
+        [TestMethod]
+        public void TestUser() { 
+            var user = new Administrator();
+            _session.User = user;
+            Assert.AreEqual(_session.User, user);
         }
     }
 }
