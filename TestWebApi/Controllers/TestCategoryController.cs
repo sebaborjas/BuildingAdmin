@@ -8,6 +8,7 @@ using IServices;
 using WebApi;
 using Moq;
 using DTO.In;
+using DTO.Out;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TestWebApi;
@@ -26,18 +27,26 @@ public class TestCategoryController
     [TestMethod]
     public void TestCreateCategory()
     {
-        var category = new Category() { Name = "Test" };
-        var createCategoryModel = new CreateCategoryModel() { Name = "Test" };
 
-        _categoryServiceMock.Setup(x => x.CreateCategory("Test")).Returns(category);
+        var category = new Category
+        {
+            Id = 1,
+            Name = "Test Category"
+        };
+
+        _categoryServiceMock.Setup(x => x.CreateCategory("Test Category")).Returns(category);
 
         var categoryController = new CategoryController(_categoryServiceMock.Object);
-
-        var result = categoryController.CreateCategory(createCategoryModel);
+        var result = categoryController.CreateCategory(new CreateCategoryModel { Name = "Test Category" });
+        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+        
         var okResult = result as OkObjectResult;
-        var categoryResult = okResult.Value as Category;
-        Assert.IsNotNull(categoryResult);
-        Assert.AreEqual(categoryResult.Name, "Test");
+        Assert.IsNotNull(okResult);
+        Assert.IsInstanceOfType(okResult.Value, typeof(CategoryModel));
+        
+        var categoryModel = okResult.Value as CategoryModel;
+        Assert.IsNotNull(categoryModel);
+        Assert.AreEqual(category.Id, categoryModel.Id);
     }
 
     [TestMethod]
