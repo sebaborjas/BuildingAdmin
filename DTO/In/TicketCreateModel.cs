@@ -10,18 +10,17 @@ namespace DTO.In
     public class TicketCreateModel
     {
         public string Description { get; set; }
-        public Apartment Apartment { get; set; }
-        public Category Category { get; set; }
+        public int ApartmentId { get; set; }
+        public int CategoryId { get; set; }
 
         public Ticket ToEntity()
         {
             return new Ticket()
             {
                 Description = Description,
-                Apartment = Apartment,
-                Category = Category
+                Apartment = new Apartment() { Id = ApartmentId },
+                Category = new Category() { Id = CategoryId }
             };
         }
-
     }
 }

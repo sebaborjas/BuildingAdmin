@@ -20,14 +20,16 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateTicket([FromBody] TicketCreateModel createTicketModel)
         {
+
             if (!IsValidCreateTicketModel(createTicketModel))
             {
                 return BadRequest();
             }
-            var newTicket = _ticketServices.CreateTicket(createTicketModel.ToEntity());
-            var response = new TicketModel(newTicket);
-            return Ok(response);
 
+            var ticket = createTicketModel.ToEntity();
+            var createdTicket = _ticketServices.CreateTicket(ticket);
+            var response = new TicketModel(createdTicket);
+            return Ok(response);
         }
 
         [HttpGet("{category?}")]
@@ -80,7 +82,23 @@ namespace WebApi.Controllers
 
         private bool IsValidCreateTicketModel(TicketCreateModel createTicketModel)
         {
-            return createTicketModel != null && createTicketModel.Apartment != null && createTicketModel.Category != null && !string.IsNullOrEmpty(createTicketModel.Description);
+
+            if (createTicketModel == null)
+            {
+                return false;
+            }
+
+            if (createTicketModel.ApartmentId <= 0)
+            {
+                return false;
+            }
+
+            if (createTicketModel.CategoryId <= 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
     }
