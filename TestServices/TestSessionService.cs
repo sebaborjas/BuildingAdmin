@@ -50,5 +50,24 @@ namespace TestServices
 
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        public void TestGetCurrentUserWithoutTokenAfterUseToken()
+        {
+            var session = new Session()
+            {
+                Id = 1,
+                User = new Administrator(),
+            };
+
+            _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
+            _sessionRepository.Setup(r => r.GetByToken(It.IsAny<Guid>())).Returns(session);
+            _sessionService = new SessionService(_sessionRepository.Object);
+
+            var resultUsingToken = _sessionService.GetCurrentUser(session.Token);
+            var resultWithoutToken = _sessionService.GetCurrentUser();
+
+            Assert.AreEqual(session.User, resultWithoutToken);
+        }
     }
 }

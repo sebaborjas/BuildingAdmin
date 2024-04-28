@@ -13,6 +13,8 @@ namespace Services
     public class SessionService: ISessionService
     {
         private ISessionRepository _sessionRepository;
+        
+        private User? _currentUser;
 
         public SessionService(ISessionRepository repository) { 
             _sessionRepository = repository;
@@ -20,12 +22,10 @@ namespace Services
 
         public User? GetCurrentUser(Guid? token = null)
         {
+            if(token == null) return _currentUser;
             var session = _sessionRepository.GetByToken(token.Value);
-            if(session != null)
-            {
-                return session.User;
-            }
-            return null;
+            if(session != null) _currentUser = session.User;
+            return _currentUser;
         }
     }
 }
