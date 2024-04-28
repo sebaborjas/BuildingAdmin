@@ -157,6 +157,17 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        public void TestAssignTicketNotFound()
+        {
+            _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<int>())).Returns((Ticket)null);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var result = ticketController.AssignTicket(1, 1);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+
+        }
+
+        [TestMethod]
         public void TestStartTicket()
         {
             Ticket ticket = new Ticket()
