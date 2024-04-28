@@ -43,10 +43,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}/assign")]
-        public IActionResult AssignTicket(int id, [FromBody] MaintenanceOperatorCreateModel maintenanceOperatorModel)
+        public IActionResult AssignTicket(int id, [FromBody] int maintenanceOperatorId)
         {
-            var maintenanceOperator = maintenanceOperatorModel.ToEntity();
-            var ticket = _ticketServices.AssignTicket(id, maintenanceOperator);
+            var ticket = _ticketServices.AssignTicket(id, maintenanceOperatorId);
             if (ticket == null)
             {
                 return NotFound();

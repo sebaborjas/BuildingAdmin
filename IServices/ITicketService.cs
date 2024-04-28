@@ -13,7 +13,7 @@ namespace IServices
 
         List<Ticket> GetTickets(string category = null);
 
-        Ticket AssignTicket(int id, MaintenanceOperator maintenanceOperator);
+        Ticket AssignTicket(int id, int maintenanceOperatorId);
 
         Ticket StartTicket(int id);
 
