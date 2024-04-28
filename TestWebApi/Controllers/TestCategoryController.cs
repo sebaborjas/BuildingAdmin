@@ -49,4 +49,13 @@ public class TestCategoryController
         Assert.IsInstanceOfType(result, typeof(BadRequestResult));
     }
 
+    [TestMethod]
+    public void TestCreateCategoryWithEmptyName()
+    {
+        var categoryController = new CategoryController(_categoryServiceMock.Object);
+
+        var result = categoryController.CreateCategory(new CreateCategoryModel());
+        Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    }
+
 }
