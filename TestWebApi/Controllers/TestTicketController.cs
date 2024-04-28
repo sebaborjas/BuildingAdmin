@@ -276,6 +276,16 @@ namespace TestWebApi
             Assert.AreEqual(ticketResponse, expectedTicket);
         }
 
+        [TestMethod]
+        public void TestCompleteTicketNotFound()
+        {
+            _ticketServiceMock.Setup(x => x.CompleteTicket(It.IsAny<int>(), It.IsAny<float>())).Returns((Ticket)null);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var result = ticketController.CompleteTicket(1, 100);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
     }
 
 
