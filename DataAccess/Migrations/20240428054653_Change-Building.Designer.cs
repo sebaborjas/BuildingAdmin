@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240427172640_addBuilding")]
-    partial class addBuilding
+    [Migration("20240428054653_Change-Building")]
+    partial class ChangeBuilding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -237,8 +237,8 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -266,6 +266,18 @@ namespace DataAccess.Migrations
                     b.HasBaseType("Domain.User");
 
                     b.HasDiscriminator().HasValue("Administrator");
+                });
+
+            modelBuilder.Entity("Domain.MaintenanceOperator", b =>
+                {
+                    b.HasBaseType("Domain.User");
+
+                    b.Property<int?>("buildingId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("buildingId");
+
+                    b.HasDiscriminator().HasValue("MaintenanceOperator");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>
@@ -330,6 +342,15 @@ namespace DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Domain.MaintenanceOperator", b =>
+                {
+                    b.HasOne("Domain.Building", "building")
+                        .WithMany()
+                        .HasForeignKey("buildingId");
+
+                    b.Navigation("building");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>

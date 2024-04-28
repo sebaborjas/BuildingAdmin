@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240427150144_addmany")]
-    partial class addmany
+    [Migration("20240428054506_Building")]
+    partial class Building
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Apartment");
+                    b.ToTable("Apartments");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>
@@ -95,7 +95,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Building");
+                    b.ToTable("Buildings");
                 });
 
             modelBuilder.Entity("Domain.Category", b =>
@@ -237,8 +237,8 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -266,18 +266,6 @@ namespace DataAccess.Migrations
                     b.HasBaseType("Domain.User");
 
                     b.HasDiscriminator().HasValue("Administrator");
-                });
-
-            modelBuilder.Entity("Domain.MaintenanceOperator", b =>
-                {
-                    b.HasBaseType("Domain.User");
-
-                    b.Property<int?>("buildingId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("buildingId");
-
-                    b.HasDiscriminator().HasValue("MaintenanceOperator");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>
@@ -342,15 +330,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("Domain.MaintenanceOperator", b =>
-                {
-                    b.HasOne("Domain.Building", "building")
-                        .WithMany()
-                        .HasForeignKey("buildingId");
-
-                    b.Navigation("building");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>
