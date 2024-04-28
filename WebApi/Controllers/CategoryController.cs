@@ -24,7 +24,7 @@ namespace WebApi
                 return BadRequest();
             }
             var category = _service.CreateCategory(createCategoryModel.Name);
-            return Ok(category);
+            return Ok(new CategoryModel(category));
         }
 
         private bool IsValidCreateCategoryInput(CreateCategoryModel createCategoryModel)
