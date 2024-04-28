@@ -18,6 +18,12 @@ namespace TestServices
         private ISessionService _sessionService;
         private Mock<ISessionRepository> _sessionRepository;
 
+        [TestInitialize]
+        public void Setup()
+        {
+            _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
+        }
+
         [TestMethod]
         public void TestGetCurrentUser() {
 
@@ -26,28 +32,25 @@ namespace TestServices
                 Id = 1,
                 User = new Administrator(),
             };
-
-            _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
             _sessionRepository.Setup(r=>r.GetByToken(It.IsAny<Guid>())).Returns(session);
             _sessionService = new SessionService(_sessionRepository.Object);
 
             var result = _sessionService.GetCurrentUser(session.Token);
 
+            _sessionRepository.VerifyAll();
             Assert.AreEqual(session.User, result);
         }
 
         [TestMethod]
         public void TestGetNullCurrentUser()
         {
-
             Session session = null;
-
-            _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
             _sessionRepository.Setup(r => r.GetByToken(It.IsAny<Guid>())).Returns(session);
             _sessionService = new SessionService(_sessionRepository.Object);
 
             var result = _sessionService.GetCurrentUser(Guid.NewGuid());
-
+            
+            _sessionRepository.VerifyAll();
             Assert.IsNull(result);
         }
 
@@ -59,23 +62,19 @@ namespace TestServices
                 Id = 1,
                 User = new Administrator(),
             };
-
-            _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
             _sessionRepository.Setup(r => r.GetByToken(It.IsAny<Guid>())).Returns(session);
             _sessionService = new SessionService(_sessionRepository.Object);
 
             var resultUsingToken = _sessionService.GetCurrentUser(session.Token);
             var resultWithoutToken = _sessionService.GetCurrentUser();
 
+            _sessionRepository.VerifyAll();
             Assert.AreEqual(session.User, resultWithoutToken);
         }
 
         [TestMethod]
         public void TestGetNullCurrentUserWithoutToken()
         {
-            Session session = null;
-            _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
-            _sessionRepository.Setup(r => r.GetByToken(It.IsAny<Guid>())).Returns(session);
             _sessionService = new SessionService(_sessionRepository.Object);
 
             var result = _sessionService.GetCurrentUser();
