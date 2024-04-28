@@ -31,5 +31,13 @@ namespace TestDomain
             _session.User = user;
             Assert.AreEqual(_session.User, user);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestNullUser()
+        {
+            Administrator user = null;
+            _session.User = user;
+        }
     }
 }

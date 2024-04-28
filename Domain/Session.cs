@@ -8,8 +8,21 @@ namespace Domain
 {
     public class Session
     {
-        public int Id { get; set; }
 
-        public User User { get; set; }
+        User _user;
+
+        public int Id { get; set; }
+        public User User 
+        { 
+            get => _user;
+            set
+            {
+                if(value == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                _user = value;
+            } 
+        }
     }
 }
