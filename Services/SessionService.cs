@@ -20,8 +20,12 @@ namespace Services
 
         public User? GetCurrentUser(Guid? token = null)
         {
-
-            return _sessionRepository.GetByToken(token.Value).User;
+            var session = _sessionRepository.GetByToken(token.Value);
+            if(session != null)
+            {
+                return session.User;
+            }
+            return null;
         }
     }
 }
