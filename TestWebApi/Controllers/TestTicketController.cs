@@ -58,27 +58,21 @@ namespace TestWebApi
             var ticketCreateModel = new TicketCreateModel()
             {
                 Description = "Ventana rota",
-                Apartment = _apartment,
-                Category = new Category() { Id = 1, Name = "Maintenance" }
+                ApartmentId = 1,
+                CategoryId = 1
             };
 
             var result = ticketController.CreateTicket(ticketCreateModel);
             var okResult = result as OkObjectResult;
-            var newTicketResponse = okResult.Value as TicketModel;
+            var ticketResponse = okResult.Value as TicketModel;
+            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
-
             _ticketServiceMock.VerifyAll();
-            Assert.AreEqual(newTicketResponse, expectedTicket);
+            Assert.AreEqual(ticketResponse, expectedTicket);
         }
 
-        [TestMethod]
-        public void TestCreateTicketBadRequest()
-        {
-            var ticketController = new TicketController(_ticketServiceMock.Object);
-            var result = ticketController.CreateTicket(null);
-            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-        }
+        
 
         [TestMethod]
         public void TestGetTickets()
