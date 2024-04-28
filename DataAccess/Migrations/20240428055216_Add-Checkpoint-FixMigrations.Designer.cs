@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240424032903_addTicket")]
-    partial class addTicket
+    [Migration("20240428055216_Add-Checkpoint-FixMigrations")]
+    partial class AddCheckpointFixMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Apartment");
+                    b.ToTable("Apartments");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>
@@ -95,7 +95,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Building");
+                    b.ToTable("Buildings");
                 });
 
             modelBuilder.Entity("Domain.Category", b =>
@@ -171,7 +171,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Owner");
+                    b.ToTable("Owners");
                 });
 
             modelBuilder.Entity("Domain.Ticket", b =>
@@ -237,8 +237,8 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -266,6 +266,18 @@ namespace DataAccess.Migrations
                     b.HasBaseType("Domain.User");
 
                     b.HasDiscriminator().HasValue("Administrator");
+                });
+
+            modelBuilder.Entity("Domain.MaintenanceOperator", b =>
+                {
+                    b.HasBaseType("Domain.User");
+
+                    b.Property<int?>("BuildingId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasDiscriminator().HasValue("MaintenanceOperator");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>
@@ -330,6 +342,15 @@ namespace DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Domain.MaintenanceOperator", b =>
+                {
+                    b.HasOne("Domain.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId");
+
+                    b.Navigation("Building");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>

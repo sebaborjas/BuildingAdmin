@@ -20,6 +20,7 @@ namespace DataAccess
         public virtual DbSet<MaintenanceOperator> MaintenanceOperators { get; set; }
         public virtual DbSet<Apartment> Apartments {  get; set; }
         public virtual DbSet<Building> Buildings { get; set; }
+        public virtual DbSet<Session> Sessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
