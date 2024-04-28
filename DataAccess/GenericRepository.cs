@@ -13,6 +13,7 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
     public void Insert(T entity)
     {
         Context.Set<T>().Add(entity);
+        Save();
     }
 
     public void Update(T entity)

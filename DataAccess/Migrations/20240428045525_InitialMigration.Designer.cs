@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240423224624_addCategory")]
-    partial class addCategory
+    [Migration("20240428045525_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,22 +50,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Administrators");
                 });
 
-            modelBuilder.Entity("Domain.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("Domain.Invitation", b =>
                 {
                     b.Property<int>("Id")
@@ -73,6 +57,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AdministratorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -85,7 +72,21 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdministratorId");
+
                     b.ToTable("Invitations");
+                });
+
+            modelBuilder.Entity("Domain.Invitation", b =>
+                {
+                    b.HasOne("Domain.Administrator", null)
+                        .WithMany("Invitations")
+                        .HasForeignKey("AdministratorId");
+                });
+
+            modelBuilder.Entity("Domain.Administrator", b =>
+                {
+                    b.Navigation("Invitations");
                 });
 #pragma warning restore 612, 618
         }

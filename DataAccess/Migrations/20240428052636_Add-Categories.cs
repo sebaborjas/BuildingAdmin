@@ -1,20 +1,101 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace DataAccess.Migrations
 {
-    [ExcludeFromCodeCoverage]
     /// <inheritdoc />
-    public partial class addTicket : Migration
+    public partial class AddCategories : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+            migrationBuilder.DropTable(
+                name: "Ticket");
+
+            migrationBuilder.DropTable(
+                name: "Apartment");
+
+            migrationBuilder.DropTable(
+                name: "Building");
+
+            migrationBuilder.DropTable(
+                name: "Owner");
+
+            migrationBuilder.DropTable(
+                name: "ConstructionCompany");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Category",
+                table: "Category");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_User",
+                table: "User");
+
+            migrationBuilder.DropColumn(
+                name: "Discriminator",
+                table: "User");
+
+            migrationBuilder.RenameTable(
+                name: "Category",
+                newName: "Categories");
+
+            migrationBuilder.RenameTable(
+                name: "User",
+                newName: "Administrators");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Categories",
+                table: "Categories",
+                column: "Id");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Administrators",
+                table: "Administrators",
+                column: "Id");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Categories",
+                table: "Categories");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Administrators",
+                table: "Administrators");
+
+            migrationBuilder.RenameTable(
                 name: "Categories",
+                newName: "Category");
+
+            migrationBuilder.RenameTable(
+                name: "Administrators",
+                newName: "User");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Discriminator",
+                table: "User",
+                type: "nvarchar(13)",
+                maxLength: 13,
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Category",
+                table: "Category",
+                column: "Id");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_User",
+                table: "User",
+                column: "Id");
+
+            migrationBuilder.CreateTable(
+                name: "ConstructionCompany",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,35 +104,7 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ConstructionCompanies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConstructionCompanies", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Invitations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.PrimaryKey("PK_ConstructionCompany", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,30 +113,13 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Owner", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,20 +128,20 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Expenses = table.Column<float>(type: "real", nullable: false),
                     ConstructionCompanyId = table.Column<int>(type: "int", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ManagerId = table.Column<int>(type: "int", nullable: true)
+                    Expenses = table.Column<float>(type: "real", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ManagerId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Building", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Building_ConstructionCompanies_ConstructionCompanyId",
+                        name: "FK_Building_ConstructionCompany_ConstructionCompanyId",
                         column: x => x.ConstructionCompanyId,
-                        principalTable: "ConstructionCompanies",
+                        principalTable: "ConstructionCompany",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Building_User_ManagerId",
@@ -120,13 +156,13 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<int>(type: "int", nullable: true),
+                    Bathrooms = table.Column<short>(type: "smallint", nullable: false),
+                    BuildingId = table.Column<int>(type: "int", nullable: true),
+                    DoorNumber = table.Column<int>(type: "int", nullable: false),
                     Floor = table.Column<short>(type: "smallint", nullable: false),
                     HasTerrace = table.Column<bool>(type: "bit", nullable: false),
-                    DoorNumber = table.Column<int>(type: "int", nullable: false),
-                    Rooms = table.Column<short>(type: "smallint", nullable: false),
-                    Bathrooms = table.Column<short>(type: "smallint", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: true),
-                    BuildingId = table.Column<int>(type: "int", nullable: true)
+                    Rooms = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,47 +180,47 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tickets",
+                name: "Ticket",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApartmentId = table.Column<int>(type: "int", nullable: true),
                     AssignedToId = table.Column<int>(type: "int", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    AttentionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClosingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApartmentId = table.Column<int>(type: "int", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
-                    BuildingId = table.Column<int>(type: "int", nullable: true)
+                    AttentionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BuildingId = table.Column<int>(type: "int", nullable: true),
+                    ClosingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.PrimaryKey("PK_Ticket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_Apartment_ApartmentId",
+                        name: "FK_Ticket_Apartment_ApartmentId",
                         column: x => x.ApartmentId,
                         principalTable: "Apartment",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tickets_Building_BuildingId",
+                        name: "FK_Ticket_Building_BuildingId",
                         column: x => x.BuildingId,
                         principalTable: "Building",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tickets_Categories_CategoryId",
+                        name: "FK_Ticket_Category_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        principalTable: "Category",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tickets_User_AssignedToId",
+                        name: "FK_Ticket_User_AssignedToId",
                         column: x => x.AssignedToId,
                         principalTable: "User",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Tickets_User_CreatedById",
+                        name: "FK_Ticket_User_CreatedById",
                         column: x => x.CreatedById,
                         principalTable: "User",
                         principalColumn: "Id");
@@ -211,57 +247,29 @@ namespace DataAccess.Migrations
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_ApartmentId",
-                table: "Tickets",
+                name: "IX_Ticket_ApartmentId",
+                table: "Ticket",
                 column: "ApartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_AssignedToId",
-                table: "Tickets",
+                name: "IX_Ticket_AssignedToId",
+                table: "Ticket",
                 column: "AssignedToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_BuildingId",
-                table: "Tickets",
+                name: "IX_Ticket_BuildingId",
+                table: "Ticket",
                 column: "BuildingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_CategoryId",
-                table: "Tickets",
+                name: "IX_Ticket_CategoryId",
+                table: "Ticket",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_CreatedById",
-                table: "Tickets",
+                name: "IX_Ticket_CreatedById",
+                table: "Ticket",
                 column: "CreatedById");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Invitations");
-
-            migrationBuilder.DropTable(
-                name: "Tickets");
-
-            migrationBuilder.DropTable(
-                name: "Apartment");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Building");
-
-            migrationBuilder.DropTable(
-                name: "Owner");
-
-            migrationBuilder.DropTable(
-                name: "ConstructionCompanies");
-
-            migrationBuilder.DropTable(
-                name: "User");
         }
     }
 }
