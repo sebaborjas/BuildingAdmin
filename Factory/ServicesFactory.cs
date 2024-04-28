@@ -10,7 +10,7 @@ namespace Factory
 {
   public class ServicesFactory
   {
-    private readonly IServiceCollection _services;
+    private IServiceCollection _services;
 
     public ServicesFactory(IServiceCollection services)
     {

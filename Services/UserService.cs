@@ -6,9 +6,9 @@ namespace Services;
 
 public class UserService : IUserServices
 {
-  private readonly IGenericRepository<Administrator> _adminRepository;
-  private readonly IGenericRepository<MaintenanceOperator> _operatorRepository;
-  private readonly IGenericRepository<Manager> _managerRepository;
+  private IGenericRepository<Administrator> _adminRepository;
+  private IGenericRepository<MaintenanceOperator> _operatorRepository;
+  private IGenericRepository<Manager> _managerRepository;
 
   public UserService(IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> operatorRepository, IGenericRepository<Manager> managerRepository)
   {
