@@ -79,6 +79,42 @@ namespace TestWebApi
             var result = ticketController.CreateTicket(null);
             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
         }
+
+        [TestMethod]
+        public void TestGetTickets()
+        {
+            List<Ticket> tickets = new List<Ticket>()
+            {
+                new Ticket()
+                {
+                    Description = "Ventana rota",
+                    Apartment = _apartment,
+                    Category = new Category() { Id = 1, Name = "Maintenance" }
+                },
+                new Ticket()
+                {
+                    Description = "Limpieza grasera",
+                    Apartment = _apartment,
+                    Category = new Category() { Id = 2, Name = "Plumber" }
+                }
+            };
+
+            _ticketServiceMock.Setup(x => x.GetTickets(It.IsAny<string>())).Returns(tickets);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var result = ticketController.GetTickets();
+            var okResult = result as OkObjectResult;
+            var ticketsResponse = okResult.Value as List<TicketModel>;
+
+            var expectedTickets = new List<TicketModel>();
+            foreach (var ticket in tickets)
+            {
+                expectedTickets.Add(new TicketModel(ticket));
+            }
+
+            _ticketServiceMock.VerifyAll();
+            CollectionAssert.AreEqual(ticketsResponse, expectedTickets);
+        }
     }
 
 }

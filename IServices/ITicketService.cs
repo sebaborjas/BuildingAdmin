@@ -10,5 +10,8 @@ namespace IServices
     public interface ITicketService
     {
         Ticket CreateTicket(Ticket ticket);
+
+        List<Ticket> GetTickets(string category = null);
+
     }
 }

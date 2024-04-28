@@ -27,8 +27,21 @@ namespace WebApi.Controllers
             var newTicket = _ticketServices.CreateTicket(createTicketModel.ToEntity());
             var response = new TicketModel(newTicket);
             return Ok(response);
-            
+
         }
+
+        [HttpGet("{category?}")]
+        public IActionResult GetTickets(string category = null)
+        {
+            var tickets = _ticketServices.GetTickets(category);
+            var response = new List<TicketModel>();
+            foreach (var ticket in tickets)
+            {
+                response.Add(new TicketModel(ticket));
+            }
+            return Ok(response);
+        }
+
 
         private bool IsValidCreateTicketModel(TicketCreateModel createTicketModel)
         {
