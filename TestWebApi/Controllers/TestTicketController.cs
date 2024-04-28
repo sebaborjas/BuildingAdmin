@@ -192,6 +192,38 @@ namespace TestWebApi
             Assert.AreEqual(ticketResponse, expectedTicket);
 
         }
+
+        [TestMethod]
+        public void TestAssignTicketNotFound()
+        {
+            _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<MaintenanceOperator>())).Returns((Ticket)null);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel()
+            {
+                Name = "Sebastian",
+                LastName = "Perez",
+                Email = "seba@perez.com",
+                Password = "Sebastian.1234",
+                Building = new Building
+                {
+                    Name = "Edificio Campus",
+                    Address = "Calle, 1234, esquina",
+                    Location = "-2.000, 4.000",
+                    ConstructionCompany = new ConstructionCompany() { Name = "Constructora" },
+                    Expenses = 20000
+
+                }
+
+            };
+
+            var result = ticketController.AssignTicket(1, maintenanceOperatorCreateModel);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+
+
+
+        }
+    
     }
 
     
