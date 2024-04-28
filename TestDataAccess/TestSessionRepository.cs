@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DataAccess;
+using Domain;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+
+namespace TestDataAccess
+{
+    [TestClass]
+    public class TestSessionRepository
+    {
+        private BuildingAdminContext _adminContext;
+        private SqliteConnection _connection;
+        private SessionRepository _repository;
+
+        private Session _session1;
+        private Session _session2;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _connection = new SqliteConnection("DataSource=:memory:");
+            _connection.Open();
+
+            var options = new DbContextOptionsBuilder<BuildingAdminContext>()
+                .UseSqlite(_connection)
+                .Options;
+
+            _adminContext = new BuildingAdminContext(options);
+            _adminContext.Database.EnsureCreated();
+
+            _repository = new SessionRepository(_adminContext);
+
+            _session1 = new Session()
+            {
+                Id = 1,
+                User = new Administrator()
+            };
+
+            _session2 = new Session()
+            {
+                Id = 2,
+                User = new Manager()
+            };
+
+            _adminContext.Sessions.Add(_session1);
+            _adminContext.Sessions.Add(_session2);
+            _adminContext.SaveChanges();
+
+        }
+
+
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var sessions = _repository.GetAll<Session>();
+            Assert.AreEqual(sessions.Count(), 2);
+        }
+
+    }
+}
