@@ -9,9 +9,9 @@ namespace Domain
     public class Session
     {
 
-        User _user;
-
+        private User _user;
         public int Id { get; set; }
+        public Guid Token { get; set; }
         public User User 
         { 
             get => _user;
@@ -23,6 +23,11 @@ namespace Domain
                 }
                 _user = value;
             } 
+        }
+
+        public Session()
+        {
+            Token = Guid.NewGuid();
         }
     }
 }

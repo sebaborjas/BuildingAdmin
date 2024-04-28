@@ -39,5 +39,12 @@ namespace TestDomain
             Administrator user = null;
             _session.User = user;
         }
+
+        [TestMethod]
+        public void TestToken()
+        {
+            var token = _session.Token;
+            Assert.AreNotEqual(token, new Guid());
+        }
     }
 }
