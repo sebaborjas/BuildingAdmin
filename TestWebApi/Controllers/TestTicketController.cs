@@ -17,13 +17,13 @@ namespace TestWebApi
     [TestClass]
     public class TestTicketController
     {
-        private Mock<ITicketService> _ticketService;
+        private Mock<ITicketService> _ticketServiceMock;
         private Apartment _apartment;
 
         [TestInitialize]
         public void Setup()
         {
-            _ticketService = new Mock<ITicketService>();
+            _ticketServiceMock = new Mock<ITicketService>();
             _apartment = new Apartment()
             {
                 Id = 1,
@@ -45,32 +45,40 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateTicket()
         {
-            var newTicket = new Ticket()
-            {
-                Id = 1,
-                Description = "Ventana rota",
-                Apartment = _apartment,
-                Category = new Category() { Id = 1, Name = "Maintenance" }
-            };
-
-            _ticketService.Setup(x => x.CreateTicket(It.IsAny<Ticket>())).Returns(newTicket);
-            var ticketController = new TicketController(_ticketService.Object);
-            
-            var ticket = new TicketCreateModel()
+            Ticket ticket = new Ticket()
             {
                 Description = "Ventana rota",
                 Apartment = _apartment,
                 Category = new Category() { Id = 1, Name = "Maintenance" }
             };
 
-            var result = ticketController.CreateTicket(ticket);
+            _ticketServiceMock.Setup(x => x.CreateTicket(It.IsAny<Ticket>())).Returns(ticket);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var ticketCreateModel = new TicketCreateModel()
+            {
+                Description = "Ventana rota",
+                Apartment = _apartment,
+                Category = new Category() { Id = 1, Name = "Maintenance" }
+            };
+
+            var result = ticketController.CreateTicket(ticketCreateModel);
             var okResult = result as OkObjectResult;
             var newTicketResponse = okResult.Value as TicketModel;
 
-            _ticketService.VerifyAll();
-            Assert.AreEqual(1, newTicketResponse.Id);
+            var expectedTicket = new TicketModel(ticket);
+
+            _ticketServiceMock.VerifyAll();
+            Assert.AreEqual(newTicketResponse, expectedTicket);
         }
 
+        [TestMethod]
+        public void TestCreateTicketBadRequest()
+        {
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+            var result = ticketController.CreateTicket(null);
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
     }
 
 }
