@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IServices;
 using DTO.In;
+using DTO.Out;
 
 namespace WebApi
 {
@@ -22,8 +23,8 @@ namespace WebApi
             {
                 return BadRequest();
             }
-            _service.CreateCategory(createCategoryModel.Name);
-            return Ok();
+            var category = _service.CreateCategory(createCategoryModel.Name);
+            return Ok(category);
         }
 
         private bool IsValidCreateCategoryInput(CreateCategoryModel createCategoryModel)
