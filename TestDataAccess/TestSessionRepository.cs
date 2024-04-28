@@ -112,5 +112,13 @@ namespace TestDataAccess
             CollectionAssert.DoesNotContain(_adminContext.Sessions.ToList(), session);
         }
 
+        [TestMethod]
+        public void TestCheckConnection()
+        {
+            bool connection = _repository.CheckConnection();
+
+            Assert.IsTrue(connection);
+        }
+
     }
 }
