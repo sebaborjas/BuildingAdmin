@@ -40,4 +40,13 @@ public class TestCategoryController
         Assert.AreEqual(categoryResult.Name, "Test");
     }
 
+    [TestMethod]
+    public void TestCreateCategoryWithNullInput()
+    {
+        var categoryController = new CategoryController(_categoryServiceMock.Object);
+
+        var result = categoryController.CreateCategory(null);
+        Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    }
+
 }
