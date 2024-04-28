@@ -42,6 +42,18 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPost("{id}/assign")]
+        public IActionResult AssignTicket(int id, [FromBody] MaintenanceOperatorCreateModel maintenanceOperatorModel)
+        {
+            var maintenanceOperator = maintenanceOperatorModel.ToEntity();
+            var ticket = _ticketServices.AssignTicket(id, maintenanceOperator);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            var response = new TicketModel(ticket);
+            return Ok(response);
+        }
 
         private bool IsValidCreateTicketModel(TicketCreateModel createTicketModel)
         {

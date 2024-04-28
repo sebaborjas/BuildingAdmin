@@ -13,5 +13,9 @@ namespace IServices
 
         List<Ticket> GetTickets(string category = null);
 
+        Ticket AssignTicket(int id, MaintenanceOperator maintenanceOperator);
+
+
+
     }
 }

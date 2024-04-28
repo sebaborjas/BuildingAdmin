@@ -132,6 +132,67 @@ namespace TestWebApi
             CollectionAssert.AreEqual(ticketsResponse, expectedTickets);
         }
 
+        [TestMethod]
+        public void TestAssignTicket()
+        {
+            Ticket ticket = new Ticket()
+            {
+                Description = "Ventana rota",
+                Apartment = _apartment,
+                Category = new Category() { Id = 1, Name = "Maintenance" }
+            };
+
+            MaintenanceOperator maintenanceOperator = new MaintenanceOperator()
+            {
+                Id = 1,
+                Name = "Sebastian",
+                LastName = "Perez",
+                Email = "perez@maintenance.com",
+                Password = "Sebastian.1234",
+                Building = new Building()
+                {
+                    Id = 1,
+                    Address = "Calle, 1234, esquina",
+                    Name = "Edificio Campus",
+                    Location = "-2.000, 4.000",
+                    ConstructionCompany = new ConstructionCompany() { Id = 1, Name = "Constructora" },
+                    Expenses = 20000
+                }
+            };
+
+            _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<MaintenanceOperator>())).Returns(ticket);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel()
+            {
+                Name = "Sebastian",
+                LastName = "Perez",
+                Email = "perez@maintenance.com",
+                Password = "Sebastian.1234",
+                Building = new Building
+                {
+                    Name = "Edificio Campus",
+                    Address = "Calle, 1234, esquina",
+                    Location = "-2.000, 4.000",
+                    ConstructionCompany = new ConstructionCompany() { Name = "Constructora" },
+                    Expenses = 20000
+
+                }
+            };
+
+            var result = ticketController.AssignTicket(1, maintenanceOperatorCreateModel);
+
+            var okResult = result as OkObjectResult;
+            var ticketResponse = okResult.Value as TicketModel;
+            Assert.IsNotNull(ticketResponse);
+
+
+            var expectedTicket = new TicketModel(ticket);
+            _ticketServiceMock.VerifyAll();
+            Assert.AreEqual(ticketResponse, expectedTicket);
+
+        }
     }
 
+    
 }
