@@ -72,7 +72,22 @@ namespace TestWebApi
             Assert.AreEqual(ticketResponse, expectedTicket);
         }
 
-        
+        [TestMethod]
+        public void TestCreateTicketBadRequest()
+        {
+           
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var ticketCreateModel = new TicketCreateModel()
+            {
+                Description = "Ventana rota",
+                ApartmentId = 1,
+                CategoryId = 1
+            };
+
+            var result = ticketController.CreateTicket(null);
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
 
         [TestMethod]
         public void TestGetTickets()
