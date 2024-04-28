@@ -42,7 +42,7 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("{id}/assign")]
+        [HttpPut("{id}/assign")]
         public IActionResult AssignTicket(int id, [FromBody] MaintenanceOperatorCreateModel maintenanceOperatorModel)
         {
             var maintenanceOperator = maintenanceOperatorModel.ToEntity();
@@ -55,7 +55,7 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("{id}/start")]
+        [HttpPut("{id}/start")]
         public IActionResult StartTicket(int id)
         {
             var ticket = _ticketServices.StartTicket(id);
