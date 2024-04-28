@@ -69,5 +69,18 @@ namespace TestDataAccess
             Assert.AreEqual(session, _session2);
         }
 
+        [TestMethod]
+        public void TestInsert()
+        {
+            var session = new Session()
+            {
+                Id = 3,
+                User = new Administrator()
+            };
+            _repository.Insert(session);
+
+            CollectionAssert.Contains(_adminContext.Sessions.ToList(), session);
+        }
+
     }
 }
