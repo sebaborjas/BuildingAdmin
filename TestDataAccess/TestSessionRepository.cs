@@ -102,5 +102,15 @@ namespace TestDataAccess
             Assert.AreEqual(session.User, _adminContext.Sessions.Find(2).User);
         }
 
+        [TestMethod]
+        public void TestDelete()
+        {
+            var session = _adminContext.Sessions.Find(2);
+            
+            _repository.Delete(session);
+
+            CollectionAssert.DoesNotContain(_adminContext.Sessions.ToList(), session);
+        }
+
     }
 }
