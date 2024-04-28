@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240423000617_addManager")]
-    partial class addManager
+    [Migration("20240428053421_Add-Tickets")]
+    partial class AddTickets
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,7 +111,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Domain.ConstructionCompany", b =>
@@ -127,7 +127,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConstructionCompany");
+                    b.ToTable("ConstructionCompanies");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>
@@ -224,7 +224,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("Ticket");
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("Domain.User", b =>

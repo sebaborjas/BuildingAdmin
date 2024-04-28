@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240424004235_addConstructionCompany")]
-    partial class addConstructionCompany
+    [Migration("20240428052636_Add-Categories")]
+    partial class AddCategories
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace DataAccess.Migrations
                     b.ToTable("Administrators");
                 });
 
-            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+            modelBuilder.Entity("Domain.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConstructionCompanies");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>

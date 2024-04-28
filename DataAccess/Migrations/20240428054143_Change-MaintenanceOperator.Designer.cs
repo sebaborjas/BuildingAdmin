@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240427192901_fixBuilding")]
-    partial class fixBuilding
+    [Migration("20240428054143_Change-MaintenanceOperator")]
+    partial class ChangeMaintenanceOperator
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,7 +95,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Building");
                 });
 
             modelBuilder.Entity("Domain.Category", b =>

@@ -269,10 +269,10 @@ namespace DataAccess.Migrations
                 {
                     b.HasBaseType("Domain.User");
 
-                    b.Property<int?>("buildingId")
+                    b.Property<int?>("BuildingId")
                         .HasColumnType("int");
 
-                    b.HasIndex("buildingId");
+                    b.HasIndex("BuildingId");
 
                     b.HasDiscriminator().HasValue("MaintenanceOperator");
                 });
@@ -343,11 +343,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.MaintenanceOperator", b =>
                 {
-                    b.HasOne("Domain.Building", "building")
+                    b.HasOne("Domain.Building", "Building")
                         .WithMany()
-                        .HasForeignKey("buildingId");
+                        .HasForeignKey("BuildingId");
 
-                    b.Navigation("building");
+                    b.Navigation("Building");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>

@@ -5,7 +5,7 @@
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class fixBuilding : Migration
+    public partial class Building : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,9 +30,17 @@ namespace DataAccess.Migrations
                 name: "FK_User_Building_buildingId",
                 table: "User");
 
+            migrationBuilder.DropIndex(
+                name: "IX_User_buildingId",
+                table: "User");
+
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Building",
                 table: "Building");
+
+            migrationBuilder.DropColumn(
+                name: "buildingId",
+                table: "User");
 
             migrationBuilder.RenameTable(
                 name: "Building",
@@ -47,6 +55,16 @@ namespace DataAccess.Migrations
                 name: "IX_Building_ConstructionCompanyId",
                 table: "Buildings",
                 newName: "IX_Buildings_ConstructionCompanyId");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Discriminator",
+                table: "User",
+                type: "nvarchar(13)",
+                maxLength: 13,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(21)",
+                oldMaxLength: 21);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Buildings",
@@ -80,13 +98,6 @@ namespace DataAccess.Migrations
                 column: "BuildingId",
                 principalTable: "Buildings",
                 principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_User_Buildings_buildingId",
-                table: "User",
-                column: "buildingId",
-                principalTable: "Buildings",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
@@ -108,10 +119,6 @@ namespace DataAccess.Migrations
                 name: "FK_Tickets_Buildings_BuildingId",
                 table: "Tickets");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_User_Buildings_buildingId",
-                table: "User");
-
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Buildings",
                 table: "Buildings");
@@ -130,10 +137,31 @@ namespace DataAccess.Migrations
                 table: "Building",
                 newName: "IX_Building_ConstructionCompanyId");
 
+            migrationBuilder.AlterColumn<string>(
+                name: "Discriminator",
+                table: "User",
+                type: "nvarchar(21)",
+                maxLength: 21,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(13)",
+                oldMaxLength: 13);
+
+            migrationBuilder.AddColumn<int>(
+                name: "buildingId",
+                table: "User",
+                type: "int",
+                nullable: true);
+
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Building",
                 table: "Building",
                 column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_buildingId",
+                table: "User",
+                column: "buildingId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Apartments_Building_BuildingId",

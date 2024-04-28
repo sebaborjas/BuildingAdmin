@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    [Migration("20240422191036_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20240428051253_Add-Apartament")]
+    partial class AddApartament
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,39 @@ namespace DataAccess.Migrations
                     b.ToTable("Administrators");
                 });
 
+            modelBuilder.Entity("Domain.Apartment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<short>("Bathrooms")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("DoorNumber")
+                        .HasColumnType("int");
+
+                    b.Property<short>("Floor")
+                        .HasColumnType("smallint");
+
+                    b.Property<bool>("HasTerrace")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<short>("Rooms")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Apartments");
+                });
+
             modelBuilder.Entity("Domain.Invitation", b =>
                 {
                     b.Property<int>("Id")
@@ -75,6 +108,37 @@ namespace DataAccess.Migrations
                     b.HasIndex("AdministratorId");
 
                     b.ToTable("Invitations");
+                });
+
+            modelBuilder.Entity("Domain.Owner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Owner");
+                });
+
+            modelBuilder.Entity("Domain.Apartment", b =>
+                {
+                    b.HasOne("Domain.Owner", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>
