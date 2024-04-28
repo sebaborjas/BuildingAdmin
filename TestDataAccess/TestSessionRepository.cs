@@ -120,5 +120,14 @@ namespace TestDataAccess
             Assert.IsTrue(connection);
         }
 
+        [TestMethod]
+        public void TestGetSessionByToken()
+        {
+            var token = _adminContext.Sessions.Find(2).Token;
+            var session = _repository.GetByToken(token);
+
+            Assert.AreEqual(session, _session2);
+        }
+
     }
 }

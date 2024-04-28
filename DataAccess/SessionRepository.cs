@@ -13,5 +13,11 @@ namespace DataAccess
         public SessionRepository(DbContext context) { 
             Context = context;
         }
+
+        public Session GetByToken(Guid token)
+        {
+            var result = Context.Set<Session>().Where(session => session.Token == token).FirstOrDefault();
+            return result;
+        }
     }
 }
