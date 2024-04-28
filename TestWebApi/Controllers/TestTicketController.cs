@@ -115,6 +115,23 @@ namespace TestWebApi
             _ticketServiceMock.VerifyAll();
             CollectionAssert.AreEqual(ticketsResponse, expectedTickets);
         }
+
+        [TestMethod]
+        public void TestGetTicketBadRequest()
+        {
+            _ticketServiceMock.Setup(x => x.GetTickets(It.IsAny<string>())).Returns(new List<Ticket>());
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var result = ticketController.GetTickets();
+            var okResult = result as OkObjectResult;
+            var ticketsResponse = okResult.Value as List<TicketModel>;
+
+            var expectedTickets = new List<TicketModel>();
+
+            _ticketServiceMock.VerifyAll();
+            CollectionAssert.AreEqual(ticketsResponse, expectedTickets);
+        }
+
     }
 
 }
