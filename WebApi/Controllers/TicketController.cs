@@ -67,6 +67,18 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPut("{id}/complete")]
+        public IActionResult CompleteTicket(int id, [FromBody] float totalCost)
+        {
+            var ticket = _ticketServices.CompleteTicket(id, totalCost);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            var response = new TicketModel(ticket);
+            return Ok(response);
+        }
+
         private bool IsValidCreateTicketModel(TicketCreateModel createTicketModel)
         {
             return createTicketModel != null && createTicketModel.Apartment != null && createTicketModel.Category != null && !string.IsNullOrEmpty(createTicketModel.Description);

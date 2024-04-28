@@ -17,7 +17,6 @@ namespace IServices
 
         Ticket StartTicket(int id);
 
-
-
+        Ticket CompleteTicket(int id, float totalCost);
     }
 }

@@ -253,6 +253,29 @@ namespace TestWebApi
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        [TestMethod]
+        public void TestCompleteTicket()
+        {
+            Ticket ticket = new Ticket()
+            {
+                Description = "Ventana rota",
+                Apartment = _apartment,
+                Category = new Category() { Id = 1, Name = "Maintenance" }
+            };
+
+            _ticketServiceMock.Setup(x => x.CompleteTicket(It.IsAny<int>(), It.IsAny<float>())).Returns(ticket);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var result = ticketController.CompleteTicket(1, 100);
+            var okResult = result as OkObjectResult;
+            var ticketResponse = okResult.Value as TicketModel;
+            Assert.IsNotNull(ticketResponse);
+
+            var expectedTicket = new TicketModel(ticket);
+            _ticketServiceMock.VerifyAll();
+            Assert.AreEqual(ticketResponse, expectedTicket);
+        }
+
     }
 
 
