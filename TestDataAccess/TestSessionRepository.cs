@@ -90,5 +90,17 @@ namespace TestDataAccess
             Assert.IsNull(session);
         }
 
+        [TestMethod]
+        public void TestUpdate()
+        {
+            var session = _adminContext.Sessions.Find(2);
+            var newUser = new Administrator();
+
+            session.User = newUser;
+            _repository.Update(session);
+
+            Assert.AreEqual(session.User, _adminContext.Sessions.Find(2).User);
+        }
+
     }
 }
