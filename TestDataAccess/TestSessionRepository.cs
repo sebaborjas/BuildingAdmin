@@ -62,5 +62,12 @@ namespace TestDataAccess
             Assert.AreEqual(sessions.Count(), 2);
         }
 
+        [TestMethod]
+        public void TestGetSessionById()
+        {
+            var session = _repository.Get(2);
+            Assert.AreEqual(session, _session2);
+        }
+
     }
 }
