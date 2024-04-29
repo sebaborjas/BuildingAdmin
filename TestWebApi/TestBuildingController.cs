@@ -19,12 +19,12 @@ namespace TestWebApi
     public class TestBuildingController
     {
 
-        private Mock<IBuildingServices> _buildingServices;
+        private Mock<IBuildingService> _buildingServices;
 
         [TestInitialize]
         public void Setup()
         {
-            _buildingServices = new Mock<IBuildingServices>(MockBehavior.Strict);
+            _buildingServices = new Mock<IBuildingService>(MockBehavior.Strict);
         }
 
         [TestMethod]
