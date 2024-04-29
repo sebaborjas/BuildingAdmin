@@ -87,5 +87,21 @@ namespace TestServices
 
       _buildingRepositoryMock.VerifyAll();
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteBuildingThatNotExist()
+    {
+      _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
+
+      _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
+        .Returns((int id) => null);
+
+      _buildingService = new BuildingService(_buildingRepositoryMock.Object);
+
+      _buildingService.DeleteBuilding(1);
+
+      _buildingRepositoryMock.VerifyAll();
+    }
   }
 }
