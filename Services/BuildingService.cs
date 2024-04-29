@@ -18,7 +18,7 @@ public class BuildingService : IBuildingService
   public Building CreateBuilding(Building building)
   {
     var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name);
-    
+
     if(buildingAlreadyExist != null)
     {
       throw new ArgumentException("Building already exist");
@@ -31,7 +31,9 @@ public class BuildingService : IBuildingService
 
   public void DeleteBuilding(int id)
   {
-    throw new NotImplementedException();
+    Building buildingToDelete = _buildingRepository.Get(id);
+
+    _buildingRepository.Delete(buildingToDelete);
   }
 
   public Building ModifyBuilding(int id,  Building building)
