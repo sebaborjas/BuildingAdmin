@@ -72,5 +72,21 @@ namespace TestServices
 
       _buildingRepositoryMock.VerifyAll();
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void DeleteBuilding()
+    {
+      _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
+
+      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+        .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building());
+
+      _buildingService = new BuildingService(_buildingRepositoryMock.Object);
+
+      _buildingService.DeleteBuilding(1);
+
+      _buildingRepositoryMock.VerifyAll();
+    }
   }
 }
