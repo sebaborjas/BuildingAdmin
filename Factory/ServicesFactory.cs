@@ -5,6 +5,7 @@ using Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Domain;
+using IDataAccess;
 
 namespace Factory
 {
@@ -20,6 +21,7 @@ namespace Factory
     public void AddCustomServices()
     {
       _services.AddScoped<IUserServices, UserService>();
+      _services.AddScoped<ISessionService, SessionService>();
     }
 
     public void AddDbContextService()
@@ -28,6 +30,7 @@ namespace Factory
       _services.AddScoped<IGenericRepository<Administrator>, AdministratorRepository>();
       _services.AddScoped<IGenericRepository<MaintenanceOperator>, MaintenanceOperatorRepository>();
       _services.AddScoped<IGenericRepository<Manager>, ManagerRepository>();
+      _services.AddScoped<ISessionRepository, SessionRepository>();
     }
   }
 }
