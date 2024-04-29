@@ -17,6 +17,13 @@ public class BuildingService : IBuildingService
 
   public Building CreateBuilding(Building building)
   {
+    var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name);
+    
+    if(buildingAlreadyExist != null)
+    {
+      throw new ArgumentException("Building already exist");
+    }
+
     _buildingRepository.Insert(building);
     return building;
 

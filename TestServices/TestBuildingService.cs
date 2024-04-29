@@ -25,6 +25,10 @@ namespace TestServices
     public void CreateBuilding()
     {
       _buildingRepositoryMock.Setup(r => r.Insert(It.IsAny<Building>())).Verifiable();
+
+      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+        .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => null);
+
       _buildingService = new BuildingService(_buildingRepositoryMock.Object);
 
       var building = new Building
