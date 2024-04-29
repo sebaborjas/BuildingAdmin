@@ -43,7 +43,7 @@ public class BuildingService : IBuildingService
 
   public Building ModifyBuilding(int id,  Building modifiedBuilding)
   {
-    Building buildingToModify = _buildingRepository.Get(id);
+    Building buildingToModify = _buildingRepository.Get(id) ?? throw new ArgumentNullException("Building not found");
 
     buildingToModify.Name = modifiedBuilding.Name;
     buildingToModify.Address = modifiedBuilding.Address;
@@ -52,7 +52,7 @@ public class BuildingService : IBuildingService
     buildingToModify.Expenses = modifiedBuilding.Expenses;
     buildingToModify.Apartments = modifiedBuilding.Apartments;
     buildingToModify.Tickets = modifiedBuilding.Tickets;
-    
+
 
     _buildingRepository.Update(buildingToModify);
 
