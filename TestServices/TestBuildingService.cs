@@ -131,5 +131,23 @@ namespace TestServices
       _buildingRepositoryMock.VerifyAll();
       Assert.AreEqual(building, result);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ModifyBuildingThatNotExist()
+    {
+      _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
+
+      var building = new Building();
+
+      _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
+        .Returns((int id) => null);
+
+      _buildingService = new BuildingService(_buildingRepositoryMock.Object);
+
+      var result = _buildingService.ModifyBuilding(1, building);
+
+      _buildingRepositoryMock.VerifyAll();
+    }
   }
 }
