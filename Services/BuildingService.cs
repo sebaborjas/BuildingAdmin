@@ -33,6 +33,11 @@ public class BuildingService : IBuildingService
   {
     Building buildingToDelete = _buildingRepository.Get(id);
 
+    if(buildingToDelete == null)
+    {
+      throw new ArgumentNullException("Building not found");
+    }
+    
     _buildingRepository.Delete(buildingToDelete);
   }
 
