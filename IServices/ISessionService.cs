@@ -10,5 +10,7 @@ namespace IServices
     public interface ISessionService
     {
         User? GetCurrentUser(Guid? token = null);
+
+        Session? Login(string email, string password);
     }
 }
