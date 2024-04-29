@@ -43,6 +43,19 @@ public class BuildingService : IBuildingService
 
   public Building ModifyBuilding(int id,  Building modifiedBuilding)
   {
-    throw new NotImplementedException();
+    Building buildingToModify = _buildingRepository.Get(id);
+
+    buildingToModify.Name = modifiedBuilding.Name;
+    buildingToModify.Address = modifiedBuilding.Address;
+    buildingToModify.Location = modifiedBuilding.Location;
+    buildingToModify.ConstructionCompany = modifiedBuilding.ConstructionCompany;
+    buildingToModify.Expenses = modifiedBuilding.Expenses;
+    buildingToModify.Apartments = modifiedBuilding.Apartments;
+    buildingToModify.Tickets = modifiedBuilding.Tickets;
+    
+
+    _buildingRepository.Update(buildingToModify);
+
+    return buildingToModify;
   }
 }

@@ -109,10 +109,7 @@ namespace TestServices
     {
       _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
 
-      _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
-        .Returns((int id) => new Building());
 
-      _buildingService = new BuildingService(_buildingRepositoryMock.Object);
 
       var building = new Building
       {
@@ -123,6 +120,11 @@ namespace TestServices
         Expenses = 4000,
         Apartments = new List<Apartment>()
       };
+
+      _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
+        .Returns((int id) => building);
+
+      _buildingService = new BuildingService(_buildingRepositoryMock.Object);
 
       var result = _buildingService.ModifyBuilding(1, building);
 
