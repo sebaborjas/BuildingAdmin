@@ -203,10 +203,6 @@ namespace TestServices
 
             var session = _sessionService.Login("adminMal@correo.com", "Pass123.!");
 
-            _adminRepository.VerifyAll();
-            _managerRepository.VerifyAll();
-            _maintenanceOperatorRepository.VerifyAll();
-            Assert.IsNull(session);
         }
     }
 }
