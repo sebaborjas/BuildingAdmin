@@ -37,11 +37,11 @@ public class BuildingService : IBuildingService
     {
       throw new ArgumentNullException("Building not found");
     }
-    
+
     _buildingRepository.Delete(buildingToDelete);
   }
 
-  public Building ModifyBuilding(int id,  Building building)
+  public Building ModifyBuilding(int id,  Building modifiedBuilding)
   {
     throw new NotImplementedException();
   }

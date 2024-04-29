@@ -13,6 +13,6 @@ namespace IServices
 
         void DeleteBuilding(int id);
 
-        Building ModifyBuilding(int id,  Building building);
+        Building ModifyBuilding(int id,  Building modifiedBuilding);
     }
 }
