@@ -17,7 +17,9 @@ public class BuildingService : IBuildingService
 
   public Building CreateBuilding(Building building)
   {
-    throw new NotImplementedException();
+    _buildingRepository.Insert(building);
+    return building;
+
   }
 
   public void DeleteBuilding(int id)
