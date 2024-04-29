@@ -1,4 +1,5 @@
-﻿using DTO.Out;
+﻿using DTO.In;
+using DTO.Out;
 using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,18 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login([FromBody] LoginInput loginInput)
         {
-            var session = _sessionService.Login(email, password);
-            var response = new SuccessfulLoginOutput(session);
-            return Ok(response);
+            try
+            {
+                var session = _sessionService.Login(loginInput.Email, loginInput.Password);
+                var response = new SuccessfulLoginOutput(session);
+                return Ok(response);
+            } catch (Exception exception)
+            {
+                return Unauthorized();
+            }
+            
         }
 
     }

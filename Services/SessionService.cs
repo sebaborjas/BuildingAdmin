@@ -13,11 +13,18 @@ namespace Services
     public class SessionService: ISessionService
     {
         private ISessionRepository _sessionRepository;
-        
+        private IGenericRepository<Manager> _managerRepository;
+        private IGenericRepository<Administrator> _adminRepository;
+        private IGenericRepository<MaintenanceOperator> _maintenanceOperatorRepository;
+
         private User? _currentUser;
 
-        public SessionService(ISessionRepository repository) { 
-            _sessionRepository = repository;
+        public SessionService(ISessionRepository sessionRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> maintenanceOperatorRepository) { 
+            _sessionRepository = sessionRepository;
+            _managerRepository = managerRepository;
+            _adminRepository = adminRepository;
+            _maintenanceOperatorRepository = maintenanceOperatorRepository;
+
         }
 
         public User? GetCurrentUser(Guid? token = null)
@@ -30,7 +37,26 @@ namespace Services
 
         public Session Login(string email, string password)
         {
-            return null;
+            User user = null;
+            user = _adminRepository.GetByCondition(user=>user.Email == email);
+            if(user == null)
+            {
+                user = _managerRepository.GetByCondition(user => user.Email == email);
+            }
+            if(user == null)
+            {
+                user = _maintenanceOperatorRepository.GetByCondition(user => user.Email == email);
+            }
+            if(user == null || user.Password != password)
+            {
+                throw new InvalidDataException();
+            }
+            var newSession = new Session()
+            {
+                User = user
+            };
+            _sessionRepository.Insert(newSession);
+            return newSession;
         }
     }
 }
