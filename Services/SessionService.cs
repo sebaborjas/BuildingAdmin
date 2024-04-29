@@ -27,5 +27,10 @@ namespace Services
             if(session != null) _currentUser = session.User;
             return _currentUser;
         }
+
+        public Session Login(string email, string password)
+        {
+            return null;
+        }
     }
 }
