@@ -188,5 +188,25 @@ namespace TestServices
             _sessionRepository.VerifyAll();
             Assert.IsNull(session);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestLoginWithWrongEmail()
+        {
+            MaintenanceOperator maintenanceOperatorUser = null;
+            Administrator adminUser = null;
+            Manager managerUser = null;
+            _adminRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns(adminUser);
+            _managerRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns(managerUser);
+            _maintenanceOperatorRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns(maintenanceOperatorUser);
+            _sessionService = new SessionService(_sessionRepository.Object, _managerRepository.Object, _adminRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var session = _sessionService.Login("adminMal@correo.com", "Pass123.!");
+
+            _adminRepository.VerifyAll();
+            _managerRepository.VerifyAll();
+            _maintenanceOperatorRepository.VerifyAll();
+            Assert.IsNull(session);
+        }
     }
 }
