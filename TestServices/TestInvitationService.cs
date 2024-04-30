@@ -150,6 +150,18 @@ namespace TestServices
             _service.RejectInvitation("mail@test.com");
             _invitationRepositoryMock.VerifyAll();
 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestRejectInvitationDoesNotExist()
+        {
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => null);
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            _service.RejectInvitation("mail@test.com");
+            _invitationRepositoryMock.VerifyAll();
 
         }
 
