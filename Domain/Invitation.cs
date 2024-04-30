@@ -11,15 +11,11 @@ namespace Domain
 
         private string _email;
 
+        private string _name;
+
         private DateTime _expirationDate;
 
         public InvitationStatus Status { get; set; }
-
-        public string Name { get { return "Test"; } set {
-                if (string.IsNullOrEmpty(value)) { throw new ArgumentNullException(); }
-
-            }
-        }
 
         public int Id
         {
@@ -46,6 +42,16 @@ namespace Domain
                 if (!correctEmail) throw new WrongEmailFormatException();
 
                 _email = value;
+            }
+        }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (string.IsNullOrEmpty(value)) throw new ArgumentNullException();
+
+                _name = value;
             }
         }
 
