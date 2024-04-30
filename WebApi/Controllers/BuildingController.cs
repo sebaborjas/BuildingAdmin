@@ -46,7 +46,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
         {
