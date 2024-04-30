@@ -47,8 +47,15 @@ namespace Services
         public Manager AcceptInvitation(Invitation invitation)
         {
             Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);
-            _invitationRepository.Update(invitationToAccept);
-            return new Manager();
+            if (invitationToAccept != null)
+            {
+                _invitationRepository.Update(invitationToAccept);
+                return new Manager();
+            }
+            else
+            {
+                throw new ArgumentException("Invitation does not exist");
+            }
         }
 
         public void RejectInvitation(string email)
