@@ -15,7 +15,7 @@ namespace WebApi.Controllers
             _reportServices = reportServices;
         }
 
-        [HttpGet("requests-by-building/{id?}")]
+        [HttpGet("tickets-by-building/{id?}")]
         public IActionResult GetTicketsByBuilding(int? id = null)
         {
             if (id.HasValue)
@@ -25,7 +25,7 @@ namespace WebApi.Controllers
             return Ok(_reportServices.GetTicketsByBuilding<string, Object>());
         }
 
-        [HttpGet("requests-by-maintenance-operator/{id?}")]
+        [HttpGet("tickets-by-maintenance-operator/{id?}")]
         public IActionResult GetTicketsByMaintenanceOperator(int? id = null)
         {
             if (id.HasValue)
@@ -33,6 +33,12 @@ namespace WebApi.Controllers
                 return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>(id));
             }
             return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>());
+        }
+
+        [HttpGet("tickets-by-category")]
+        public IActionResult GetTicketsByCategory()
+        {
+            return BadRequest(_reportServices.GetTicketsByCategory<string, Object>());
         }
     }
 }

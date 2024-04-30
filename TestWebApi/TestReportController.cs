@@ -99,5 +99,24 @@ namespace TestWebApi
 
             CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
         }
+
+        [TestMethod]
+        public void TestGetTicketsCategory()
+        {
+            _reportServicesMock.Setup(x => x.GetTicketsByCategory<string, Object>())
+                .Returns(new Dictionary<string, Object>());
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByCategory();
+
+            var okResult = result as OkObjectResult;
+
+            var expectedResult = new Dictionary<string, Object>();
+
+            _reportServicesMock.VerifyAll();
+
+            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+        }
     }
 }

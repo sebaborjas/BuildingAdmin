@@ -14,4 +14,9 @@ public class ReportsService : IReportServices
     {
         throw new NotImplementedException();
     }
+
+    public Dictionary<TKey, TValue> GetTicketsByCategory<TKey, TValue>()
+    {
+        throw new NotImplementedException();
+    }
 }
