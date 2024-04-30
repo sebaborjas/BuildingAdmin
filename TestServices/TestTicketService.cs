@@ -294,5 +294,37 @@ namespace TestServices
             _maintenanceOperatorRepository.VerifyAll();
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        public void TestAssignNotOpenTicket()
+        {
+            var ticket = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                Status = Domain.DataTypes.Status.InProgress
+            };
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.AssignTicket(1, 2);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+
+            Assert.IsNull(result);
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace Services
         {
             Manager currentUser = (Manager)_sessionService.GetCurrentUser();
             var ticket = _ticketRepository.Get(ticketId);
-            if(ticket == null)
+            if(ticket == null || ticket.Status != Domain.DataTypes.Status.Open)
             {
                 return null;
             }
