@@ -89,8 +89,9 @@ namespace Services
 
         public Ticket StartTicket(int id)
         {
+            MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
             var ticket = _ticketRepository.Get(id);
-            if(ticket == null)
+            if(ticket == null || !currentUser.Equals(ticket.AssignedTo))
             {
                 return null;
             }
