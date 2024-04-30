@@ -61,7 +61,14 @@ namespace Services
         public void RejectInvitation(string email)
         {
             Invitation invitationToReject = _invitationRepository.GetByCondition(i => i.Email == email);
-            _invitationRepository.Delete(invitationToReject);
+            if (invitationToReject != null)
+            {
+                _invitationRepository.Delete(invitationToReject);
+            }
+            else
+            {
+                throw new ArgumentException("Invitation does not exist");
+            }
         }
 
     }
