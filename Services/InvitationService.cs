@@ -39,7 +39,9 @@ namespace Services
 
         public void ModifyInvitation(int id, DateTime newExpirationDate)
         {
-            throw new System.NotImplementedException();
+            Invitation invitation = _invitationRepository.Get(id);
+            invitation.ExpirationDate = newExpirationDate;
+            _invitationRepository.Update(invitation);
         }
 
         public Manager AcceptInvitation(Invitation invitation)
