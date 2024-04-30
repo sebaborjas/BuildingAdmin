@@ -11,7 +11,7 @@ namespace Services
 {
     public class InvitationService : IInvitationService
     {
-        public readonly IGenericRepository<Invitation> _invitationRepository;
+        private IGenericRepository<Invitation> _invitationRepository;
 
         public InvitationService(IGenericRepository<Invitation> invitationRepository)
         {
@@ -20,7 +20,10 @@ namespace Services
 
         public Invitation CreateInvitation(Invitation newInvitation)
         {
-            throw new System.NotImplementedException();
+            Invitation invitationAlreadyExist = _invitationRepository.GetByCondition(i => i.Email == newInvitation.Email);
+
+            _invitationRepository.Insert(newInvitation);
+            return newInvitation;
         }
 
         public void DeleteInvitation(int id)
