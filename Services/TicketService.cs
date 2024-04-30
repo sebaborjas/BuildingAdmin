@@ -90,6 +90,10 @@ namespace Services
         public Ticket StartTicket(int id)
         {
             var ticket = _ticketRepository.Get(id);
+            if(ticket == null)
+            {
+                return null;
+            }
             ticket.AttendTicket();
             _ticketRepository.Update(ticket);
             return ticket;

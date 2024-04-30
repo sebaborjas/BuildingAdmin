@@ -349,7 +349,6 @@ namespace TestServices
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
-
             _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
             _ticketRepository.Setup(r => r.Update(It.IsAny<Ticket>())).Verifiable();
             _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
@@ -362,6 +361,30 @@ namespace TestServices
             Assert.AreEqual(result, ticket);
             Assert.AreEqual(result.Status, Domain.DataTypes.Status.InProgress);
             Assert.IsNotNull(result.AttentionDate);
+        }
+
+        [TestMethod]
+        public void TestStartNonExistentTicket()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            Ticket ticket = null;
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.StartTicket(100);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+
+            Assert.IsNull(result);
         }
     }
 }
