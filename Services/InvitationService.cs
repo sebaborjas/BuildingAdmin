@@ -47,8 +47,18 @@ namespace Services
         public void ModifyInvitation(int invitationId, DateTime newExpirationDate)
         {
             Invitation invitation = _invitationRepository.Get(invitationId);
-            invitation.ExpirationDate = newExpirationDate;
-            _invitationRepository.Update(invitation);
+
+            if (invitation.Status != Domain.DataTypes.InvitationStatus.Accepted)
+            {
+
+                invitation.ExpirationDate = newExpirationDate;
+                _invitationRepository.Update(invitation);
+
+            }
+            else
+            {
+                throw new InvalidOperationException("Invitation has already been accepted and cannot be modified");
+            }
         }
 
         public Manager AcceptInvitation(Invitation invitation)
