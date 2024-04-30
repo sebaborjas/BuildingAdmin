@@ -53,9 +53,13 @@ namespace Services
 
         public Ticket AssignTicket(int ticketId, int maintenanceOperatorId)
         {
-            var ticket = _ticketRepository.Get(ticketId);
             var currentUser = _sessionService.GetCurrentUser();
-            
+            var ticket = _ticketRepository.Get(ticketId);
+            if(ticket == null)
+            {
+                return null;
+            }
+
             var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
             ticket.AssignedTo = maintenance;
             _ticketRepository.Update(ticket);

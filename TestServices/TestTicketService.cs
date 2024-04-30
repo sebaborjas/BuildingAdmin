@@ -183,5 +183,27 @@ namespace TestServices
             _maintenanceOperatorRepository.VerifyAll();
             Assert.AreEqual(result.AssignedTo, _maintenance);
         }
+
+        [TestMethod]
+        public void TestAssignNonExistentTicket()
+        {
+            Ticket ticket = null;
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.AssignTicket(100, 2);
+
+            Assert.IsNull(result);
+        }
     }
 }
