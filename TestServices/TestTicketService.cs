@@ -30,8 +30,6 @@ namespace TestServices
         public void Setup()
         {
             _ticketRepository = new Mock<IGenericRepository<Ticket>>(MockBehavior.Strict);
-            _buildingRepository = new Mock<IGenericRepository<Building>>(MockBehavior.Strict);
-            _apartmentRepository = new Mock<IGenericRepository<Apartment>>(MockBehavior.Strict);
             _categoryRepository = new Mock<IGenericRepository<Category>>(MockBehavior.Strict);
             _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
 
@@ -39,16 +37,6 @@ namespace TestServices
             {
                 Id = 1,
                 Name = "Sanitaria"
-            };
-
-            _user = new Manager()
-            {
-                Buildings = [],
-                Email = "manager@correo.com",
-                Id = 1,
-                Name = "Lucas",
-                LastName = "Gonzalez",
-                Password = "Lu.Go123!",
             };
 
             _apartment = new Apartment()
@@ -73,6 +61,15 @@ namespace TestServices
                 Name = "Edificio Las Delicias",
             };
 
+            _user = new Manager()
+            {
+                Buildings = [_building],
+                Email = "manager@correo.com",
+                Id = 1,
+                Name = "Lucas",
+                LastName = "Gonzalez",
+                Password = "Lu.Go123!",
+            };
         }
 
         [TestMethod]
@@ -130,6 +127,23 @@ namespace TestServices
             Category nullCategory = null;
             _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _categoryRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(nullCategory);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object);
+
+            _ticketService.CreateTicket(ticket);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestCreateTicketWithInvalidApartment()
+        {
+            var ticket = new Ticket()
+            {
+                Category = new Category() { Id = 1 },
+                Apartment = new Apartment() { Id = 2 },
+                Description = "Perdida de agua",
+            };
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _categoryRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(_category);
             _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object);
 
             _ticketService.CreateTicket(ticket);

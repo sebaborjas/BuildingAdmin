@@ -24,13 +24,27 @@ namespace Services
 
         public Ticket CreateTicket(Ticket ticket)
         {
+            var categoryId = ticket.Category.Id;
+            var apartmentId = ticket.Apartment.Id;
             var currentUser = _sessionService.GetCurrentUser();
-            var category = _categoryRepository.Get(ticket.Category.Id);
-            if(category == null )
+            
+            var newTicketCategory = _categoryRepository.Get(categoryId);
+            if(newTicketCategory == null )
             {
                 throw new InvalidDataException("Invalid category id");
             };
+            
+            var apartmentBuilding = ((Manager)currentUser).Buildings.Where(building=>building.Apartments.Any(apartment => apartment.Id == apartmentId)).FirstOrDefault();
+            if(apartmentBuilding == null)
+            {
+                throw new InvalidDataException("Invalid apartment id");
+            }
+            var newTicketApartment = apartmentBuilding.Apartments.Find(apartment => apartment.Id == apartmentId);
+            
             ticket.CreatedBy = currentUser;
+            ticket.Apartment = newTicketApartment;
+            ticket.Category = newTicketCategory;
+
             _ticketRepository.Insert(ticket);
             return ticket;
         }
