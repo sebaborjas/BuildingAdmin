@@ -45,5 +45,25 @@ namespace TestServices
             _invitationRepositoryMock.VerifyAll();
             Assert.AreEqual(invitation, invitationModel);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestCreateInvitationAlreadyExist()
+        {
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
+            
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            var existingInvitation = new Invitation
+            {
+                Email = "mail@test.com",
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Name = "Test",
+            };
+
+            _service.CreateInvitation(existingInvitation);
+
+            _invitationRepositoryMock.Verify(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()), Times.Once);
+        }
     }
 }
