@@ -121,6 +121,19 @@ namespace TestServices
             _invitationRepositoryMock.Verify(r => r.Get(It.IsAny<int>()), Times.Once);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestModifyInvitationNotExpired()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation { ExpirationDate = DateTime.Now.AddDays(5), Status = Domain.DataTypes.InvitationStatus.Pending });
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            _service.ModifyInvitation(1, DateTime.Now.AddDays(8));
+
+            _invitationRepositoryMock.Verify(r => r.Get(It.IsAny<int>()), Times.Once);
+        }
+
 
         [TestMethod]
         public void TestAcceptInvitation()
