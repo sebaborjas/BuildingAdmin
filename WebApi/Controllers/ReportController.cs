@@ -16,13 +16,19 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("requests-by-building/{id?}")]
-        public IActionResult GetRequestsByBuilding(int? id = null)
+        public IActionResult GetTicketsByBuilding(int? id = null)
         {
             if (id.HasValue)
             {
-                return Ok(_reportServices.GetRequestsByBuilding<string, Object>(id));
+                return Ok(_reportServices.GetTicketsByBuilding<string, Object>(id));
             }
-            return Ok(_reportServices.GetRequestsByBuilding<string, Object>());
+            return Ok(_reportServices.GetTicketsByBuilding<string, Object>());
+        }
+
+        [HttpGet("requests-by-maintenance-operator/{id?}")]
+        public IActionResult GetTicketsByMaintenanceOperator(int? id = null)
+        {
+            return BadRequest();
         }
     }
 }

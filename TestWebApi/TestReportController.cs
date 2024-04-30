@@ -25,14 +25,14 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        public void TestGetRequestsByBuildingReportForAll()
+        public void TestGetTicketsByBuildingReportForAll()
         {
-            _reportServicesMock.Setup(x => x.GetRequestsByBuilding<string, Object>(It.IsAny<int?>()))
+            _reportServicesMock.Setup(x => x.GetTicketsByBuilding<string, Object>(It.IsAny<int?>()))
                 .Returns(new Dictionary<string, Object>());
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
-            var result = _reportController.GetRequestsByBuilding();
+            var result = _reportController.GetTicketsByBuilding();
 
             var okResult = result as OkObjectResult;
 
@@ -44,14 +44,33 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        public void TestGetRequestsByBuildingReportForSpecificId()
+        public void TestGetTicketsByBuildingReportForSpecificId()
         {
-            _reportServicesMock.Setup(x => x.GetRequestsByBuilding<string, Object>(It.IsAny<int?>()))
+            _reportServicesMock.Setup(x => x.GetTicketsByBuilding<string, Object>(It.IsAny<int?>()))
                 .Returns(new Dictionary<string, Object>());
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
-            var result = _reportController.GetRequestsByBuilding(1);
+            var result = _reportController.GetTicketsByBuilding(1);
+
+            var okResult = result as OkObjectResult;
+
+            var expectedResult = new Dictionary<string, Object>();
+
+            _reportServicesMock.VerifyAll();
+
+            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+        }
+
+        [TestMethod]
+        public void TestGetTicketsByMaintenanceOperator()
+        {
+            _reportServicesMock.Setup(x => x.GetTicketsByMaintenanceOperator<string, Object>(It.IsAny<int?>()))
+                .Returns(new Dictionary<string, Object>());
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByMaintenanceOperator();
 
             var okResult = result as OkObjectResult;
 
