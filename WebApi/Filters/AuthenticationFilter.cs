@@ -23,14 +23,21 @@ namespace WebApi.Filters
             }
             else
             {
-                var currentUser = GetSessionService(context).GetCurrentUser(parsedToken);
+                try
+                {
+                    var currentUser = GetSessionService(context).GetCurrentUser(parsedToken);
 
-                if (currentUser == null)
+                    if (currentUser == null)
+                    {
+                        context.Result = new JsonResult("Sign in") { StatusCode = 401 };
+                    }
+                    else if (currentUser.GetType().Name != Role)
+                    {
+                        context.Result = new JsonResult("You do not have enough permissions") { StatusCode = 401 };
+                    }
+                } catch (Exception ex)
                 {
-                    context.Result = new JsonResult("Sign in") { StatusCode = 401 };
-                } else if (currentUser.GetType().Name != Role)
-                {
-                    context.Result = new JsonResult("You do not have enough permissions") { StatusCode = 401 };
+                    context.Result = new JsonResult(ex.InnerException?.Message ?? ex.Message) { StatusCode = 500 };
                 }
             }
         }
