@@ -160,24 +160,31 @@ namespace TestServices
         [TestMethod]
         public void TestAcceptInvitation()
         {
-            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
 
-            _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>())).Verifiable();
+            _userRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Expression<Func<User, bool>> predicate, List<string> includes) => new Manager());
+
+            _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>()));
+
+            _userRepositoryMock.Setup(r => r.Insert(It.IsAny<Manager>())).Verifiable();
 
             var invitation = new Invitation
             {
                 Email = "mail@test.com",
                 Name = "Test",
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Status = InvitationStatus.Pending
             };
-
             var manager = _service.AcceptInvitation(invitation);
-
-            _invitationRepositoryMock.VerifyAll();
 
             Assert.IsNotNull(manager);
 
+            _invitationRepositoryMock.Verify(r => r.Update(It.IsAny<Invitation>()), Times.Once);
+            _userRepositoryMock.Verify(r => r.Insert(It.IsAny<Manager>()), Times.Once);
         }
+
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
