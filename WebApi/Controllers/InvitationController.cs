@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DTO.In;
 using DTO.Out;
+using WebApi.Constants;
+using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-    [Route("api/invitations")]
+    [Route("api/v1/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase
     {
@@ -19,6 +21,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult CreateInvitation([FromBody]CreateInvitationInput newInvitationInput)
         {
             if(!IsValidCreateInvitationInput(newInvitationInput))
@@ -31,6 +34,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult DeleteInvitation(int id)
         {
             try
@@ -45,6 +49,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult ModifyInvitation(int id, [FromBody]ModifyInvitationInput modifyInvitationInput)
         {
             if(!IsValidModifyInvitationInput(modifyInvitationInput))
