@@ -15,13 +15,30 @@ namespace TestWebApi
     [TestClass]
     public class TestReportController
     {
+        private ReportController _reportController;
+        private Mock<IReportServices> _reportServicesMock;
 
-        private Mock<IReportServices> _reportServices;
+        [TestInitialize]
+        public void SetUp()
+        {
+            _reportServicesMock = new Mock<IReportServices>(MockBehavior.Strict);
+        }
 
         [TestMethod]
         public void TestGetRequestsByBuildingReportForAll()
         {
+            _reportServicesMock.Setup(x => x.GetRequestsByBuilding<string, Object>(It.IsAny<int?>()))
+                .Returns(new Dictionary<string, Object>());
 
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetRequestsByBuilding();
+
+            var expectedResult = new OkObjectResult(new Dictionary<string, Object>());
+
+            _reportServicesMock.VerifyAll();
+
+            Assert.AreEqual(expectedResult.Value, result);
         }
     }
 }

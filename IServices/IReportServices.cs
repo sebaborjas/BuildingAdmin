@@ -8,5 +8,6 @@ namespace IServices
 {
     public interface IReportServices
     {
+        Dictionary<TKey, TValue> GetRequestsByBuilding<TKey, TValue>(int? id = null);
     }
 }
