@@ -30,7 +30,7 @@ namespace WebApi.Controllers
         {
             if (id.HasValue)
             {
-                return BadRequest(_reportServices.GetTicketsByMaintenanceOperator<string, Object>(id));
+                return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>(id));
             }
             return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>());
         }
