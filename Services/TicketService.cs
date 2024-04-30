@@ -91,7 +91,7 @@ namespace Services
         {
             MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
             var ticket = _ticketRepository.Get(id);
-            if(ticket == null || !currentUser.Equals(ticket.AssignedTo))
+            if(ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.Open)
             {
                 return null;
             }
