@@ -109,6 +109,20 @@ namespace TestServices
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestModifyInvitationAccepted()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation { Status = Domain.DataTypes.InvitationStatus.Accepted });
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            _service.ModifyInvitation(1, DateTime.Now.AddDays(5));
+
+            _invitationRepositoryMock.Verify(r => r.Get(It.IsAny<int>()), Times.Once);
+        }
+
+
+        [TestMethod]
         public void TestAcceptInvitation()
         {
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
