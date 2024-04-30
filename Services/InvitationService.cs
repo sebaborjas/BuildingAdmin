@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using IServices;
 using IDataAcess;
 using Domain;
+using Domain.DataTypes;
 
 namespace Services
 {
@@ -80,8 +81,23 @@ namespace Services
             Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);
             if (invitationToAccept != null)
             {
+                if (invitationToAccept.Status == InvitationStatus.Accepted)
+                {
+                    throw new InvalidOperationException("Invitation has already been accepted");
+                }
+
+                invitationToAccept.Status = InvitationStatus.Accepted;
                 _invitationRepository.Update(invitationToAccept);
-                return new Manager();
+
+                Manager manager = new Manager
+                {
+                    Email = invitation.Email,
+                    Name = invitation.Name
+                };
+
+                _userRepository.Insert(manager);
+
+                return manager;
             }
             else
             {
