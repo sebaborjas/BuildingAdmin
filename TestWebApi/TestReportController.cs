@@ -80,5 +80,24 @@ namespace TestWebApi
 
             CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
         }
+
+        [TestMethod]
+        public void TestGetTicketsBySpecificMaintenanceOperator()
+        {
+            _reportServicesMock.Setup(x => x.GetTicketsByMaintenanceOperator<string, Object>(It.IsAny<int?>()))
+                .Returns(new Dictionary<string, Object>());
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByMaintenanceOperator(1);
+
+            var okResult = result as OkObjectResult;
+
+            var expectedResult = new Dictionary<string, Object>();
+
+            _reportServicesMock.VerifyAll();
+
+            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+        }
     }
 }

@@ -28,7 +28,11 @@ namespace WebApi.Controllers
         [HttpGet("requests-by-maintenance-operator/{id?}")]
         public IActionResult GetTicketsByMaintenanceOperator(int? id = null)
         {
-            return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>(id));
+            if (id.HasValue)
+            {
+                return BadRequest(_reportServices.GetTicketsByMaintenanceOperator<string, Object>(id));
+            }
+            return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>());
         }
     }
 }
