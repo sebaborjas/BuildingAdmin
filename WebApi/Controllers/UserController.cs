@@ -9,7 +9,7 @@ using WebApi.Constants;
 namespace WebApi;
 
 [ApiController]
-[Route("api/users")]
+[Route("api/v1/users")]
 public class UserController : ControllerBase
 {
   private readonly IUserServices _service;
