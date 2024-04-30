@@ -89,7 +89,10 @@ namespace Services
 
         public Ticket StartTicket(int id)
         {
-            throw new NotImplementedException();
+            var ticket = _ticketRepository.Get(id);
+            ticket.AttendTicket();
+            _ticketRepository.Update(ticket);
+            return ticket;
         }
     }
 }
