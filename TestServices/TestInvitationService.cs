@@ -81,6 +81,19 @@ namespace TestServices
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestDeleteInvitationAccepted()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation { Status = Domain.DataTypes.InvitationStatus.Accepted });
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            _service.DeleteInvitation(1);
+
+            _invitationRepositoryMock.Verify(r => r.Get(It.IsAny<int>()), Times.Once);
+        }
+
+        [TestMethod]
         public void TestModifyInvitation()
         {
             _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation());
