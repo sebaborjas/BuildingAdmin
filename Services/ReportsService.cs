@@ -46,7 +46,62 @@ public class ReportsService : IReportServices
 
     public ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName = null)
     {
-        throw new NotImplementedException();
+        var building = _buildingRepository.GetByCondition(b => b.Name == buildingName);
+        var tickets = building.Tickets;
+
+        var result = new List<TicketsByMaintenanceOperator>();
+
+        if (operatorName != null)
+        {
+            tickets = (List<Ticket>)tickets.Where(t => t.AssignedTo.Name == operatorName);
+
+            var reportData = new TicketsByMaintenanceOperator
+            {
+                OperatorName = operatorName,
+                TicketsOpen = tickets.Count(t => t.Status == Domain.DataTypes.Status.Open),
+                TicketsInProgress = tickets.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
+                TicketsClosed = tickets.Count(t => t.Status == Domain.DataTypes.Status.Closed),
+                AverageTimeToClose = CalculateAverage(tickets.Where(t => t.Status == Domain.DataTypes.Status.Closed).ToList()).ToString(@"hh\:mm")
+            };
+
+            result.Add(reportData);
+        }
+        else 
+        {
+            var ticketsAgrupedByOperator = tickets.GroupBy(t => t.AssignedTo.Name);
+
+            foreach (var ticketGroup in ticketsAgrupedByOperator)
+            {
+                var reportData = new TicketsByMaintenanceOperator
+                {
+                    OperatorName = ticketGroup.Key,
+                    TicketsOpen = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Open),
+                    TicketsInProgress = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
+                    TicketsClosed = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Closed),
+                    AverageTimeToClose = CalculateAverage(ticketGroup.Where(t => t.Status == Domain.DataTypes.Status.Closed).ToList()).ToString(@"hh\:mm")
+                };  
+
+                result.Add(reportData);
+            }
+
+        }
+        return result;
+    }
+
+    private TimeSpan CalculateAverage(List<Ticket> tickets)
+    {
+        DateTime totalHours = new DateTime(0);
+        int count = 0;
+        foreach (var ticket in tickets)
+        {
+            totalHours += ticket.ClosingDate - ticket.AttentionDate;
+            count++;
+        }
+
+        if (count == 0) return new TimeSpan(0);
+
+        TimeSpan result = new TimeSpan(totalHours.Ticks / count);
+        return result;
     }
 
     public ICollection<TicketsByCategory> GetTicketsByCategory()
