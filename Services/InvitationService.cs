@@ -46,7 +46,9 @@ namespace Services
 
         public Manager AcceptInvitation(Invitation invitation)
         {
-            throw new System.NotImplementedException();
+            Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);
+            _invitationRepository.Update(invitationToAccept);
+            return new Manager();
         }
 
         public void RejectInvitation(string email)
