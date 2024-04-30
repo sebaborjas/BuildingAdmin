@@ -1,7 +1,7 @@
 using Domain;
 using Services;
 using Moq;
-using IDataAcess;
+using IDataAccess;
 using System.Linq.Expressions;
 
 namespace TestServices;

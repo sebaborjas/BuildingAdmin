@@ -1,6 +1,6 @@
 ﻿using IServices;
 using Domain;
-using IDataAcess;
+using IDataAccess;
 
 namespace Services;
 
