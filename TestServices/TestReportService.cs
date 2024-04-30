@@ -133,5 +133,67 @@ namespace ProjectNamespace.Test
 
     }
 
+    [TestMethod]
+    public void TestGetTicketsByCategory()
+    {
+      Category categoryUno = new Category { Name = "Category Uno" };
+      Category categoryDos = new Category { Name = "Category Dos" };
+
+      Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+      ticketUno.AttendTicket();
+
+      Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+      ticketDos.AttendTicket();
+      ticketDos.CloseTicket(100);
+
+      Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+
+      Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+
+      Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+      ticketCinco.AttendTicket();
+
+      Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+
+
+
+      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building{
+        Id = 1,
+        Name = "Building Uno",
+        Tickets = new List<Ticket>
+        {
+          ticketUno,
+          ticketDos,
+          ticketTres,
+          ticketCuatro,
+          ticketCinco,
+          ticketSeis
+        }
+      });
+
+      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+
+      var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno");
+
+      var firstOperatorResult = ticketsByOperator.ElementAt(0);
+      var secondOperatorResult = ticketsByOperator.ElementAt(1);
+
+      _maintenanceOperatorRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(2, ticketsByOperator.Count);
+      Assert.AreEqual("Category Uno", firstOperatorResult.CategoryName);
+      Assert.AreEqual(1, firstOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, firstOperatorResult.TicketsInProgress);
+      Assert.AreEqual(1, firstOperatorResult.TicketsClosed);
+
+      Assert.AreEqual("Category Dos", secondOperatorResult.CategoryName);
+      Assert.AreEqual(2, secondOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, secondOperatorResult.TicketsInProgress);
+      Assert.AreEqual(0, secondOperatorResult.TicketsClosed);
+
+
+    }
+
   }
 }

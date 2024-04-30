@@ -104,9 +104,48 @@ public class ReportsService : IReportServices
         return result;
     }
 
-    public ICollection<TicketsByCategory> GetTicketsByCategory()
+    public ICollection<TicketsByCategory> GetTicketsByCategory(string buildingName, string? categoryName = null)
     {
-        throw new NotImplementedException();
+        Building building = _buildingRepository.GetByCondition(b => b.Name == buildingName);
+        var tickets = building.Tickets;
+
+        var result = new List<TicketsByCategory>();
+
+        if(categoryName != null)
+        {
+            tickets = tickets.Where(t => t.Category.Name == categoryName).ToList();
+
+            foreach (var ticket in tickets)
+            {
+                var reportData = new TicketsByCategory
+                {
+                    CategoryName = categoryName,
+                    TicketsOpen = tickets.Count(t => t.Status == Domain.DataTypes.Status.Open),
+                    TicketsInProgress = tickets.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
+                    TicketsClosed = tickets.Count(t => t.Status == Domain.DataTypes.Status.Closed)
+                };
+
+                result.Add(reportData);
+            }
+        }
+        else
+        {
+            var ticketsAgrupedByCategory = tickets.GroupBy(t => t.Category.Name);
+
+            foreach (var ticketGroup in ticketsAgrupedByCategory)
+            {
+                var reportData = new TicketsByCategory
+                {
+                    CategoryName = ticketGroup.Key,
+                    TicketsOpen = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Open),
+                    TicketsInProgress = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
+                    TicketsClosed = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Closed)
+                };  
+
+                result.Add(reportData);
+            }
+        }
+        return result;
     }
 
 
