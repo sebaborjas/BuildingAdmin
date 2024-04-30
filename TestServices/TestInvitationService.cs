@@ -51,7 +51,7 @@ namespace TestServices
         public void TestCreateInvitationAlreadyExist()
         {
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
-            
+
             _service = new InvitationService(_invitationRepositoryMock.Object);
 
             var existingInvitation = new Invitation
@@ -65,5 +65,20 @@ namespace TestServices
 
             _invitationRepositoryMock.Verify(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()), Times.Once);
         }
+
+        [TestMethod]
+        public void TestDeleteInvitation()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int id) => new Invitation());
+
+            _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            _service.DeleteInvitation(1);
+
+            _invitationRepositoryMock.VerifyAll();
+        }
+
     }
 }

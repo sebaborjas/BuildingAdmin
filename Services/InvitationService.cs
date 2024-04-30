@@ -33,7 +33,8 @@ namespace Services
 
         public void DeleteInvitation(int id)
         {
-            throw new System.NotImplementedException();
+            Invitation invitation = _invitationRepository.Get(id);
+            _invitationRepository.Delete(invitation);
         }
 
         public void ModifyInvitation(int id, DateTime newExpirationDate)
