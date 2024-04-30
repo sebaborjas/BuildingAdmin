@@ -155,6 +155,13 @@ namespace TestDomain
             Assert.AreEqual(name, _invitation.Name);
         }
 
+        [TestMethod]
+        public void TestSetName()
+        {
+            string name = "Test";
+            _invitation.Name = name;
+            Assert.AreEqual(name, _invitation.Name);
+        }
     }
 
 }
