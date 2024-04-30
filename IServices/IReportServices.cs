@@ -10,7 +10,7 @@ namespace IServices
     {
         ICollection<TicketByBuilding> GetTicketsByBuilding(int? id = null);
 
-        ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(int? id = null);
+        ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName = null);
         
         ICollection<TicketsByCategory> GetTicketsByCategory();
     }
@@ -29,7 +29,7 @@ namespace IServices
         public int TicketsOpen { get; set; }
         public int TicketsInProgress { get; set; }
         public int TicketsClosed { get; set; }
-        public  float AverageTimeToClose { get; set; }
+        public string AverageTimeToClose { get; set; }
     }
 
     public struct TicketsByCategory

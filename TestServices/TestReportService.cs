@@ -4,6 +4,7 @@ using Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Moq;
+using System.Linq.Expressions;
 
 namespace ProjectNamespace.Test
 {
@@ -58,6 +59,8 @@ namespace ProjectNamespace.Test
 
       var ticketsByBuilding = _reportService.GetTicketsByBuilding();
 
+      _maintenanceOperatorRepositoryMock.VerifyAll();
+
       Assert.AreEqual(2, ticketsByBuilding.Count);
       Assert.AreEqual("Building Uno", ticketsByBuilding.ElementAt(0).BuildingName);
       Assert.AreEqual(1, ticketsByBuilding.ElementAt(0).TicketsOpen);
@@ -67,8 +70,68 @@ namespace ProjectNamespace.Test
       Assert.AreEqual(0, ticketsByBuilding.ElementAt(1).TicketsOpen);
       Assert.AreEqual(1, ticketsByBuilding.ElementAt(1).TicketsInProgress);
       Assert.AreEqual(2, ticketsByBuilding.ElementAt(1).TicketsClosed);
+    }
 
+    [TestMethod]
+    public void TestGetTicketsByMaintenanceOperator()
+    {
+
+      MaintenanceOperator operatorUno = new MaintenanceOperator { Name = "Operator Uno" };
+      MaintenanceOperator operatorDos = new MaintenanceOperator { Name = "Operator Dos" };
+
+      Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketUno.AttendTicket();
+
+      Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketDos.AttendTicket();
+      ticketDos.CloseTicket(100);
+
+      Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      ticketCinco.AttendTicket();
+      Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+
+
+
+      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building{
+        Id = 1,
+        Name = "Building Uno",
+        Tickets = new List<Ticket>
+        {
+          ticketUno,
+          ticketDos,
+          ticketTres,
+          ticketCuatro,
+          ticketCinco,
+          ticketSeis
+        }
+      });
+
+      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+
+      var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno");
+
+      var firstOperatorResult = ticketsByOperator.ElementAt(0);
+      var secondOperatorResult = ticketsByOperator.ElementAt(1);
+
+      _maintenanceOperatorRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(2, ticketsByOperator.Count);
+      Assert.AreEqual("Operator Uno", firstOperatorResult.OperatorName);
+      Assert.AreEqual(1, firstOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, firstOperatorResult.TicketsInProgress);
+      Assert.AreEqual(1, firstOperatorResult.TicketsClosed);
+      Assert.AreEqual("00:00", firstOperatorResult.AverageTimeToClose);
+
+      Assert.AreEqual("Operator Dos", secondOperatorResult.OperatorName);
+      Assert.AreEqual(2, secondOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, secondOperatorResult.TicketsInProgress);
+      Assert.AreEqual(0, secondOperatorResult.TicketsClosed);
+      Assert.AreEqual("00:00", secondOperatorResult.AverageTimeToClose);
 
     }
+
   }
 }

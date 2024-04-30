@@ -44,7 +44,7 @@ public class ReportsService : IReportServices
         return ticketDataList;
     }
 
-    public ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(int? id = null)
+    public ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName = null)
     {
         throw new NotImplementedException();
     }
