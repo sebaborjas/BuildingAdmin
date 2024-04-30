@@ -34,5 +34,21 @@ namespace TestServices
 
             Assert.AreEqual("Test", category.Name);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestCreateCategoryWithNullName()
+        {
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+            _categoryRepositoryMock.Setup(r => r.Insert(It.IsAny<Category>())).Verifiable();
+
+            var category = _service.CreateCategory(null);
+            Assert.IsNotNull(category);
+            _categoryRepositoryMock.VerifyAll();
+
+            Assert.IsNull(category.Name);
+        }
     }
+
 }
+
