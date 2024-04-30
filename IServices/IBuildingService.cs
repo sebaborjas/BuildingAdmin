@@ -11,8 +11,8 @@ namespace IServices
     {
         Building CreateBuilding(Building building);
 
-        void DeleteBuilding(int id);
+        void DeleteBuilding(int buildingId);
 
-        Building ModifyBuilding(int id,  Building modifiedBuilding);
+        Building ModifyBuilding(int buildingId,  Building modifiedBuilding);
     }
 }
