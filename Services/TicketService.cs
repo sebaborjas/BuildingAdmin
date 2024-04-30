@@ -13,13 +13,15 @@ namespace Services
     {
         private IGenericRepository<Ticket> _ticketRepository;
         private IGenericRepository<Category> _categoryRepository;
+        private IGenericRepository<MaintenanceOperator> _maintenanceRepository;
         private ISessionService _sessionService;
 
-        public TicketService(IGenericRepository<Ticket> repository, ISessionService sessionService, IGenericRepository<Category> categoryRepository)
+        public TicketService(IGenericRepository<Ticket> repository, ISessionService sessionService, IGenericRepository<Category> categoryRepository, IGenericRepository<MaintenanceOperator> maintenanceRepository)
         {
             _ticketRepository = repository;
             _sessionService = sessionService;
             _categoryRepository = categoryRepository;
+            _maintenanceRepository = maintenanceRepository;
         }
 
         public Ticket CreateTicket(Ticket ticket)
@@ -49,12 +51,18 @@ namespace Services
             return ticket;
         }
 
-        public Ticket AssignTicket(int id, int maintenanceOperatorId)
+        public Ticket AssignTicket(int ticketId, int maintenanceOperatorId)
         {
-            throw new NotImplementedException();
+            var ticket = _ticketRepository.Get(ticketId);
+            var currentUser = _sessionService.GetCurrentUser();
+            
+            var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
+            ticket.AssignedTo = maintenance;
+            _ticketRepository.Update(ticket);
+            return ticket;
         }
 
-        public Ticket CompleteTicket(int id, float totalCost)
+        public Ticket CompleteTicket(int ticketId, float totalCost)
         {
             throw new NotImplementedException();
         }
