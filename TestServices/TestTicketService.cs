@@ -456,5 +456,137 @@ namespace TestServices
 
             Assert.IsNull(result);
         }
+
+
+        [TestMethod]
+        public void TestCompleteTicket()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            var ticket = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.InProgress,
+                CreatedBy = _user
+            };
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _ticketRepository.Setup(r => r.Update(It.IsAny<Ticket>())).Verifiable();
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.CompleteTicket(1, 2000);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+
+            Assert.AreEqual(result, ticket);
+            Assert.AreEqual(result.Status, Domain.DataTypes.Status.Closed);
+            Assert.IsNotNull(result.ClosingDate);
+            Assert.AreEqual(result.TotalCost, 2000);
+        }
+
+        [TestMethod]
+        public void TestCompleteNonExistentTicket()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            Ticket ticket = null;
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.CompleteTicket(100, 2000);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void TestCompleteInvalidTicket()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            var ticket = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = new MaintenanceOperator(),
+                Status = Domain.DataTypes.Status.InProgress,
+                CreatedBy = _user
+            };
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.CompleteTicket(1, 2000);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void TestCompleteNotInProgressTicket()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            var ticket = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.CompleteTicket(1,2000);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+
+            Assert.IsNull(result);
+        }
     }
 }

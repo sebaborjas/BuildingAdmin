@@ -79,7 +79,15 @@ namespace Services
 
         public Ticket CompleteTicket(int ticketId, float totalCost)
         {
-            throw new NotImplementedException();
+            MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
+            var ticket = _ticketRepository.Get(ticketId);
+            if (ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.InProgress)
+            {
+                return null;
+            }
+            ticket.CloseTicket(totalCost);
+            _ticketRepository.Update(ticket);
+            return ticket;
         }
 
         public List<Ticket> GetTickets(string category = null)
