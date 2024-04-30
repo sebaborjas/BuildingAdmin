@@ -22,6 +22,11 @@ namespace Services
         {
             Invitation invitationAlreadyExist = _invitationRepository.GetByCondition(i => i.Email == newInvitation.Email);
 
+            if (invitationAlreadyExist != null)
+            {
+                throw new ArgumentException("Invitation already exist");
+            }
+
             _invitationRepository.Insert(newInvitation);
             return newInvitation;
         }
