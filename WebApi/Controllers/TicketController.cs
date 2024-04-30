@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/requests")]
+    [Route("api/v1/requests")]
     [ApiController]
     public class TicketController : ControllerBase
     {
