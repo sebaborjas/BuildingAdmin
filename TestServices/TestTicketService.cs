@@ -588,5 +588,155 @@ namespace TestServices
 
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        public void TestGetTickets()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            var ticket1 = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var ticket2 = new Ticket()
+            {
+                Id = 2,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var ticket3 = new Ticket()
+            {
+                Id = 3,
+                Category = _category,
+                Apartment = new Apartment(),
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = new Manager()
+            };
+            var ticket4 = new Ticket()
+            {
+                Id = 4,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var allTickets = new List<Ticket>
+            {
+                ticket1, ticket2, ticket3, ticket4
+            };
+            _ticketRepository.Setup(r => r.GetAll<Ticket>()).Returns(allTickets);
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.GetTickets(null);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+            Assert.AreEqual(result.Count, 3);
+        }
+
+
+        [TestMethod]
+        public void TestGetTicketsFiltered()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Building = _building
+            };
+            var ticket1 = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var ticket2 = new Ticket()
+            {
+                Id = 2,
+                Category = new Category() { Id = 5, Name = "Otra categoria"},
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var ticket3 = new Ticket()
+            {
+                Id = 3,
+                Category = _category,
+                Apartment = new Apartment(),
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = new Manager()
+            };
+            var ticket4 = new Ticket()
+            {
+                Id = 4,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var allTickets = new List<Ticket>
+            {
+                ticket1, ticket2, ticket3, ticket4
+            };
+            _ticketRepository.Setup(r => r.GetAll<Ticket>()).Returns(allTickets);
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.GetTickets(_category.Name);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+            Assert.AreEqual(result.Count, 2);
+        }
+
+        [TestMethod]
+        public void TestGetTicketsEmptyList()
+        {
+            List<Ticket> allTickets = new List<Ticket>();
+            _ticketRepository.Setup(r => r.GetAll<Ticket>()).Returns(allTickets);
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.GetTickets();
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+            Assert.AreEqual(0, result.Count);
+        }
     }
 }

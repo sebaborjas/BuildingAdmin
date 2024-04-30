@@ -92,7 +92,14 @@ namespace Services
 
         public List<Ticket> GetTickets(string category = null)
         {
-            throw new NotImplementedException();
+            var allTickets = _ticketRepository.GetAll<Ticket>();
+            Manager currentUser = (Manager)_sessionService.GetCurrentUser();
+            var resultTickets = allTickets.Where(ticket => currentUser.Buildings.Any(building => building.Apartments.Contains(ticket.Apartment)));
+            if(category != null)
+            {
+                resultTickets = resultTickets.Where(ticket=>ticket.Category.Name.Equals(category));
+            }
+            return resultTickets.ToList();
         }
 
         public Ticket StartTicket(int id)
