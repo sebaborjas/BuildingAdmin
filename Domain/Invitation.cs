@@ -15,12 +15,11 @@ namespace Domain
 
         public InvitationStatus Status { get; set; }
 
-        public string Name { get { return "Test"; } set { 
-            if (value == "")
-                {
-                throw new System.ArgumentNullException(); 
-                }
-            } }
+        public string Name { get { return "Test"; } set {
+                if (string.IsNullOrEmpty(value)) { throw new ArgumentNullException(); }
+
+            }
+        }
 
         public int Id
         {
