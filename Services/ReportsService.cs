@@ -53,7 +53,7 @@ public class ReportsService : IReportServices
 
         if (operatorName != null)
         {
-            tickets = (List<Ticket>)tickets.Where(t => t.AssignedTo.Name == operatorName);
+            tickets = tickets.Where(t => t.AssignedTo.Name == operatorName).ToList();
 
             var reportData = new TicketsByMaintenanceOperator
             {

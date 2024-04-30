@@ -165,6 +165,59 @@ namespace ProjectNamespace.Test
     }
 
     [TestMethod]
+    public void TestGetTicketsBySpecificMaintenanceOperator()
+    {
+
+      MaintenanceOperator operatorUno = new MaintenanceOperator { Name = "Operator Uno" };
+      MaintenanceOperator operatorDos = new MaintenanceOperator { Name = "Operator Dos" };
+
+      Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketUno.AttendTicket();
+
+      Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketDos.AttendTicket();
+      ticketDos.CloseTicket(100);
+
+      Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      ticketCinco.AttendTicket();
+      Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+
+
+
+      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building{
+        Id = 1,
+        Name = "Building Uno",
+        Tickets = new List<Ticket>
+        {
+          ticketUno,
+          ticketDos,
+          ticketTres,
+          ticketCuatro,
+          ticketCinco,
+          ticketSeis
+        }
+      });
+
+      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+
+      var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno","Operator Uno");
+
+      var firstOperatorResult = ticketsByOperator.ElementAt(0);
+
+      _maintenanceOperatorRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(1, ticketsByOperator.Count);
+      Assert.AreEqual("Operator Uno", firstOperatorResult.OperatorName);
+      Assert.AreEqual(1, firstOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, firstOperatorResult.TicketsInProgress);
+      Assert.AreEqual(1, firstOperatorResult.TicketsClosed);
+      Assert.AreEqual("00:00", firstOperatorResult.AverageTimeToClose);
+    }
+
+    [TestMethod]
     public void TestGetTicketsByCategory()
     {
       Category categoryUno = new Category { Name = "Category Uno" };
