@@ -80,5 +80,20 @@ namespace TestServices
             _invitationRepositoryMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void TestModifyInvitation()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int id) => new Invitation());
+
+            _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>())).Verifiable();
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            _service.ModifyInvitation(1, DateTime.Now.AddDays(5));
+
+            _invitationRepositoryMock.VerifyAll();
+
+        }
+
     }
 }
