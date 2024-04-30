@@ -53,9 +53,14 @@ namespace Services
 
         public Ticket AssignTicket(int ticketId, int maintenanceOperatorId)
         {
-            var currentUser = _sessionService.GetCurrentUser();
+            Manager currentUser = (Manager)_sessionService.GetCurrentUser();
             var ticket = _ticketRepository.Get(ticketId);
             if(ticket == null)
+            {
+                return null;
+            }
+            
+            if (!currentUser.Buildings.Any(building => building.Apartments.Contains(ticket.Apartment)))
             {
                 return null;
             }

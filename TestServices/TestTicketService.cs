@@ -205,5 +205,34 @@ namespace TestServices
 
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        public void TestAssignInvalidTicket()
+        {
+            var apartment = new Apartment()
+            {
+                Id = 10,
+                Bathrooms = 1,
+                DoorNumber = 2,
+                Floor = 2,
+                HasTerrace = false,
+                Owner = new Owner(),
+                Rooms = 1
+            };
+            var ticket = new Ticket()
+            {
+                Id = 10,
+                Category = _category,
+                Apartment = apartment,
+                Description = "Perdida de agua",
+            };
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object);
+
+            var result = _ticketService.AssignTicket(100, 2);
+
+            Assert.IsNull(result);
+        }
     }
 }
