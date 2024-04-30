@@ -15,7 +15,7 @@ namespace Domain
 
         public InvitationStatus Status { get; set; }
 
-        public string Name { get { return "name"; } set { } }
+        public string Name { get { return "Test"; } set { } }
 
         public int Id
         {
