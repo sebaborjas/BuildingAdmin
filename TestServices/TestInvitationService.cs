@@ -9,6 +9,7 @@ using Domain;
 using Moq;
 using IServices;
 using System.Linq.Expressions;
+using Domain.DataTypes;
 
 namespace TestServices
 {
@@ -194,6 +195,24 @@ namespace TestServices
             _service.AcceptInvitation(invitation);
             _invitationRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestAcceptInvitationAlreadyAccepted()
+        {
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation { Status = Domain.DataTypes.InvitationStatus.Accepted });
+
+            var invitation = new Invitation
+            {
+                Email = "mail@test.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now.AddDays(3)
+            };
+
+            _service.AcceptInvitation(invitation);
+            _invitationRepositoryMock.VerifyAll();
+        }
+
 
         [TestMethod]
         public void TestRejectInvitation()
