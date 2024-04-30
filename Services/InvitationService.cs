@@ -34,7 +34,14 @@ namespace Services
         public void DeleteInvitation(int invitationId)
         {
             Invitation invitation = _invitationRepository.Get(invitationId);
-            _invitationRepository.Delete(invitation);
+            if (invitation.Status != Domain.DataTypes.InvitationStatus.Accepted)
+            {
+                _invitationRepository.Delete(invitation);
+            }
+            else
+            {
+                throw new ArgumentException("Invitation can not be deleted");
+            }
         }
 
         public void ModifyInvitation(int invitationId, DateTime newExpirationDate)
