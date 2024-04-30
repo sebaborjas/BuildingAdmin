@@ -12,14 +12,23 @@ namespace Services
     public class InvitationService : IInvitationService
     {
         private IGenericRepository<Invitation> _invitationRepository;
+        private IGenericRepository<User> _userRepository;
 
-        public InvitationService(IGenericRepository<Invitation> invitationRepository)
+        public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<User> userRepository)
         {
             _invitationRepository = invitationRepository;
+            _userRepository = userRepository;
         }
 
         public Invitation CreateInvitation(Invitation newInvitation)
         {
+            User userAlreadyExist = _userRepository.GetByCondition(u => u.Email == newInvitation.Email);
+
+            if (userAlreadyExist != null)
+            {
+                throw new ArgumentException("User already exist");
+            }
+
             Invitation invitationAlreadyExist = _invitationRepository.GetByCondition(i => i.Email == newInvitation.Email);
 
             if (invitationAlreadyExist != null)
