@@ -18,6 +18,10 @@ namespace WebApi.Controllers
         [HttpGet("requests-by-building/{id?}")]
         public IActionResult GetRequestsByBuilding(int? id = null)
         {
+            if (id.HasValue)
+            {
+                return BadRequest(_reportServices.GetRequestsByBuilding<string, Object>(id));
+            }
             return Ok(_reportServices.GetRequestsByBuilding<string, Object>());
         }
     }
