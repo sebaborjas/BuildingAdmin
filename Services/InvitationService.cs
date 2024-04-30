@@ -50,10 +50,15 @@ namespace Services
 
             if (invitation.Status != Domain.DataTypes.InvitationStatus.Accepted)
             {
-
-                invitation.ExpirationDate = newExpirationDate;
-                _invitationRepository.Update(invitation);
-
+                if (invitation.ExpirationDate <= DateTime.Now || invitation.ExpirationDate <= DateTime.Now.AddDays(1))
+                {
+                    invitation.ExpirationDate = newExpirationDate;
+                    _invitationRepository.Update(invitation);
+                }
+                else
+                {
+                    throw new ArgumentException("Invitation can not be modified");
+                }
             }
             else
             {
