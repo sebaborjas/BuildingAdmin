@@ -13,16 +13,12 @@ namespace ProjectNamespace.Test
   {
 
     ReportsService _reportService;
-    Mock<IGenericRepository<Ticket>> _ticketRepositoryMock;
     Mock<IGenericRepository<Building>> _buildingRepositoryMock;
-    Mock<IGenericRepository<MaintenanceOperator>> _maintenanceOperatorRepositoryMock;
 
     [TestInitialize]
     public void SetUp()
     {
-      _ticketRepositoryMock = new Mock<IGenericRepository<Ticket>>();
       _buildingRepositoryMock = new Mock<IGenericRepository<Building>>();
-      _maintenanceOperatorRepositoryMock = new Mock<IGenericRepository<MaintenanceOperator>>();
     }
 
 
@@ -55,11 +51,11 @@ namespace ProjectNamespace.Test
         }
       });
 
-      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object);
 
       var ticketsByBuilding = _reportService.GetTicketsByBuilding();
 
-      _maintenanceOperatorRepositoryMock.VerifyAll();
+      _buildingRepositoryMock.VerifyAll();
 
       Assert.AreEqual(2, ticketsByBuilding.Count);
       Assert.AreEqual("Building Uno", ticketsByBuilding.ElementAt(0).BuildingName);
@@ -90,11 +86,11 @@ namespace ProjectNamespace.Test
         },
       });
 
-      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object);
 
       var ticketsByBuilding = _reportService.GetTicketsByBuilding("Building Uno");
 
-      _maintenanceOperatorRepositoryMock.VerifyAll();
+      _buildingRepositoryMock.VerifyAll();
 
       Assert.AreEqual(1, ticketsByBuilding.Count);
       Assert.AreEqual("Building Uno", ticketsByBuilding.ElementAt(0).BuildingName);
@@ -140,14 +136,14 @@ namespace ProjectNamespace.Test
         }
       });
 
-      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno");
 
       var firstOperatorResult = ticketsByOperator.ElementAt(0);
       var secondOperatorResult = ticketsByOperator.ElementAt(1);
 
-      _maintenanceOperatorRepositoryMock.VerifyAll();
+      _buildingRepositoryMock.VerifyAll();
 
       Assert.AreEqual(2, ticketsByOperator.Count);
       Assert.AreEqual("Operator Uno", firstOperatorResult.OperatorName);
@@ -201,13 +197,13 @@ namespace ProjectNamespace.Test
         }
       });
 
-      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+      _reportService = new ReportsService( _buildingRepositoryMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno","Operator Uno");
 
       var firstOperatorResult = ticketsByOperator.ElementAt(0);
 
-      _maintenanceOperatorRepositoryMock.VerifyAll();
+      _buildingRepositoryMock.VerifyAll();
 
       Assert.AreEqual(1, ticketsByOperator.Count);
       Assert.AreEqual("Operator Uno", firstOperatorResult.OperatorName);
@@ -256,14 +252,14 @@ namespace ProjectNamespace.Test
         }
       });
 
-      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno");
 
       var firstOperatorResult = ticketsByOperator.ElementAt(0);
       var secondOperatorResult = ticketsByOperator.ElementAt(1);
 
-      _maintenanceOperatorRepositoryMock.VerifyAll();
+      _buildingRepositoryMock.VerifyAll();
 
       Assert.AreEqual(2, ticketsByOperator.Count);
       Assert.AreEqual("Category Uno", firstOperatorResult.CategoryName);
@@ -316,14 +312,14 @@ namespace ProjectNamespace.Test
         }
       });
 
-      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno", "Category Dos");
 
       var operatorResult = ticketsByOperator.ElementAt(0);
 
 
-      _maintenanceOperatorRepositoryMock.VerifyAll();
+      _buildingRepositoryMock.VerifyAll();
 
       Assert.AreEqual(3, ticketsByOperator.Count);
       Assert.AreEqual("Category Dos", operatorResult.CategoryName);
