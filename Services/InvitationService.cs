@@ -60,7 +60,8 @@ namespace Services
 
         public void RejectInvitation(string email)
         {
-            throw new System.NotImplementedException();
+            Invitation invitationToReject = _invitationRepository.GetByCondition(i => i.Email == email);
+            _invitationRepository.Delete(invitationToReject);
         }
 
     }
