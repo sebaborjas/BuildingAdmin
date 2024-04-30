@@ -118,5 +118,24 @@ namespace TestServices
             Assert.IsNotNull(manager);
 
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestAcceptInvitationDoesNotExist()
+        {
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => null);
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            var invitation = new Invitation
+            {
+                Email = "mail@test.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now.AddDays(3)
+            };
+
+            _service.AcceptInvitation(invitation);
+            _invitationRepositoryMock.VerifyAll();
+        }
     }
 }
