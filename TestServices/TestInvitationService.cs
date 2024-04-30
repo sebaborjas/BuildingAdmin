@@ -95,5 +95,28 @@ namespace TestServices
 
         }
 
+        [TestMethod]
+        public void TestAcceptInvitation()
+        {
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
+
+            _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>())).Verifiable();
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            var invitation = new Invitation
+            {
+                Email = "mail@test.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now.AddDays(3)
+            };
+
+            var manager = _service.AcceptInvitation(invitation);
+
+            _invitationRepositoryMock.VerifyAll();
+
+            Assert.IsNotNull(manager);
+
+        }
     }
 }
