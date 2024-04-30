@@ -137,5 +137,21 @@ namespace TestServices
             _service.AcceptInvitation(invitation);
             _invitationRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void TestRejectInvitation()
+        {
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
+
+            _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
+
+            _service = new InvitationService(_invitationRepositoryMock.Object);
+
+            _service.RejectInvitation("mail@test.com");
+            _invitationRepositoryMock.VerifyAll();
+
+
+        }
+
     }
 }
