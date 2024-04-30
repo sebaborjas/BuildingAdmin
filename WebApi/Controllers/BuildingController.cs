@@ -3,10 +3,12 @@ using DTO.Out;
 using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Constants;
+using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-    [Route("api/buildings")]
+    [Route("api/v1/buildings")]
     [ApiController]
     public class BuildingController : ControllerBase
     {
@@ -18,6 +20,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(Role =RoleConstants.ManagerRole)]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
             if (!IsValidCreateBuildingInput(createBuildingInput) || !AreValidApartments(createBuildingInput.Apartments))
@@ -30,6 +33,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult DeleteBuilding(int id)
         {
             try
@@ -42,7 +46,8 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
         {
             try
