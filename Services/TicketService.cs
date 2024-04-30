@@ -66,6 +66,10 @@ namespace Services
             }
 
             var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
+            if(maintenance == null)
+            {
+                return null;
+            }
             ticket.AssignedTo = maintenance;
             _ticketRepository.Update(ticket);
             return ticket;
