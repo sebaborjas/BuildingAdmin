@@ -69,7 +69,7 @@ namespace TestServices
         [TestMethod]
         public void TestDeleteInvitation()
         {
-            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int id) => new Invitation());
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation());
 
             _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
 
@@ -83,7 +83,7 @@ namespace TestServices
         [TestMethod]
         public void TestModifyInvitation()
         {
-            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int id) => new Invitation());
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation());
 
             _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>())).Verifiable();
 

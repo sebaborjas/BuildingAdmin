@@ -11,9 +11,9 @@ namespace IServices
     {
         Invitation CreateInvitation(Invitation newInvitation);
 
-        void DeleteInvitation(int id);
+        void DeleteInvitation(int invitationId);
 
-        void ModifyInvitation(int id, DateTime newExpirationDate);
+        void ModifyInvitation(int invitationId, DateTime newExpirationDate);
 
         Manager AcceptInvitation(Invitation invitation);
 

@@ -31,15 +31,15 @@ namespace Services
             return newInvitation;
         }
 
-        public void DeleteInvitation(int id)
+        public void DeleteInvitation(int invitationId)
         {
-            Invitation invitation = _invitationRepository.Get(id);
+            Invitation invitation = _invitationRepository.Get(invitationId);
             _invitationRepository.Delete(invitation);
         }
 
-        public void ModifyInvitation(int id, DateTime newExpirationDate)
+        public void ModifyInvitation(int invitationId, DateTime newExpirationDate)
         {
-            Invitation invitation = _invitationRepository.Get(id);
+            Invitation invitation = _invitationRepository.Get(invitationId);
             invitation.ExpirationDate = newExpirationDate;
             _invitationRepository.Update(invitation);
         }
