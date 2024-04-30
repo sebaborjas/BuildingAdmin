@@ -8,7 +8,7 @@ using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-    [Route("api/buildings")]
+    [Route("api/v1/buildings")]
     [ApiController]
     public class BuildingController : ControllerBase
     {
@@ -46,7 +46,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
         {

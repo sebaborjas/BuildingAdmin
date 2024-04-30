@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/login")]
+    [Route("api/v1/login")]
     [ApiController]
     public class LoginController : ControllerBase
     {

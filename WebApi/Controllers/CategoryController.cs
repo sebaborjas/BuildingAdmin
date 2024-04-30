@@ -5,7 +5,7 @@ using DTO.Out;
 
 namespace WebApi
 {
-    [Route("api/categories")]
+    [Route("api/v1/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
