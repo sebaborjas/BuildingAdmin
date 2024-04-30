@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace IDataAcess;
 
 public interface IGenericRepository<T> where T : class
@@ -7,6 +9,8 @@ public interface IGenericRepository<T> where T : class
   void Update(T entity);
 
   T Get(int id);
+
+T GetByCondition(Expression<Func<T, bool>> searchCondition, List<string> includes = null);
 
   IEnumerable<U> GetAll<U>() where U : class;
 

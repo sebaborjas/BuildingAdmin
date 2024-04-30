@@ -1,6 +1,7 @@
 using IDataAcess;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace DataAccess;
 
@@ -12,6 +13,7 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
     public void Insert(T entity)
     {
         Context.Set<T>().Add(entity);
+        Save();
     }
 
     public void Update(T entity)
@@ -21,6 +23,20 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
 
     public T Get(int id){
       return Context.Set<T>().Find(id);
+    }
+
+    public virtual T GetByCondition(Expression<Func<T, bool>> searchCondition, List<string> includes = null)
+    {
+        IQueryable<T> query = Context.Set<T>();
+        if (includes != null)
+        {
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+        }
+        return query.Where(searchCondition).Select(x => x)
+            .FirstOrDefault();
     }
 
     public IEnumerable<U> GetAll<U>() where U : class{
