@@ -11,11 +11,11 @@ namespace WebApi.Controllers
     public class InvitationController : ControllerBase
     {
 
-        private IInvitationServices _invitationServices;
+        private IInvitationService _invitationService;
         
-        public InvitationController(IInvitationServices invitationServices)
+        public InvitationController(IInvitationService invitationService)
         {
-            _invitationServices = invitationServices;
+            _invitationService = invitationService;
         }
 
         [HttpPost]
@@ -25,7 +25,7 @@ namespace WebApi.Controllers
             {
                 return BadRequest();
             }
-            var newInvitation = _invitationServices.CreateInvitation(newInvitationInput.ToEntity());
+            var newInvitation = _invitationService.CreateInvitation(newInvitationInput.ToEntity());
             var response = new CreateInvitationOutput(newInvitation);
             return Ok(response);
         }
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                _invitationServices.DeleteInvitation(id);
+                _invitationService.DeleteInvitation(id);
                 return Ok();
             }
             catch (Exception exception)
@@ -53,7 +53,7 @@ namespace WebApi.Controllers
             }
             try
             {
-                _invitationServices.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
+                _invitationService.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
                 return Ok();
             } catch (Exception exception)
             {
@@ -70,7 +70,7 @@ namespace WebApi.Controllers
             }
             try
             {
-                var newManager = _invitationServices.AcceptInvitation(acceptInvitationInput.ToEntity());
+                var newManager = _invitationService.AcceptInvitation(acceptInvitationInput.ToEntity());
                 var result = new AcceptInvitationOutput(newManager);
                 return Ok(result);
             } catch (Exception exception)
@@ -88,7 +88,7 @@ namespace WebApi.Controllers
             }
             try
             {
-                _invitationServices.RejectInvitation(rejectInvitationInput.Email);
+                _invitationService.RejectInvitation(rejectInvitationInput.Email);
                 return Ok();
             }
             catch (Exception exception)
