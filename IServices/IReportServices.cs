@@ -8,10 +8,31 @@ namespace IServices
 {
     public interface IReportServices
     {
-        Dictionary<TKey, TValue> GetTicketsByBuilding<TKey, TValue>(int? id = null);
+        ICollection<TicketByBuilding> GetTicketsByBuilding(int? id = null);
 
-        Dictionary<TKey, TValue> GetTicketsByMaintenanceOperator<TKey, TValue>(int? id = null);
+        ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(int? id = null);
         
-        Dictionary<TKey, TValue> GetTicketsByCategory<TKey, TValue>();
+        ICollection<TicketsByCategory> GetTicketsByCategory();
+    }
+
+    public struct TicketByBuilding
+    {
+        public string BuildingName { get; set; }
+        public int TicketsOpen { get; set; }
+        public int TicketsInProgress { get; set; }
+        public int TicketsClosed { get; set; }
+    }
+
+    public struct TicketsByMaintenanceOperator
+    {
+        public string OperatorName { get; set; }
+        public int TicketsOpen { get; set; }
+        public int TicketsInProgress { get; set; }
+        public int TicketsClosed { get; set; }
+        public  float AverageTimeToClose { get; set; }
+    }
+
+    public struct TicketsByCategory
+    {
     }
 }
