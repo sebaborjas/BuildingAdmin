@@ -59,17 +59,19 @@ namespace Services
             {
                 return null;
             }
-            
-            if (!currentUser.Buildings.Any(building => building.Apartments.Contains(ticket.Apartment)))
+
+            var ticketBuilding = currentUser.Buildings.Find(building => building.Apartments.Contains(ticket.Apartment));
+            if (ticketBuilding == null)
             {
                 return null;
             }
 
             var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
-            if(maintenance == null)
+            if(maintenance == null || !maintenance.Building.Equals(ticketBuilding))
             {
                 return null;
             }
+
             ticket.AssignedTo = maintenance;
             _ticketRepository.Update(ticket);
             return ticket;
