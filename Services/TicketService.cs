@@ -23,6 +23,7 @@ namespace Services
         public Ticket CreateTicket(Ticket ticket)
         {
             var currentUser = _sessionService.GetCurrentUser();
+            ticket.CreatedBy = currentUser;
             _ticketRepository.Insert(ticket);
             return ticket;
         }

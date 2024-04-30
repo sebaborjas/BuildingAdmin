@@ -53,5 +53,34 @@ namespace TestServices
             _ticketRepository.VerifyAll();
             Assert.AreEqual(result, ticket);
         }
+
+        [TestMethod]
+        public void TestTicketCreatedBy()
+        {
+            var user = new Manager()
+            {
+                Buildings = [],
+                Email = "manager@correo.com",
+                Id = 1,
+                Name = "Lucas",
+                LastName = "Gonzalez",
+                Password = "Lu.Go123!",
+            };
+            var ticket = new Ticket()
+            {
+                Category = new Category(),
+                Apartment = new Apartment(),
+                Description = "Perdida de agua",
+            };
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(user);
+            _ticketRepository.Setup(r => r.Insert(It.IsAny<Ticket>())).Verifiable();
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object);
+
+            var result = _ticketService.CreateTicket(ticket);
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+            Assert.AreEqual(result.CreatedBy, user);
+        }
     }
 }
