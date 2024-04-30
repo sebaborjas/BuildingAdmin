@@ -19,7 +19,29 @@ public class ReportsService : IReportServices
 
     public ICollection<TicketByBuilding> GetTicketsByBuilding(int? id = null)
     {
-        throw new NotImplementedException();
+        var buildings = _buildingRepository.GetAll<Building>();
+        var ticketDataList = new List<TicketByBuilding>();
+
+        if (id != null)
+        {
+            buildings = buildings.Where(b => b.Id == id);
+        }
+
+        foreach (var building in buildings)
+        {
+            var ticketData = new TicketByBuilding
+            {
+                BuildingName = building.Name,
+                TicketsOpen = building.Tickets.Count(t => t.Status == Domain.DataTypes.Status.Open),
+                TicketsInProgress = building.Tickets.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
+                TicketsClosed = building.Tickets.Count(t => t.Status == Domain.DataTypes.Status.Closed)
+
+            };
+
+            ticketDataList.Add(ticketData);
+        }
+
+        return ticketDataList;
     }
 
     public ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(int? id = null)
