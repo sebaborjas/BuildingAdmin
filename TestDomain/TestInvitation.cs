@@ -138,6 +138,14 @@ namespace TestDomain
             Assert.AreEqual(name, _invitation.Name);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestSetEmptyName()
+        {
+            string name = "";
+            _invitation.Name = name;
+        }
+
     }
 
 }
