@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         {
             if (id.HasValue)
             {
-                return BadRequest(_reportServices.GetRequestsByBuilding<string, Object>(id));
+                return Ok(_reportServices.GetRequestsByBuilding<string, Object>(id));
             }
             return Ok(_reportServices.GetRequestsByBuilding<string, Object>());
         }
