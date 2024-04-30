@@ -38,7 +38,7 @@ namespace WebApi.Controllers
         [HttpGet("tickets-by-category")]
         public IActionResult GetTicketsByCategory()
         {
-            return BadRequest(_reportServices.GetTicketsByCategory<string, Object>());
+            return Ok(_reportServices.GetTicketsByCategory<string, Object>());
         }
     }
 }
