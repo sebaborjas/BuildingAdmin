@@ -66,7 +66,7 @@ public class UserController : ControllerBase
 
   [HttpDelete("manager/{id}")]
   [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-  public IActionResult DeleteManager([FromBody] int id)
+  public IActionResult DeleteManager(int id)
   {
     try
     {
