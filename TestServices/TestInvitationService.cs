@@ -53,7 +53,7 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentException))]
         public void TestCreateInvitationAlreadyExist()
         {
-            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());;
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation()); ;
             _userRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<User, bool>> predicate, List<string> includes) => null);
 
             var existingInvitation = new Invitation
@@ -66,6 +66,35 @@ namespace TestServices
             _service.CreateInvitation(existingInvitation);
 
             _invitationRepositoryMock.Verify(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestCreateInvitationUserAlreadyExist()
+        {
+            var existingUser = new Administrator
+            {
+                Email = "user@test.com",
+                Name = "Test",
+                Password = "1234.Pass!"
+            };
+
+            _userRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<User, bool>> predicate, List<string> includes) => existingUser);
+
+            var invitation = new Invitation
+            {
+                Email = "user@test.com",
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Name = "Test"
+            };
+
+            _service.CreateInvitation(invitation);
+            _invitationRepositoryMock.Verify(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()), Times.Once);
+
+            _userRepositoryMock.Verify(r => r.GetByCondition(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<List<string>>()), Times.Once);
+
+            _invitationRepositoryMock.Verify(r => r.Insert(It.IsAny<Invitation>()), Times.Once);
+
         }
 
         [TestMethod]
