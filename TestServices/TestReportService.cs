@@ -72,6 +72,37 @@ namespace ProjectNamespace.Test
       Assert.AreEqual(2, ticketsByBuilding.ElementAt(1).TicketsClosed);
     }
 
+        [TestMethod]
+    public void TestGetTicketsByOneBuilding()
+    {
+      _buildingRepositoryMock.Setup(r => r.GetAll<Building>()).Returns(new List<Building>
+      {
+        new Building
+        {
+          Id = 1,
+          Name = "Building Uno",
+          Tickets = new List<Ticket>
+          {
+            new Ticket { Status = Domain.DataTypes.Status.Open },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress }
+          }
+        },
+      });
+
+      _reportService = new ReportsService(_ticketRepositoryMock.Object, _buildingRepositoryMock.Object, _maintenanceOperatorRepositoryMock.Object);
+
+      var ticketsByBuilding = _reportService.GetTicketsByBuilding("Building Uno");
+
+      _maintenanceOperatorRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(1, ticketsByBuilding.Count);
+      Assert.AreEqual("Building Uno", ticketsByBuilding.ElementAt(0).BuildingName);
+      Assert.AreEqual(1, ticketsByBuilding.ElementAt(0).TicketsOpen);
+      Assert.AreEqual(2, ticketsByBuilding.ElementAt(0).TicketsInProgress);
+      Assert.AreEqual(0, ticketsByBuilding.ElementAt(0).TicketsClosed);
+    }
+
     [TestMethod]
     public void TestGetTicketsByMaintenanceOperator()
     {
@@ -191,8 +222,6 @@ namespace ProjectNamespace.Test
       Assert.AreEqual(2, secondOperatorResult.TicketsOpen);
       Assert.AreEqual(1, secondOperatorResult.TicketsInProgress);
       Assert.AreEqual(0, secondOperatorResult.TicketsClosed);
-
-
     }
 
   }

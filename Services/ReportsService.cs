@@ -17,14 +17,14 @@ public class ReportsService : IReportServices
         _maintenanceOperatorRepository = maintenanceOperatorRepository;
     }
 
-    public ICollection<TicketByBuilding> GetTicketsByBuilding(int? id = null)
+    public ICollection<TicketByBuilding> GetTicketsByBuilding(string? name = null)
     {
         var buildings = _buildingRepository.GetAll<Building>();
         var ticketDataList = new List<TicketByBuilding>();
 
-        if (id != null)
+        if (name != null)
         {
-            buildings = buildings.Where(b => b.Id == id);
+            buildings = buildings.Where(b => b.Name == name);
         }
 
         foreach (var building in buildings)

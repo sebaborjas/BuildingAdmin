@@ -8,7 +8,7 @@ namespace IServices
 {
     public interface IReportServices
     {
-        ICollection<TicketByBuilding> GetTicketsByBuilding(int? id = null);
+        ICollection<TicketByBuilding> GetTicketsByBuilding(string? id);
 
         ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName);
         
