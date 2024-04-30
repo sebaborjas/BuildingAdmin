@@ -34,11 +34,13 @@ namespace TestWebApi
 
             var result = _reportController.GetRequestsByBuilding();
 
-            var expectedResult = new OkObjectResult(new Dictionary<string, Object>());
+            var okResult = result as OkObjectResult;
+
+            var expectedResult = new Dictionary<string, Object>();
 
             _reportServicesMock.VerifyAll();
 
-            Assert.AreEqual(expectedResult.Value, result);
+            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
         }
     }
 }
