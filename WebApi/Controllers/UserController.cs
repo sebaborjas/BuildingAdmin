@@ -3,6 +3,8 @@ using Domain;
 using IServices;
 using DTO.In;
 using DTO.Out;
+using WebApi.Filters;
+using WebApi.Constants;
 
 namespace WebApi;
 
@@ -18,6 +20,7 @@ public class UserController : ControllerBase
   }
 
   [HttpPost("administrator")]
+  [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
   public IActionResult CreateAdministrator([FromBody] AdministratorCreateModel newAdministrator)
   {
     if(!IsNewAdministratorValid(newAdministrator))
@@ -39,6 +42,7 @@ public class UserController : ControllerBase
   }
 
   [HttpPost("maintenance-operator")]
+  [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
   public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateModel newMaintenanceOperator)
   {
     if(!IsNewMaintenanceOperatorValid(newMaintenanceOperator))
@@ -61,6 +65,7 @@ public class UserController : ControllerBase
   }
 
   [HttpDelete("manager/{id}")]
+  [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
   public IActionResult DeleteManager([FromBody] int id)
   {
     try
