@@ -192,18 +192,15 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentNullException))]
         public void ModifyBuildingThatNotExist()
         {
-            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
-
-            var building = new Building();
-
-            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
-              .Returns((int id) => null);
-
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
 
-            var result = _buildingService.ModifyBuilding(1, building);
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
-            _buildingRepositoryMock.VerifyAll();
+            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Building)null);
+
+            var modifiedBuilding = new Building();
+
+            _buildingService.ModifyBuilding(1, modifiedBuilding);
         }
     }
 }
