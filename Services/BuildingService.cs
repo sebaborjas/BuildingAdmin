@@ -50,19 +50,29 @@ public class BuildingService : IBuildingService
 
     public Building ModifyBuilding(int buildingId, Building modifiedBuilding)
     {
-        Building buildingToModify = _buildingRepository.Get(buildingId) ?? throw new ArgumentNullException("Building not found");
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a manager");
+        }
 
-        buildingToModify.Name = modifiedBuilding.Name;
-        buildingToModify.Address = modifiedBuilding.Address;
-        buildingToModify.Location = modifiedBuilding.Location;
-        buildingToModify.ConstructionCompany = modifiedBuilding.ConstructionCompany;
-        buildingToModify.Expenses = modifiedBuilding.Expenses;
-        buildingToModify.Apartments = modifiedBuilding.Apartments;
-        buildingToModify.Tickets = modifiedBuilding.Tickets;
+        var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
 
+        if (building == null)
+        {
+            throw new ArgumentNullException("Building not found");
+        }
 
-        _buildingRepository.Update(buildingToModify);
+        building.Name = modifiedBuilding.Name;
+        building.Address = modifiedBuilding.Address;
+        building.Location = modifiedBuilding.Location;
+        building.ConstructionCompany = modifiedBuilding.ConstructionCompany;
+        building.Expenses = modifiedBuilding.Expenses;
+        building.Apartments = modifiedBuilding.Apartments;
+        building.Tickets = modifiedBuilding.Tickets;
 
-        return buildingToModify;
+        _buildingRepository.Update(building);
+
+        return building;
     }
 }
