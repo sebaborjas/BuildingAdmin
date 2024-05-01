@@ -64,16 +64,10 @@ public class BuildingService : IBuildingService
         }
 
         if (building.ConstructionCompany != null){
-            if (building.ConstructionCompany.Id != modifiedBuilding.ConstructionCompany.Id){
-                throw new InvalidOperationException("Construction company can not be modified");
-            }
             building.ConstructionCompany = modifiedBuilding.ConstructionCompany;
         }
 
         if(building.Expenses  > 0){
-            if (building.Expenses != modifiedBuilding.Expenses){
-                throw new InvalidOperationException("Expenses can not be modified");
-            }
             building.Expenses = modifiedBuilding.Expenses;
         }
 
