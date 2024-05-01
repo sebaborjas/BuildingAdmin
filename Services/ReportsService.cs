@@ -1,4 +1,4 @@
-using IDataAcess;
+using IDataAccess;
 using IServices;
 using Domain;
 
@@ -8,19 +8,25 @@ public class ReportsService : IReportServices
 {
     private readonly IGenericRepository<Building> _buildingRepository;
 
-    public ReportsService(IGenericRepository<Building> buildingRepository)
+    private readonly ISessionService _sessionService;
+
+    public ReportsService(IGenericRepository<Building> buildingRepository , ISessionService sessionService)
     {
         _buildingRepository = buildingRepository;
+        _sessionService = sessionService;
     }
 
     public ICollection<TicketByBuilding> GetTicketsByBuilding(string? name = null)
     {
-        var buildings = _buildingRepository.GetAll<Building>();
+        Manager manager = _sessionService.GetCurrentUser() as Manager;
+
+        var buildings = manager.Buildings.ToList();
+
         var ticketDataList = new List<TicketByBuilding>();
 
         if (name != null)
         {
-            buildings = buildings.Where(b => b.Name == name);
+            buildings = buildings.Where(b => b.Name == name).ToList();
         }
 
         foreach (var building in buildings)
@@ -42,7 +48,12 @@ public class ReportsService : IReportServices
 
     public ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName = null)
     {
-        var building = _buildingRepository.GetByCondition(b => b.Name == buildingName);
+        Manager manager = _sessionService.GetCurrentUser() as Manager;
+
+        var buildings = manager.Buildings.ToList();
+
+        var building = buildings.FirstOrDefault(b => b.Name == buildingName);
+        
         var tickets = building.Tickets;
 
         var result = new List<TicketsByMaintenanceOperator>();

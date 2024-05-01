@@ -1,10 +1,11 @@
-using IDataAcess;
+using IDataAccess;
 using Services;
 using Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Moq;
 using System.Linq.Expressions;
+using IServices;
 
 namespace ProjectNamespace.Test
 {
@@ -13,21 +14,23 @@ namespace ProjectNamespace.Test
   {
 
     ReportsService _reportService;
+
+    Mock<ISessionService> _sessionServiceMock;
     Mock<IGenericRepository<Building>> _buildingRepositoryMock;
 
     [TestInitialize]
     public void SetUp()
     {
-      _buildingRepositoryMock = new Mock<IGenericRepository<Building>>();
+      _buildingRepositoryMock = new Mock<IGenericRepository<Building>>(MockBehavior.Strict);
+      _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
     }
 
 
     [TestMethod]
     public void TestGetTicketsByBuilding()
     {
-      _buildingRepositoryMock.Setup(r => r.GetAll<Building>()).Returns(new List<Building>
-      {
-        new Building
+
+      Building firstBuilding = new Building
         {
           Id = 1,
           Name = "Building Uno",
@@ -37,8 +40,9 @@ namespace ProjectNamespace.Test
             new Ticket { Status = Domain.DataTypes.Status.InProgress },
             new Ticket { Status = Domain.DataTypes.Status.InProgress }
           }
-        },
-        new Building
+        };
+
+        Building secondBuilding = new Building
         {
           Id = 2,
           Name = "Building Dos",
@@ -48,10 +52,15 @@ namespace ProjectNamespace.Test
             new Ticket { Status = Domain.DataTypes.Status.InProgress },
             new Ticket { Status = Domain.DataTypes.Status.Closed }
           }
-        }
-      });
+        };
 
-      _reportService = new ReportsService(_buildingRepositoryMock.Object);
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
+        {
+          Buildings = new List<Building> { firstBuilding, secondBuilding }
+        });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
 
       var ticketsByBuilding = _reportService.GetTicketsByBuilding();
 
@@ -71,9 +80,7 @@ namespace ProjectNamespace.Test
         [TestMethod]
     public void TestGetTicketsByOneBuilding()
     {
-      _buildingRepositoryMock.Setup(r => r.GetAll<Building>()).Returns(new List<Building>
-      {
-        new Building
+      Building firstBuilding = new Building
         {
           Id = 1,
           Name = "Building Uno",
@@ -83,10 +90,27 @@ namespace ProjectNamespace.Test
             new Ticket { Status = Domain.DataTypes.Status.InProgress },
             new Ticket { Status = Domain.DataTypes.Status.InProgress }
           }
-        },
-      });
+        };
 
-      _reportService = new ReportsService(_buildingRepositoryMock.Object);
+        Building secondBuilding = new Building
+        {
+          Id = 2,
+          Name = "Building Dos",
+          Tickets = new List<Ticket>
+          {
+            new Ticket { Status = Domain.DataTypes.Status.Closed },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress },
+            new Ticket { Status = Domain.DataTypes.Status.Closed }
+          }
+        };
+
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
+        {
+          Buildings = new List<Building> { firstBuilding, secondBuilding }
+        });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
 
       var ticketsByBuilding = _reportService.GetTicketsByBuilding("Building Uno");
 
@@ -121,22 +145,29 @@ namespace ProjectNamespace.Test
 
 
 
-      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
-      .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building{
-        Id = 1,
-        Name = "Building Uno",
-        Tickets = new List<Ticket>
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
         {
-          ticketUno,
-          ticketDos,
-          ticketTres,
-          ticketCuatro,
-          ticketCinco,
-          ticketSeis
-        }
-      });
+          Buildings = new List<Building> { 
+            new Building
+            {
+              Id = 1,
+              Name = "Building Uno",
+              Tickets = new List<Ticket>
+              {
+                ticketUno,
+                ticketDos,
+                ticketTres,
+                ticketCuatro,
+                ticketCinco,
+                ticketSeis
+              }
+            }
+            
+          }
+        });
 
-      _reportService = new ReportsService(_buildingRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object , _sessionServiceMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno");
 
@@ -181,23 +212,29 @@ namespace ProjectNamespace.Test
       Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
 
 
-
-      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
-      .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building{
-        Id = 1,
-        Name = "Building Uno",
-        Tickets = new List<Ticket>
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
         {
-          ticketUno,
-          ticketDos,
-          ticketTres,
-          ticketCuatro,
-          ticketCinco,
-          ticketSeis
-        }
-      });
+          Buildings = new List<Building> { 
+            new Building
+            {
+              Id = 1,
+              Name = "Building Uno",
+              Tickets = new List<Ticket>
+              {
+                ticketUno,
+                ticketDos,
+                ticketTres,
+                ticketCuatro,
+                ticketCinco,
+                ticketSeis
+              }
+            }
+            
+          }
+        });
 
-      _reportService = new ReportsService( _buildingRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object , _sessionServiceMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno","Operator Uno");
 
@@ -252,7 +289,7 @@ namespace ProjectNamespace.Test
         }
       });
 
-      _reportService = new ReportsService(_buildingRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno");
 
@@ -312,7 +349,7 @@ namespace ProjectNamespace.Test
         }
       });
 
-      _reportService = new ReportsService(_buildingRepositoryMock.Object);
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
 
       var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno", "Category Dos");
 
