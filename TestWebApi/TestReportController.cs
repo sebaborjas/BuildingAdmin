@@ -46,7 +46,7 @@ namespace TestWebApi
                 }
             };
 
-            _reportServicesMock.Setup(s => s.GetTicketsByBuilding(null)).Returns(expectedResult);
+            _reportServicesMock.Setup(s => s.GetTicketsByBuilding(It.IsAny<string?>())).Returns(expectedResult);
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
@@ -58,8 +58,28 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        public void TestGetTicketsByBuildingReportForSpecificId()
+        public void TestGetTicketsForSpecificBuildingReport()
         {
+            var expectedResult = new List<TicketByBuilding>
+            {
+                new TicketByBuilding
+                {
+                    BuildingName = "Building1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByBuilding(It.IsAny<string>())).Returns(expectedResult);
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByBuilding() as OkObjectResult;
+
+            _reportServicesMock.VerifyAll();
+
+            Assert.AreEqual(expectedResult, result.Value);
         }
             
 
