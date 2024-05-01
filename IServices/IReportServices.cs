@@ -8,11 +8,11 @@ namespace IServices
 {
     public interface IReportServices
     {
-        ICollection<TicketByBuilding> GetTicketsByBuilding(string? id);
+        ICollection<TicketByBuilding> GetTicketsByBuilding(string? id = null);
 
-        ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName);
+        ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName = null);
         
-        ICollection<TicketsByCategory> GetTicketsByCategory(string buildingName, string? categoryName);
+        ICollection<TicketsByCategory> GetTicketsByCategory(string buildingName, string? categoryName = null);
     }
 
     public struct TicketByBuilding

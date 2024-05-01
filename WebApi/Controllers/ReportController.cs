@@ -15,30 +15,37 @@ namespace WebApi.Controllers
             _reportServices = reportServices;
         }
 
-        [HttpGet("tickets-by-building/{id?}")]
-        public IActionResult GetTicketsByBuilding(int? id = null)
+        [HttpGet("tickets-by-building/{name?}")]
+        public IActionResult GetTicketsByBuilding(string? name = null)
         {
-            if (id.HasValue)
+            if (name != null)
             {
-                return Ok(_reportServices.GetTicketsByBuilding<string, Object>(id));
+                return Ok(_reportServices.GetTicketsByBuilding(name));
             }
-            return Ok(_reportServices.GetTicketsByBuilding<string, Object>());
+
+            return Ok(_reportServices.GetTicketsByBuilding());
         }
 
         [HttpGet("tickets-by-maintenance-operator/{id?}")]
-        public IActionResult GetTicketsByMaintenanceOperator(int? id = null)
+        public IActionResult GetTicketsByMaintenanceOperator(string buildingName ,string? operatorName= null)
         {
-            if (id.HasValue)
+            if (operatorName != null)
             {
-                return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>(id));
+                return Ok(_reportServices.GetTicketsByMaintenanceOperator(buildingName, operatorName));
             }
-            return Ok(_reportServices.GetTicketsByMaintenanceOperator<string, Object>());
+            
+            return Ok(_reportServices.GetTicketsByMaintenanceOperator(buildingName));
         }
 
         [HttpGet("tickets-by-category")]
-        public IActionResult GetTicketsByCategory()
+        public IActionResult GetTicketsByCategory(string buildingName ,string? categoryName= null)
         {
-            return Ok(_reportServices.GetTicketsByCategory<string, Object>());
+            if (categoryName != null)
+            {
+                return Ok(_reportServices.GetTicketsByCategory(buildingName, categoryName));
+            }
+            
+            return Ok(_reportServices.GetTicketsByCategory(buildingName));
         }
     }
 }
