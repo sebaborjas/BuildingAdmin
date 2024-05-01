@@ -7,7 +7,7 @@ public abstract class User
 {
     private int _id;
     private string _name;
-    private string _lastName;
+    protected string _lastName;
     private string _email;
     private string _password;
 
