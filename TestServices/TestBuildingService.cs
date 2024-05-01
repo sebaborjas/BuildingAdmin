@@ -149,6 +149,21 @@ namespace TestServices
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestDeleteBuildingNotManager()
+        {
+            var user = new Administrator();
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(user);
+
+            _buildingService.DeleteBuilding(1);
+
+            _buildingRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
         public void ModifyBuilding()
         {
             _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
