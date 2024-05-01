@@ -202,5 +202,21 @@ namespace TestServices
 
             _buildingService.ModifyBuilding(1, modifiedBuilding);
         }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestModifyBuildingNotManager()
+        {
+            var user = new Administrator();
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(user);
+
+            var modifiedBuilding = new Building();
+
+            _buildingService.ModifyBuilding(1, modifiedBuilding);
+        }
     }
 }
