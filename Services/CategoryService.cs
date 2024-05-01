@@ -11,7 +11,7 @@ namespace Services
 {
     public class CategoryService : ICategoryService
     {
-        public readonly IGenericRepository<Category> _categoryRepository;
+        public IGenericRepository<Category> _categoryRepository;
 
         public CategoryService(IGenericRepository<Category> categoryRepository)
         {

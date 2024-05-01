@@ -19,7 +19,7 @@ namespace TestServices
         [TestInitialize]
         public void SetUp()
         {
-            _categoryRepositoryMock = new Mock<IGenericRepository<Category>>();
+            _categoryRepositoryMock = new Mock<IGenericRepository<Category>>(MockBehavior.Strict);
         }
 
         [TestMethod]
