@@ -76,6 +76,53 @@ namespace TestServices
 
             Assert.AreEqual("     ", category.Name);
         }
+
+        [TestMethod]
+        public void TestGetAllCategories()
+        {
+            var categories = new List<Category>()
+            {
+                new Category()
+                {
+                    Id = 1,
+                    Name = "Electricista"
+                },
+                new Category()
+                {
+                    Id = 2,
+                    Name = "Fontanero"
+                },
+                new Category()
+                {
+                    Id = 3,
+                    Name = "Plomero"
+                }
+            };
+            _categoryRepositoryMock.Setup(r => r.GetAll<Category>()).Returns(categories);
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.GetAll();
+
+            _categoryRepositoryMock.VerifyAll();
+            CollectionAssert.AreEqual(categories, result);
+        }
+
+        [TestMethod]
+        public void TestGetCategory()
+        {
+            var category = new Category()
+            {
+                Id = 1,
+                Name = "Electricista"
+            };
+            _categoryRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(category);
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.Get(1);
+
+            _categoryRepositoryMock.VerifyAll();
+            Assert.AreEqual(category, result);
+        }
     }
 
 }
