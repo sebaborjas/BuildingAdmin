@@ -63,13 +63,26 @@ public class BuildingService : IBuildingService
             throw new ArgumentNullException("Building not found");
         }
 
-        building.Name = modifiedBuilding.Name;
-        building.Address = modifiedBuilding.Address;
-        building.Location = modifiedBuilding.Location;
-        building.ConstructionCompany = modifiedBuilding.ConstructionCompany;
-        building.Expenses = modifiedBuilding.Expenses;
+        if (building.ConstructionCompany != null){
+            if (building.ConstructionCompany.Id != modifiedBuilding.ConstructionCompany.Id){
+                throw new InvalidOperationException("Construction company can not be modified");
+            }
+            building.ConstructionCompany = modifiedBuilding.ConstructionCompany;
+        }
+
+        if(building.Expenses  > 0){
+            if (building.Expenses != modifiedBuilding.Expenses){
+                throw new InvalidOperationException("Expenses can not be modified");
+            }
+            building.Expenses = modifiedBuilding.Expenses;
+        }
+
+        var originalApartments = building.Apartments.Find(apartment => apartment.Id == modifiedBuilding.Id);
+        if (originalApartments == null)
+        {
+            throw new ArgumentNullException("Apartment not found");
+        }
         building.Apartments = modifiedBuilding.Apartments;
-        building.Tickets = modifiedBuilding.Tickets;
 
         _buildingRepository.Update(building);
 

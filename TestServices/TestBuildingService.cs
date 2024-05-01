@@ -198,9 +198,13 @@ namespace TestServices
 
             _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Building)null);
 
+            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
+
             var modifiedBuilding = new Building();
 
-            _buildingService.ModifyBuilding(1, modifiedBuilding);
+            _buildingService.ModifyBuilding(3, modifiedBuilding);
+
+            _buildingRepositoryMock.Verify(r => r.Update(It.IsAny<Building>()), Times.Once);
         }
 
 
