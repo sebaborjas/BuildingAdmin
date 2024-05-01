@@ -9,10 +9,12 @@ public class BuildingService : IBuildingService
 {
 
     private IGenericRepository<Building> _buildingRepository;
+    private ISessionService _sessionService;
 
-    public BuildingService(IGenericRepository<Building> buildingRepository)
+    public BuildingService(IGenericRepository<Building> buildingRepository, ISessionService sessionService)
     {
         _buildingRepository = buildingRepository;
+        _sessionService = sessionService;
     }
 
     public Building CreateBuilding(Building building)
