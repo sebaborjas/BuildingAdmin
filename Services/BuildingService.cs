@@ -33,9 +33,19 @@ public class BuildingService : IBuildingService
 
     public void DeleteBuilding(int buildingId)
     {
-        Building buildingToDelete = _buildingRepository.Get(buildingId) ?? throw new ArgumentNullException("Building not found");
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a manager");
+        }
 
-        _buildingRepository.Delete(buildingToDelete);
+        var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
+        if (building == null)
+        {
+            throw new ArgumentNullException("Building not found");
+        }
+
+        _buildingRepository.Delete(building);
     }
 
     public Building ModifyBuilding(int buildingId, Building modifiedBuilding)
