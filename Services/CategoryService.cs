@@ -25,5 +25,15 @@ namespace Services
             _categoryRepository.Insert(category);
             return category;
         }
+
+        public List<Category> GetAll()
+        {
+            return _categoryRepository.GetAll<Category>().ToList();
+        }
+
+        public Category Get(int id)
+        {
+            return _categoryRepository.Get(id);
+        }
     }
 }

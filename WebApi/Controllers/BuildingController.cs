@@ -12,9 +12,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class BuildingController : ControllerBase
     {
-        private readonly IBuildingServices _buildingServices;
+        private readonly IBuildingService _buildingServices;
 
-        public BuildingController(IBuildingServices buildingServices)
+        public BuildingController(IBuildingService buildingServices)
         {
             _buildingServices = buildingServices;
         }
