@@ -14,5 +14,9 @@ namespace IServices
         void DeleteBuilding(int id);
 
         Building ModifyBuilding(int id,  Building building);
+
+        List<Building> GetAllBuildingsForUser();
+
+        Building Get(int id);
     }
 }

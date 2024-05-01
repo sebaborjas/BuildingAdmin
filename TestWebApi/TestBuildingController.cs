@@ -382,5 +382,83 @@ namespace TestWebApi
 
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
+
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var buildings = new List<Building>()
+            {
+                new Building()
+                {
+                    Id = 11,
+                    Address = "Calle, 123, esquina",
+                    Expenses = 1000,
+                    ConstructionCompany = new ConstructionCompany(),
+                    Location = "111,111",
+                    Name = "Edificio nuevo"
+                },
+                new Building()
+                {
+                    Id = 12,
+                    Address = "Otracalle, 123, otraesquina",
+                    Expenses = 1000,
+                    ConstructionCompany = new ConstructionCompany(),
+                    Location = "222,222",
+                    Name = "Otro edificio"
+                }
+            };
+            _buildingServices.Setup(r => r.GetAllBuildingsForUser()).Returns(buildings);
+            var buildingController = new BuildingController(_buildingServices.Object);
+            var buildingsExpected = new List<GetBuildingOutput>();
+            buildings.ForEach(building =>
+            {
+                buildingsExpected.Add(new GetBuildingOutput(building));
+            });
+
+            var result = buildingController.GetAll();
+            var okResult = result as OkObjectResult;
+            var buildingsRecieved = okResult.Value as List<GetBuildingOutput>;
+
+            _buildingServices.VerifyAll();
+            CollectionAssert.AreEqual(buildingsRecieved, buildingsExpected);
+
+        }
+
+        [TestMethod]
+        public void TestGetBuilding()
+        {
+            var building = new Building()
+            {
+                Id = 11,
+                Address = "Calle, 123, esquina",
+                Expenses = 1000,
+                ConstructionCompany = new ConstructionCompany(),
+                Location = "111,111",
+                Name = "Edificio nuevo"
+            };
+            _buildingServices.Setup(r => r.Get(It.IsAny<int>())).Returns(building);
+            var buildingController = new BuildingController(_buildingServices.Object);
+            var expectedResult = new GetBuildingOutput(building);
+
+            var result = buildingController.Get(11);
+            var okResult = result as OkObjectResult;
+            var buildingRecieved = okResult.Value as GetBuildingOutput;
+
+            _buildingServices.VerifyAll();
+            Assert.AreEqual(buildingRecieved, expectedResult);
+        }
+
+        [TestMethod]
+        public void TestGetBuildingNotFound()
+        {
+            Building building = null;
+            _buildingServices.Setup(r => r.Get(It.IsAny<int>())).Returns(building);
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.Get(11);
+            
+            _buildingServices.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(NotFoundObjectResult)));
+        }
     }
 }

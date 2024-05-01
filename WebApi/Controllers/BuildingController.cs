@@ -66,6 +66,29 @@ namespace WebApi.Controllers
             
         }
 
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var buildings = _buildingServices.GetAllBuildingsForUser();
+            var response = new List<GetBuildingOutput>();
+            buildings.ForEach(building =>
+            {
+                response.Add(new GetBuildingOutput(building));
+            });
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var building = _buildingServices.Get(id);
+            if(building == null)
+            {
+                return NotFound("Building not found");
+            }
+            return Ok(new GetBuildingOutput(building));
+        }
+
         private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)
         {
             return createBuildingInput != null && !string.IsNullOrWhiteSpace(createBuildingInput.Name) && !string.IsNullOrWhiteSpace(createBuildingInput.Address) &&
