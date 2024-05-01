@@ -15,6 +15,7 @@ namespace TestServices
 
         private Mock<ISessionService> _sessionServiceMock;
         private Mock<IGenericRepository<Building>> _buildingRepositoryMock;
+        private Mock<IGenericRepository<Owner>> _ownerRepositoryMock;
 
         private Manager _user;
         private Building _building;
@@ -25,7 +26,7 @@ namespace TestServices
         {
             _buildingRepositoryMock = new Mock<IGenericRepository<Building>>(MockBehavior.Strict);
 
-            _buildingRepositoryMock = new Mock<IGenericRepository<Building>>(MockBehavior.Strict);
+            _ownerRepositoryMock= new Mock<IGenericRepository<Owner>>(MockBehavior.Strict);
             _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
 
             _apartment = new Apartment()
@@ -35,7 +36,7 @@ namespace TestServices
                 DoorNumber = 3,
                 Floor = 1,
                 HasTerrace = false,
-                Owner = new Owner(),
+                Owner = new Owner() { Id = 1, Email = "owner@mail.com", Name = "Nombre", LastName = "Apellido" },
                 Rooms = 2
             };
 
@@ -48,6 +49,7 @@ namespace TestServices
                 Expenses = 2000,
                 Location = "111,111",
                 Name = "Edificio Las Delicias",
+                Tickets = []
             };
 
             _user = new Manager()
@@ -70,7 +72,7 @@ namespace TestServices
             _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
               .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => null);
 
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
 
             var building = new Building
             {
@@ -97,7 +99,7 @@ namespace TestServices
             _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
               .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building());
 
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
 
             var building = new Building
             {
@@ -117,16 +119,14 @@ namespace TestServices
         [TestMethod]
         public void DeleteBuilding()
         {
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
-
-            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(_building);
-
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
-
             _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
+            //_buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(_building);
 
             _buildingService.DeleteBuilding(1);
 
+            _sessionServiceMock.VerifyAll();
             _buildingRepositoryMock.Verify(r => r.Delete(It.IsAny<Building>()), Times.Once);
         }
 
@@ -134,16 +134,13 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteBuildingThatNotExist()
         {
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
-
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
-
-            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Building)null);
-
             _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
 
             _buildingService.DeleteBuilding(3);
 
+            _sessionServiceMock.VerifyAll();
             _buildingRepositoryMock.Verify(r => r.Delete(It.IsAny<Building>()), Times.Once);
         }
 
@@ -152,9 +149,7 @@ namespace TestServices
         public void TestDeleteBuildingNotManager()
         {
             var user = new Administrator();
-
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
-
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(user);
 
             _buildingService.DeleteBuilding(1);
@@ -167,43 +162,76 @@ namespace TestServices
         [TestMethod]
         public void ModifyBuilding()
         {
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
-
-            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(_building);
-
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
-
             _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
-
-            var modifiedBuilding = _building;
+            _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns((Owner)null);
+            _ownerRepositoryMock.Setup(r=>r.Insert(It.IsAny<Owner>())).Verifiable();
+            var modifiedBuilding = new Building();
             modifiedBuilding.Expenses = 5000;
             modifiedBuilding.ConstructionCompany = new ConstructionCompany() { Id = 2, Name = "Constructora modificada" };
+            modifiedBuilding.Apartments.Add(new Apartment()
+            {
+                Owner = new Owner() { Email = "otroOwner@mail.com", Name = "Dueño", LastName = "Nuevo " },
+                Id = 1
+            });
 
             var result = _buildingService.ModifyBuilding(1, modifiedBuilding);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(modifiedBuilding, result);
+            Assert.AreEqual(modifiedBuilding.Expenses, result.Expenses);
+            Assert.AreEqual(modifiedBuilding.ConstructionCompany.Name, result.ConstructionCompany.Name);
+            Assert.AreEqual(modifiedBuilding.Apartments.First().Owner, result.Apartments.First().Owner);
+            _buildingRepositoryMock.VerifyAll();
+            _sessionServiceMock.VerifyAll();
+        }
 
-            _buildingRepositoryMock.Verify(r => r.Update(It.IsAny<Building>()), Times.Once);
+        [TestMethod]
+        public void ModifyBuildingWithExistingOwner()
+        {
+            var existingOwner = new Owner()
+            {
+                Id = 5,
+                Email = "ownerViejo@mail.com",
+                Name = "Dueño",
+                LastName = "Owner"
+            };
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
+            _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns(existingOwner);
+            var modifiedBuilding = new Building();
+            modifiedBuilding.Expenses = 5000;
+            modifiedBuilding.ConstructionCompany = new ConstructionCompany() { Id = 2, Name = "Constructora modificada" };
+            modifiedBuilding.Apartments.Add(new Apartment()
+            {
+                Owner = new Owner() { Email = "ownerViejo@mail.com", Name = "Dueño", LastName = "Nuevo " },
+                Id = 1
+            });
+
+            var result = _buildingService.ModifyBuilding(1, modifiedBuilding);
+
+            _buildingRepositoryMock.VerifyAll();
+            _sessionServiceMock.VerifyAll();
+            Assert.AreEqual(modifiedBuilding.Expenses, result.Expenses);
+            Assert.AreEqual(modifiedBuilding.ConstructionCompany.Name, result.ConstructionCompany.Name);
+            Assert.AreEqual(existingOwner, result.Apartments.First().Owner);
+            
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ModifyBuildingThatNotExist()
         {
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
-
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
-
             _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Building)null);
-
             _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
-
             var modifiedBuilding = new Building();
 
             _buildingService.ModifyBuilding(3, modifiedBuilding);
 
-            _buildingRepositoryMock.Verify(r => r.Update(It.IsAny<Building>()), Times.Once);
+            _buildingRepositoryMock.VerifyAll();
+            _sessionServiceMock.VerifyAll();
         }
 
 
@@ -212,9 +240,7 @@ namespace TestServices
         public void TestModifyBuildingNotManager()
         {
             var user = new Administrator();
-
-            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
-
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(user);
 
             var modifiedBuilding = new Building();

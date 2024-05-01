@@ -9,11 +9,13 @@ public class BuildingService : IBuildingService
 
     private IGenericRepository<Building> _buildingRepository;
     private ISessionService _sessionService;
+    private IGenericRepository<Owner> _ownerRepository;
 
-    public BuildingService(IGenericRepository<Building> buildingRepository, ISessionService sessionService)
+    public BuildingService(IGenericRepository<Building> buildingRepository, ISessionService sessionService, IGenericRepository<Owner> ownerRepository)
     {
         _buildingRepository = buildingRepository;
         _sessionService = sessionService;
+        _ownerRepository = ownerRepository;
     }
 
     public Building CreateBuilding(Building building)
@@ -62,23 +64,35 @@ public class BuildingService : IBuildingService
             throw new ArgumentNullException("Building not found");
         }
 
-        if (building.ConstructionCompany != null){
+        if (modifiedBuilding.ConstructionCompany != null){
             building.ConstructionCompany = modifiedBuilding.ConstructionCompany;
         }
 
-        if(building.Expenses  > 0){
+        if (modifiedBuilding.Expenses > 0){
             building.Expenses = modifiedBuilding.Expenses;
         }
 
-        var originalApartments = building.Apartments.Find(apartment => apartment.Id == modifiedBuilding.Id);
-        if (originalApartments == null)
-        {
-            throw new ArgumentNullException("Apartment not found");
-        }
-        building.Apartments = modifiedBuilding.Apartments;
-
+        ModifyApartments(building.Apartments, modifiedBuilding.Apartments);
         _buildingRepository.Update(building);
 
         return building;
+    }
+
+    private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
+    {
+        modifiedApartments.ForEach(modifiedApartment =>
+        {
+            var originalApartment = originalApartments.Find(apartment => apartment.Id == modifiedApartment.Id);
+            if (originalApartment != null)
+            {
+                var ownerToModify = _ownerRepository.GetByCondition(owner => owner.Email == modifiedApartment.Owner.Email);
+                if(ownerToModify == null)
+                {
+                    ownerToModify = modifiedApartment.Owner;
+                    _ownerRepository.Insert(ownerToModify);
+                }
+                originalApartment.Owner = ownerToModify;
+            }
+        });
     }
 }
