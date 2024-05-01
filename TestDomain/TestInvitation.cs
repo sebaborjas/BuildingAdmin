@@ -16,6 +16,7 @@ namespace TestDomain
             {
                 Id = 1,
                 Email = "test@test.com",
+                Name = "Test",
                 ExpirationDate = DateTime.Now.Date.AddDays(14),
                 Status = InvitationStatus.Pending
             };
@@ -128,6 +129,38 @@ namespace TestDomain
             _invitation.Status = status;
             Assert.AreEqual(status, _invitation.Status);
 
+        }
+
+        [TestMethod]
+        public void TestGetName()
+        {
+            string name = "Test";
+            Assert.AreEqual(name, _invitation.Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestSetEmptyName()
+        {
+            string name = "";
+            _invitation.Name = name;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestSetNullName()
+        {
+            string name = null;
+            _invitation.Name = name;
+            Assert.AreEqual(name, _invitation.Name);
+        }
+
+        [TestMethod]
+        public void TestSetName()
+        {
+            string name = "Test";
+            _invitation.Name = name;
+            Assert.AreEqual(name, _invitation.Name);
         }
     }
 

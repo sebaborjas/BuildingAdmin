@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IServices;
-using IDataAcess;
+using IDataAccess;
 using Domain;
 
 namespace Services
 {
     public class CategoryService : ICategoryService
     {
-        public readonly IGenericRepository<Category> _categoryRepository;
+        public IGenericRepository<Category> _categoryRepository;
 
         public CategoryService(IGenericRepository<Category> categoryRepository)
         {

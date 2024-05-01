@@ -1,144 +1,209 @@
 using Domain;
 using Services;
 using Moq;
-using IDataAcess;
+using IDataAccess;
 using System.Linq.Expressions;
+using IServices;
 
 namespace TestServices;
 
 [TestClass]
 public class TestUserService
 {
-  private UserService _service;
-  private Mock<IGenericRepository<Administrator>> _adminRepositoryMock;
-  private Mock<IGenericRepository<MaintenanceOperator>> _operatorRepositoryMock;
-  private Mock<IGenericRepository<Manager>> _managerRepositoryMock;
+    private UserService _service;
+    private Mock<IGenericRepository<Administrator>> _adminRepositoryMock;
+    private Mock<IGenericRepository<MaintenanceOperator>> _operatorRepositoryMock;
+    private Mock<IGenericRepository<Manager>> _managerRepositoryMock;
+    private Mock<ISessionService> _sessionService;
 
-  [TestInitialize]
-  public void SetUp()
-  {
-    _adminRepositoryMock = new Mock<IGenericRepository<Administrator>>(MockBehavior.Strict);
-    _operatorRepositoryMock = new Mock<IGenericRepository<MaintenanceOperator>>();
-    _managerRepositoryMock = new Mock<IGenericRepository<Manager>>();
-  }
-
-  [TestMethod]
-  public void CreateCorrectAdministrator()
-  {
-    _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
-      .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => null);
-  
-    _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
-
-    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
-
-    var administrator = new Administrator
+    [TestInitialize]
+    public void SetUp()
     {
-      Name = "Fernando",
-      LastName = "Alonso",
-      Email = "elnano@padre.com",
-      Password = "Nano.1234"
-    };
+        _adminRepositoryMock = new Mock<IGenericRepository<Administrator>>(MockBehavior.Strict);
+        _operatorRepositoryMock = new Mock<IGenericRepository<MaintenanceOperator>>();
+        _managerRepositoryMock = new Mock<IGenericRepository<Manager>>();
+        _sessionService = new Mock<ISessionService>();
+    }
 
-    var createdAdmin = _service.CreateAdministrator(administrator);
-
-    _adminRepositoryMock.VerifyAll();
-    Assert.AreEqual(administrator, createdAdmin);
-  }
-
-  [TestMethod]
-  [ExpectedException(typeof(ArgumentException))]
-  public void CreateAdministratorAlreadyExist()
-  {
-    _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
-      .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => new Administrator());
-
-    _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
-
-
-    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
-
-    var administrator = new Administrator
+    [TestMethod]
+    public void CreateCorrectAdministrator()
     {
-      Name = "Fernando",
-      LastName = "Alonso",
-      Email = "elnano@padre.com",
-      Password = "Nano.1234"
-    };
+        _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
+          .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => null);
 
-    var createdAdmin = _service.CreateAdministrator(administrator);
+        _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
 
-    _adminRepositoryMock.VerifyAll();
-  }
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
 
-  [TestMethod]
-  public void CreateCorrectMaintenanceOperator()
-  {
-    _operatorRepositoryMock.Setup(r => r.Insert(It.IsAny<MaintenanceOperator>())).Verifiable();
+        var administrator = new Administrator
+        {
+            Name = "Fernando",
+            LastName = "Alonso",
+            Email = "elnano@padre.com",
+            Password = "Nano.1234"
+        };
 
-    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+        var createdAdmin = _service.CreateAdministrator(administrator);
 
-    var maintenanceOperator = new MaintenanceOperator
+        _adminRepositoryMock.VerifyAll();
+        Assert.AreEqual(administrator, createdAdmin);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void CreateAdministratorAlreadyExist()
     {
-      Name = "Marc",
-      LastName = "Marquez",
-      Email = "papa@devalentino.es",
-      Password = "Honda.1234"
-    };
+        _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
+          .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => new Administrator());
 
-    var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+        _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
 
-    _operatorRepositoryMock.VerifyAll();
-    Assert.AreEqual(maintenanceOperator, createdOperator);
-  }
 
-  [TestMethod]
-  [ExpectedException(typeof(ArgumentException))]
-  public void CreateCorrectMaintenanceOperatorAlreadyExist()
-  {
-    _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>()))
-      .Returns((Expression<Func<MaintenanceOperator, bool>> predicate, List<string> includes) => new MaintenanceOperator());
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
 
-    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+        var administrator = new Administrator
+        {
+            Name = "Fernando",
+            LastName = "Alonso",
+            Email = "elnano@padre.com",
+            Password = "Nano.1234"
+        };
 
-    var maintenanceOperator = new MaintenanceOperator
+        var createdAdmin = _service.CreateAdministrator(administrator);
+
+        _adminRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateCorrectMaintenanceOperator()
     {
-      Name = "Valentino",
-      LastName = "Rossi",
-      Email = "yamaha@goat.es",
-      Password = "Yamaha.1234"
-    };
+        var building = new Building()
+        {
+            Id = 10,
+            Name = "Edificio",
+            Address = "Calle, 123, esquina",
+            Apartments = [],
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 3000,
+            Location = "123,123",
+            Tickets = []
+        };
+        var currentUser = new Manager()
+        {
+            Name = "Administrador",
+            LastName = "Administrator",
+            Email = "admin@mail.com",
+            Id = 1,
+            Password = "Pass123.!",
+            Buildings = [building]
+        };
+        _operatorRepositoryMock.Setup(r => r.Insert(It.IsAny<MaintenanceOperator>())).Verifiable();
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
 
-    var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+        var maintenanceOperator = new MaintenanceOperator
+        {
+            Name = "Marc",
+            LastName = "Marquez",
+            Email = "papa@devalentino.es",
+            Password = "Honda.1234",
+            Building = new Building() { Id = 10 }
+        };
 
-    _operatorRepositoryMock.VerifyAll();
-  }
+        var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
 
-  [TestMethod]
-  public void TestDeleteManager()
-  {
-    _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(new Manager()).Verifiable();
-    _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Verifiable();
+        _sessionService.VerifyAll();
+        _operatorRepositoryMock.VerifyAll();
+        Assert.AreEqual(maintenanceOperator, createdOperator);
+    }
 
-    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void CreateCorrectMaintenanceOperatorAlreadyExist()
+    {
+        _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>()))
+          .Returns((Expression<Func<MaintenanceOperator, bool>> predicate, List<string> includes) => new MaintenanceOperator());
 
-    _service.DeleteManager(1);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
 
-    _managerRepositoryMock.VerifyAll();
-  }
+        var maintenanceOperator = new MaintenanceOperator
+        {
+            Name = "Valentino",
+            LastName = "Rossi",
+            Email = "yamaha@goat.es",
+            Password = "Yamaha.1234",
+        };
 
-  [TestMethod]
-  [ExpectedException(typeof(ArgumentNullException))]
-  public void TestDeleteManagerNotFound()
-  {
-    _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Manager)null);
-    _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Throws(new ArgumentNullException());
+        var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
 
-    _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object);
+        _operatorRepositoryMock.VerifyAll();
+    }
 
-    _service.DeleteManager(1);
+    [TestMethod]
+    public void TestDeleteManager()
+    {
+        _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(new Manager()).Verifiable();
+        _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Verifiable();
 
-    _managerRepositoryMock.VerifyAll();
-  }
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+
+        _service.DeleteManager(1);
+
+        _managerRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestDeleteManagerNotFound()
+    {
+        _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Manager)null);
+        _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Throws(new ArgumentNullException());
+
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+
+        _service.DeleteManager(1);
+
+        _managerRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestCreateMaintenanceOperatorForInvalidBuilding()
+    {
+        var building = new Building()
+        {
+            Id = 10,
+            Name = "Edificio",
+            Address = "Calle, 123, esquina",
+            Apartments = [],
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 3000,
+            Location = "123,123",
+            Tickets = []
+        };
+        var currentUser = new Manager()
+        {
+            Name = "Administrador",
+            LastName = "Administrator",
+            Email = "admin@mail.com",
+            Id = 1,
+            Password = "Pass123.!",
+            Buildings = [building]
+        };
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+
+        var maintenanceOperator = new MaintenanceOperator
+        {
+            Name = "Marc",
+            LastName = "Marquez",
+            Email = "papa@devalentino.es",
+            Password = "Honda.1234",
+            Building = new Building() { Id = 11 }
+        };
+
+        var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+    }
+
 
 }

@@ -17,12 +17,12 @@ namespace TestWebApi
     public class TestInvitationController
     {
 
-        private Mock<IInvitationServices> _invitationServicesMock;
+        private Mock<IInvitationService> _invitationServiceMock;
 
         [TestInitialize]
         public void Setup()
         {
-            _invitationServicesMock = new Mock<IInvitationServices>(MockBehavior.Strict);
+            _invitationServiceMock = new Mock<IInvitationService>(MockBehavior.Strict);
         }
 
         [TestMethod]
@@ -35,8 +35,8 @@ namespace TestWebApi
                 Status = Domain.DataTypes.InvitationStatus.Pending,
                 ExpirationDate = DateTime.Now.AddDays(3)
             };
-            _invitationServicesMock.Setup(r => r.CreateInvitation(It.IsAny<Invitation>())).Returns(invitationCreated);
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.CreateInvitation(It.IsAny<Invitation>())).Returns(invitationCreated);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new CreateInvitationInput()
             {
                 Email = "correoInvitado@correo.com",
@@ -49,14 +49,14 @@ namespace TestWebApi
             var mewInvitationResponse = okResult.Value as CreateInvitationOutput;
 
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.AreEqual(11, mewInvitationResponse.InvitationId);
         }
 
         [TestMethod]
         public void TestCreateInvitationWithoutBody()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             CreateInvitationInput input = null;
 
             var result = controller.CreateInvitation(input);
@@ -67,7 +67,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateInvitationWithoutEmail()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new CreateInvitationInput()
             {
                 ExpirationDate = DateTime.Now.AddDays(3),
@@ -82,7 +82,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateInvitationWithEmptyEmail()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new CreateInvitationInput()
             {
                 ExpirationDate = DateTime.Now.AddDays(3),
@@ -98,7 +98,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateInvitationWithoutName()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new CreateInvitationInput()
             {
                 ExpirationDate = DateTime.Now.AddDays(3),
@@ -113,7 +113,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateInvitationWithEmptyName()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new CreateInvitationInput()
             {
                 ExpirationDate = DateTime.Now.AddDays(3),
@@ -129,7 +129,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestCreateInvitationWithGoneExpirationDate()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new CreateInvitationInput()
             {
                 Email = "correoInvitado@correo.com",
@@ -145,32 +145,32 @@ namespace TestWebApi
         [TestMethod]
         public void TestDeleteInvitation()
         {
-            _invitationServicesMock.Setup(r => r.DeleteInvitation(It.IsAny<int>()));
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.DeleteInvitation(It.IsAny<int>()));
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
 
             var result = controller.DeleteInvitation(11);
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
         }
 
         [TestMethod]
         public void TestDeleteInvalidInvitation()
         {
-            _invitationServicesMock.Setup(r => r.DeleteInvitation(It.IsAny<int>())).Throws(new Exception());
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.DeleteInvitation(It.IsAny<int>())).Throws(new Exception());
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
 
             var result = controller.DeleteInvitation(11);
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
         [TestMethod]
         public void TestModifyInvitation()
         {
-            _invitationServicesMock.Setup(r => r.ModifyInvitation(It.IsAny<int>(), It.IsAny<DateTime>()));
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.ModifyInvitation(It.IsAny<int>(), It.IsAny<DateTime>()));
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new ModifyInvitationInput()
             {
                 ExpirationDate = DateTime.Now.AddDays(3),
@@ -178,14 +178,14 @@ namespace TestWebApi
 
             var result = controller.ModifyInvitation(1, input);
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
         }
 
         [TestMethod]
         public void TestModifyInvitationWithoutBody()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             ModifyInvitationInput input = null;
 
             var result = controller.ModifyInvitation(1, input);
@@ -196,7 +196,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestModifyInvitationWithGoneExpirationDate()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new ModifyInvitationInput()
             {
                 ExpirationDate = DateTime.Now.AddDays(-1),
@@ -210,8 +210,8 @@ namespace TestWebApi
         [TestMethod]
         public void TestModifyInvalidInvitation()
         {
-            _invitationServicesMock.Setup(r => r.ModifyInvitation(It.IsAny<int>(), It.IsAny<DateTime>())).Throws(new Exception());
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.ModifyInvitation(It.IsAny<int>(), It.IsAny<DateTime>())).Throws(new Exception());
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new ModifyInvitationInput()
             {
                 ExpirationDate = DateTime.Now.AddDays(3),
@@ -219,7 +219,7 @@ namespace TestWebApi
 
             var result = controller.ModifyInvitation(123, input);
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
@@ -227,8 +227,8 @@ namespace TestWebApi
         public void TestAcceptInvitation()
         {
             var createdManager = new Manager() { Id = 10 };
-            _invitationServicesMock.Setup(r => r.AcceptInvitation(It.IsAny<Invitation>())).Returns(createdManager);
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.AcceptInvitation(It.IsAny<Invitation>())).Returns(createdManager);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new AcceptInvitationInput()
             {
                 Email = "newManager@correo.com",
@@ -240,14 +240,14 @@ namespace TestWebApi
             var acceptInvitationResponse = okResult.Value as AcceptInvitationOutput;
 
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.AreEqual(10, acceptInvitationResponse.ManagerId);
         }
 
         [TestMethod]
         public void TestAcceptInvitationWithoutBody()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             AcceptInvitationInput input = null;
 
             var result = controller.AcceptInvitation(input);
@@ -258,7 +258,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestAcceptInvitationWithoutEmail()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             AcceptInvitationInput input = new AcceptInvitationInput()
             {
                 Password = "Contrasena1234*!"
@@ -272,7 +272,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestAcceptInvitationWithEmptyEmail()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             AcceptInvitationInput input = new AcceptInvitationInput()
             {
                 Email = "",
@@ -287,7 +287,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestAcceptInvitationWithoutPassword()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             AcceptInvitationInput input = new AcceptInvitationInput()
             {
                 Email = "newManager@correo.com",
@@ -301,7 +301,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestAcceptInvitationWithEmptyPassword()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             AcceptInvitationInput input = new AcceptInvitationInput()
             {
                 Password = "",
@@ -316,8 +316,8 @@ namespace TestWebApi
         [TestMethod]
         public void TestAcceptInvalidInvitation()
         {
-            _invitationServicesMock.Setup(r => r.AcceptInvitation(It.IsAny<Invitation>())).Throws(new Exception());
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.AcceptInvitation(It.IsAny<Invitation>())).Throws(new Exception());
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new AcceptInvitationInput()
             {
                 Email = "correoSinInvitacion@correo.com",
@@ -326,15 +326,15 @@ namespace TestWebApi
 
             var result = controller.AcceptInvitation(input);
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
         [TestMethod]
         public void TestRejectInvitation()
         {
-            _invitationServicesMock.Setup(r => r.RejectInvitation(It.IsAny<string>())).Verifiable();
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.RejectInvitation(It.IsAny<string>())).Verifiable();
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new RejectInvitationInput()
             {
                 Email = "correoParaRechazar@correo.com",
@@ -342,14 +342,14 @@ namespace TestWebApi
 
             var result = controller.RejectInvitation(input);
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
         }
 
         [TestMethod]
         public void TestRejectInvitationWithoutBody()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             RejectInvitationInput input = null;
 
             var result = controller.RejectInvitation(input);
@@ -360,7 +360,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestRejectInvitationWithoutEmail()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             RejectInvitationInput input = new RejectInvitationInput();
 
             var result = controller.RejectInvitation(input);
@@ -371,7 +371,7 @@ namespace TestWebApi
         [TestMethod]
         public void TestRejectInvitationWithEmptyEmail()
         {
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             RejectInvitationInput input = new RejectInvitationInput()
             {
                 Email = ""
@@ -385,8 +385,8 @@ namespace TestWebApi
         [TestMethod]
         public void TestRejectInvalidInvitation()
         {
-            _invitationServicesMock.Setup(r => r.RejectInvitation(It.IsAny<string>())).Throws(new Exception());
-            InvitationController controller = new InvitationController(_invitationServicesMock.Object);
+            _invitationServiceMock.Setup(r => r.RejectInvitation(It.IsAny<string>())).Throws(new Exception());
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
             var input = new RejectInvitationInput()
             {
                 Email = "correoParaRechazar@correo.com",
@@ -394,7 +394,7 @@ namespace TestWebApi
 
             var result = controller.RejectInvitation(input);
 
-            _invitationServicesMock.VerifyAll();
+            _invitationServiceMock.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
     }
