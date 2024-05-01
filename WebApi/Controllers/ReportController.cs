@@ -1,6 +1,8 @@
 ﻿using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Constants;
+using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
@@ -16,6 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("tickets-by-building")]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult GetTicketsByBuilding([FromBody] string? name = null)
         {
             if (name != null)
@@ -27,6 +30,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("tickets-by-maintenance-operator")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]  
         public IActionResult GetTicketsByMaintenanceOperator([FromBody] string buildingName ,string? operatorName= null)
         {
             if (operatorName != null)
@@ -38,6 +42,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("tickets-by-category")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult GetTicketsByCategory([FromBody] string buildingName ,string? categoryName= null)
         {
             if (categoryName != null)
