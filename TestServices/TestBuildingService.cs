@@ -163,32 +163,29 @@ namespace TestServices
             _buildingRepositoryMock.VerifyAll();
         }
 
+
+
         [TestMethod]
         public void ModifyBuilding()
         {
-            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
-
-
-
-            var building = new Building
-            {
-                Name = "Edificio nuevo",
-                Address = "Calle, 123, esquina",
-                Location = "111,111",
-                ConstructionCompany = new ConstructionCompany(),
-                Expenses = 4000,
-                Apartments = new List<Apartment>()
-            };
-
-            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
-              .Returns((int id) => building);
-
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
 
-            var result = _buildingService.ModifyBuilding(1, building);
+            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(_building);
 
-            _buildingRepositoryMock.VerifyAll();
-            Assert.AreEqual(building, result);
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
+
+            var modifiedBuilding = _building;
+            modifiedBuilding.Expenses = 5000;
+            modifiedBuilding.ConstructionCompany = new ConstructionCompany() { Id = 2, Name = "Constructora modificada" };
+
+            var result = _buildingService.ModifyBuilding(1, modifiedBuilding);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(modifiedBuilding, result);
+
+            _buildingRepositoryMock.Verify(r => r.Update(It.IsAny<Building>()), Times.Once);
         }
 
         [TestMethod]
