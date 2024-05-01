@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain;
 using DTO.Out;
 using IServices;
+using Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebApi.Controllers;
@@ -27,96 +28,151 @@ namespace TestWebApi
         [TestMethod]
         public void TestGetTicketsByBuildingReportForAll()
         {
-            _reportServicesMock.Setup(x => x.GetTicketsByBuilding<string, Object>(It.IsAny<int?>()))
-                .Returns(new Dictionary<string, Object>());
+            var expectedResult = new List<TicketByBuilding>
+            {
+                new TicketByBuilding
+                {
+                    BuildingName = "Building1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3
+                },
+                new TicketByBuilding
+                {
+                    BuildingName = "Building2",
+                    TicketsOpen = 4,
+                    TicketsInProgress = 5,
+                    TicketsClosed = 6
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByBuilding(It.IsAny<string?>())).Returns(expectedResult);
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
-            var result = _reportController.GetTicketsByBuilding();
-
-            var okResult = result as OkObjectResult;
-
-            var expectedResult = new Dictionary<string, Object>();
+            var result = _reportController.GetTicketsByBuilding() as OkObjectResult;
 
             _reportServicesMock.VerifyAll();
 
-            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+            Assert.AreEqual(expectedResult, result.Value);
         }
 
         [TestMethod]
-        public void TestGetTicketsByBuildingReportForSpecificId()
+        public void TestGetTicketsForSpecificBuildingReport()
         {
-            _reportServicesMock.Setup(x => x.GetTicketsByBuilding<string, Object>(It.IsAny<int?>()))
-                .Returns(new Dictionary<string, Object>());
+            var expectedResult = new List<TicketByBuilding>
+            {
+                new TicketByBuilding
+                {
+                    BuildingName = "Building1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByBuilding(It.IsAny<string>())).Returns(expectedResult);
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
-            var result = _reportController.GetTicketsByBuilding(1);
-
-            var okResult = result as OkObjectResult;
-
-            var expectedResult = new Dictionary<string, Object>();
+            var result = _reportController.GetTicketsByBuilding() as OkObjectResult;
 
             _reportServicesMock.VerifyAll();
 
-            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+            Assert.AreEqual(expectedResult, result.Value);
         }
+            
 
         [TestMethod]
         public void TestGetTicketsByMaintenanceOperator()
         {
-            _reportServicesMock.Setup(x => x.GetTicketsByMaintenanceOperator<string, Object>(It.IsAny<int?>()))
-                .Returns(new Dictionary<string, Object>());
+            var expectedResult = new List<TicketsByMaintenanceOperator>
+            {
+                new TicketsByMaintenanceOperator
+                {
+                    OperatorName = "Operator1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3,
+                    AverageTimeToClose = "01:00"
+                },
+                new TicketsByMaintenanceOperator
+                {
+                    OperatorName = "Operator2",
+                    TicketsOpen = 4,
+                    TicketsInProgress = 5,
+                    TicketsClosed = 6,
+                    AverageTimeToClose = "02:00"
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByMaintenanceOperator(It.IsAny<string>(), It.IsAny<string?>())).Returns(expectedResult);
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
-            var result = _reportController.GetTicketsByMaintenanceOperator();
-
-            var okResult = result as OkObjectResult;
-
-            var expectedResult = new Dictionary<string, Object>();
+            var result = _reportController.GetTicketsByMaintenanceOperator("Building1") as OkObjectResult;
 
             _reportServicesMock.VerifyAll();
 
-            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+            Assert.AreEqual(expectedResult, result.Value);
         }
 
         [TestMethod]
         public void TestGetTicketsBySpecificMaintenanceOperator()
         {
-            _reportServicesMock.Setup(x => x.GetTicketsByMaintenanceOperator<string, Object>(It.IsAny<int?>()))
-                .Returns(new Dictionary<string, Object>());
+            var expectedResult = new List<TicketsByMaintenanceOperator>
+            {
+                new TicketsByMaintenanceOperator
+                {
+                    OperatorName = "Operator2",
+                    TicketsOpen = 4,
+                    TicketsInProgress = 5,
+                    TicketsClosed = 6,
+                    AverageTimeToClose = "02:00"
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByMaintenanceOperator(It.IsAny<string>(), It.IsAny<string?>())).Returns(expectedResult);
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
-            var result = _reportController.GetTicketsByMaintenanceOperator(1);
-
-            var okResult = result as OkObjectResult;
-
-            var expectedResult = new Dictionary<string, Object>();
+            var result = _reportController.GetTicketsByMaintenanceOperator("Building1", "Operator2") as OkObjectResult;
 
             _reportServicesMock.VerifyAll();
 
-            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+            Assert.AreEqual(expectedResult, result.Value);
         }
 
         [TestMethod]
         public void TestGetTicketsCategory()
         {
-            _reportServicesMock.Setup(x => x.GetTicketsByCategory<string, Object>())
-                .Returns(new Dictionary<string, Object>());
+            var expectedResult = new List<TicketsByCategory>
+            {
+                new TicketsByCategory
+                {
+                    CategoryName = "Category1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3
+                },
+                new TicketsByCategory
+                {
+                    CategoryName = "Category2",
+                    TicketsOpen = 4,
+                    TicketsInProgress = 5,
+                    TicketsClosed = 6
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByCategory(It.IsAny<string>(), It.IsAny<string?>())).Returns(expectedResult);
 
             _reportController = new ReportController(_reportServicesMock.Object);
 
-            var result = _reportController.GetTicketsByCategory();
-
-            var okResult = result as OkObjectResult;
-
-            var expectedResult = new Dictionary<string, Object>();
+            var result = _reportController.GetTicketsByCategory("Building1") as OkObjectResult;
 
             _reportServicesMock.VerifyAll();
 
-            CollectionAssert.AreEqual(expectedResult, okResult.Value as Dictionary<string, Object>);
+            Assert.AreEqual(expectedResult, result.Value);
         }
     }
 }
