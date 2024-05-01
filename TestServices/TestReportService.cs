@@ -1,0 +1,369 @@
+using IDataAccess;
+using Services;
+using Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Moq;
+using System.Linq.Expressions;
+using IServices;
+
+namespace ProjectNamespace.Test
+{
+  [TestClass]
+  public class TestReportService
+  {
+
+    ReportsService _reportService;
+
+    Mock<ISessionService> _sessionServiceMock;
+    Mock<IGenericRepository<Building>> _buildingRepositoryMock;
+
+    [TestInitialize]
+    public void SetUp()
+    {
+      _buildingRepositoryMock = new Mock<IGenericRepository<Building>>(MockBehavior.Strict);
+      _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
+    }
+
+
+    [TestMethod]
+    public void TestGetTicketsByBuilding()
+    {
+
+      Building firstBuilding = new Building
+        {
+          Id = 1,
+          Name = "Building Uno",
+          Tickets = new List<Ticket>
+          {
+            new Ticket { Status = Domain.DataTypes.Status.Open },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress }
+          }
+        };
+
+        Building secondBuilding = new Building
+        {
+          Id = 2,
+          Name = "Building Dos",
+          Tickets = new List<Ticket>
+          {
+            new Ticket { Status = Domain.DataTypes.Status.Closed },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress },
+            new Ticket { Status = Domain.DataTypes.Status.Closed }
+          }
+        };
+
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
+        {
+          Buildings = new List<Building> { firstBuilding, secondBuilding }
+        });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+      var ticketsByBuilding = _reportService.GetTicketsByBuilding();
+
+      _buildingRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(2, ticketsByBuilding.Count);
+      Assert.AreEqual("Building Uno", ticketsByBuilding.ElementAt(0).BuildingName);
+      Assert.AreEqual(1, ticketsByBuilding.ElementAt(0).TicketsOpen);
+      Assert.AreEqual(2, ticketsByBuilding.ElementAt(0).TicketsInProgress);
+      Assert.AreEqual(0, ticketsByBuilding.ElementAt(0).TicketsClosed);
+      Assert.AreEqual("Building Dos", ticketsByBuilding.ElementAt(1).BuildingName);
+      Assert.AreEqual(0, ticketsByBuilding.ElementAt(1).TicketsOpen);
+      Assert.AreEqual(1, ticketsByBuilding.ElementAt(1).TicketsInProgress);
+      Assert.AreEqual(2, ticketsByBuilding.ElementAt(1).TicketsClosed);
+    }
+
+        [TestMethod]
+    public void TestGetTicketsByOneBuilding()
+    {
+      Building firstBuilding = new Building
+        {
+          Id = 1,
+          Name = "Building Uno",
+          Tickets = new List<Ticket>
+          {
+            new Ticket { Status = Domain.DataTypes.Status.Open },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress }
+          }
+        };
+
+        Building secondBuilding = new Building
+        {
+          Id = 2,
+          Name = "Building Dos",
+          Tickets = new List<Ticket>
+          {
+            new Ticket { Status = Domain.DataTypes.Status.Closed },
+            new Ticket { Status = Domain.DataTypes.Status.InProgress },
+            new Ticket { Status = Domain.DataTypes.Status.Closed }
+          }
+        };
+
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
+        {
+          Buildings = new List<Building> { firstBuilding, secondBuilding }
+        });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+      var ticketsByBuilding = _reportService.GetTicketsByBuilding("Building Uno");
+
+      _buildingRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(1, ticketsByBuilding.Count);
+      Assert.AreEqual("Building Uno", ticketsByBuilding.ElementAt(0).BuildingName);
+      Assert.AreEqual(1, ticketsByBuilding.ElementAt(0).TicketsOpen);
+      Assert.AreEqual(2, ticketsByBuilding.ElementAt(0).TicketsInProgress);
+      Assert.AreEqual(0, ticketsByBuilding.ElementAt(0).TicketsClosed);
+    }
+
+    [TestMethod]
+    public void TestGetTicketsByMaintenanceOperator()
+    {
+
+      MaintenanceOperator operatorUno = new MaintenanceOperator { Name = "Operator Uno" };
+      MaintenanceOperator operatorDos = new MaintenanceOperator { Name = "Operator Dos" };
+
+      Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketUno.AttendTicket();
+
+      Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketDos.AttendTicket();
+      ticketDos.CloseTicket(100);
+
+      Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      ticketCinco.AttendTicket();
+      Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+
+
+
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
+        {
+          Buildings = new List<Building> { 
+            new Building
+            {
+              Id = 1,
+              Name = "Building Uno",
+              Tickets = new List<Ticket>
+              {
+                ticketUno,
+                ticketDos,
+                ticketTres,
+                ticketCuatro,
+                ticketCinco,
+                ticketSeis
+              }
+            }
+            
+          }
+        });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object , _sessionServiceMock.Object);
+
+      var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno");
+
+      var firstOperatorResult = ticketsByOperator.ElementAt(0);
+      var secondOperatorResult = ticketsByOperator.ElementAt(1);
+
+      _buildingRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(2, ticketsByOperator.Count);
+      Assert.AreEqual("Operator Uno", firstOperatorResult.OperatorName);
+      Assert.AreEqual(1, firstOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, firstOperatorResult.TicketsInProgress);
+      Assert.AreEqual(1, firstOperatorResult.TicketsClosed);
+      Assert.AreEqual("00:00", firstOperatorResult.AverageTimeToClose);
+
+      Assert.AreEqual("Operator Dos", secondOperatorResult.OperatorName);
+      Assert.AreEqual(2, secondOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, secondOperatorResult.TicketsInProgress);
+      Assert.AreEqual(0, secondOperatorResult.TicketsClosed);
+      Assert.AreEqual("00:00", secondOperatorResult.AverageTimeToClose);
+
+    }
+
+    [TestMethod]
+    public void TestGetTicketsBySpecificMaintenanceOperator()
+    {
+
+      MaintenanceOperator operatorUno = new MaintenanceOperator { Name = "Operator Uno" };
+      MaintenanceOperator operatorDos = new MaintenanceOperator { Name = "Operator Dos" };
+
+      Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketUno.AttendTicket();
+
+      Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      ticketDos.AttendTicket();
+      ticketDos.CloseTicket(100);
+
+      Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+      Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+      ticketCinco.AttendTicket();
+      Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+
+
+      _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+        .Returns(new Manager
+        {
+          Buildings = new List<Building> { 
+            new Building
+            {
+              Id = 1,
+              Name = "Building Uno",
+              Tickets = new List<Ticket>
+              {
+                ticketUno,
+                ticketDos,
+                ticketTres,
+                ticketCuatro,
+                ticketCinco,
+                ticketSeis
+              }
+            }
+            
+          }
+        });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object , _sessionServiceMock.Object);
+
+      var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno","Operator Uno");
+
+      var firstOperatorResult = ticketsByOperator.ElementAt(0);
+
+      _buildingRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(1, ticketsByOperator.Count);
+      Assert.AreEqual("Operator Uno", firstOperatorResult.OperatorName);
+      Assert.AreEqual(1, firstOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, firstOperatorResult.TicketsInProgress);
+      Assert.AreEqual(1, firstOperatorResult.TicketsClosed);
+      Assert.AreEqual("00:00", firstOperatorResult.AverageTimeToClose);
+    }
+
+    [TestMethod]
+    public void TestGetTicketsByCategory()
+    {
+      Category categoryUno = new Category { Name = "Category Uno" };
+      Category categoryDos = new Category { Name = "Category Dos" };
+
+      Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+      ticketUno.AttendTicket();
+
+      Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+      ticketDos.AttendTicket();
+      ticketDos.CloseTicket(100);
+
+      Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+
+      Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+
+      Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+      ticketCinco.AttendTicket();
+
+      Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+
+
+
+      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building{
+        Id = 1,
+        Name = "Building Uno",
+        Tickets = new List<Ticket>
+        {
+          ticketUno,
+          ticketDos,
+          ticketTres,
+          ticketCuatro,
+          ticketCinco,
+          ticketSeis
+        }
+      });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+      var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno");
+
+      var firstOperatorResult = ticketsByOperator.ElementAt(0);
+      var secondOperatorResult = ticketsByOperator.ElementAt(1);
+
+      _buildingRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(2, ticketsByOperator.Count);
+      Assert.AreEqual("Category Uno", firstOperatorResult.CategoryName);
+      Assert.AreEqual(1, firstOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, firstOperatorResult.TicketsInProgress);
+      Assert.AreEqual(1, firstOperatorResult.TicketsClosed);
+
+      Assert.AreEqual("Category Dos", secondOperatorResult.CategoryName);
+      Assert.AreEqual(2, secondOperatorResult.TicketsOpen);
+      Assert.AreEqual(1, secondOperatorResult.TicketsInProgress);
+      Assert.AreEqual(0, secondOperatorResult.TicketsClosed);
+    }
+
+    [TestMethod]
+    public void TestGetTicketsBySpecificCategory()
+    {
+      Category categoryUno = new Category { Name = "Category Uno" };
+      Category categoryDos = new Category { Name = "Category Dos" };
+
+      Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+      ticketUno.AttendTicket();
+
+      Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+      ticketDos.AttendTicket();
+      ticketDos.CloseTicket(100);
+
+      Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+
+      Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+
+      Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryDos };
+      ticketCinco.AttendTicket();
+
+      Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, Category = categoryUno };
+
+
+
+      _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+      .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => new Building{
+        Id = 1,
+        Name = "Building Uno",
+        Tickets = new List<Ticket>
+        {
+          ticketUno,
+          ticketDos,
+          ticketTres,
+          ticketCuatro,
+          ticketCinco,
+          ticketSeis
+        }
+      });
+
+      _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+      var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno", "Category Dos");
+
+      var operatorResult = ticketsByOperator.ElementAt(0);
+
+
+      _buildingRepositoryMock.VerifyAll();
+
+      Assert.AreEqual(3, ticketsByOperator.Count);
+      Assert.AreEqual("Category Dos", operatorResult.CategoryName);
+      Assert.AreEqual(2, operatorResult.TicketsOpen);
+      Assert.AreEqual(1, operatorResult.TicketsInProgress);
+      Assert.AreEqual(0, operatorResult.TicketsClosed);
+    }
+
+  }
+}
