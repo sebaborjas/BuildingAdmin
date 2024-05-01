@@ -13,17 +13,19 @@ namespace Services
     public class InvitationService : IInvitationService
     {
         private IGenericRepository<Invitation> _invitationRepository;
-        private IGenericRepository<User> _userRepository;
+        private IGenericRepository<Administrator> _adminRepository;
+        private IGenericRepository<Manager> _managerRepository;
 
-        public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<User> userRepository)
-        {
+        public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<Manager> managerRepository)
+        { 
             _invitationRepository = invitationRepository;
-            _userRepository = userRepository;
+            _adminRepository = adminRepository;
+            _managerRepository = managerRepository;
         }
 
         public Invitation CreateInvitation(Invitation newInvitation)
         {
-            User userAlreadyExist = _userRepository.GetByCondition(u => u.Email == newInvitation.Email);
+            User userAlreadyExist = _adminRepository.GetByCondition(u => u.Email == newInvitation.Email);
 
             if (userAlreadyExist != null)
             {
@@ -95,7 +97,7 @@ namespace Services
                     Name = invitation.Name
                 };
 
-                _userRepository.Insert(manager);
+                _managerRepository.Insert(manager);
 
                 return manager;
             }
