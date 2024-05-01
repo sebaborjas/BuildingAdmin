@@ -28,12 +28,12 @@ namespace Services
 
         public List<Category> GetAll()
         {
-            return null;
+            return _categoryRepository.GetAll<Category>().ToList();
         }
 
         public Category Get(int id)
         {
-            return null;
+            return _categoryRepository.Get(id);
         }
     }
 }
