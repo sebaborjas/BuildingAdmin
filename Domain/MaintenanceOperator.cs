@@ -4,8 +4,6 @@ namespace Domain
 {
     public class MaintenanceOperator : User
     {
-        private string _lastName;
-
         public override string LastName
         {
             get => _lastName;

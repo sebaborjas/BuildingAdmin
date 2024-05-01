@@ -8,8 +8,7 @@ namespace DTO.In
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-
-        public Building Building { get; set; }
+        public int BuildingId { get; set; }
 
         public MaintenanceOperator ToEntity()
         {
@@ -19,7 +18,7 @@ namespace DTO.In
                 LastName = LastName,
                 Email = Email,
                 Password = Password,
-                Building = Building
+                Building = new Building() { Id = BuildingId }
             };
         }
     }

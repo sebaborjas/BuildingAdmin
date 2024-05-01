@@ -189,7 +189,7 @@ public class TestUserController
       LastName = maintenanceOperator.LastName,
       Email = maintenanceOperator.Email,
       Password = maintenanceOperator.Password,
-      Building = maintenanceOperator.Building
+      BuildingId = maintenanceOperator.Building.Id
     };
 
     _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
@@ -234,7 +234,9 @@ public class TestUserController
     MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
     {
       LastName = maintenanceOperator.LastName,
-      Email = maintenanceOperator.Email
+      Email = maintenanceOperator.Email,
+      BuildingId = 1,
+      Password = "Pass123.!"
     };
 
     var userController = new UserController(_userServiceMock.Object);
@@ -257,7 +259,9 @@ public class TestUserController
     MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
     {
       Name = maintenanceOperator.Name,
-      Email = maintenanceOperator.Email
+      Email = maintenanceOperator.Email,
+      BuildingId = 1,
+      Password = "Pass123.!"
     };
 
     var userController = new UserController(_userServiceMock.Object);
@@ -280,7 +284,9 @@ public class TestUserController
     MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
     {
       Name = maintenanceOperator.Name,
-      LastName = maintenanceOperator.LastName
+      LastName = maintenanceOperator.LastName,
+      BuildingId = 1,
+      Password = "Pass123.!"
     };
 
     var userController = new UserController(_userServiceMock.Object);
@@ -319,7 +325,7 @@ public class TestUserController
   }
 
   [TestMethod]
-  public void TestCreateMaintenanceOperatorWithPassword()
+  public void TestCreateMaintenanceOperatorWithNoPassword()
   {
     var maintenanceOperator = new MaintenanceOperator
     {
@@ -334,7 +340,7 @@ public class TestUserController
       Name = maintenanceOperator.Name,
       LastName = maintenanceOperator.LastName,
       Email = maintenanceOperator.Email,
-      Building = maintenanceOperator.Building
+      BuildingId = maintenanceOperator.Building.Id,
     };
 
     var userController = new UserController(_userServiceMock.Object);

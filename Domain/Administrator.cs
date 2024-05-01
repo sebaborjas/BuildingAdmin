@@ -2,7 +2,6 @@ namespace Domain
 {
     public class Administrator : User
     {
-        private string _lastName;
 
         public override string LastName
         {
