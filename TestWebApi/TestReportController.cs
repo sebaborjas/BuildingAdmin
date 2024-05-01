@@ -120,6 +120,27 @@ namespace TestWebApi
         [TestMethod]
         public void TestGetTicketsBySpecificMaintenanceOperator()
         {
+            var expectedResult = new List<TicketsByMaintenanceOperator>
+            {
+                new TicketsByMaintenanceOperator
+                {
+                    OperatorName = "Operator2",
+                    TicketsOpen = 4,
+                    TicketsInProgress = 5,
+                    TicketsClosed = 6,
+                    AverageTimeToClose = "02:00"
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByMaintenanceOperator(It.IsAny<string>(), It.IsAny<string?>())).Returns(expectedResult);
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByMaintenanceOperator("Building1", "Operator2") as OkObjectResult;
+
+            _reportServicesMock.VerifyAll();
+
+            Assert.AreEqual(expectedResult, result.Value);
         }
 
         [TestMethod]
