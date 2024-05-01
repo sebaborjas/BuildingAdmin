@@ -146,7 +146,33 @@ namespace TestWebApi
         [TestMethod]
         public void TestGetTicketsCategory()
         {
-            
+            var expectedResult = new List<TicketsByCategory>
+            {
+                new TicketsByCategory
+                {
+                    CategoryName = "Category1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3
+                },
+                new TicketsByCategory
+                {
+                    CategoryName = "Category2",
+                    TicketsOpen = 4,
+                    TicketsInProgress = 5,
+                    TicketsClosed = 6
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByCategory(It.IsAny<string>(), It.IsAny<string?>())).Returns(expectedResult);
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByCategory("Building1") as OkObjectResult;
+
+            _reportServicesMock.VerifyAll();
+
+            Assert.AreEqual(expectedResult, result.Value);
         }
     }
 }
