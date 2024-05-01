@@ -135,16 +135,17 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteBuildingThatNotExist()
         {
-            _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
-
-            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
-              .Returns((int id) => null);
-
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
 
-            _buildingService.DeleteBuilding(1);
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
-            _buildingRepositoryMock.VerifyAll();
+            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Building)null);
+
+            _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
+
+            _buildingService.DeleteBuilding(3);
+
+            _buildingRepositoryMock.Verify(r => r.Delete(It.IsAny<Building>()), Times.Once);
         }
 
         [TestMethod]
