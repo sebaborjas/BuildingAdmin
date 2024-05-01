@@ -118,16 +118,17 @@ namespace TestServices
         [TestMethod]
         public void DeleteBuilding()
         {
-            _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
-
-            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>()))
-              .Returns((int id) => new Building());
-
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+            _buildingRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(_building);
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Verifiable();
 
             _buildingService.DeleteBuilding(1);
 
-            _buildingRepositoryMock.VerifyAll();
+            _buildingRepositoryMock.Verify(r => r.Delete(It.IsAny<Building>()), Times.Once);
         }
 
         [TestMethod]
