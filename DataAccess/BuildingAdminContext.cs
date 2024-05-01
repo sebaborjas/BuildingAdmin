@@ -25,6 +25,7 @@ namespace DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Session>().Navigation(e => e.User).AutoInclude();
+            modelBuilder.Entity<Manager>().Navigation(e => e.Buildings).AutoInclude();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
