@@ -180,7 +180,7 @@ public class TestUserController
       LastName = "Doe",
       Email = "test@test.com",
       Password = "Prueba.1234",
-      Building = new Building()
+      Building = new Building{Id = 1, Name = "Building"}
     };
 
     var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
