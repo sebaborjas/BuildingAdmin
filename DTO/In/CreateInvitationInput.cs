@@ -19,7 +19,8 @@ namespace DTO.In
             {
                 Email = Email,
                 ExpirationDate = ExpirationDate,
-                Status = Domain.DataTypes.InvitationStatus.Pending
+                Status = Domain.DataTypes.InvitationStatus.Pending,
+                Name = Name
             };
         }
     }

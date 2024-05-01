@@ -61,7 +61,7 @@ public class UserController : ControllerBase
     maintenanceOperator.LastName != null && 
     maintenanceOperator.Email != null &&
     maintenanceOperator.Password != null &&
-    maintenanceOperator.Building != null;
+    maintenanceOperator.BuildingId > 0;
   }
 
   [HttpDelete("manager/{id}")]
