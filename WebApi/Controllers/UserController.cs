@@ -6,7 +6,7 @@ using DTO.Out;
 using WebApi.Filters;
 using WebApi.Constants;
 
-namespace WebApi;
+namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/v1/users")]

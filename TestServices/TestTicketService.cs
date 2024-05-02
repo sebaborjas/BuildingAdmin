@@ -88,6 +88,7 @@ namespace TestServices
             _sessionService.Setup(r=>r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _ticketRepository.Setup(r => r.Insert(It.IsAny<Ticket>())).Verifiable();
             _categoryRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(_category);
+            _buildingRepository.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
             _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
 
             var result = _ticketService.CreateTicket(ticket);
@@ -109,6 +110,7 @@ namespace TestServices
             _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _ticketRepository.Setup(r => r.Insert(It.IsAny<Ticket>())).Verifiable();
             _categoryRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(_category);
+            _buildingRepository.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
             _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
 
             var result = _ticketService.CreateTicket(ticket);

@@ -5,7 +5,7 @@ using DTO.Out;
 using WebApi.Filters;
 using WebApi.Constants;
 
-namespace WebApi
+namespace WebApi.Controllers
 {
     [Route("api/v1/categories")]
     [ApiController]

@@ -316,7 +316,7 @@ namespace TestWebApi
             var result = buildingController.DeleteBuilding(10);
 
             _buildingServices.VerifyAll();
-            Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
+            Assert.IsTrue(result.GetType().Equals(typeof(NotFoundObjectResult)));
         }
 
         [TestMethod]
@@ -380,7 +380,7 @@ namespace TestWebApi
             };
             var result = buildingController.ModifyBuilding(100, input);
 
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
+            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestObjectResult)));
         }
     }
 }

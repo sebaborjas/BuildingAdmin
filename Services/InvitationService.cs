@@ -92,7 +92,8 @@ namespace Services
                 {
                     Email = invitation.Email,
                     Password = Password,
-                    Name = invitationToAccept.Name
+                    Name = invitationToAccept.Name, 
+                    LastName = ""
                 };
 
                 _managerRepository.Insert(manager);

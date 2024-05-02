@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Domain;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DataAccess
 {
+    [ExcludeFromCodeCoverage]
     public class BuildingAdminContext : DbContext
     {
         public BuildingAdminContext() { }

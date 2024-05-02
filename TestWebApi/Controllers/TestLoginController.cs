@@ -61,7 +61,7 @@ namespace TestWebApi
             var result = loginController.Login(loginInput);
 
             _sessionService.VerifyAll();
-            Assert.IsTrue(result.GetType().Equals(typeof(UnauthorizedResult)));
+            Assert.IsTrue(result.GetType().Equals(typeof(UnauthorizedObjectResult)));
         }
 
     }
