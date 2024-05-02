@@ -6,7 +6,7 @@ using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/reports")]
+    [Route("api/v1/report")]
     [ApiController]
     public class ReportController : ControllerBase
     {
