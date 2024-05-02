@@ -196,7 +196,7 @@ namespace TestServices
                 ExpirationDate = DateTime.Now.AddDays(3),
                 Status = InvitationStatus.Pending
             };
-            var manager = _service.AcceptInvitation(invitation);
+            var manager = _service.AcceptInvitation(invitation, "contraseña123!");
 
             Assert.IsNotNull(manager);
 
@@ -220,7 +220,7 @@ namespace TestServices
                 ExpirationDate = DateTime.Now.AddDays(3)
             };
 
-            _service.AcceptInvitation(invitation);
+            _service.AcceptInvitation(invitation, "contraseña123!");
             _invitationRepositoryMock.VerifyAll();
         }
 
@@ -239,7 +239,7 @@ namespace TestServices
                 ExpirationDate = DateTime.Now.AddDays(3)
             };
 
-            _service.AcceptInvitation(invitation);
+            _service.AcceptInvitation(invitation, "contraseña123!");
             _invitationRepositoryMock.VerifyAll();
         }
 

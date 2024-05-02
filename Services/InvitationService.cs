@@ -78,7 +78,7 @@ namespace Services
             }
         }
 
-        public Manager AcceptInvitation(Invitation invitation)
+        public Manager AcceptInvitation(Invitation invitation, string Password)
         {
             Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);
             if (invitationToAccept != null)
@@ -88,17 +88,17 @@ namespace Services
                     throw new InvalidOperationException("Invitation has already been accepted");
                 }
 
-                invitationToAccept.Status = InvitationStatus.Accepted;
-                _invitationRepository.Update(invitationToAccept);
-
                 Manager manager = new Manager
                 {
                     Email = invitation.Email,
-                    Name = invitation.Name
+                    Password = Password,
+                    Name = invitationToAccept.Name
                 };
 
                 _managerRepository.Insert(manager);
 
+                invitationToAccept.Status = InvitationStatus.Accepted;
+                _invitationRepository.Update(invitationToAccept);
                 return manager;
             }
             else

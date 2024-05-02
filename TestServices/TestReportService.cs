@@ -7,7 +7,7 @@ using Moq;
 using System.Linq.Expressions;
 using IServices;
 
-namespace ProjectNamespace.Test
+namespace TestServices
 {
   [TestClass]
   public class TestReportService

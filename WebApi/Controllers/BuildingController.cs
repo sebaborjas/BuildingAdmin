@@ -42,7 +42,7 @@ namespace WebApi.Controllers
                 return Ok();
             } catch (Exception exception)
             {
-                return NotFound();
+                return NotFound(exception.Message);
             }
         }
 
@@ -61,7 +61,7 @@ namespace WebApi.Controllers
             } 
             catch(Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
             
         }

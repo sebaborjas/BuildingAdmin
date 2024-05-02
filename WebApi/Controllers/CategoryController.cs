@@ -2,6 +2,8 @@
 using IServices;
 using DTO.In;
 using DTO.Out;
+using WebApi.Filters;
+using WebApi.Constants;
 
 namespace WebApi
 {
@@ -17,6 +19,7 @@ namespace WebApi
         }
 
         [HttpPost]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult CreateCategory([FromBody] CreateCategoryModel createCategoryModel)
         {
             if (!IsValidCreateCategoryInput(createCategoryModel))

@@ -10,24 +10,33 @@ public class BuildingService : IBuildingService
     private IGenericRepository<Building> _buildingRepository;
     private ISessionService _sessionService;
     private IGenericRepository<Owner> _ownerRepository;
+    private IGenericRepository<Manager> _managerRepository;
+    private IGenericRepository<ConstructionCompany> _constructionCompany;
 
-    public BuildingService(IGenericRepository<Building> buildingRepository, ISessionService sessionService, IGenericRepository<Owner> ownerRepository)
+    public BuildingService(IGenericRepository<Building> buildingRepository, ISessionService sessionService, IGenericRepository<Owner> ownerRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<ConstructionCompany> constructionCompany)
     {
         _buildingRepository = buildingRepository;
         _sessionService = sessionService;
         _ownerRepository = ownerRepository;
+        _managerRepository = managerRepository;
+        _constructionCompany = constructionCompany;
+
     }
 
     public Building CreateBuilding(Building building)
     {
-        var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name);
+        var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name || b.Address == building.Address || b.Location == building.Location);
 
         if (buildingAlreadyExist != null)
         {
             throw new ArgumentException("Building already exist");
         }
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
 
+        building.ConstructionCompany = getConstructionCompany(building);
         _buildingRepository.Insert(building);
+        assignBuildingToManager(building, currentUser);
+
         return building;
 
     }
@@ -64,11 +73,14 @@ public class BuildingService : IBuildingService
             throw new ArgumentNullException("Building not found");
         }
 
-        if (modifiedBuilding.ConstructionCompany != null){
-            building.ConstructionCompany = modifiedBuilding.ConstructionCompany;
+
+        if (modifiedBuilding.ConstructionCompany != null)
+        {
+            building.ConstructionCompany = getConstructionCompany(modifiedBuilding);
         }
 
-        if (modifiedBuilding.Expenses > 0){
+        if (modifiedBuilding.Expenses > 0)
+        {
             building.Expenses = modifiedBuilding.Expenses;
         }
 
@@ -86,7 +98,7 @@ public class BuildingService : IBuildingService
             if (originalApartment != null)
             {
                 var ownerToModify = _ownerRepository.GetByCondition(owner => owner.Email == modifiedApartment.Owner.Email);
-                if(ownerToModify == null)
+                if (ownerToModify == null)
                 {
                     ownerToModify = modifiedApartment.Owner;
                     _ownerRepository.Insert(ownerToModify);
@@ -94,5 +106,23 @@ public class BuildingService : IBuildingService
                 originalApartment.Owner = ownerToModify;
             }
         });
+    }
+
+    private void assignBuildingToManager(Building building, Manager manager)
+    {
+        manager.Buildings.Add(building);
+        _managerRepository.Update(manager);
+    }
+
+    private ConstructionCompany getConstructionCompany(Building building)
+    {
+        ConstructionCompany constructionCompanyModify = building.ConstructionCompany;
+        var constructionCompany = _constructionCompany.GetByCondition(c => c.Name == building.ConstructionCompany.Name);
+        if (constructionCompany == null)
+        {
+            _constructionCompany.Insert(constructionCompanyModify);
+            constructionCompany = constructionCompanyModify;
+        }
+        return constructionCompany;
     }
 }

@@ -3,10 +3,13 @@ using DTO.Out;
 using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filters;
+using WebApi.Constants;
 
 namespace WebApi.Controllers
 {
     [Route("api/v1/requests")]
+    //[Route("api/v1/ticket")]
     [ApiController]
     public class TicketController : ControllerBase
     {
@@ -18,6 +21,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult CreateTicket([FromBody] TicketCreateModel createTicketModel)
         {
 
@@ -33,6 +37,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{category?}")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult GetTickets(string category = null)
         {
             var tickets = _ticketServices.GetTickets(category);
@@ -44,7 +49,21 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("assigned-tickets")]
+        [AuthenticationFilter(Role = RoleConstants.MaintenanceOperatorRole)]
+        public IActionResult GetAssignedTickets()
+        {
+            var tickets = _ticketServices.GetAssignedTickets();
+            var response = new List<TicketModel>();
+            foreach (var ticket in tickets)
+            {
+                response.Add(new TicketModel(ticket));
+            }
+            return Ok(response);
+        }
+
         [HttpPut("{id}/assign")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult AssignTicket(int id, [FromBody] int maintenanceOperatorId)
         {
             var ticket = _ticketServices.AssignTicket(id, maintenanceOperatorId);
@@ -57,6 +76,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}/start")]
+        [AuthenticationFilter(Role = RoleConstants.MaintenanceOperatorRole)]
         public IActionResult StartTicket(int id)
         {
             var ticket = _ticketServices.StartTicket(id);
@@ -69,6 +89,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}/complete")]
+        [AuthenticationFilter(Role = RoleConstants.MaintenanceOperatorRole)]
         public IActionResult CompleteTicket(int id, [FromBody] float totalCost)
         {
             var ticket = _ticketServices.CompleteTicket(id, totalCost);

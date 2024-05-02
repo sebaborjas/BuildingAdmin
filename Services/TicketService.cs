@@ -14,14 +14,16 @@ namespace Services
         private IGenericRepository<Ticket> _ticketRepository;
         private IGenericRepository<Category> _categoryRepository;
         private IGenericRepository<MaintenanceOperator> _maintenanceRepository;
+        private IGenericRepository<Building> _buildingRepository;
         private ISessionService _sessionService;
 
-        public TicketService(IGenericRepository<Ticket> repository, ISessionService sessionService, IGenericRepository<Category> categoryRepository, IGenericRepository<MaintenanceOperator> maintenanceRepository)
+        public TicketService(IGenericRepository<Ticket> repository, ISessionService sessionService, IGenericRepository<Category> categoryRepository, IGenericRepository<MaintenanceOperator> maintenanceRepository, IGenericRepository<Building> buildingRepository)
         {
             _ticketRepository = repository;
             _sessionService = sessionService;
             _categoryRepository = categoryRepository;
             _maintenanceRepository = maintenanceRepository;
+            _buildingRepository = buildingRepository;
         }
 
         public Ticket CreateTicket(Ticket ticket)
@@ -41,13 +43,18 @@ namespace Services
             {
                 throw new InvalidDataException("Invalid apartment id");
             }
+
             var newTicketApartment = apartmentBuilding.Apartments.Find(apartment => apartment.Id == apartmentId);
             
             ticket.CreatedBy = currentUser;
             ticket.Apartment = newTicketApartment;
             ticket.Category = newTicketCategory;
-
+            
             _ticketRepository.Insert(ticket);
+
+            apartmentBuilding.Tickets.Add(ticket);
+            _buildingRepository.Update(apartmentBuilding);
+
             return ticket;
         }
 
@@ -97,9 +104,18 @@ namespace Services
             var resultTickets = allTickets.Where(ticket => currentUser.Buildings.Any(building => building.Apartments.Contains(ticket.Apartment)));
             if(category != null)
             {
-                resultTickets = resultTickets.Where(ticket=>ticket.Category.Name.Equals(category));
+               resultTickets = resultTickets.Where(ticket=>ticket.Category.Name.Equals(category));
+            }
+            else { 
             }
             return resultTickets.ToList();
+        }
+
+        public List<Ticket> GetAssignedTickets()
+        {
+            MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
+            var allTickets = _ticketRepository.GetAll<Ticket>();
+            return allTickets.Where(ticket => currentUser.Equals(ticket.AssignedTo)).ToList();
         }
 
         public Ticket StartTicket(int id)

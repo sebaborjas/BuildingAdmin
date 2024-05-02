@@ -15,7 +15,7 @@ namespace IServices
 
         void ModifyInvitation(int invitationId, DateTime newExpirationDate);
 
-        Manager AcceptInvitation(Invitation invitation);
+        Manager AcceptInvitation(Invitation invitation, string Password);
 
         void RejectInvitation(string email);
     }

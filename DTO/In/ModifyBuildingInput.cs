@@ -31,6 +31,7 @@ namespace DTO.In
             {
                 apartments.Add(apartment.ToEntity());
             }
+            newBuilding.Apartments = apartments;
 
             return newBuilding;
         }

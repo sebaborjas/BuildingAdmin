@@ -37,7 +37,7 @@ namespace WebApi.Filters
                     }
                 } catch (Exception ex)
                 {
-                    context.Result = new JsonResult(ex.InnerException?.Message ?? ex.Message) { StatusCode = 500 };
+                    context.Result = new JsonResult("Internal server error") { StatusCode = 500 };
                 }
             }
         }

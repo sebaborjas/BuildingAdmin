@@ -120,16 +120,17 @@ public class ReportsService : IReportServices
 
         if(categoryName != null)
         {
-            tickets = tickets.Where(t => t.Category.Name == categoryName).ToList();
+            var ticketsOfCategoryName = tickets.Where(t => t.Category.Name == categoryName).ToList();
+            var ticketsAgrupedByCategory = ticketsOfCategoryName.GroupBy(t => t.Category.Name );
 
-            foreach (var ticket in tickets)
+            foreach (var ticketGroup in ticketsAgrupedByCategory)
             {
                 var reportData = new TicketsByCategory
                 {
-                    CategoryName = categoryName,
-                    TicketsOpen = tickets.Count(t => t.Status == Domain.DataTypes.Status.Open),
-                    TicketsInProgress = tickets.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
-                    TicketsClosed = tickets.Count(t => t.Status == Domain.DataTypes.Status.Closed)
+                    CategoryName = ticketGroup.Key,
+                    TicketsOpen = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Open),
+                    TicketsInProgress = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
+                    TicketsClosed = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Closed)
                 };
 
                 result.Add(reportData);
