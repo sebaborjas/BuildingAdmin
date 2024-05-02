@@ -100,6 +100,9 @@ public class TestUserService
             Buildings = [building]
         };
         _operatorRepositoryMock.Setup(r => r.Insert(It.IsAny<MaintenanceOperator>())).Verifiable();
+        _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Administrator)null);
+        _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
+        _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
         _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
         _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
 
@@ -116,6 +119,8 @@ public class TestUserService
 
         _sessionService.VerifyAll();
         _operatorRepositoryMock.VerifyAll();
+        _adminRepositoryMock.VerifyAll();
+        _managerRepositoryMock.VerifyAll();
         Assert.AreEqual(maintenanceOperator, createdOperator);
     }
 
@@ -123,8 +128,8 @@ public class TestUserService
     [ExpectedException(typeof(ArgumentException))]
     public void CreateCorrectMaintenanceOperatorAlreadyExist()
     {
-        _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>()))
-          .Returns((Expression<Func<MaintenanceOperator, bool>> predicate, List<string> includes) => new MaintenanceOperator());
+        _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
+          .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => new Administrator());
 
         _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
 
@@ -193,6 +198,9 @@ public class TestUserService
             Buildings = [building]
         };
         _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Administrator)null);
+        _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
+        _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
         _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
 
         var maintenanceOperator = new MaintenanceOperator
