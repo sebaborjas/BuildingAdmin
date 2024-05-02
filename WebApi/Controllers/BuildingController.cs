@@ -42,7 +42,7 @@ namespace WebApi.Controllers
                 return Ok();
             } catch (Exception exception)
             {
-                return NotFound();
+                return NotFound(exception.Message);
             }
         }
 
@@ -61,9 +61,34 @@ namespace WebApi.Controllers
             } 
             catch(Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
             
+        }
+
+        [HttpGet]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        public IActionResult GetAll()
+        {
+            var buildings = _buildingServices.GetAllBuildingsForUser();
+            var response = new List<GetBuildingOutput>();
+            buildings.ForEach(building =>
+            {
+                response.Add(new GetBuildingOutput(building));
+            });
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        public IActionResult Get(int id)
+        {
+            var building = _buildingServices.Get(id);
+            if (building == null)
+            {
+                return NotFound("Building not found");
+            }
+            return Ok(new GetBuildingOutput(building));
         }
 
         private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)

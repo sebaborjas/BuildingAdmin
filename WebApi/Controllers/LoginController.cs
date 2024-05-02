@@ -26,7 +26,7 @@ namespace WebApi.Controllers
                 return Ok(response);
             } catch (Exception exception)
             {
-                return Unauthorized();
+                return Unauthorized(exception.Message);
             }
             
         }

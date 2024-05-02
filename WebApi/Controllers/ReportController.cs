@@ -17,21 +17,21 @@ namespace WebApi.Controllers
             _reportServices = reportServices;
         }
 
-        [HttpGet("tickets-by-building")]
-        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
-        public IActionResult GetTicketsByBuilding([FromBody] string? name = null)
+        [HttpGet("tickets-by-building/{buildingName}")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        public IActionResult GetTicketsByBuilding(string? buildingName = null)
         {
-            if (name != null)
+            if (buildingName != null)
             {
-                return Ok(_reportServices.GetTicketsByBuilding(name));
+                return Ok(_reportServices.GetTicketsByBuilding(buildingName));
             }
 
             return Ok(_reportServices.GetTicketsByBuilding());
         }
 
-        [HttpGet("tickets-by-maintenance-operator")]
+        [HttpGet("tickets-by-maintenance-operator/{buildingName}/{operatorName?}")]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]  
-        public IActionResult GetTicketsByMaintenanceOperator([FromBody] string buildingName ,string? operatorName= null)
+        public IActionResult GetTicketsByMaintenanceOperator(string buildingName , string? operatorName= null)
         {
             if (operatorName != null)
             {
@@ -41,9 +41,9 @@ namespace WebApi.Controllers
             return Ok(_reportServices.GetTicketsByMaintenanceOperator(buildingName));
         }
 
-        [HttpGet("tickets-by-category")]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult GetTicketsByCategory([FromBody] string buildingName ,string? categoryName= null)
+        [HttpGet("tickets-by-category/{buildingName}/{categoryName?}")]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
+        public IActionResult GetTicketsByCategory(string buildingName ,string? categoryName= null)
         {
             if (categoryName != null)
             {

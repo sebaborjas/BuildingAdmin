@@ -9,8 +9,8 @@ public class Ticket
     public DateTime CreationDate { get; private set; } = DateTime.Now.Date;
     private Apartment _apartment;
     private float _totalCost;
-    public User AssignedTo { get; set; }
-    private User _createdBy;
+    public MaintenanceOperator AssignedTo { get; set; }
+    private Manager _createdBy;
     public Category Category { get; set; }
     public Status Status { get; set; } = Status.Open;
     public DateTime AttentionDate { get; private set; }
@@ -55,7 +55,7 @@ public class Ticket
         }
     }
 
-    public User CreatedBy
+    public Manager CreatedBy
     {
         get => _createdBy;
         set

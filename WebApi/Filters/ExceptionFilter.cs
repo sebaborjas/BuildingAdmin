@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Domain.Exceptions;
 
 namespace WebApi.Filters
 {
@@ -26,6 +27,26 @@ namespace WebApi.Filters
             catch (InvalidDataException exception)
             {
                 context.Result = new JsonResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (ArgumentException exception)
+            {
+                context.Result = new JsonResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (InvalidOperationException exception)
+            {
+                context.Result = new JsonResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (WrongEmailFormatException exception)
+            {
+                context.Result = new JsonResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (PasswordNotFollowPolicy exception)
+            {
+                context.Result = new JsonResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception)
+            {
+                context.Result = new JsonResult("Internal server error") { StatusCode = 500 };
             }
         }
     }

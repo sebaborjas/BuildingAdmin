@@ -16,8 +16,7 @@ namespace DTO.In
         {
             return new Invitation
             {
-                Email = Email,
-                Status = Domain.DataTypes.InvitationStatus.Accepted,
+                Email = Email
             };
         }
     }

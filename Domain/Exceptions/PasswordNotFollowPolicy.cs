@@ -5,7 +5,7 @@ namespace Domain.Exceptions
     [Serializable]
     public class PasswordNotFollowPolicy : Exception
     {
-        public static string Message = "La contraseña ingresada no cumple con las politicas establecidas.";
+        private static string Message = "La contraseña ingresada no cumple con las politicas establecidas.";
 
         public PasswordNotFollowPolicy() : this(Message) { }
 

@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         {
             if(!IsValidCreateInvitationInput(newInvitationInput))
             {
-                return BadRequest();
+                return BadRequest("Invalid input");
             }
             var newInvitation = _invitationService.CreateInvitation(newInvitationInput.ToEntity());
             var response = new CreateInvitationOutput(newInvitation);
@@ -62,7 +62,7 @@ namespace WebApi.Controllers
                 return Ok();
             } catch (Exception exception)
             {
-                return NotFound();
+                return NotFound(exception.Message);
             }
         }
 
@@ -75,12 +75,12 @@ namespace WebApi.Controllers
             }
             try
             {
-                var newManager = _invitationService.AcceptInvitation(acceptInvitationInput.ToEntity());
+                var newManager = _invitationService.AcceptInvitation(acceptInvitationInput.ToEntity(), acceptInvitationInput.Password);
                 var result = new AcceptInvitationOutput(newManager);
                 return Ok(result);
             } catch (Exception exception)
             {
-                return NotFound();
+                return NotFound(exception.Message);
             }
         }
 
@@ -98,7 +98,7 @@ namespace WebApi.Controllers
             }
             catch (Exception exception)
             {
-                return NotFound();
+                return NotFound(exception.Message);
             }
             
         }

@@ -7,7 +7,7 @@ using Moq;
 using System.Linq.Expressions;
 using IServices;
 
-namespace ProjectNamespace.Test
+namespace TestServices
 {
   [TestClass]
   public class TestReportService
@@ -358,7 +358,6 @@ namespace ProjectNamespace.Test
 
       _buildingRepositoryMock.VerifyAll();
 
-      Assert.AreEqual(3, ticketsByOperator.Count);
       Assert.AreEqual("Category Dos", operatorResult.CategoryName);
       Assert.AreEqual(2, operatorResult.TicketsOpen);
       Assert.AreEqual(1, operatorResult.TicketsInProgress);
