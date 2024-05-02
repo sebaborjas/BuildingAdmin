@@ -261,5 +261,41 @@ namespace TestServices
 
             _buildingService.ModifyBuilding(1, modifiedBuilding);
         }
+
+        [TestMethod]
+        public void GetBuilding()
+        {
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            var result = _buildingService.Get(1);
+
+            _sessionServiceMock.VerifyAll();
+            Assert.AreEqual(result, _building);
+
+        }
+
+        [TestMethod]
+        public void GetAllBuildingsForUser()
+        {
+            var otherBuilding = new Building()
+            {
+                Id = 15,
+                Address = "OtraCalle, 321, esquina",
+                ConstructionCompany = new ConstructionCompany(),
+                Expenses = 2000,
+                Location = "12345,12345",
+                Name = "Nuevo edificio",
+            };
+            _user.Buildings = [_building, otherBuilding];
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            var result = _buildingService.GetAllBuildingsForUser();
+
+            _sessionServiceMock.VerifyAll();
+            Assert.AreEqual(_user.Buildings, result);
+
+        }
     }
 }

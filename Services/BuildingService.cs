@@ -90,6 +90,20 @@ public class BuildingService : IBuildingService
         return building;
     }
 
+    public List<Building> GetAllBuildingsForUser()
+    {
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        var buildings = currentUser.Buildings;
+        return buildings;
+    }
+
+    public Building Get(int id)
+    {
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
+        return buildingToReturn;
+    }
+
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
     {
         modifiedApartments.ForEach(modifiedApartment =>
