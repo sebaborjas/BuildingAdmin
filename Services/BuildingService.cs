@@ -34,6 +34,7 @@ public class BuildingService : IBuildingService
         var currentUser = _sessionService.GetCurrentUser() as Manager;
 
         building.ConstructionCompany = getConstructionCompany(building);
+        SetApartmentsExistingOwnersByEmail(building.Apartments);
         _buildingRepository.Insert(building);
         assignBuildingToManager(building, currentUser);
 
@@ -138,5 +139,19 @@ public class BuildingService : IBuildingService
             constructionCompany = constructionCompanyModify;
         }
         return constructionCompany;
+    }
+
+    private void SetApartmentsExistingOwnersByEmail(List<Apartment> apartments)
+    {
+        apartments.ForEach(apartment =>
+        {
+            var apartmentOwner = apartment.Owner;
+            var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);
+            if(existingOwner != null)
+            {
+                apartmentOwner = existingOwner;
+            }
+            apartment.Owner = apartmentOwner;
+        });
     }
 }
