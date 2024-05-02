@@ -107,7 +107,7 @@ namespace TestDataAccess
                     Apartment = new Apartment(),
                     AssignedTo = new MaintenanceOperator(),
                     Category = new Category(),
-                    CreatedBy = new MaintenanceOperator(),
+                    CreatedBy = new Manager(),
                     Description = "Descripcion ticket 2",
                     Status = Domain.DataTypes.Status.Open
                 },
@@ -117,7 +117,7 @@ namespace TestDataAccess
                     Apartment = new Apartment(),
                     AssignedTo = new MaintenanceOperator(),
                     Category = new Category(),
-                    CreatedBy = new MaintenanceOperator(),
+                    CreatedBy = new Manager(),
                     Description = "Descripcion ticket 1",
                     Status = Domain.DataTypes.Status.Open
                 }

@@ -60,7 +60,7 @@ public class ReportsService : IReportServices
 
         if (operatorName != null)
         {
-            tickets = tickets.Where(t => t.AssignedTo.Name == operatorName).ToList();
+            tickets = tickets.Where(t => t.AssignedTo?.Name == operatorName).ToList();
 
             var reportData = new TicketsByMaintenanceOperator
             {
@@ -75,7 +75,7 @@ public class ReportsService : IReportServices
         }
         else 
         {
-            var ticketsAgrupedByOperator = tickets.GroupBy(t => t.AssignedTo.Name);
+            var ticketsAgrupedByOperator = tickets.GroupBy(t => t.AssignedTo?.Name);
 
             foreach (var ticketGroup in ticketsAgrupedByOperator)
             {

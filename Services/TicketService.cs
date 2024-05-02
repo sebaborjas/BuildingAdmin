@@ -46,7 +46,7 @@ namespace Services
 
             var newTicketApartment = apartmentBuilding.Apartments.Find(apartment => apartment.Id == apartmentId);
             
-            ticket.CreatedBy = currentUser;
+            ticket.CreatedBy = currentUser as Manager;
             ticket.Apartment = newTicketApartment;
             ticket.Category = newTicketCategory;
             
