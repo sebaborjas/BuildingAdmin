@@ -1,0 +1,834 @@
+{
+	"info": {
+		"_postman_id": "20c8af51-aeb5-41f0-be0c-1dc59ee13687",
+		"name": "BuldingAdmin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13424065"
+	},
+	"item": [
+		{
+			"name": "Building",
+			"item": [
+				{
+					"name": "buildings",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "66a5cb31-513b-460a-a3e8-e6f132a2b6c1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\",\r\n  \"address\": \"string\",\r\n  \"location\": \"string\",\r\n  \"constructionCompany\": \"string\",\r\n  \"expenses\": 0,\r\n  \"apartments\": [\r\n    {\r\n      \"floor\": 0,\r\n      \"doorNumber\": 0,\r\n      \"ownerName\": \"string\",\r\n      \"ownerLastName\": \"string\",\r\n      \"ownerEmail\": \"string\",\r\n      \"rooms\": 0,\r\n      \"bathrooms\": 0,\r\n      \"hasTerrace\": true\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/buildings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buildings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "1b1370d2-a163-472c-adbf-cd7a528768ec"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/buildings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buildings/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "b8a20abf-3574-41ab-96bf-cb430823edfa"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"constructionCompany\": \"string\",\r\n  \"expenses\": 0,\r\n  \"apartments\": [\r\n    {\r\n      \"id\": 0,\r\n      \"ownerName\": \"string\",\r\n      \"ownerLastName\": \"string\",\r\n      \"ownerEmail\": \"string\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/buildings/6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"buildings",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buildings/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/buildings/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"buildings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buildings/{id}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "1bb94205-eee9-4be9-b1df-71b8fe2d784c"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}//buildings/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"",
+								"buildings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "categories",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "af7768b8-9751-47e5-8441-bd4d972e7352"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "2d3d8e08-64e4-4c9a-897d-e7e189ba80c9"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "categories{id}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "cc4fcf34-d1a1-4dba-b970-e737c1a4745f"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invitation",
+			"item": [
+				{
+					"name": "invitations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "c78c55c8-3833-4446-8598-ad0d2b2a3de7",
+								"uuid": "30211500-6c9c-49e5-afb5-3bd99263b9a7"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"string\",\r\n  \"name\": \"string\",\r\n  \"expirationDate\": \"2024-05-02T07:56:35.382Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invitations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invitations/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "9e59ccf5-24f8-43cb-9a68-d0d86262db3f"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/invitations/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invitations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invitations/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "c78c55c8-3833-4446-8598-ad0d2b2a3de7",
+								"uuid": "0baa12dd-8234-46a6-b270-8522ee9b1a82"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"expirationDate\": \"2024-05-02T07:57:04.580Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invitations/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invitations",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invitations/accept",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "1e7f51d0-4cba-4e68-81d6-5f6a992749ff"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invitations/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invitations",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invitations/reject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "c6cdb0cd-e001-4093-a3b1-cb8773966446"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invitations/reject",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invitations",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Token is present in response\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.property('token');\r",
+									"});\r",
+									"\r",
+									"var token = pm.response.json().token;\r",
+									"pm.collectionVariables.set(\"token\", token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "reports/tickets-by-category/{BuildingName}/{CategoryName?}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "bfb744c5-0849-456c-bf0e-be2054d68d6a"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/ticket/tickets-by-category/Building/Carpintero",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reports",
+								"ticket",
+								"tickets-by-category",
+								"Building",
+								"Carpintero"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reports/tickets-by-building/{buildingName}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "3aa27d9b-08ed-490c-af14-8d493f817540"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/tickets-by-building/Buildings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reports",
+								"tickets-by-building",
+								"Buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reports/tickets-by-maintenance-operator/{buildingName}/{operatorName?}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "4f18fcb7-5321-4f18-b789-7dafc39b576a"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/tickets-by-maintenance-operator/Building",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reports",
+								"tickets-by-maintenance-operator",
+								"Building"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ticket",
+			"item": [
+				{
+					"name": "tickets",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "2772d361-f074-43cd-96de-3d157aaed54f"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Limpieza grasera\",\r\n  \"apartmentId\": 7,\r\n  \"categoryId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/ticket",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ticket"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tickets/{category}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "f3d3d0d3-34b5-4272-b561-109704c54e9c"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tickets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tickets/assigned-tickets",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "f03ed13a-b1be-4ad4-bf1f-ed42523c95db"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tickets/assigned-tickets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tickets",
+								"assigned-tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tickets/{id}/assign",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "5fd3cfec-707e-4cee-879a-26e71e1e0d62"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "4",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tickets/9/assign",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tickets",
+								"9",
+								"assign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tickets/{id}/start",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "a4806beb-bfcc-4a96-8abf-253fcda7aa41"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "4",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tickets/9/start",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tickets",
+								"9",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tickets/{id}/complete",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "6fbb688a-cfe6-421a-95a4-1c187628cec2"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1000",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tickets/9/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tickets",
+								"9",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "users/administrator",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "ca25e635-5e85-4ef7-93c2-ac2d0c0859aa"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\",\r\n  \"lastName\": \"string\",\r\n  \"email\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/administrator",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"administrator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/maintenance-operator",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "04b04a65-fe68-469f-89cd-94648abb1f7a"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\",\r\n  \"lastName\": \"string\",\r\n  \"email\": \"string\",\r\n  \"password\": \"string\",\r\n  \"buildingId\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/maintenance-operator",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"maintenance-operator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users/manager/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/manager/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"manager",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:7067/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
