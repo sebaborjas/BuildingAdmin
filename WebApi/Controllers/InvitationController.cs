@@ -8,7 +8,7 @@ using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/invitation")]
+    [Route("api/v1/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase
     {

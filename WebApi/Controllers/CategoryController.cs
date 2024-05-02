@@ -7,7 +7,7 @@ using WebApi.Constants;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/category")]
+    [Route("api/v1/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
