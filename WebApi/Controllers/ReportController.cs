@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("tickets-by-building/{buildingName}")]
-        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult GetTicketsByBuilding(string? buildingName = null)
         {
             if (buildingName != null)
@@ -42,7 +42,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("tickets-by-category/{buildingName}/{categoryName?}")]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult GetTicketsByCategory(string buildingName ,string? categoryName= null)
         {
             if (categoryName != null)
