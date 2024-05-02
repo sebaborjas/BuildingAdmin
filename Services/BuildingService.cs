@@ -90,6 +90,16 @@ public class BuildingService : IBuildingService
         return building;
     }
 
+    public List<Building> GetAllBuildingsForUser()
+    {
+        return null;
+    }
+
+    public Building Get(int id)
+    {
+        return null;
+    }
+
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
     {
         modifiedApartments.ForEach(modifiedApartment =>
