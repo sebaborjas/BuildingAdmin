@@ -16,6 +16,8 @@ public class TestUserService
     private Mock<IGenericRepository<Manager>> _managerRepositoryMock;
     private Mock<ISessionService> _sessionService;
 
+
+
     [TestInitialize]
     public void SetUp()
     {
