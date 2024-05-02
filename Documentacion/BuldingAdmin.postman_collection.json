@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "20c8af51-aeb5-41f0-be0c-1dc59ee13687",
+		"_postman_id": "a38ff30b-dab5-4a90-94a8-33418ef6c230",
 		"name": "BuldingAdmin",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "13424065"
@@ -17,7 +17,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "66a5cb31-513b-460a-a3e8-e6f132a2b6c1"
+								"uuid": "12e58ce2-be99-44b0-9906-0f3fe2345135"
 							}
 						],
 						"body": {
@@ -49,7 +49,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "1b1370d2-a163-472c-adbf-cd7a528768ec"
+								"uuid": "ac986373-4937-428e-a9b9-c3681bee536d"
 							}
 						],
 						"url": {
@@ -72,7 +72,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "b8a20abf-3574-41ab-96bf-cb430823edfa"
+								"uuid": "493c5e96-27ff-4bdc-9c4d-a01c8c2abced"
 							}
 						],
 						"body": {
@@ -101,7 +101,13 @@
 					"name": "buildings/{id}",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"uuid": "315231bf-7061-454f-9abc-b82acb604ff0"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/buildings/1",
 							"host": [
@@ -123,16 +129,15 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "1bb94205-eee9-4be9-b1df-71b8fe2d784c"
+								"uuid": "477595ab-71d9-44c0-852b-24319bacdbe1"
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}//buildings/1",
+							"raw": "{{base_url}}/buildings/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"",
 								"buildings",
 								"1"
 							]
@@ -153,7 +158,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "af7768b8-9751-47e5-8441-bd4d972e7352"
+								"uuid": "e3db43a1-cc71-46d8-9957-267f1efe23c4"
 							}
 						],
 						"body": {
@@ -185,7 +190,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "2d3d8e08-64e4-4c9a-897d-e7e189ba80c9"
+								"uuid": "1176257f-d1af-472d-a867-0e3b01e5867c"
 							}
 						],
 						"url": {
@@ -208,7 +213,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "cc4fcf34-d1a1-4dba-b970-e737c1a4745f"
+								"uuid": "8d3b1e04-d058-4ec0-8f55-1c826221ac05"
 							}
 						],
 						"url": {
@@ -236,8 +241,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "c78c55c8-3833-4446-8598-ad0d2b2a3de7",
-								"uuid": "30211500-6c9c-49e5-afb5-3bd99263b9a7"
+								"value": "{{token}}",
+								"uuid": "1628a339-ec3d-48e5-b61b-4108aef1e60e"
 							}
 						],
 						"body": {
@@ -269,7 +274,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "9e59ccf5-24f8-43cb-9a68-d0d86262db3f"
+								"uuid": "0f41e0b6-9a1a-48e4-93fe-ab4ad8b6d0e5"
 							}
 						],
 						"url": {
@@ -292,8 +297,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "c78c55c8-3833-4446-8598-ad0d2b2a3de7",
-								"uuid": "0baa12dd-8234-46a6-b270-8522ee9b1a82"
+								"value": "{{token}}",
+								"uuid": "69ef7c45-64de-4732-a5a4-3984588e77a6"
 							}
 						],
 						"body": {
@@ -326,7 +331,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "1e7f51d0-4cba-4e68-81d6-5f6a992749ff"
+								"uuid": "ed370de1-9bc6-4606-8f6e-a18f636d660c"
 							}
 						],
 						"body": {
@@ -359,7 +364,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "c6cdb0cd-e001-4093-a3b1-cb8773966446"
+								"uuid": "1a501241-fd27-4ba4-8f5a-9a76f59e5e97"
 							}
 						],
 						"body": {
@@ -449,7 +454,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "bfb744c5-0849-456c-bf0e-be2054d68d6a"
+								"uuid": "a46701d4-5d89-4082-98dd-4a7504d2467e"
 							}
 						],
 						"url": {
@@ -476,7 +481,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "3aa27d9b-08ed-490c-af14-8d493f817540"
+								"uuid": "9d404bb8-e06b-4bbf-b3c8-e01163d7e844"
 							}
 						],
 						"url": {
@@ -501,7 +506,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "4f18fcb7-5321-4f18-b789-7dafc39b576a"
+								"uuid": "34ba4fb9-c7d3-4a80-b429-f6906dd25ed9"
 							}
 						],
 						"url": {
@@ -531,7 +536,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "2772d361-f074-43cd-96de-3d157aaed54f"
+								"uuid": "2ee647fc-84c8-43ab-8fab-39fbe3a20294"
 							}
 						],
 						"body": {
@@ -563,7 +568,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "f3d3d0d3-34b5-4272-b561-109704c54e9c"
+								"uuid": "db3685ec-9df2-42ce-bb50-16dfd9725290"
 							}
 						],
 						"url": {
@@ -586,7 +591,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "f03ed13a-b1be-4ad4-bf1f-ed42523c95db"
+								"uuid": "bf9406cc-e894-461a-ad52-04a1c74fdfb1"
 							}
 						],
 						"url": {
@@ -610,7 +615,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "5fd3cfec-707e-4cee-879a-26e71e1e0d62"
+								"uuid": "ec9782da-0464-42bd-837f-d461a108c5ea"
 							}
 						],
 						"body": {
@@ -644,7 +649,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "a4806beb-bfcc-4a96-8abf-253fcda7aa41"
+								"uuid": "4395842c-1eb4-4b35-bf5b-929801a4ecaf"
 							}
 						],
 						"body": {
@@ -678,7 +683,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "6fbb688a-cfe6-421a-95a4-1c187628cec2"
+								"uuid": "9e6fa2ce-6e12-4170-9559-10a58e3e6697"
 							}
 						],
 						"body": {
@@ -717,7 +722,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "ca25e635-5e85-4ef7-93c2-ac2d0c0859aa"
+								"uuid": "6064307b-ef56-49c9-81f2-489e02058ad6"
 							}
 						],
 						"body": {
@@ -750,7 +755,7 @@
 							{
 								"key": "Authorization",
 								"value": "{{token}}",
-								"uuid": "04b04a65-fe68-469f-89cd-94648abb1f7a"
+								"uuid": "7df695b8-ad94-442d-8837-f699e59c9873"
 							}
 						],
 						"body": {
