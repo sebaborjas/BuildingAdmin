@@ -33,6 +33,7 @@ namespace DataAccess
             modelBuilder.Entity<Ticket>().Navigation(e => e.Category).AutoInclude();
             modelBuilder.Entity<Building>().Navigation(e => e.Tickets).AutoInclude();
            // modelBuilder.Entity<Ticket>().Navigation(e => e.AssignedTo).AutoInclude();
+            modelBuilder.Entity<Apartment>().Navigation(e => e.Owner).AutoInclude();
         }
             
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

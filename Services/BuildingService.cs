@@ -92,12 +92,16 @@ public class BuildingService : IBuildingService
 
     public List<Building> GetAllBuildingsForUser()
     {
-        return null;
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        var buildings = currentUser.Buildings;
+        return buildings;
     }
 
     public Building Get(int id)
     {
-        return null;
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
+        return buildingToReturn;
     }
 
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)

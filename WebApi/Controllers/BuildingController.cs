@@ -67,6 +67,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult GetAll()
         {
             var buildings = _buildingServices.GetAllBuildingsForUser();
@@ -79,6 +80,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult Get(int id)
         {
             var building = _buildingServices.Get(id);
