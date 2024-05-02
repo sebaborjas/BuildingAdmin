@@ -9,8 +9,8 @@ namespace DataAccess
     public class BuildingAdminContext : DbContext
     {
         public BuildingAdminContext() { }
-        
-        public BuildingAdminContext(DbContextOptions options) : base(options){ }
+
+        public BuildingAdminContext(DbContextOptions options) : base(options) { }
 
         public virtual DbSet<Administrator> Administrators { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
@@ -20,7 +20,7 @@ namespace DataAccess
         public virtual DbSet<ConstructionCompany> ConstructionCompanies { get; set; }
         public virtual DbSet<Owner> Owners { get; set; }
         public virtual DbSet<MaintenanceOperator> MaintenanceOperators { get; set; }
-        public virtual DbSet<Apartment> Apartments {  get; set; }
+        public virtual DbSet<Apartment> Apartments { get; set; }
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
 
@@ -32,9 +32,9 @@ namespace DataAccess
             modelBuilder.Entity<Building>().Navigation(e => e.Apartments).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(e => e.Category).AutoInclude();
             modelBuilder.Entity<Building>().Navigation(e => e.Tickets).AutoInclude();
-           // modelBuilder.Entity<Ticket>().Navigation(e => e.AssignedTo).AutoInclude();
+            modelBuilder.Entity<Ticket>().Navigation(e => e.AssignedTo).AutoInclude();
         }
-            
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
