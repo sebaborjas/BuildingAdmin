@@ -60,10 +60,6 @@ namespace WebApi.Controllers
         public IActionResult AssignTicket(int id, [FromBody] int maintenanceOperatorId)
         {
             var ticket = _ticketServices.AssignTicket(id, maintenanceOperatorId);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
             var response = new TicketModel(ticket);
             return Ok(response);
         }
