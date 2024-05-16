@@ -42,10 +42,6 @@ namespace WebApi.Controllers
         public IActionResult Get(int id)
         {
             var category = _service.Get(id);
-            if(category == null)
-            {
-                return NotFound("Category not found");
-            }
             return Ok(new GetCategoryOutput(category));
         }
     }
