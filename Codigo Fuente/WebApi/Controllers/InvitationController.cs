@@ -14,7 +14,7 @@ namespace WebApi.Controllers
     {
 
         private IInvitationService _invitationService;
-        
+
         public InvitationController(IInvitationService invitationService)
         {
             _invitationService = invitationService;
@@ -22,7 +22,7 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
-        public IActionResult CreateInvitation([FromBody]CreateInvitationInput newInvitationInput)
+        public IActionResult CreateInvitation([FromBody] CreateInvitationInput newInvitationInput)
         {
             var newInvitation = _invitationService.CreateInvitation(newInvitationInput.ToEntity());
             var response = new CreateInvitationOutput(newInvitation);
@@ -33,22 +33,15 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult DeleteInvitation(int id)
         {
-            try
-            {
-                _invitationService.DeleteInvitation(id);
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                return NotFound();
-            }
+            _invitationService.DeleteInvitation(id);
+            return Ok();
         }
 
         [HttpPut("{id}")]
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
-        public IActionResult ModifyInvitation(int id, [FromBody]ModifyInvitationInput modifyInvitationInput)
+        public IActionResult ModifyInvitation(int id, [FromBody] ModifyInvitationInput modifyInvitationInput)
         {
-            if(!IsValidModifyInvitationInput(modifyInvitationInput))
+            if (!IsValidModifyInvitationInput(modifyInvitationInput))
             {
                 return BadRequest();
             }
@@ -56,7 +49,8 @@ namespace WebApi.Controllers
             {
                 _invitationService.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
                 return Ok();
-            } catch (Exception exception)
+            }
+            catch (Exception exception)
             {
                 return NotFound(exception.Message);
             }
@@ -65,7 +59,7 @@ namespace WebApi.Controllers
         [HttpPut("accept")]
         public IActionResult AcceptInvitation(AcceptInvitationInput acceptInvitationInput)
         {
-            if(!IsValidAcceptInvitationInput(acceptInvitationInput))
+            if (!IsValidAcceptInvitationInput(acceptInvitationInput))
             {
                 return BadRequest();
             }
@@ -74,7 +68,8 @@ namespace WebApi.Controllers
                 var newManager = _invitationService.AcceptInvitation(acceptInvitationInput.ToEntity(), acceptInvitationInput.Password);
                 var result = new AcceptInvitationOutput(newManager);
                 return Ok(result);
-            } catch (Exception exception)
+            }
+            catch (Exception exception)
             {
                 return NotFound(exception.Message);
             }
@@ -96,7 +91,7 @@ namespace WebApi.Controllers
             {
                 return NotFound(exception.Message);
             }
-            
+
         }
 
         private bool IsValidModifyInvitationInput(ModifyInvitationInput modifyInvitationInput)
