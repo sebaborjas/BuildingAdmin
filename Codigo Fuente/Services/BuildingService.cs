@@ -39,6 +39,7 @@ public class BuildingService : IBuildingService
         {
             throw new ArgumentException("Building must have at least one apartment");
         }
+
         var currentUser = _sessionService.GetCurrentUser() as Manager;
 
         try
@@ -51,7 +52,7 @@ public class BuildingService : IBuildingService
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException("Error creating building");
+            throw new InvalidOperationException("Error creating building", e);
         }
 
     }
@@ -173,34 +174,58 @@ public class BuildingService : IBuildingService
 
     private void assignBuildingToManager(Building building, Manager manager)
     {
-        manager.Buildings.Add(building);
-        _managerRepository.Update(manager);
+        try
+        {
+            manager.Buildings.Add(building);
+            _managerRepository.Update(manager);
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error assigning building to manager");
+        }
     }
 
     private ConstructionCompany getConstructionCompany(Building building)
     {
-        ConstructionCompany constructionCompanyModify = building.ConstructionCompany;
-        var constructionCompany = _constructionCompany.GetByCondition(c => c.Name == building.ConstructionCompany.Name);
-        if (constructionCompany == null)
+        try
         {
-            _constructionCompany.Insert(constructionCompanyModify);
-            constructionCompany = constructionCompanyModify;
+            ConstructionCompany constructionCompanyModify = building.ConstructionCompany;
+            var constructionCompany = _constructionCompany.GetByCondition(c => c.Name == building.ConstructionCompany.Name);
+            if (constructionCompany == null)
+            {
+                _constructionCompany.Insert(constructionCompanyModify);
+                constructionCompany = constructionCompanyModify;
+            }
+            return constructionCompany;
         }
-        return constructionCompany;
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error getting construction company");
+        }
     }
 
     private void SetApartmentsExistingOwnersByEmail(List<Apartment> apartments)
     {
-        apartments.ForEach(apartment =>
+        try
         {
-            var apartmentOwner = apartment.Owner;
-            var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);
-            if (existingOwner != null)
+            apartments.ForEach(apartment =>
             {
-                apartmentOwner = existingOwner;
-            }
-            apartment.Owner = apartmentOwner;
-        });
+                var apartmentOwner = apartment.Owner;
+                var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);
+                if (existingOwner != null)
+                {
+                    apartment.Owner = existingOwner;
+                }
+                else
+                {
+                    _ownerRepository.Insert(apartmentOwner);
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error setting existing owners", e);
+        }
     }
 
     private bool IsValidCreateBuilding(Building building)
@@ -208,10 +233,4 @@ public class BuildingService : IBuildingService
         return building != null && !string.IsNullOrWhiteSpace(building.Name) && !string.IsNullOrWhiteSpace(building.Address) &&
                 !string.IsNullOrWhiteSpace(building.Location) && !string.IsNullOrWhiteSpace(building.ConstructionCompany.Name) && building.Expenses >= 0;
     }
-
-    private bool IsValidApartment(Apartment apartment)
-    {
-        return apartment != null && apartment.Owner != null && !string.IsNullOrWhiteSpace(apartment.Owner.Email) && apartment.DoorNumber > 0;
-    }
-
 }
