@@ -6,7 +6,7 @@ using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/reports")]
+    [Route("api/v2/reports")]
     [ApiController]
     public class ReportController : ControllerBase
     {
@@ -17,40 +17,40 @@ namespace WebApi.Controllers
             _reportServices = reportServices;
         }
 
-        [HttpGet("tickets-by-building/{buildingName}")]
+        [HttpGet("buildings")]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult GetTicketsByBuilding(string? buildingName = null)
+        public IActionResult GetTicketsByBuilding([FromQuery]string building = null)
         {
-            if (buildingName != null)
+            if (building != null)
             {
-                return Ok(_reportServices.GetTicketsByBuilding(buildingName));
+                return Ok(_reportServices.GetTicketsByBuilding(building));
             }
 
             return Ok(_reportServices.GetTicketsByBuilding());
         }
 
-        [HttpGet("tickets-by-maintenance-operator/{buildingName}/{operatorName?}")]
+        [HttpGet("operators")]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]  
-        public IActionResult GetTicketsByMaintenanceOperator(string buildingName , string? operatorName= null)
+        public IActionResult GetTicketsByMaintenanceOperator([FromQuery] string building, [FromQuery] string name = null)
         {
-            if (operatorName != null)
+            if (name != null)
             {
-                return Ok(_reportServices.GetTicketsByMaintenanceOperator(buildingName, operatorName));
+                return Ok(_reportServices.GetTicketsByMaintenanceOperator(building, name));
             }
             
-            return Ok(_reportServices.GetTicketsByMaintenanceOperator(buildingName));
+            return Ok(_reportServices.GetTicketsByMaintenanceOperator(building));
         }
 
-        [HttpGet("tickets-by-category/{buildingName}/{categoryName?}")]
+        [HttpGet("categories")]
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
-        public IActionResult GetTicketsByCategory(string buildingName ,string? categoryName= null)
+        public IActionResult GetTicketsByCategory([FromQuery] string building ,[FromQuery] string? category= null)
         {
-            if (categoryName != null)
+            if (category != null)
             {
-                return Ok(_reportServices.GetTicketsByCategory(buildingName, categoryName));
+                return Ok(_reportServices.GetTicketsByCategory(building, category));
             }
             
-            return Ok(_reportServices.GetTicketsByCategory(buildingName));
+            return Ok(_reportServices.GetTicketsByCategory(building));
         }
     }
 }
