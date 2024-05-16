@@ -7,13 +7,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-
-.vscode
 .github
-
-docker-compose.yml
-Dockerfile
-.Dockerfile.swp
 
 # User-specific files
 *.rsuser
