@@ -48,7 +48,7 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("assigned-tickets")]
+        [HttpGet("assigned")]
         [AuthenticationFilter(Role = RoleConstants.MaintenanceOperatorRole)]
         public IActionResult GetAssignedTickets()
         {
