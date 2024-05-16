@@ -28,41 +28,52 @@ namespace Services
 
         public Ticket CreateTicket(Ticket ticket)
         {
-            var categoryId = ticket.Category.Id;
-            var apartmentId = ticket.Apartment.Id;
-            var currentUser = _sessionService.GetCurrentUser();
-            
-            var newTicketCategory = _categoryRepository.Get(categoryId);
-            if(newTicketCategory == null )
+            try
             {
-                throw new InvalidDataException("Invalid category id");
-            };
-            
-            var apartmentBuilding = ((Manager)currentUser).Buildings.Where(building=>building.Apartments.Any(apartment => apartment.Id == apartmentId)).FirstOrDefault();
-            if(apartmentBuilding == null)
-            {
-                throw new InvalidDataException("Invalid apartment id");
+                if (!IsValidCreateTicket(ticket))
+                {
+                    throw new InvalidDataException("Invalid ticket data");
+                }
+                var categoryId = ticket.Category.Id;
+                var apartmentId = ticket.Apartment.Id;
+                var currentUser = _sessionService.GetCurrentUser();
+
+                var newTicketCategory = _categoryRepository.Get(categoryId);
+                if (newTicketCategory == null)
+                {
+                    throw new InvalidDataException("Invalid category id");
+                };
+
+                var apartmentBuilding = ((Manager)currentUser).Buildings.Where(building => building.Apartments.Any(apartment => apartment.Id == apartmentId)).FirstOrDefault();
+                if (apartmentBuilding == null)
+                {
+                    throw new InvalidDataException("Invalid apartment id");
+                }
+
+                var newTicketApartment = apartmentBuilding.Apartments.Find(apartment => apartment.Id == apartmentId);
+
+                ticket.CreatedBy = currentUser as Manager;
+                ticket.Apartment = newTicketApartment;
+                ticket.Category = newTicketCategory;
+
+                _ticketRepository.Insert(ticket);
+
+                apartmentBuilding.Tickets.Add(ticket);
+                _buildingRepository.Update(apartmentBuilding);
+
+                return ticket;
             }
-
-            var newTicketApartment = apartmentBuilding.Apartments.Find(apartment => apartment.Id == apartmentId);
-            
-            ticket.CreatedBy = currentUser as Manager;
-            ticket.Apartment = newTicketApartment;
-            ticket.Category = newTicketCategory;
-            
-            _ticketRepository.Insert(ticket);
-
-            apartmentBuilding.Tickets.Add(ticket);
-            _buildingRepository.Update(apartmentBuilding);
-
-            return ticket;
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public Ticket AssignTicket(int ticketId, int maintenanceOperatorId)
         {
             Manager currentUser = (Manager)_sessionService.GetCurrentUser();
             var ticket = _ticketRepository.Get(ticketId);
-            if(ticket == null || ticket.Status != Domain.DataTypes.Status.Open)
+            if (ticket == null || ticket.Status != Domain.DataTypes.Status.Open)
             {
                 return null;
             }
@@ -74,7 +85,7 @@ namespace Services
             }
 
             var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
-            if(maintenance == null || !maintenance.Building.Equals(ticketBuilding))
+            if (maintenance == null || !maintenance.Building.Equals(ticketBuilding))
             {
                 return null;
             }
@@ -102,11 +113,12 @@ namespace Services
             var allTickets = _ticketRepository.GetAll<Ticket>();
             Manager currentUser = (Manager)_sessionService.GetCurrentUser();
             var resultTickets = allTickets.Where(ticket => currentUser.Buildings.Any(building => building.Apartments.Contains(ticket.Apartment)));
-            if(category != null)
+            if (category != null)
             {
-               resultTickets = resultTickets.Where(ticket=>ticket.Category.Name.Equals(category));
+                resultTickets = resultTickets.Where(ticket => ticket.Category.Name.Equals(category));
             }
-            else { 
+            else
+            {
             }
             return resultTickets.ToList();
         }
@@ -122,13 +134,18 @@ namespace Services
         {
             MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
             var ticket = _ticketRepository.Get(id);
-            if(ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.Open)
+            if (ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.Open)
             {
                 return null;
             }
             ticket.AttendTicket();
             _ticketRepository.Update(ticket);
             return ticket;
+        }
+
+        private bool IsValidCreateTicket(Ticket createTicket)
+        {
+            return createTicket != null && createTicket.Apartment != null && createTicket.Category != null;
         }
     }
 }
