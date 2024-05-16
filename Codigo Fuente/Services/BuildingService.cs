@@ -107,10 +107,17 @@ public class BuildingService : IBuildingService
             building.Expenses = modifiedBuilding.Expenses;
         }
 
-        ModifyApartments(building.Apartments, modifiedBuilding.Apartments);
-        _buildingRepository.Update(building);
+        try
+        {
+            ModifyApartments(building.Apartments, modifiedBuilding.Apartments);
+            _buildingRepository.Update(building);
 
-        return building;
+            return building;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error modifying building");
+        }
     }
 
     public List<Building> GetAllBuildingsForUser()
