@@ -62,10 +62,6 @@ namespace WebApi.Controllers
         public IActionResult Get(int id)
         {
             var building = _buildingServices.Get(id);
-            if (building == null)
-            {
-                return NotFound("Building not found");
-            }
             return Ok(new GetBuildingOutput(building));
         }
     }

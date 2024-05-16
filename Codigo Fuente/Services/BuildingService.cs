@@ -122,16 +122,35 @@ public class BuildingService : IBuildingService
 
     public List<Building> GetAllBuildingsForUser()
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-        var buildings = currentUser.Buildings;
-        return buildings;
+        try
+        {
+            var currentUser = _sessionService.GetCurrentUser() as Manager;
+            var buildings = currentUser.Buildings;
+            return buildings;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error getting buildings");
+        }
+
     }
 
     public Building Get(int id)
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-        var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
-        return buildingToReturn;
+        try
+        {
+            var currentUser = _sessionService.GetCurrentUser() as Manager;
+            var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
+            if (buildingToReturn == null)
+            {
+                throw new ArgumentNullException("Building not found");
+            }
+            return buildingToReturn;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error getting building");
+        }
     }
 
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
