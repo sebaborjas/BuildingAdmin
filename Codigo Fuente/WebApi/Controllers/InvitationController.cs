@@ -41,19 +41,8 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult ModifyInvitation(int id, [FromBody] ModifyInvitationInput modifyInvitationInput)
         {
-            if (!IsValidModifyInvitationInput(modifyInvitationInput))
-            {
-                return BadRequest();
-            }
-            try
-            {
-                _invitationService.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                return NotFound(exception.Message);
-            }
+            _invitationService.ModifyInvitation(id, modifyInvitationInput.ExpirationDate);
+            return Ok();
         }
 
         [HttpPut("accept")]
@@ -92,11 +81,6 @@ namespace WebApi.Controllers
                 return NotFound(exception.Message);
             }
 
-        }
-
-        private bool IsValidModifyInvitationInput(ModifyInvitationInput modifyInvitationInput)
-        {
-            return modifyInvitationInput != null && modifyInvitationInput.ExpirationDate > DateTime.Now;
         }
 
         private bool IsValidAcceptInvitationInput(AcceptInvitationInput acceptInvitationInput)
