@@ -19,16 +19,9 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginInput loginInput)
         {
-            try
-            {
-                var session = _sessionService.Login(loginInput.Email, loginInput.Password);
-                var response = new SuccessfulLoginOutput(session);
-                return Ok(response);
-            } catch (Exception exception)
-            {
-                return Unauthorized(exception.Message);
-            }
-            
+            var session = _sessionService.Login(loginInput.Email, loginInput.Password);
+            var response = new SuccessfulLoginOutput(session);
+            return Ok(response);
         }
 
     }
