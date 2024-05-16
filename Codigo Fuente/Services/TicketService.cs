@@ -65,34 +65,37 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw e;
+                throw new Exception("Error creating ticket", e);
             }
         }
 
         public Ticket AssignTicket(int ticketId, int maintenanceOperatorId)
         {
-            Manager currentUser = (Manager)_sessionService.GetCurrentUser();
-            var ticket = _ticketRepository.Get(ticketId);
-            if (ticket == null || ticket.Status != Domain.DataTypes.Status.Open)
+            try
             {
-                return null;
-            }
+                Manager currentUser = (Manager)_sessionService.GetCurrentUser();
+                var ticket = _ticketRepository.Get(ticketId);
 
-            var ticketBuilding = currentUser.Buildings.Find(building => building.Apartments.Contains(ticket.Apartment));
-            if (ticketBuilding == null)
+                var ticketBuilding = currentUser.Buildings.Find(building => building.Apartments.Contains(ticket.Apartment));
+                if (ticket == null || ticketBuilding == null || ticket.Status != Domain.DataTypes.Status.Open)
+                {
+                    throw new InvalidDataException("Invalid ticket data");
+                }
+
+                var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
+                if (maintenance == null || !maintenance.Building.Equals(ticketBuilding))
+                {
+                    throw new InvalidDataException("Invalid maintenance operator id");
+                }
+
+                ticket.AssignedTo = maintenance;
+                _ticketRepository.Update(ticket);
+                return ticket;
+            }
+            catch (Exception e)
             {
-                return null;
+                throw new Exception("Error assigning ticket", e);
             }
-
-            var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
-            if (maintenance == null || !maintenance.Building.Equals(ticketBuilding))
-            {
-                return null;
-            }
-
-            ticket.AssignedTo = maintenance;
-            _ticketRepository.Update(ticket);
-            return ticket;
         }
 
         public Ticket CompleteTicket(int ticketId, float totalCost)
