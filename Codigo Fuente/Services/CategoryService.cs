@@ -33,7 +33,7 @@ namespace Services
                 _categoryRepository.Insert(category);
                 return category;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new InvalidOperationException("Error creating category");
             }
@@ -41,12 +41,36 @@ namespace Services
 
         public List<Category> GetAll()
         {
-            return _categoryRepository.GetAll<Category>().ToList();
+            try
+            {
+                List<Category> categories = _categoryRepository.GetAll<Category>().ToList();
+                if (categories.Count == 0)
+                {
+                    throw new ArgumentException("Categories not found");
+                }
+                return categories;
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException("Error getting categories");
+            }
         }
 
         public Category Get(int id)
         {
-            return _categoryRepository.Get(id);
+            try
+            {
+                Category category = _categoryRepository.Get(id);
+                if (category == null)
+                {
+                    throw new ArgumentException("Category not found");
+                }
+                return category;
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException("Error getting category");
+            }
         }
 
         private bool IsValidCreateCategory(string name)
