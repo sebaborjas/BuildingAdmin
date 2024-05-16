@@ -22,10 +22,6 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult CreateCategory([FromBody] CreateCategoryModel createCategoryModel)
         {
-            if (!IsValidCreateCategoryInput(createCategoryModel))
-            {
-                return BadRequest();
-            }
             var category = _service.CreateCategory(createCategoryModel.Name);
             return Ok(new CategoryModel(category));
         }
@@ -51,11 +47,6 @@ namespace WebApi.Controllers
                 return NotFound("Category not found");
             }
             return Ok(new GetCategoryOutput(category));
-        }
-
-        private bool IsValidCreateCategoryInput(CreateCategoryModel createCategoryModel)
-        {
-            return createCategoryModel != null && !string.IsNullOrEmpty(createCategoryModel.Name);
         }
     }
 }
