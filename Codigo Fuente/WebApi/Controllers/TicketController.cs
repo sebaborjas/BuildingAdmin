@@ -35,9 +35,9 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{category?}")]
+        [HttpGet]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult GetTickets(string category = null)
+        public IActionResult GetTickets([FromQuery]string? category = null)
         {
             var tickets = _ticketServices.GetTickets(category);
             var response = new List<TicketModel>();
