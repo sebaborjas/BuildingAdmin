@@ -48,20 +48,9 @@ namespace WebApi.Controllers
         [HttpPut("accept")]
         public IActionResult AcceptInvitation(AcceptInvitationInput acceptInvitationInput)
         {
-            if (!IsValidAcceptInvitationInput(acceptInvitationInput))
-            {
-                return BadRequest();
-            }
-            try
-            {
-                var newManager = _invitationService.AcceptInvitation(acceptInvitationInput.ToEntity(), acceptInvitationInput.Password);
-                var result = new AcceptInvitationOutput(newManager);
-                return Ok(result);
-            }
-            catch (Exception exception)
-            {
-                return NotFound(exception.Message);
-            }
+            var newManager = _invitationService.AcceptInvitation(acceptInvitationInput.ToEntity(), acceptInvitationInput.Password);
+            var result = new AcceptInvitationOutput(newManager);
+            return Ok(result);
         }
 
         [HttpPut("reject")]
