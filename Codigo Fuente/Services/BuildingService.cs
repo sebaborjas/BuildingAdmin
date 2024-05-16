@@ -31,14 +31,28 @@ public class BuildingService : IBuildingService
         {
             throw new ArgumentException("Building already exist");
         }
+        if (!IsValidCreateBuilding(building))
+        {
+            throw new ArgumentException("Invalid building");
+        }
+        if (building.Apartments == null || building.Apartments.Count == 0)
+        {
+            throw new ArgumentException("Building must have at least one apartment");
+        }
         var currentUser = _sessionService.GetCurrentUser() as Manager;
 
-        building.ConstructionCompany = getConstructionCompany(building);
-        SetApartmentsExistingOwnersByEmail(building.Apartments);
-        _buildingRepository.Insert(building);
-        assignBuildingToManager(building, currentUser);
-
-        return building;
+        try
+        {
+            building.ConstructionCompany = getConstructionCompany(building);
+            SetApartmentsExistingOwnersByEmail(building.Apartments);
+            _buildingRepository.Insert(building);
+            assignBuildingToManager(building, currentUser);
+            return building;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error creating building");
+        }
 
     }
 
@@ -147,11 +161,23 @@ public class BuildingService : IBuildingService
         {
             var apartmentOwner = apartment.Owner;
             var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);
-            if(existingOwner != null)
+            if (existingOwner != null)
             {
                 apartmentOwner = existingOwner;
             }
             apartment.Owner = apartmentOwner;
         });
     }
+
+    private bool IsValidCreateBuilding(Building building)
+    {
+        return building != null && !string.IsNullOrWhiteSpace(building.Name) && !string.IsNullOrWhiteSpace(building.Address) &&
+                !string.IsNullOrWhiteSpace(building.Location) && !string.IsNullOrWhiteSpace(building.ConstructionCompany.Name) && building.Expenses >= 0;
+    }
+
+    private bool IsValidApartment(Apartment apartment)
+    {
+        return apartment != null && apartment.Owner != null && !string.IsNullOrWhiteSpace(apartment.Owner.Email) && apartment.DoorNumber > 0;
+    }
+
 }
