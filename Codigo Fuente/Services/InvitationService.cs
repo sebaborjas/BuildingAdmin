@@ -39,7 +39,7 @@ namespace Services
                 throw new ArgumentException("Invitation already exist");
             }
 
-            if (!IsValidCreateInvitationInput(newInvitation))
+            if (!IsValidCreateInvitation(newInvitation))
             {
                 throw new ArgumentException("Invalid invitation");
             }
@@ -66,8 +66,8 @@ namespace Services
             try
             {
                 Invitation modifyInvitation = _invitationRepository.Get(invitationId);
-                
-                if(modifyInvitation == null)
+
+                if (modifyInvitation == null)
                 {
                     throw new ArgumentException("Invitation does not exist");
                 }
@@ -77,16 +77,16 @@ namespace Services
                     throw new ArgumentException("Invalid invitation");
                 }
 
-                if(modifyInvitation.Status == InvitationStatus.Accepted)
+                if (modifyInvitation.Status == InvitationStatus.Accepted)
                 {
                     throw new InvalidOperationException("Invitation has already been accepted and cannot be modified");
                 }
 
-                if(modifyInvitation.ExpirationDate >= DateTime.Now || modifyInvitation.ExpirationDate >= DateTime.Now.AddDays(1))
+                if (modifyInvitation.ExpirationDate >= DateTime.Now || modifyInvitation.ExpirationDate >= DateTime.Now.AddDays(1))
                 {
                     throw new ArgumentException("Invitation can not be modified");
                 }
-                
+
                 modifyInvitation.ExpirationDate = newExpirationDate;
                 _invitationRepository.Update(modifyInvitation);
             }
@@ -98,31 +98,38 @@ namespace Services
 
         public Manager AcceptInvitation(Invitation invitation, string Password)
         {
-            Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);
-            if (invitationToAccept != null)
+            try
             {
+                Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);
+                if (invitationToAccept == null)
+                {
+                    throw new ArgumentException("Invitation does not exist");
+                }
+
                 if (invitationToAccept.Status == InvitationStatus.Accepted)
                 {
                     throw new InvalidOperationException("Invitation has already been accepted");
                 }
 
-                Manager manager = new Manager
+                if (invitationToAccept.ExpirationDate < DateTime.Now)
+                {
+                    throw new InvalidOperationException("Invitation has expired");
+                }
+
+                Manager newManager = new Manager
                 {
                     Email = invitation.Email,
-                    Password = Password,
-                    Name = invitationToAccept.Name,
-                    LastName = ""
+                    Name = invitation.Name,
+                    Password = Password
                 };
 
-                _managerRepository.Insert(manager);
-
-                invitationToAccept.Status = InvitationStatus.Accepted;
-                _invitationRepository.Update(invitationToAccept);
-                return manager;
+                _managerRepository.Insert(newManager);
+                _invitationRepository.Delete(invitationToAccept);
+                return newManager;
             }
-            else
+            catch (Exception)
             {
-                throw new ArgumentException("Invitation does not exist");
+                throw new InvalidOperationException("Error accepting invitation");
             }
         }
 
@@ -139,12 +146,10 @@ namespace Services
             }
         }
 
-        private bool IsValidCreateInvitationInput(Invitation invitation)
+        private bool IsValidCreateInvitation(Invitation invitation)
         {
             return invitation != null && !string.IsNullOrWhiteSpace(invitation.Email) && !string.IsNullOrWhiteSpace(invitation.Name) && invitation.ExpirationDate > DateTime.Now;
         }
-
-
         private bool IsValidmodifyInvitation(Invitation modifyInvitation)
         {
             return modifyInvitation != null && modifyInvitation.ExpirationDate > DateTime.Now;
