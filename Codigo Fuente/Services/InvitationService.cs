@@ -50,7 +50,7 @@ namespace Services
 
         public void DeleteInvitation(int invitationId)
         {
-           try
+            try
             {
                 Invitation invitation = _invitationRepository.Get(invitationId);
                 _invitationRepository.Delete(invitation);
@@ -63,23 +63,36 @@ namespace Services
 
         public void ModifyInvitation(int invitationId, DateTime newExpirationDate)
         {
-            Invitation invitation = _invitationRepository.Get(invitationId);
-
-            if (invitation.Status != Domain.DataTypes.InvitationStatus.Accepted)
+            try
             {
-                if (invitation.ExpirationDate <= DateTime.Now || invitation.ExpirationDate <= DateTime.Now.AddDays(1))
+                Invitation modifyInvitation = _invitationRepository.Get(invitationId);
+                
+                if(modifyInvitation == null)
                 {
-                    invitation.ExpirationDate = newExpirationDate;
-                    _invitationRepository.Update(invitation);
+                    throw new ArgumentException("Invitation does not exist");
                 }
-                else
+
+                if (!IsValidmodifyInvitation(modifyInvitation))
+                {
+                    throw new ArgumentException("Invalid invitation");
+                }
+
+                if(modifyInvitation.Status == InvitationStatus.Accepted)
+                {
+                    throw new InvalidOperationException("Invitation has already been accepted and cannot be modified");
+                }
+
+                if(modifyInvitation.ExpirationDate >= DateTime.Now || modifyInvitation.ExpirationDate >= DateTime.Now.AddDays(1))
                 {
                     throw new ArgumentException("Invitation can not be modified");
                 }
+                
+                modifyInvitation.ExpirationDate = newExpirationDate;
+                _invitationRepository.Update(modifyInvitation);
             }
-            else
+            catch (Exception)
             {
-                throw new InvalidOperationException("Invitation has already been accepted and cannot be modified");
+                throw new InvalidOperationException("Error modifying invitation");
             }
         }
 
@@ -129,6 +142,12 @@ namespace Services
         private bool IsValidCreateInvitationInput(Invitation invitation)
         {
             return invitation != null && !string.IsNullOrWhiteSpace(invitation.Email) && !string.IsNullOrWhiteSpace(invitation.Name) && invitation.ExpirationDate > DateTime.Now;
+        }
+
+
+        private bool IsValidmodifyInvitation(Invitation modifyInvitation)
+        {
+            return modifyInvitation != null && modifyInvitation.ExpirationDate > DateTime.Now;
         }
 
     }
