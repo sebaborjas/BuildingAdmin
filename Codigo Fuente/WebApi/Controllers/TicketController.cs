@@ -23,12 +23,6 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult CreateTicket([FromBody] TicketCreateModel createTicketModel)
         {
-
-            if (!IsValidCreateTicketModel(createTicketModel))
-            {
-                return BadRequest();
-            }
-
             var ticket = createTicketModel.ToEntity();
             var createdTicket = _ticketServices.CreateTicket(ticket);
             var response = new TicketModel(createdTicket);
@@ -98,27 +92,6 @@ namespace WebApi.Controllers
             }
             var response = new TicketModel(ticket);
             return Ok(response);
-        }
-
-        private bool IsValidCreateTicketModel(TicketCreateModel createTicketModel)
-        {
-
-            if (createTicketModel == null)
-            {
-                return false;
-            }
-
-            if (createTicketModel.ApartmentId <= 0)
-            {
-                return false;
-            }
-
-            if (createTicketModel.CategoryId <= 0)
-            {
-                return false;
-            }
-
-            return true;
         }
 
     }
