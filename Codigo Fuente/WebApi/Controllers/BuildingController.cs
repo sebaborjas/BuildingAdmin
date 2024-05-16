@@ -23,10 +23,6 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role =RoleConstants.ManagerRole)]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
-            if (!IsValidCreateBuildingInput(createBuildingInput) || !AreValidApartments(createBuildingInput.Apartments))
-            {
-                return BadRequest();
-            }
             var newBuilding = _buildingServices.CreateBuilding(createBuildingInput.ToEntity());
             var response = new CreateBuildingOutput(newBuilding);
             return Ok(response);
@@ -89,29 +85,6 @@ namespace WebApi.Controllers
                 return NotFound("Building not found");
             }
             return Ok(new GetBuildingOutput(building));
-        }
-
-        private bool IsValidCreateBuildingInput(CreateBuildingInput createBuildingInput)
-        {
-            return createBuildingInput != null && !string.IsNullOrWhiteSpace(createBuildingInput.Name) && !string.IsNullOrWhiteSpace(createBuildingInput.Address) &&
-                !string.IsNullOrWhiteSpace(createBuildingInput.Location) && !string.IsNullOrWhiteSpace(createBuildingInput.ConstructionCompany) && createBuildingInput.Expenses >= 0;
-        }
-
-
-        private bool AreValidApartments(List<NewApartmentInput> apartments)
-        {
-            try
-            {
-                apartments.ForEach(apartment =>
-                {
-                    apartment.ToEntity();
-                });
-                return true;
-            } catch (Exception ex)
-            {
-                return false;
-            }
-
         }
     }
 }
