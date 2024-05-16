@@ -20,24 +20,25 @@ namespace Services
 
         public Category CreateCategory(string name)
         {
+            if (name == null || string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("name", "Invalid category");
+            }
             try
             {
-                if (!IsValidCreateCategory(name))
-                {
-                    throw new ArgumentException("Invalid category");
-                }
-                var category = new Category
+                Category category = new Category
                 {
                     Name = name
                 };
                 _categoryRepository.Insert(category);
                 return category;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new InvalidOperationException("Error creating category");
+                throw new InvalidOperationException("Error creating category", e);
             }
         }
+
 
         public List<Category> GetAll()
         {
@@ -71,15 +72,6 @@ namespace Services
             {
                 throw new InvalidOperationException("Error getting category");
             }
-        }
-
-        private bool IsValidCreateCategory(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return false;
-            }
-            return true;
         }
     }
 }
