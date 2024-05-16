@@ -50,14 +50,14 @@ namespace Services
 
         public void DeleteInvitation(int invitationId)
         {
-            Invitation invitation = _invitationRepository.Get(invitationId);
-            if (invitation.Status != Domain.DataTypes.InvitationStatus.Accepted)
+           try
             {
+                Invitation invitation = _invitationRepository.Get(invitationId);
                 _invitationRepository.Delete(invitation);
             }
-            else
+            catch (Exception)
             {
-                throw new ArgumentException("Invitation can not be deleted");
+                throw new InvalidOperationException("Error deleting invitation");
             }
         }
 
