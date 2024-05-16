@@ -70,7 +70,15 @@ public class BuildingService : IBuildingService
             throw new ArgumentNullException("Building not found");
         }
 
-        _buildingRepository.Delete(building);
+        try
+        {
+            _buildingRepository.Delete(building);
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error deleting building");
+        }
+
     }
 
     public Building ModifyBuilding(int buildingId, Building modifiedBuilding)
