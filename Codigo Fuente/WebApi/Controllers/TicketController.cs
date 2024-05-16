@@ -69,10 +69,6 @@ namespace WebApi.Controllers
         public IActionResult StartTicket(int id)
         {
             var ticket = _ticketServices.StartTicket(id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
             var response = new TicketModel(ticket);
             return Ok(response);
         }
@@ -82,10 +78,6 @@ namespace WebApi.Controllers
         public IActionResult CompleteTicket(int id, [FromBody] float totalCost)
         {
             var ticket = _ticketServices.CompleteTicket(id, totalCost);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
             var response = new TicketModel(ticket);
             return Ok(response);
         }

@@ -100,50 +100,76 @@ namespace Services
 
         public Ticket CompleteTicket(int ticketId, float totalCost)
         {
-            MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
-            var ticket = _ticketRepository.Get(ticketId);
-            if (ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.InProgress)
+            try
             {
-                return null;
+                MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
+                var ticket = _ticketRepository.Get(ticketId);
+                if (ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.InProgress)
+                {
+                    throw new InvalidDataException("Invalid ticket data");
+                }
+                ticket.CloseTicket(totalCost);
+                _ticketRepository.Update(ticket);
+                return ticket;
             }
-            ticket.CloseTicket(totalCost);
-            _ticketRepository.Update(ticket);
-            return ticket;
+            catch (Exception e)
+            {
+                throw new Exception("Error completing ticket", e);
+            }
         }
 
         public List<Ticket> GetTickets(string category = null)
         {
-            var allTickets = _ticketRepository.GetAll<Ticket>();
-            Manager currentUser = (Manager)_sessionService.GetCurrentUser();
-            var resultTickets = allTickets.Where(ticket => currentUser.Buildings.Any(building => building.Apartments.Contains(ticket.Apartment)));
-            if (category != null)
+            try
             {
-                resultTickets = resultTickets.Where(ticket => ticket.Category.Name.Equals(category));
+                var allTickets = _ticketRepository.GetAll<Ticket>();
+                Manager currentUser = (Manager)_sessionService.GetCurrentUser();
+                var resultTickets = allTickets.Where(ticket => currentUser.Buildings.Any(building => building.Apartments.Contains(ticket.Apartment)));
+                if (category != null)
+                {
+                    resultTickets = resultTickets.Where(ticket => ticket.Category.Name.Equals(category));
+                }
+                return resultTickets.ToList();
+
             }
-            else
+            catch (Exception e)
             {
+                throw new Exception("Error getting tickets", e);
             }
-            return resultTickets.ToList();
         }
 
         public List<Ticket> GetAssignedTickets()
         {
-            MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
-            var allTickets = _ticketRepository.GetAll<Ticket>();
-            return allTickets.Where(ticket => currentUser.Equals(ticket.AssignedTo)).ToList();
+            try
+            {
+                MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
+                var allTickets = _ticketRepository.GetAll<Ticket>();
+                return allTickets.Where(ticket => currentUser.Equals(ticket.AssignedTo)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error getting assigned tickets", e);
+            }
         }
 
         public Ticket StartTicket(int id)
         {
-            MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
-            var ticket = _ticketRepository.Get(id);
-            if (ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.Open)
+            try
             {
-                return null;
+                MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
+                var ticket = _ticketRepository.Get(id);
+                if (ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.Open)
+                {
+                    throw new InvalidDataException("Invalid ticket data");
+                }
+                ticket.AttendTicket();
+                _ticketRepository.Update(ticket);
+                return ticket;
             }
-            ticket.AttendTicket();
-            _ticketRepository.Update(ticket);
-            return ticket;
+            catch (Exception e)
+            {
+                throw new Exception("Error starting ticket", e);
+            }
         }
 
         private bool IsValidCreateTicket(Ticket createTicket)
