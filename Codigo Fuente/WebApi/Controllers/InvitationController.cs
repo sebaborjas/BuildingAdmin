@@ -59,15 +59,5 @@ namespace WebApi.Controllers
             _invitationService.RejectInvitation(rejectInvitationInput.Email);
             return Ok();
         }
-
-        private bool IsValidAcceptInvitationInput(AcceptInvitationInput acceptInvitationInput)
-        {
-            return acceptInvitationInput != null && !string.IsNullOrWhiteSpace(acceptInvitationInput.Email) && !string.IsNullOrWhiteSpace(acceptInvitationInput.Password);
-        }
-
-        private bool IsValidRejectInvitationInput(RejectInvitationInput rejectInvitationInput)
-        {
-            return rejectInvitationInput != null && !string.IsNullOrWhiteSpace(rejectInvitationInput.Email);
-        }
     }
 }
