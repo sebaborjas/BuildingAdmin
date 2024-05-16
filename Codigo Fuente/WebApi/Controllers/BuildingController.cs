@@ -40,20 +40,8 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
         {
-            try
-            {
-                _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
-                return Ok();
-            }
-            catch (KeyNotFoundException exception)
-            {
-                return NotFound();
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
-
+            _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
+            return Ok();
         }
 
         [HttpGet]
