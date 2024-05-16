@@ -24,10 +24,6 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult CreateInvitation([FromBody]CreateInvitationInput newInvitationInput)
         {
-            if(!IsValidCreateInvitationInput(newInvitationInput))
-            {
-                return BadRequest("Invalid input");
-            }
             var newInvitation = _invitationService.CreateInvitation(newInvitationInput.ToEntity());
             var response = new CreateInvitationOutput(newInvitation);
             return Ok(response);
@@ -101,11 +97,6 @@ namespace WebApi.Controllers
                 return NotFound(exception.Message);
             }
             
-        }
-
-        private bool IsValidCreateInvitationInput(CreateInvitationInput newInvitationInput)
-        {
-            return newInvitationInput != null && !string.IsNullOrWhiteSpace(newInvitationInput.Email) && !string.IsNullOrWhiteSpace(newInvitationInput.Name) && newInvitationInput.ExpirationDate > DateTime.Now;
         }
 
         private bool IsValidModifyInvitationInput(ModifyInvitationInput modifyInvitationInput)
