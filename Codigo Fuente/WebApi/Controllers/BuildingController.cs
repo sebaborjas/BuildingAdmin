@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [AuthenticationFilter(Role =RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
             var newBuilding = _buildingServices.CreateBuilding(createBuildingInput.ToEntity());
@@ -32,14 +32,8 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult DeleteBuilding(int id)
         {
-            try
-            {
-                _buildingServices.DeleteBuilding(id);
-                return Ok();
-            } catch (Exception exception)
-            {
-                return NotFound(exception.Message);
-            }
+            _buildingServices.DeleteBuilding(id);
+            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -50,16 +44,16 @@ namespace WebApi.Controllers
             {
                 _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
                 return Ok();
-            } 
-            catch(KeyNotFoundException exception)
+            }
+            catch (KeyNotFoundException exception)
             {
                 return NotFound();
-            } 
-            catch(Exception exception)
+            }
+            catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
-            
+
         }
 
         [HttpGet]
