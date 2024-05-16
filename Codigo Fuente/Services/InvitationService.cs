@@ -17,7 +17,7 @@ namespace Services
         private IGenericRepository<Manager> _managerRepository;
 
         public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<Manager> managerRepository)
-        { 
+        {
             _invitationRepository = invitationRepository;
             _adminRepository = adminRepository;
             _managerRepository = managerRepository;
@@ -37,6 +37,11 @@ namespace Services
             if (invitationAlreadyExist != null)
             {
                 throw new ArgumentException("Invitation already exist");
+            }
+
+            if (!IsValidCreateInvitationInput(newInvitation))
+            {
+                throw new ArgumentException("Invalid invitation");
             }
 
             _invitationRepository.Insert(newInvitation);
@@ -92,7 +97,7 @@ namespace Services
                 {
                     Email = invitation.Email,
                     Password = Password,
-                    Name = invitationToAccept.Name, 
+                    Name = invitationToAccept.Name,
                     LastName = ""
                 };
 
@@ -119,6 +124,11 @@ namespace Services
             {
                 throw new ArgumentException("Invitation does not exist");
             }
+        }
+
+        private bool IsValidCreateInvitationInput(Invitation invitation)
+        {
+            return invitation != null && !string.IsNullOrWhiteSpace(invitation.Email) && !string.IsNullOrWhiteSpace(invitation.Name) && invitation.ExpirationDate > DateTime.Now;
         }
 
     }
