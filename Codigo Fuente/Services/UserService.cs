@@ -21,28 +21,29 @@ public class UserService : IUserServices
 
     public Administrator CreateAdministrator(Administrator administrator)
     {
+
+        if (!IsNewAdministratorValid(administrator))
+        {
+            throw new ArgumentException("Invalid administrator data");
+        }
+
+        User userAlreadyExist = null;
+        userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == administrator.Email);
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _managerRepository.GetByCondition(user => user.Email == administrator.Email);
+        }
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == administrator.Email);
+        }
+
+        if (userAlreadyExist != null)
+        {
+            throw new ArgumentException("User already exist");
+        }
         try
         {
-            if (!IsNewAdministratorValid(administrator))
-            {
-                throw new ArgumentException("Invalid administrator data");
-            }
-            User userAlreadyExist = null;
-            userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == administrator.Email);
-            if (userAlreadyExist == null)
-            {
-                userAlreadyExist = _managerRepository.GetByCondition(user => user.Email == administrator.Email);
-            }
-            if (userAlreadyExist == null)
-            {
-                userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == administrator.Email);
-            }
-
-            if (userAlreadyExist != null)
-            {
-                throw new ArgumentException("User already exist");
-            }
-
             _adminRepository.Insert(administrator);
             return administrator;
         }
@@ -54,34 +55,35 @@ public class UserService : IUserServices
 
     public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator)
     {
+
+        if (!IsNewMaintenanceOperatorValid(maintenanceOperator))
+        {
+            throw new ArgumentException("Invalid maintenance operator data");
+        }
+
+        User userAlreadyExist = null;
+        userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _managerRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
+        }
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
+        }
+
+
+        if (userAlreadyExist != null)
+        {
+            throw new ArgumentException("User already exist");
+        }
+        var operatorBuilding = ((Manager)_sessionService.GetCurrentUser()).Buildings.Find(building => building.Id == maintenanceOperator.Building.Id);
+        if (operatorBuilding == null)
+        {
+            throw new ArgumentException("Invalid building");
+        };
         try
         {
-            if (!IsNewMaintenanceOperatorValid(maintenanceOperator))
-            {
-                throw new ArgumentException("Invalid maintenance operator data");
-            }
-            User userAlreadyExist = null;
-            userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
-            if (userAlreadyExist == null)
-            {
-                userAlreadyExist = _managerRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
-            }
-            if (userAlreadyExist == null)
-            {
-                userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
-            }
-
-
-            if (userAlreadyExist != null)
-            {
-                throw new ArgumentException("User already exist");
-            }
-            var operatorBuilding = ((Manager)_sessionService.GetCurrentUser()).Buildings.Find(building => building.Id == maintenanceOperator.Building.Id);
-            if (operatorBuilding == null)
-            {
-                throw new ArgumentException("Invalid building");
-            };
-
             maintenanceOperator.Building = operatorBuilding;
             _operatorRepository.Insert(maintenanceOperator);
             return maintenanceOperator;
@@ -95,14 +97,15 @@ public class UserService : IUserServices
 
     public void DeleteManager(int id)
     {
+
+        Manager managerToDelete = _managerRepository.Get(id);
+
+        if (managerToDelete == null)
+        {
+            throw new ArgumentNullException("Manager not found");
+        }
         try
         {
-            Manager managerToDelete = _managerRepository.Get(id);
-
-            if (managerToDelete == null)
-            {
-                throw new ArgumentNullException("Manager not found");
-            }
             _managerRepository.Delete(managerToDelete);
 
         }
