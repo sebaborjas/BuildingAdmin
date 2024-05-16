@@ -8,7 +8,7 @@ using WebApi.Constants;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/tickets")]
+    [Route("api/v2/tickets")]
     [ApiController]
     public class TicketController : ControllerBase
     {
