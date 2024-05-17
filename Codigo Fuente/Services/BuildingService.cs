@@ -138,20 +138,14 @@ public class BuildingService : IBuildingService
 
     public Building Get(int id)
     {
-        try
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
+        if (buildingToReturn == null)
         {
-            var currentUser = _sessionService.GetCurrentUser() as Manager;
-            var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
-            if (buildingToReturn == null)
-            {
-                throw new ArgumentNullException("Building not found");
-            }
-            return buildingToReturn;
+            throw new ArgumentNullException("Building not found");
         }
-        catch (Exception e)
-        {
-            throw new InvalidOperationException("Error getting building");
-        }
+        return buildingToReturn;
+
     }
 
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
@@ -181,7 +175,7 @@ public class BuildingService : IBuildingService
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException("Error assigning building to manager");
+            throw new InvalidOperationException("Error assigning building to manager", e);
         }
     }
 
