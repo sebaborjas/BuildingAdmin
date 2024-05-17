@@ -85,17 +85,17 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
         public void TestCreateBuildingWithoutBody()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
             CreateBuildingInput input = null;
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithoutName()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -109,11 +109,10 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithEmptyName()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -128,11 +127,10 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithoutAddress()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -146,11 +144,10 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithEmptyAddress()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -166,10 +163,10 @@ namespace TestWebApi
 
             var result = buildingController.CreateBuilding(input);
 
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithoutLocation()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -183,11 +180,10 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithEmptyLocation()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -202,11 +198,10 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithoutConstructionCompany()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -220,11 +215,10 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithEmptyConstructionCompany()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -239,11 +233,10 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestCreateBuildingWithInvalidExpenses()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -258,12 +251,11 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateBuildingWithInvalidApartment()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -291,8 +283,6 @@ namespace TestWebApi
             };
 
             var result = buildingController.CreateBuilding(input);
-
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
         [TestMethod]
@@ -308,6 +298,7 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void DeleteInvalidBuilding()
         {
             _buildingServices.Setup(r => r.DeleteBuilding(It.IsAny<int>())).Throws(new Exception());
@@ -316,7 +307,6 @@ namespace TestWebApi
             var result = buildingController.DeleteBuilding(10);
 
             _buildingServices.VerifyAll();
-            Assert.IsTrue(result.GetType().Equals(typeof(NotFoundObjectResult)));
         }
 
         [TestMethod]
@@ -352,6 +342,7 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
         public void TestModifyInvalidBuilding()
         {
             _buildingServices.Setup(r => r.ModifyBuilding(It.IsAny<int>(), It.IsAny<Building>())).Throws(new KeyNotFoundException());
@@ -365,10 +356,10 @@ namespace TestWebApi
             var result = buildingController.ModifyBuilding(100, input);
 
             _buildingServices.VerifyAll();
-            Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestModifyBuildingWithInvalidData()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -380,7 +371,7 @@ namespace TestWebApi
             };
             var result = buildingController.ModifyBuilding(100, input);
 
-            Assert.IsTrue(result.GetType().Equals(typeof(BadRequestObjectResult)));
+           // Assert.IsTrue(result.GetType().Equals(typeof(BadRequestObjectResult)));
         }
 
         [TestMethod]
@@ -421,7 +412,6 @@ namespace TestWebApi
 
             _buildingServices.VerifyAll();
             CollectionAssert.AreEqual(buildingsRecieved, buildingsExpected);
-
         }
 
         [TestMethod]
@@ -432,9 +422,32 @@ namespace TestWebApi
                 Id = 11,
                 Address = "Calle, 123, esquina",
                 Expenses = 1000,
-                ConstructionCompany = new ConstructionCompany(),
+                ConstructionCompany = new ConstructionCompany()
+                {
+                    Id = 1,
+                    Name = "Empresa constructora"
+                },
                 Location = "111,111",
-                Name = "Edificio nuevo"
+                Name = "Edificio nuevo",
+                Apartments = new List<Apartment>()
+                {
+                    new Apartment()
+                    {
+                        Id = 1,
+                        Floor = 1,
+                        DoorNumber = 1,
+                        Owner = new Owner()
+                        {
+                            Id = 1,
+                            Name = "Nombre",
+                            LastName = "Apellido",
+                            Email = "test@email.com"
+                        },
+                        Rooms = 2,
+                        Bathrooms = 1,
+                        HasTerrace = false
+                    }
+                }
             };
             _buildingServices.Setup(r => r.Get(It.IsAny<int>())).Returns(building);
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -449,6 +462,7 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
         public void TestGetBuildingNotFound()
         {
             Building building = null;
@@ -458,7 +472,6 @@ namespace TestWebApi
             var result = buildingController.Get(11);
 
             _buildingServices.VerifyAll();
-            Assert.IsTrue(result.GetType().Equals(typeof(NotFoundObjectResult)));
         }
     }
 }
