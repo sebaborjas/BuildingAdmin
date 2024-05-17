@@ -189,6 +189,7 @@ namespace TestServices
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestAssignNonExistentTicket()
         {
             Ticket ticket = null;
@@ -206,11 +207,10 @@ namespace TestServices
             _ticketService = _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
 
             var result = _ticketService.AssignTicket(100, 2);
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestAssignInvalidTicket()
         {
             var apartment = new Apartment()
@@ -235,12 +235,11 @@ namespace TestServices
             _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
 
             var result = _ticketService.AssignTicket(100, 2);
-
-            Assert.IsNull(result);
         }
 
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestAssignTicketToNonExistentOperator()
         {
             var ticket = new Ticket()
@@ -261,10 +260,10 @@ namespace TestServices
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
             _maintenanceOperatorRepository.VerifyAll();
-            Assert.IsNull(result);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestAssignTicketToInvalidOperator()
         {
             var ticket = new Ticket()
@@ -296,10 +295,10 @@ namespace TestServices
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
             _maintenanceOperatorRepository.VerifyAll();
-            Assert.IsNull(result);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestAssignNotOpenTicket()
         {
             var ticket = new Ticket()
@@ -327,8 +326,6 @@ namespace TestServices
 
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -369,6 +366,7 @@ namespace TestServices
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestStartNonExistentTicket()
         {
             _maintenance = new MaintenanceOperator()
@@ -389,11 +387,10 @@ namespace TestServices
 
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestStartInvalidTicket()
         {
             _maintenance = new MaintenanceOperator()
@@ -423,11 +420,10 @@ namespace TestServices
 
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestStartNotOpenTicket()
         {
             _maintenance = new MaintenanceOperator()
@@ -457,8 +453,6 @@ namespace TestServices
 
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
-
-            Assert.IsNull(result);
         }
 
 
@@ -501,6 +495,7 @@ namespace TestServices
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestCompleteNonExistentTicket()
         {
             _maintenance = new MaintenanceOperator()
@@ -521,11 +516,10 @@ namespace TestServices
 
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestCompleteInvalidTicket()
         {
             _maintenance = new MaintenanceOperator()
@@ -555,11 +549,10 @@ namespace TestServices
 
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestCompleteNotInProgressTicket()
         {
             _maintenance = new MaintenanceOperator()
@@ -589,8 +582,6 @@ namespace TestServices
 
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
