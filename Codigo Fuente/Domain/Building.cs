@@ -100,4 +100,13 @@ public class Building
 
         return regex.IsMatch(value);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is Building building)
+        {
+            return building.Id == Id;
+        }
+        return false;
+    }
 }
