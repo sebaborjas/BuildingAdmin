@@ -371,7 +371,7 @@ namespace TestWebApi
             };
             var result = buildingController.ModifyBuilding(100, input);
 
-           // Assert.IsTrue(result.GetType().Equals(typeof(BadRequestObjectResult)));
+            _buildingServices.VerifyAll();
         }
 
         [TestMethod]

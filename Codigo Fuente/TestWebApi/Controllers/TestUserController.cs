@@ -50,8 +50,6 @@ public class TestUserController
 
         var expectedContent = new AdministratorModel(admin);
 
-
-
         _userServiceMock.VerifyAll();
         Assert.AreEqual(administratorModel, expectedContent);
     }

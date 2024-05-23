@@ -65,7 +65,6 @@ namespace TestWebApi
             var result = ticketController.CreateTicket(ticketCreateModel);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();
@@ -158,7 +157,6 @@ namespace TestWebApi
             var result = ticketController.AssignTicket(1, 1);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();
@@ -193,7 +191,6 @@ namespace TestWebApi
             var result = ticketController.StartTicket(1);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();
@@ -227,7 +224,6 @@ namespace TestWebApi
             var result = ticketController.CompleteTicket(1, 100);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();

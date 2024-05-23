@@ -82,4 +82,13 @@ public class Ticket
         _totalCost = totalCost;
         Status = Status.Closed;
     }
+
+    public override bool Equals(object obj)
+    {
+       if(obj is Ticket ticket)
+        {
+           return ticket.Id == Id;
+       }
+       return false;
+    }
 }
