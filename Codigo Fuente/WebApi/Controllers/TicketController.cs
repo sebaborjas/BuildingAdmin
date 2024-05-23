@@ -8,7 +8,7 @@ using WebApi.Constants;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/tickets")]
+    [Route("api/v2/tickets")]
     [ApiController]
     public class TicketController : ControllerBase
     {
@@ -35,9 +35,9 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{category?}")]
+        [HttpGet]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult GetTickets(string category = null)
+        public IActionResult GetTickets([FromQuery]string? category = null)
         {
             var tickets = _ticketServices.GetTickets(category);
             var response = new List<TicketModel>();
@@ -48,7 +48,7 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("assigned-tickets")]
+        [HttpGet("assigned")]
         [AuthenticationFilter(Role = RoleConstants.MaintenanceOperatorRole)]
         public IActionResult GetAssignedTickets()
         {

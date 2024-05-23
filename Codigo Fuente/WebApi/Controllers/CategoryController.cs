@@ -7,7 +7,7 @@ using WebApi.Constants;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/categories")]
+    [Route("api/v2/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -31,26 +31,28 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult Get([FromQuery] int? id)
         {
-            var categories = _service.GetAll();
-            List<GetCategoryOutput> response = new List<GetCategoryOutput>();
-            categories.ForEach(category =>
+            if(id == null)
             {
-                response.Add(new GetCategoryOutput(category));
-            });
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var category = _service.Get(id);
-            if(category == null)
-            {
-                return NotFound("Category not found");
+                var categories = _service.GetAll();
+                List<GetCategoryOutput> response = new List<GetCategoryOutput>();
+                categories.ForEach(category =>
+                {
+                    response.Add(new GetCategoryOutput(category));
+                });
+                return Ok(response);
             }
-            return Ok(new GetCategoryOutput(category));
+            else 
+            {
+                var category = _service.Get(id.Value);
+                if(category == null)
+                {
+                    return NotFound("Category not found");
+                }
+                return Ok(new GetCategoryOutput(category));
+            }
+            
         }
 
         private bool IsValidCreateCategoryInput(CreateCategoryModel createCategoryModel)

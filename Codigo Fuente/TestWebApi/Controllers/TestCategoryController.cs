@@ -96,7 +96,7 @@ public class TestCategoryController
             expectedCategories.Add(new GetCategoryOutput(category));
         });
 
-        var result = categoryController.GetAll();
+        var result = categoryController.Get(null);
         var okResult = result as OkObjectResult;
         var categoriesReturned = okResult.Value as List<GetCategoryOutput>;
 
@@ -111,7 +111,7 @@ public class TestCategoryController
         _categoryServiceMock.Setup(r => r.GetAll()).Returns(categories);
         var categoryController = new CategoryController(_categoryServiceMock.Object);
 
-        var result = categoryController.GetAll();
+        var result = categoryController.Get(null);
         var okResult = result as OkObjectResult;
         var categoriesReturned = okResult.Value as List<GetCategoryOutput>;
 
