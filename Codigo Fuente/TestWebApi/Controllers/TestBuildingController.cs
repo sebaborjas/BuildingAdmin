@@ -406,7 +406,7 @@ namespace TestWebApi
                 buildingsExpected.Add(new GetBuildingOutput(building));
             });
 
-            var result = buildingController.GetAll();
+            var result = buildingController.Get(null);
             var okResult = result as OkObjectResult;
             var buildingsRecieved = okResult.Value as List<GetBuildingOutput>;
 

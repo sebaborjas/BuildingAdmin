@@ -8,7 +8,7 @@ using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/buildings")]
+    [Route("api/v2/buildings")]
     [ApiController]
     public class BuildingController : ControllerBase
     {
@@ -46,23 +46,24 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult GetAll()
+        public IActionResult Get([FromQuery] int? id)
         {
-            var buildings = _buildingServices.GetAllBuildingsForUser();
-            var response = new List<GetBuildingOutput>();
-            buildings.ForEach(building =>
+            if (id == null)
             {
-                response.Add(new GetBuildingOutput(building));
-            });
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult Get(int id)
-        {
-            var building = _buildingServices.Get(id);
-            return Ok(new GetBuildingOutput(building));
+                var buildings = _buildingServices.GetAllBuildingsForUser();
+                var response = new List<GetBuildingOutput>();
+                buildings.ForEach(building =>
+                {
+                    response.Add(new GetBuildingOutput(building));
+                });
+                return Ok(response);
+            }
+            else
+            {
+                var building = _buildingServices.Get(id.Value);
+                return Ok(new GetBuildingOutput(building));
+            }
+            
         }
     }
 }
