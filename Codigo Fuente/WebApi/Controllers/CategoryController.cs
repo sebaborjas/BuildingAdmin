@@ -30,18 +30,6 @@ namespace WebApi.Controllers
             return Ok(new CategoryModel(category));
         }
 
-        // [HttpGet]
-        // public IActionResult GetAll()
-        // {
-        //     var categories = _service.GetAll();
-        //     List<GetCategoryOutput> response = new List<GetCategoryOutput>();
-        //     categories.ForEach(category =>
-        //     {
-        //         response.Add(new GetCategoryOutput(category));
-        //     });
-        //     return Ok(response);
-        // }
-
         [HttpGet]
         public IActionResult Get([FromQuery] int? id)
         {
