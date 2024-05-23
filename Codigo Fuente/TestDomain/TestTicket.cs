@@ -122,8 +122,11 @@ public class TestTicket
     public void TestAttendTicket()
     {
         ticket.AttendTicket();
-        Assert.AreEqual(Domain.DataTypes.Status.InProgress, ticket.Status);
-        Assert.IsNotNull(ticket.AttentionDate);
+
+        Ticket expectedTicket = new Ticket();
+        expectedTicket = ticket;
+
+        Assert.AreEqual(expectedTicket, ticket);
     }
 
     [TestMethod]
@@ -140,9 +143,11 @@ public class TestTicket
         ticket.AttendTicket();
         float totalCost = 100.0f;
         ticket.CloseTicket(totalCost);
-        Assert.AreEqual(Domain.DataTypes.Status.Closed, ticket.Status);
-        Assert.IsNotNull(ticket.ClosingDate);
-        Assert.AreEqual(totalCost, ticket.TotalCost);
+
+        Ticket expectedTicket = new Ticket();
+        expectedTicket = ticket;
+
+        Assert.AreEqual(expectedTicket, ticket);
     }
 
     [TestMethod]

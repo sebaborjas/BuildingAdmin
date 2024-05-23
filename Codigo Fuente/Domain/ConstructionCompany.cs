@@ -19,5 +19,12 @@ public class ConstructionCompany
         }
     }
 
-
+    public override bool Equals(object obj)
+    {
+        if (obj is ConstructionCompany constructionCompany)
+        {
+            return constructionCompany.Id == Id;
+        }
+        return false;
+    }
 }

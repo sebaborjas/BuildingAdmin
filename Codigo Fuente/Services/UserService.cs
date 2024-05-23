@@ -21,6 +21,12 @@ public class UserService : IUserServices
 
     public Administrator CreateAdministrator(Administrator administrator)
     {
+
+        if (!IsNewAdministratorValid(administrator))
+        {
+            throw new ArgumentException("Invalid administrator data");
+        }
+
         User userAlreadyExist = null;
         userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == administrator.Email);
         if (userAlreadyExist == null)
@@ -36,12 +42,25 @@ public class UserService : IUserServices
         {
             throw new ArgumentException("User already exist");
         }
-        _adminRepository.Insert(administrator);
-        return administrator;
+        try
+        {
+            _adminRepository.Insert(administrator);
+            return administrator;
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error creating administrator", e);
+        }
     }
 
     public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator)
     {
+
+        if (!IsNewMaintenanceOperatorValid(maintenanceOperator))
+        {
+            throw new ArgumentException("Invalid maintenance operator data");
+        }
+
         User userAlreadyExist = null;
         userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
         if (userAlreadyExist == null)
@@ -63,21 +82,46 @@ public class UserService : IUserServices
         {
             throw new ArgumentException("Invalid building");
         };
-
-        maintenanceOperator.Building = operatorBuilding;
-        _operatorRepository.Insert(maintenanceOperator);
-        return maintenanceOperator;
+        try
+        {
+            maintenanceOperator.Building = operatorBuilding;
+            _operatorRepository.Insert(maintenanceOperator);
+            return maintenanceOperator;
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error creating maintenance operator", e);
+        }
 
     }
 
     public void DeleteManager(int id)
     {
+
         Manager managerToDelete = _managerRepository.Get(id);
 
         if (managerToDelete == null)
         {
             throw new ArgumentNullException("Manager not found");
         }
-        _managerRepository.Delete(managerToDelete);
+        try
+        {
+            _managerRepository.Delete(managerToDelete);
+
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error deleting manager", e);
+        }
+    }
+
+    private bool IsNewAdministratorValid(Administrator administrator)
+    {
+        return administrator != null && administrator.Name != null && administrator.LastName != null && administrator.Email != null && administrator.Password != null;
+    }
+
+    private bool IsNewMaintenanceOperatorValid(MaintenanceOperator maintenanceOperator)
+    {
+        return maintenanceOperator != null && maintenanceOperator.Name != null && maintenanceOperator.LastName != null && maintenanceOperator.Email != null && maintenanceOperator.Password != null;
     }
 }

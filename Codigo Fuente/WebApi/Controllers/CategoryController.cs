@@ -7,7 +7,7 @@ using WebApi.Constants;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/categories")]
+    [Route("api/v2/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -22,40 +22,29 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult CreateCategory([FromBody] CreateCategoryModel createCategoryModel)
         {
-            if (!IsValidCreateCategoryInput(createCategoryModel))
-            {
-                return BadRequest();
-            }
             var category = _service.CreateCategory(createCategoryModel.Name);
             return Ok(new CategoryModel(category));
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult Get([FromQuery] int? id)
         {
-            var categories = _service.GetAll();
-            List<GetCategoryOutput> response = new List<GetCategoryOutput>();
-            categories.ForEach(category =>
+            if(id == null)
             {
-                response.Add(new GetCategoryOutput(category));
-            });
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var category = _service.Get(id);
-            if(category == null)
-            {
-                return NotFound("Category not found");
+                var categories = _service.GetAll();
+                List<GetCategoryOutput> response = new List<GetCategoryOutput>();
+                categories.ForEach(category =>
+                {
+                    response.Add(new GetCategoryOutput(category));
+                });
+                return Ok(response);
             }
-            return Ok(new GetCategoryOutput(category));
-        }
-
-        private bool IsValidCreateCategoryInput(CreateCategoryModel createCategoryModel)
-        {
-            return createCategoryModel != null && !string.IsNullOrEmpty(createCategoryModel.Name);
+            else 
+            {
+                var category = _service.Get(id.Value);
+                return Ok(new GetCategoryOutput(category));
+            }
+            
         }
     }
 }

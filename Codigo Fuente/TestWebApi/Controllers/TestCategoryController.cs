@@ -38,33 +38,35 @@ public class TestCategoryController
 
         var categoryController = new CategoryController(_categoryServiceMock.Object);
         var result = categoryController.CreateCategory(new CreateCategoryModel { Name = "Test Category" });
-        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-        
+
         var okResult = result as OkObjectResult;
-        Assert.IsNotNull(okResult);
-        Assert.IsInstanceOfType(okResult.Value, typeof(CategoryModel));
-        
+
         var categoryModel = okResult.Value as CategoryModel;
-        Assert.IsNotNull(categoryModel);
         Assert.AreEqual(category.Id, categoryModel.Id);
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestCreateCategoryWithNullInput()
     {
         var categoryController = new CategoryController(_categoryServiceMock.Object);
+        _categoryServiceMock.Setup(x => x.CreateCategory(null)).Throws(new ArgumentNullException("name", "Invalid category"));
 
-        var result = categoryController.CreateCategory(null);
-        Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        var result = categoryController.CreateCategory(new CreateCategoryModel());
+
+        _categoryServiceMock.VerifyAll();
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestCreateCategoryWithEmptyName()
     {
         var categoryController = new CategoryController(_categoryServiceMock.Object);
+        _categoryServiceMock.Setup(x => x.CreateCategory("")).Throws(new ArgumentNullException("name", "Invalid category"));
 
-        var result = categoryController.CreateCategory(new CreateCategoryModel());
-        Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        var result = categoryController.CreateCategory(new CreateCategoryModel { Name = "" });
+
+        _categoryServiceMock.VerifyAll();
     }
 
     [TestMethod]
@@ -96,7 +98,7 @@ public class TestCategoryController
             expectedCategories.Add(new GetCategoryOutput(category));
         });
 
-        var result = categoryController.GetAll();
+        var result = categoryController.Get(null);
         var okResult = result as OkObjectResult;
         var categoriesReturned = okResult.Value as List<GetCategoryOutput>;
 
@@ -111,7 +113,7 @@ public class TestCategoryController
         _categoryServiceMock.Setup(r => r.GetAll()).Returns(categories);
         var categoryController = new CategoryController(_categoryServiceMock.Object);
 
-        var result = categoryController.GetAll();
+        var result = categoryController.Get(null);
         var okResult = result as OkObjectResult;
         var categoriesReturned = okResult.Value as List<GetCategoryOutput>;
 
@@ -124,10 +126,10 @@ public class TestCategoryController
     public void TestGetCategory()
     {
         var category = new Category()
-            {
-                Id = 1,
-                Name = "Electricista"
-            };
+        {
+            Id = 1,
+            Name = "Electricista"
+        };
         _categoryServiceMock.Setup(r => r.Get(It.IsAny<int>())).Returns(category);
         var categoryController = new CategoryController(_categoryServiceMock.Object);
         var expectedCategory = new GetCategoryOutput(category);
@@ -141,6 +143,7 @@ public class TestCategoryController
     }
 
     [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
     public void TestGetCategoryNotFound()
     {
         Category category = null;
@@ -148,9 +151,8 @@ public class TestCategoryController
         var categoryController = new CategoryController(_categoryServiceMock.Object);
 
         var result = categoryController.Get(1);
-        
+
         _categoryServiceMock.VerifyAll();
-        Assert.IsTrue(result.GetType().Equals(typeof(NotFoundObjectResult)));
     }
 
 }

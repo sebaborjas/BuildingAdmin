@@ -29,7 +29,6 @@ namespace TestServices
             _categoryRepositoryMock.Setup(r => r.Insert(It.IsAny<Category>())).Verifiable();
 
             var category = _service.CreateCategory("Test");
-            Assert.IsNotNull(category);
             _categoryRepositoryMock.VerifyAll();
 
             Assert.AreEqual("Test", category.Name);
@@ -43,7 +42,6 @@ namespace TestServices
             _categoryRepositoryMock.Setup(r => r.Insert(It.IsAny<Category>())).Verifiable();
 
             var category = _service.CreateCategory(null);
-            Assert.IsNotNull(category);
             _categoryRepositoryMock.VerifyAll();
 
             Assert.IsNull(category.Name);
@@ -57,7 +55,6 @@ namespace TestServices
             _categoryRepositoryMock.Setup(r => r.Insert(It.IsAny<Category>())).Verifiable();
 
             var category = _service.CreateCategory("");
-            Assert.IsNotNull(category);
             _categoryRepositoryMock.VerifyAll();
 
             Assert.AreEqual("", category.Name);
@@ -71,7 +68,6 @@ namespace TestServices
             _categoryRepositoryMock.Setup(r => r.Insert(It.IsAny<Category>())).Verifiable();
 
             var category = _service.CreateCategory("     ");
-            Assert.IsNotNull(category);
             _categoryRepositoryMock.VerifyAll();
 
             Assert.AreEqual("     ", category.Name);
