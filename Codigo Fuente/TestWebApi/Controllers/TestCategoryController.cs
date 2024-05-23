@@ -38,14 +38,10 @@ public class TestCategoryController
 
         var categoryController = new CategoryController(_categoryServiceMock.Object);
         var result = categoryController.CreateCategory(new CreateCategoryModel { Name = "Test Category" });
-        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
 
         var okResult = result as OkObjectResult;
-        Assert.IsNotNull(okResult);
-        Assert.IsInstanceOfType(okResult.Value, typeof(CategoryModel));
 
         var categoryModel = okResult.Value as CategoryModel;
-        Assert.IsNotNull(categoryModel);
         Assert.AreEqual(category.Id, categoryModel.Id);
     }
 
