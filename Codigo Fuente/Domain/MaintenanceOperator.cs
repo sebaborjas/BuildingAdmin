@@ -14,6 +14,6 @@ namespace Domain
             }
         }
 
-        public Building Building { get; set; }
+        public List<Building> Buildings { get; set; }
     }
 }

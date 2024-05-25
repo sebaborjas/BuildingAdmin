@@ -117,4 +117,36 @@ public class TestMaintenanceOperator
         Assert.AreEqual(password, _operator.Password);
     }
 
+    [TestMethod]
+    public void SetBuildings()
+    {
+        List<Building> buildings = new List<Building>(){
+            new Building()
+            {
+                Id = 1,
+                Address = "Calle, 1234, esquina",
+                Apartments = new List<Apartment>(),
+                ConstructionCompany = new ConstructionCompany(),
+                Expenses = 1200,
+                Location = "1234,1234",
+                Name = "Edificio uno",
+                Tickets= new List<Ticket>()
+            },
+            new Building()
+            {
+                Id = 12,
+                Address = "Calle, 4567, esquina",
+                Apartments = new List<Apartment>(),
+                ConstructionCompany = new ConstructionCompany(),
+                Expenses = 2100,
+                Location = "4321,4321",
+                Name = "Edificio dos",
+                Tickets= new List<Ticket>()
+            }
+        };
+        _operator.Buildings = buildings;
+
+        CollectionAssert.AreEqual(buildings, _operator.Buildings);
+    }
+
 }
