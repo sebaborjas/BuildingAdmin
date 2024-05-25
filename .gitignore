@@ -461,17 +461,21 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+CodigoFuente/Frontend/.angular/cache
 .sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
+connect.lock
+coverage
+libpeerconnection.log
 testem.log
-/typings
+typings
 
 # System files
 .DS_Store
 Thumbs.db
+
+
+.nx/cache
+.nx/workspace-data
 
 
 ### VisualStudio ###
