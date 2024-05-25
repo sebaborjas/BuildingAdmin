@@ -120,7 +120,7 @@ namespace TestServices
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void TestDeleteInvitationAccepted()
         {
             _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
@@ -136,7 +136,6 @@ namespace TestServices
         public void TestModifyInvitation()
         {
             _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation());
 
             _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>())).Verifiable();
@@ -180,15 +179,18 @@ namespace TestServices
             _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
 
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()))
-                .Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation() { Name = "Rogelio", Email = "mail@test.com", ExpirationDate = DateTime.Now.AddDays(4), Id = 1, Status = InvitationStatus.Pending });
-
-            _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>()));
+                .Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation() { Name = "Test", Email = "mail@test.com", ExpirationDate = DateTime.Now.AddDays(4), Id = 1, Status = InvitationStatus.Pending });
 
             _managerRepositoryMock.Setup(r => r.Insert(It.IsAny<Manager>())).Verifiable();
+            _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
 
             var invitation = new Invitation
             {
+                Id = 1,
+                Name = "Test",
                 Email = "mail@test.com",
+                ExpirationDate = DateTime.Now.AddDays(4),
+                Status = InvitationStatus.Pending
             };
             var manager = _service.AcceptInvitation(invitation, "contraseña123!");
 
@@ -196,6 +198,7 @@ namespace TestServices
 
             _invitationRepositoryMock.VerifyAll();
             _managerRepositoryMock.VerifyAll();
+
         }
 
 

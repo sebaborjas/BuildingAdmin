@@ -65,7 +65,6 @@ namespace TestWebApi
             var result = ticketController.CreateTicket(ticketCreateModel);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();
@@ -73,9 +72,10 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestCreateTicketBadRequest()
         {
-           
+            _ticketServiceMock.Setup(x => x.CreateTicket(It.IsAny<Ticket>())).Throws(new InvalidDataException());
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
             var ticketCreateModel = new TicketCreateModel()
@@ -85,8 +85,8 @@ namespace TestWebApi
                 CategoryId = 1
             };
 
-            var result = ticketController.CreateTicket(null);
-            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+            var result = ticketController.CreateTicket(ticketCreateModel);
+            _ticketServiceMock.VerifyAll();
         }
 
         [TestMethod]
@@ -157,7 +157,6 @@ namespace TestWebApi
             var result = ticketController.AssignTicket(1, 1);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();
@@ -166,14 +165,14 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestAssignTicketNotFound()
         {
-            _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<int>())).Returns((Ticket)null);
+            _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<int>())).Throws(new InvalidDataException());
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
             var result = ticketController.AssignTicket(1, 1);
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
-
+            _ticketServiceMock.VerifyAll();
         }
 
         [TestMethod]
@@ -192,7 +191,6 @@ namespace TestWebApi
             var result = ticketController.StartTicket(1);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();
@@ -200,13 +198,14 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestStartTicketNotFound()
         {
-            _ticketServiceMock.Setup(x => x.StartTicket(It.IsAny<int>())).Returns((Ticket)null);
+            _ticketServiceMock.Setup(x => x.StartTicket(It.IsAny<int>())).Throws(new InvalidDataException());
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
             var result = ticketController.StartTicket(1);
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+            _ticketServiceMock.VerifyAll();
         }
 
         [TestMethod]
@@ -225,7 +224,6 @@ namespace TestWebApi
             var result = ticketController.CompleteTicket(1, 100);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketModel;
-            Assert.IsNotNull(ticketResponse);
 
             var expectedTicket = new TicketModel(ticket);
             _ticketServiceMock.VerifyAll();
@@ -233,13 +231,14 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestCompleteTicketNotFound()
         {
-            _ticketServiceMock.Setup(x => x.CompleteTicket(It.IsAny<int>(), It.IsAny<float>())).Returns((Ticket)null);
+            _ticketServiceMock.Setup(x => x.CompleteTicket(It.IsAny<int>(), It.IsAny<float>())).Throws(new InvalidDataException());
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
             var result = ticketController.CompleteTicket(1, 100);
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+            _ticketServiceMock.VerifyAll();
         }
 
     }

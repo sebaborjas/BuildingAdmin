@@ -47,6 +47,7 @@ namespace TestWebApi
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void TestFailedLogin()
         {
             _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
@@ -61,7 +62,6 @@ namespace TestWebApi
             var result = loginController.Login(loginInput);
 
             _sessionService.VerifyAll();
-            Assert.IsTrue(result.GetType().Equals(typeof(UnauthorizedObjectResult)));
         }
 
     }

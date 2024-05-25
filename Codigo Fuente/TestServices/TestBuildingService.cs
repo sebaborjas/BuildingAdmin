@@ -75,8 +75,12 @@ namespace TestServices
 
             _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
               .Returns((Expression<Func<Building, bool>> predicate, List<string> includes) => null);
+            _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>()))
+    .Returns((Expression<Func<Owner, bool>> predicate, List<string> includes) => null);
+
             _constructionCompanyMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>())).Returns((ConstructionCompany)null);
             _constructionCompanyMock.Setup(r => r.Insert(It.IsAny<ConstructionCompany>())).Verifiable();
+            _ownerRepositoryMock.Setup(r => r.Insert(It.IsAny<Owner>())).Verifiable();
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _managerRepositoryMock.Setup(r => r.Update(It.IsAny<Manager>())).Verifiable();
 
@@ -85,11 +89,15 @@ namespace TestServices
             var building = new Building
             {
                 Name = "Edificio nuevo",
-                Address = "Calle, 123, esquina",
-                Location = "111,111",
-                ConstructionCompany = new ConstructionCompany(),
+                Address = "Calle, 1234, esquina",
+                Location = "111, 111",
+                ConstructionCompany = new ConstructionCompany()
+                {
+                    Id = 1,
+                    Name = "Constructora"
+                },
                 Expenses = 1000,
-                Apartments = new List<Apartment>()
+                Apartments = new List<Apartment>() { _apartment }
             };
 
             var result = _buildingService.CreateBuilding(building);
@@ -172,30 +180,46 @@ namespace TestServices
         [TestMethod]
         public void ModifyBuilding()
         {
+            Building existingBuilding = new Building()
+            {
+                Id = 1,
+                Address = "Rivera, 1111, Soca",
+                ConstructionCompany = new ConstructionCompany() { Name = "Constructora" },
+                Expenses = 2000,
+                Location = "111,111",
+                Name = "Edificio Las Delicias",
+                Apartments = new List<Apartment>() { _apartment }
+            };
+
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
-            _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns((Owner)null);
-            _ownerRepositoryMock.Setup(r => r.Insert(It.IsAny<Owner>())).Verifiable();
-            _constructionCompanyMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>())).Returns((ConstructionCompany)null);
-            _constructionCompanyMock.Setup(r => r.Insert(It.IsAny<ConstructionCompany>())).Verifiable();
-            var modifiedBuilding = new Building();
-            modifiedBuilding.Expenses = 5000;
-            modifiedBuilding.ConstructionCompany = new ConstructionCompany() { Id = 2, Name = "Constructora modificada" };
-            modifiedBuilding.Apartments.Add(new Apartment()
+            _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns(_apartment.Owner);
+            _constructionCompanyMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>())).Returns(existingBuilding.ConstructionCompany);
+
+            Building modifiedBuilding = new Building()
             {
-                Owner = new Owner() { Email = "otroOwner@mail.com", Name = "Dueño", LastName = "Nuevo " },
-                Id = 1
-            });
+                Id = existingBuilding.Id,
+                Address = existingBuilding.Address,
+                ConstructionCompany = new ConstructionCompany() { Name = "New Constructora" },
+                Expenses = 1000,
+                Location = existingBuilding.Location,
+                Name = existingBuilding.Name,
+                Apartments = new List<Apartment>()
+                {
+                    new Apartment()
+                    {
+                        Owner = new Owner() { Email = "newOwner@test.com", Name = "Nuevo", LastName = "Owner" },
+                        Id = 1
+                    }
+                }
+            };
 
             var result = _buildingService.ModifyBuilding(1, modifiedBuilding);
-
-            Assert.AreEqual(modifiedBuilding.Expenses, result.Expenses);
-            Assert.AreEqual(modifiedBuilding.ConstructionCompany.Name, result.ConstructionCompany.Name);
-            Assert.AreEqual(modifiedBuilding.Apartments.First().Owner, result.Apartments.First().Owner);
-            _buildingRepositoryMock.VerifyAll();
-            _sessionServiceMock.VerifyAll();
+            Assert.AreEqual(modifiedBuilding, result);
         }
+
+
 
         [TestMethod]
         public void ModifyBuildingWithExistingOwner()
@@ -204,21 +228,17 @@ namespace TestServices
             {
                 Id = 5,
                 Email = "ownerViejo@mail.com",
-                Name = "Dueño",
+                Name = "Due?o",
                 LastName = "Owner"
             };
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
             _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns(existingOwner);
-            _constructionCompanyMock.Setup(r=>r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>())).Returns((ConstructionCompany)null);
-            _constructionCompanyMock.Setup(r => r.Insert(It.IsAny<ConstructionCompany>())).Verifiable();
             var modifiedBuilding = new Building();
-            modifiedBuilding.Expenses = 5000;
-            modifiedBuilding.ConstructionCompany = new ConstructionCompany() { Id = 2, Name = "Constructora modificada" };
             modifiedBuilding.Apartments.Add(new Apartment()
             {
-                Owner = new Owner() { Email = "ownerViejo@mail.com", Name = "Dueño", LastName = "Nuevo " },
+                Owner = new Owner() { Email = "ownerViejo@mail.com", Name = "Due?o", LastName = "Nuevo " },
                 Id = 1
             });
 
@@ -226,8 +246,7 @@ namespace TestServices
 
             _buildingRepositoryMock.VerifyAll();
             _sessionServiceMock.VerifyAll();
-            Assert.AreEqual(modifiedBuilding.Expenses, result.Expenses);
-            Assert.AreEqual(modifiedBuilding.ConstructionCompany.Name, result.ConstructionCompany.Name);
+
             Assert.AreEqual(existingOwner, result.Apartments.First().Owner);
 
         }

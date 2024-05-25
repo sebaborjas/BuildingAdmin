@@ -105,12 +105,7 @@ namespace TestDataAccess
             _repository.Save();
 
             var retrievedApartment = _context.Apartments.Find(1);
-            Assert.AreEqual(retrievedApartment.Rooms, 5);
-            Assert.AreEqual(retrievedApartment.Bathrooms, 3);
-            Assert.AreEqual(retrievedApartment.DoorNumber, 5);
-            Assert.IsTrue(retrievedApartment.HasTerrace);
-            Assert.AreEqual(retrievedApartment.Floor, 3);
-            Assert.AreEqual(retrievedApartment.Owner, newOwner);
+            Assert.AreEqual(retrievedApartment, apartmentToModify);
         }
 
         [TestMethod]

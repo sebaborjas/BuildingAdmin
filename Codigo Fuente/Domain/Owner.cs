@@ -68,7 +68,16 @@ namespace Domain
             return regex.IsMatch(email);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is Owner owner)
+            {
+                return owner.Id == Id &&
+                        owner.Name == Name &&
+                        owner.LastName == LastName &&
+                        owner.Email == Email;
+            }
+            return false;
+        }
     }
-
-
 }
