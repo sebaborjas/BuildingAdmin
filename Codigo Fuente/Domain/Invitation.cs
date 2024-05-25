@@ -66,6 +66,7 @@ namespace Domain
             }
         }
 
+        public InvitationRoles Role { get; set; }
         private bool IsValidFormat(string pattern, string value)
         {
             Regex regex = new(pattern, RegexOptions.IgnoreCase);
