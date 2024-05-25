@@ -15,6 +15,8 @@ namespace Domain
 
         private DateTime _expirationDate;
 
+        private InvitationRoles _role;
+
         public InvitationStatus Status { get; set; }
 
         public int Id
@@ -66,7 +68,16 @@ namespace Domain
             }
         }
 
-        public InvitationRoles Role { get; set; }
+        public InvitationRoles Role {
+            get { return _role; }
+            set 
+            {
+                if (!Enum.IsDefined(typeof(InvitationRoles), value)) 
+                    throw new ArgumentOutOfRangeException("Rol no definido");
+                _role = value;
+            } 
+        }
+
         private bool IsValidFormat(string pattern, string value)
         {
             Regex regex = new(pattern, RegexOptions.IgnoreCase);

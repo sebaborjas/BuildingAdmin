@@ -179,6 +179,13 @@ namespace TestDomain
             Assert.AreEqual(InvitationRoles.ConstructionCompanyAdministrator, _invitation.Role);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TestSetInvalidRole()
+        {
+            _invitation.Role = (InvitationRoles)3;
+        }
+
     }
 
 }
