@@ -44,7 +44,6 @@ public class BuildingService : IBuildingService
         {
             throw new ArgumentException("Building already exist");
         }
-<<<<<<< Updated upstream
         if (!IsValidCreateBuilding(building))
         {
             throw new ArgumentException("Invalid building");
@@ -54,14 +53,11 @@ public class BuildingService : IBuildingService
             throw new ArgumentException("Building must have at least one apartment");
         }
 
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-
         try
         {
             building.ConstructionCompany = getConstructionCompany(building);
             SetApartmentsExistingOwnersByEmail(building.Apartments);
             _buildingRepository.Insert(building);
-            assignBuildingToManager(building, currentUser);
             return building;
         }
         catch (Exception e)
@@ -69,19 +65,6 @@ public class BuildingService : IBuildingService
             throw new InvalidOperationException("Error creating building", e);
         }
 
-=======
-
-        if (!IsValidCreateBuildingInput(building))
-        {
-            throw new ArgumentException("Invalid building input");
-        }
-
-        building.ConstructionCompany = currentUser.ConstructionCompany;
-        SetApartmentsExistingOwnersByEmail(building.Apartments);
-        _buildingRepository.Insert(building);
-
-        return building;
->>>>>>> Stashed changes
     }
 
     public void DeleteBuilding(int buildingId)
@@ -229,13 +212,7 @@ public class BuildingService : IBuildingService
     {
         try
         {
-<<<<<<< Updated upstream
             apartments.ForEach(apartment =>
-=======
-            var apartmentOwner = apartment.Owner;
-            var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);
-            if (existingOwner != null)
->>>>>>> Stashed changes
             {
                 var apartmentOwner = apartment.Owner;
                 var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);

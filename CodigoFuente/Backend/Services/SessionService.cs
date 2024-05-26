@@ -19,11 +19,7 @@ namespace Services
 
         private User? _currentUser;
 
-<<<<<<< Updated upstream
-        public SessionService(ISessionRepository sessionRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> maintenanceOperatorRepository)
-=======
         public SessionService(ISessionRepository sessionRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> maintenanceOperatorRepository, IGenericRepository<CompanyAdministrator> companyAdministrator)
->>>>>>> Stashed changes
         {
             _sessionRepository = sessionRepository;
             _managerRepository = managerRepository;
@@ -42,13 +38,7 @@ namespace Services
 
         public Session Login(string email, string password)
         {
-<<<<<<< Updated upstream
             try
-=======
-            User user = null;
-            user = _adminRepository.GetByCondition(user => user.Email == email);
-            if (user == null)
->>>>>>> Stashed changes
             {
                 User user = null;
                 user = _adminRepository.GetByCondition(user => user.Email == email);
@@ -60,42 +50,27 @@ namespace Services
                 {
                     user = _maintenanceOperatorRepository.GetByCondition(user => user.Email == email);
                 }
+                if (user == null)
+                {
+                    user = _companyAdministratorRepository.GetByCondition(user => user.Email == email);
+                }
                 if (user == null || user.Password != password)
                 {
                     throw new InvalidDataException();
                 }
+
                 var newSession = new Session()
                 {
                     User = user
                 };
+
                 _sessionRepository.Insert(newSession);
                 return newSession;
             }
-<<<<<<< Updated upstream
             catch (InvalidDataException)
-=======
-            if (user == null)
->>>>>>> Stashed changes
             {
                 throw new UnauthorizedAccessException();
             }
-<<<<<<< Updated upstream
-=======
-            if (user == null)
-            {
-                user = _companyAdministratorRepository.GetByCondition(user => user.Email == email);
-            }
-            if (user == null || user.Password != password)
-            {
-                throw new InvalidDataException();
-            }
-            var newSession = new Session()
-            {
-                User = user
-            };
-            _sessionRepository.Insert(newSession);
-            return newSession;
->>>>>>> Stashed changes
         }
     }
 }
