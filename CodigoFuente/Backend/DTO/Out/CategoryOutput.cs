@@ -7,9 +7,9 @@ using Domain;
 
 namespace DTO.Out
 {
-    public class CategoryModel
+    public class CategoryOutput
     {
-        public CategoryModel(Category category)
+        public CategoryOutput(Category category)
         {
             Id = category.Id;
         }
@@ -22,7 +22,7 @@ namespace DTO.Out
             {
                 return false;
             }
-            CategoryModel categoryModel = (CategoryModel)obj;
+            CategoryOutput categoryModel = (CategoryOutput)obj;
             return Id == categoryModel.Id;
         }
     }

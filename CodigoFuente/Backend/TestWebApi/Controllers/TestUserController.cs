@@ -31,7 +31,7 @@ public class TestUserController
             Password = "Prueba.1234"
         };
 
-        var administratorCreateModel = new AdministratorCreateModel
+        var administratorCreateModel = new AdministratorCreateInput
         {
             Name = "John",
             LastName = "Doe",
@@ -46,9 +46,9 @@ public class TestUserController
 
         var result = userController.CreateAdministrator(administratorCreateModel);
         var okResult = result as OkObjectResult;
-        var administratorModel = okResult.Value as AdministratorModel;
+        var administratorModel = okResult.Value as AdministratorOutput;
 
-        var expectedContent = new AdministratorModel(admin);
+        var expectedContent = new AdministratorOutput(admin);
 
         _userServiceMock.VerifyAll();
         Assert.AreEqual(administratorModel, expectedContent);
@@ -58,14 +58,14 @@ public class TestUserController
     [ExpectedException(typeof(NullReferenceException))]
     public void TestCreateAdministratorWithNoBody()
     {
-        AdministratorCreateModel administratorCreateModel = null;
+        AdministratorCreateInput administratorCreateModel = null;
         _userServiceMock.Setup(r => r.CreateAdministrator(It.IsAny<Administrator>())).Throws(new NullReferenceException());
 
         var userController = new UserController(_userServiceMock.Object);
 
         var result = userController.CreateAdministrator(administratorCreateModel);
         var okResult = result as OkObjectResult;
-        var administratorModel = okResult.Value as AdministratorModel;
+        var administratorModel = okResult.Value as AdministratorOutput;
 
         _userServiceMock.VerifyAll();
     }
@@ -80,7 +80,7 @@ public class TestUserController
             Email = "test@tes.com"
         };
 
-        AdministratorCreateModel administratorCreateModel = new AdministratorCreateModel
+        AdministratorCreateInput administratorCreateModel = new AdministratorCreateInput
         {
             LastName = admin.LastName,
             Email = admin.Email,
@@ -91,7 +91,7 @@ public class TestUserController
 
         var result = userController.CreateAdministrator(administratorCreateModel);
         var okResult = result as OkObjectResult;
-        var administratorModel = okResult.Value as AdministratorModel;
+        var administratorModel = okResult.Value as AdministratorOutput;
         _userServiceMock.VerifyAll();
 
     }
@@ -106,7 +106,7 @@ public class TestUserController
             Email = "test@test.com"
         };
 
-        AdministratorCreateModel administratorCreateModel = new AdministratorCreateModel
+        AdministratorCreateInput administratorCreateModel = new AdministratorCreateInput
         {
             Name = admin.Name,
             Email = admin.Email
@@ -129,7 +129,7 @@ public class TestUserController
             LastName = "Doe"
         };
 
-        AdministratorCreateModel administratorCreateModel = new AdministratorCreateModel
+        AdministratorCreateInput administratorCreateModel = new AdministratorCreateInput
         {
             Name = admin.Name,
             LastName = admin.LastName
@@ -155,7 +155,7 @@ public class TestUserController
             Email = "test@test.com",
         };
 
-        AdministratorCreateModel administratorCreateModel = new AdministratorCreateModel
+        AdministratorCreateInput administratorCreateModel = new AdministratorCreateInput
         {
             Name = admin.Name,
             LastName = admin.LastName,
@@ -183,7 +183,7 @@ public class TestUserController
             Building = new Building { Id = 1, Name = "Building" }
         };
 
-        var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
         {
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,
@@ -199,9 +199,9 @@ public class TestUserController
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
         var okResult = result as OkObjectResult;
-        var maintenanceOperatorModel = okResult.Value as MaintenanceOperatorModel;
+        var maintenanceOperatorModel = okResult.Value as MaintenanceOperatorOutput;
 
-        var expectedContent = new MaintenanceOperatorModel(maintenanceOperator);
+        var expectedContent = new MaintenanceOperatorOutput(maintenanceOperator);
 
 
 
@@ -213,7 +213,7 @@ public class TestUserController
     [ExpectedException(typeof(NullReferenceException))]
     public void TestCreateMaintenanceOperatorWithNoBody()
     {
-        MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = null;
+        MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = null;
 
         var userController = new UserController(_userServiceMock.Object);
 
@@ -232,7 +232,7 @@ public class TestUserController
             Email = "test@test.com"
         };
 
-        MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
         {
             LastName = maintenanceOperator.LastName,
             Email = maintenanceOperator.Email,
@@ -257,7 +257,7 @@ public class TestUserController
             Email = "test@test.com"
         };
 
-        MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
         {
             Name = maintenanceOperator.Name,
             Email = maintenanceOperator.Email,
@@ -283,7 +283,7 @@ public class TestUserController
             LastName = "Doe"
         };
 
-        MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
         {
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,
@@ -311,7 +311,7 @@ public class TestUserController
             Password = "Prueba.1234",
         };
 
-        MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
         {
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,
@@ -338,7 +338,7 @@ public class TestUserController
             Building = new Building()
         };
 
-        MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
         {
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,

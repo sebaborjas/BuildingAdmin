@@ -20,10 +20,10 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
-        public IActionResult CreateCategory([FromBody] CreateCategoryModel createCategoryModel)
+        public IActionResult CreateCategory([FromBody] CreateCategoryInput createCategoryModel)
         {
             var category = _service.CreateCategory(createCategoryModel.Name);
-            return Ok(new CategoryModel(category));
+            return Ok(new CategoryOutput(category));
         }
 
         [HttpGet]

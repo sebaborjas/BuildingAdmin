@@ -7,9 +7,9 @@ using Domain;
 
 namespace DTO.Out
 {
-    public class TicketModel
+    public class TicketOutput
     {
-        public TicketModel(Ticket ticket)
+        public TicketOutput(Ticket ticket)
         {
             Id = ticket.Id;
         }
@@ -22,7 +22,7 @@ namespace DTO.Out
             {
                 return false;
             }
-            TicketModel ticketModel = (TicketModel)obj;
+            TicketOutput ticketModel = (TicketOutput)obj;
             return Id == ticketModel.Id;
         }
     }

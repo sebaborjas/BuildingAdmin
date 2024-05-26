@@ -21,17 +21,17 @@ public class UserController : ControllerBase
 
   [HttpPost("administrator")]
   [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
-  public IActionResult CreateAdministrator([FromBody] AdministratorCreateModel newAdministrator)
+  public IActionResult CreateAdministrator([FromBody] AdministratorCreateInput newAdministrator)
   {
-    AdministratorModel administratorModel = new AdministratorModel(_service.CreateAdministrator(newAdministrator.ToEntity()));
+    AdministratorOutput administratorModel = new AdministratorOutput(_service.CreateAdministrator(newAdministrator.ToEntity()));
     return Ok(administratorModel);
   }
 
   [HttpPost("maintenance-operator")]
   [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-  public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateModel newMaintenanceOperator)
+  public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateInput newMaintenanceOperator)
   {
-    MaintenanceOperatorModel maintenanceOperator = new MaintenanceOperatorModel(_service.CreateMaintenanceOperator(newMaintenanceOperator.ToEntity()));
+    MaintenanceOperatorOutput maintenanceOperator = new MaintenanceOperatorOutput(_service.CreateMaintenanceOperator(newMaintenanceOperator.ToEntity()));
     return Ok(maintenanceOperator);
   }
 

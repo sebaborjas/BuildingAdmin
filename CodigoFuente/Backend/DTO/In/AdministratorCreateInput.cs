@@ -2,23 +2,21 @@ using Domain;
 
 namespace DTO.In
 {
-    public class MaintenanceOperatorCreateModel
+    public class AdministratorCreateInput
     {
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int BuildingId { get; set; }
 
-        public MaintenanceOperator ToEntity()
+        public Administrator ToEntity()
         {
-            return new MaintenanceOperator
+            return new Administrator
             {
                 Name = Name,
                 LastName = LastName,
                 Email = Email,
-                Password = Password,
-                Building = new Building() { Id = BuildingId }
+                Password = Password
             };
         }
     }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DTO.Out
 {
-    public class TicketListModel
+    public class TicketListOutput
     {
-        public List<TicketModel> Tickets { get; set; }
-        public TicketListModel() { }
+        public List<TicketOutput> Tickets { get; set; }
+        public TicketListOutput() { }
 
-        public TicketListModel(List<TicketModel> tickets)
+        public TicketListOutput(List<TicketOutput> tickets)
         {
             Tickets = tickets;
         }
@@ -22,7 +22,7 @@ namespace DTO.Out
             {
                 return false;
             }
-            TicketListModel ticketListModel = (TicketListModel)obj;
+            TicketListOutput ticketListModel = (TicketListOutput)obj;
             return Tickets == ticketListModel.Tickets;
         }
 

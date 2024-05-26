@@ -55,7 +55,7 @@ namespace TestWebApi
             _ticketServiceMock.Setup(x => x.CreateTicket(It.IsAny<Ticket>())).Returns(ticket);
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
-            var ticketCreateModel = new TicketCreateModel()
+            var ticketCreateModel = new TicketCreateInput()
             {
                 Description = "Ventana rota",
                 ApartmentId = 1,
@@ -64,9 +64,9 @@ namespace TestWebApi
 
             var result = ticketController.CreateTicket(ticketCreateModel);
             var okResult = result as OkObjectResult;
-            var ticketResponse = okResult.Value as TicketModel;
+            var ticketResponse = okResult.Value as TicketOutput;
 
-            var expectedTicket = new TicketModel(ticket);
+            var expectedTicket = new TicketOutput(ticket);
             _ticketServiceMock.VerifyAll();
             Assert.AreEqual(ticketResponse, expectedTicket);
         }
@@ -78,7 +78,7 @@ namespace TestWebApi
             _ticketServiceMock.Setup(x => x.CreateTicket(It.IsAny<Ticket>())).Throws(new InvalidDataException());
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
-            var ticketCreateModel = new TicketCreateModel()
+            var ticketCreateModel = new TicketCreateInput()
             {
                 Description = "Ventana rota",
                 ApartmentId = 1,
@@ -113,12 +113,12 @@ namespace TestWebApi
 
             var result = ticketController.GetTickets();
             var okResult = result as OkObjectResult;
-            var ticketsResponse = okResult.Value as List<TicketModel>;
+            var ticketsResponse = okResult.Value as List<TicketOutput>;
 
-            var expectedTickets = new List<TicketModel>();
+            var expectedTickets = new List<TicketOutput>();
             foreach (var ticket in tickets)
             {
-                expectedTickets.Add(new TicketModel(ticket));
+                expectedTickets.Add(new TicketOutput(ticket));
             }
 
             _ticketServiceMock.VerifyAll();
@@ -133,9 +133,9 @@ namespace TestWebApi
 
             var result = ticketController.GetTickets();
             var okResult = result as OkObjectResult;
-            var ticketsResponse = okResult.Value as List<TicketModel>;
+            var ticketsResponse = okResult.Value as List<TicketOutput>;
 
-            var expectedTickets = new List<TicketModel>();
+            var expectedTickets = new List<TicketOutput>();
 
             _ticketServiceMock.VerifyAll();
             CollectionAssert.AreEqual(ticketsResponse, expectedTickets);
@@ -156,9 +156,9 @@ namespace TestWebApi
 
             var result = ticketController.AssignTicket(1, 1);
             var okResult = result as OkObjectResult;
-            var ticketResponse = okResult.Value as TicketModel;
+            var ticketResponse = okResult.Value as TicketOutput;
 
-            var expectedTicket = new TicketModel(ticket);
+            var expectedTicket = new TicketOutput(ticket);
             _ticketServiceMock.VerifyAll();
             Assert.AreEqual(ticketResponse, expectedTicket);
 
@@ -190,9 +190,9 @@ namespace TestWebApi
 
             var result = ticketController.StartTicket(1);
             var okResult = result as OkObjectResult;
-            var ticketResponse = okResult.Value as TicketModel;
+            var ticketResponse = okResult.Value as TicketOutput;
 
-            var expectedTicket = new TicketModel(ticket);
+            var expectedTicket = new TicketOutput(ticket);
             _ticketServiceMock.VerifyAll();
             Assert.AreEqual(ticketResponse, expectedTicket);
         }
@@ -223,9 +223,9 @@ namespace TestWebApi
 
             var result = ticketController.CompleteTicket(1, 100);
             var okResult = result as OkObjectResult;
-            var ticketResponse = okResult.Value as TicketModel;
+            var ticketResponse = okResult.Value as TicketOutput;
 
-            var expectedTicket = new TicketModel(ticket);
+            var expectedTicket = new TicketOutput(ticket);
             _ticketServiceMock.VerifyAll();
             Assert.AreEqual(ticketResponse, expectedTicket);
         }

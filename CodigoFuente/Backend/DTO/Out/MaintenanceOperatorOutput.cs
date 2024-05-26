@@ -2,11 +2,11 @@ using Domain;
 
 namespace DTO.Out
 {
-  public class MaintenanceOperatorModel
+  public class MaintenanceOperatorOutput
   {
     public int Id { get; set; }
 
-    public MaintenanceOperatorModel(MaintenanceOperator maintenanceOperator)
+    public MaintenanceOperatorOutput(MaintenanceOperator maintenanceOperator)
     {
       Id = maintenanceOperator.Id;
     }
@@ -17,7 +17,7 @@ namespace DTO.Out
       {
         return false;
       }
-      MaintenanceOperatorModel maintenanceOperatorModel = (MaintenanceOperatorModel)obj;
+      MaintenanceOperatorOutput maintenanceOperatorModel = (MaintenanceOperatorOutput)obj;
       return Id == maintenanceOperatorModel.Id;
     }
   }
