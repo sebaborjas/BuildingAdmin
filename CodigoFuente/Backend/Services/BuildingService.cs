@@ -55,7 +55,7 @@ public class BuildingService : IBuildingService
 
         try
         {
-            building.ConstructionCompany = getConstructionCompany(building);
+            building.ConstructionCompany = currentUser.ConstructionCompany;
             SetApartmentsExistingOwnersByEmail(building.Apartments);
             _buildingRepository.Insert(building);
             return building;
@@ -235,12 +235,6 @@ public class BuildingService : IBuildingService
     private bool IsValidCreateBuilding(Building building)
     {
         return building != null && !string.IsNullOrWhiteSpace(building.Name) && !string.IsNullOrWhiteSpace(building.Address) &&
-                !string.IsNullOrWhiteSpace(building.Location) && !string.IsNullOrWhiteSpace(building.ConstructionCompany.Name) && building.Expenses >= 0;
-    }
-
-    private bool IsValidCreateBuildingInput(Building createBuilding)
-    {
-        return createBuilding != null && !string.IsNullOrWhiteSpace(createBuilding.Name) && !string.IsNullOrWhiteSpace(createBuilding.Address) &&
-            !string.IsNullOrWhiteSpace(createBuilding.Location) && createBuilding.Expenses >= 0 && createBuilding.Apartments != null && createBuilding.Apartments.Count > 0;
+                !string.IsNullOrWhiteSpace(building.Location) && building.Expenses >= 0;
     }
 }
