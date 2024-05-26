@@ -1,6 +1,8 @@
 using IServices;
 using Domain;
 using IDataAccess;
+using DTO.In;
+using System;
 
 namespace Services;
 
@@ -25,12 +27,24 @@ public class BuildingService : IBuildingService
 
     public Building CreateBuilding(Building building)
     {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not authorized to create a building");
+        }
+
+        if (currentUser.ConstructionCompany == null)
+        {
+            throw new InvalidOperationException("Current user does not have a construction company");
+        }
+
         var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name || b.Address == building.Address || b.Location == building.Location);
 
         if (buildingAlreadyExist != null)
         {
             throw new ArgumentException("Building already exist");
         }
+<<<<<<< Updated upstream
         if (!IsValidCreateBuilding(building))
         {
             throw new ArgumentException("Invalid building");
@@ -55,6 +69,19 @@ public class BuildingService : IBuildingService
             throw new InvalidOperationException("Error creating building", e);
         }
 
+=======
+
+        if (!IsValidCreateBuildingInput(building))
+        {
+            throw new ArgumentException("Invalid building input");
+        }
+
+        building.ConstructionCompany = currentUser.ConstructionCompany;
+        SetApartmentsExistingOwnersByEmail(building.Apartments);
+        _buildingRepository.Insert(building);
+
+        return building;
+>>>>>>> Stashed changes
     }
 
     public void DeleteBuilding(int buildingId)
@@ -202,7 +229,13 @@ public class BuildingService : IBuildingService
     {
         try
         {
+<<<<<<< Updated upstream
             apartments.ForEach(apartment =>
+=======
+            var apartmentOwner = apartment.Owner;
+            var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);
+            if (existingOwner != null)
+>>>>>>> Stashed changes
             {
                 var apartmentOwner = apartment.Owner;
                 var existingOwner = _ownerRepository.GetByCondition(owner => owner.Email == apartmentOwner.Email);
@@ -226,5 +259,11 @@ public class BuildingService : IBuildingService
     {
         return building != null && !string.IsNullOrWhiteSpace(building.Name) && !string.IsNullOrWhiteSpace(building.Address) &&
                 !string.IsNullOrWhiteSpace(building.Location) && !string.IsNullOrWhiteSpace(building.ConstructionCompany.Name) && building.Expenses >= 0;
+    }
+
+    private bool IsValidCreateBuildingInput(Building createBuilding)
+    {
+        return createBuilding != null && !string.IsNullOrWhiteSpace(createBuilding.Name) && !string.IsNullOrWhiteSpace(createBuilding.Address) &&
+            !string.IsNullOrWhiteSpace(createBuilding.Location) && createBuilding.Expenses >= 0 && createBuilding.Apartments != null && createBuilding.Apartments.Count > 0;
     }
 }

@@ -17,7 +17,6 @@ namespace DTO.In
         public string Name {  get; set; }
         public string Address { get; set; }
         public string Location { get; set; }
-        public string ConstructionCompany { get; set; }
         public float Expenses { get; set; }
         public List<NewApartmentInput> Apartments { get; set; }
 
@@ -33,7 +32,6 @@ namespace DTO.In
                 Address = Address,
                 Name = Name,
                 Apartments = apartments,
-                ConstructionCompany = new ConstructionCompany() { Name = ConstructionCompany },
                 Expenses = Expenses,
                 Location = Location
             };

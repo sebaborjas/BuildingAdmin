@@ -20,7 +20,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+<<<<<<< Updated upstream
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+=======
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+>>>>>>> Stashed changes
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
             var newBuilding = _buildingServices.CreateBuilding(createBuildingInput.ToEntity());
