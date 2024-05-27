@@ -47,7 +47,6 @@ namespace TestWebApi
                 Name = "Edificio nuevo",
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
                 {
@@ -103,7 +102,6 @@ namespace TestWebApi
             {
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -121,7 +119,6 @@ namespace TestWebApi
                 Name = "",
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -138,7 +135,6 @@ namespace TestWebApi
             {
                 Name = "Edificio nuevo",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -156,7 +152,6 @@ namespace TestWebApi
                 Name = "Edificio nuevo",
                 Address = "",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -174,7 +169,6 @@ namespace TestWebApi
             {
                 Name = "Edificio nuevo",
                 Address = "Calle, 123, esquina",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -192,42 +186,6 @@ namespace TestWebApi
                 Name = "Edificio nuevo",
                 Address = "Calle, 123, esquina",
                 Location = "",
-                ConstructionCompany = "Empresa constructora",
-                Expenses = 1000,
-                Apartments = new List<NewApartmentInput>()
-            };
-
-            var result = buildingController.CreateBuilding(input);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestCreateBuildingWithoutConstructionCompany()
-        {
-            var buildingController = new BuildingController(_buildingServices.Object);
-            CreateBuildingInput input = new CreateBuildingInput()
-            {
-                Name = "Edificio nuevo",
-                Address = "Calle, 123, esquina",
-                Location = "111,111",
-                Expenses = 1000,
-                Apartments = new List<NewApartmentInput>()
-            };
-
-            var result = buildingController.CreateBuilding(input);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestCreateBuildingWithEmptyConstructionCompany()
-        {
-            var buildingController = new BuildingController(_buildingServices.Object);
-            CreateBuildingInput input = new CreateBuildingInput()
-            {
-                Name = "Edificio nuevo",
-                Address = "Calle, 123, esquina",
-                Location = "111,111",
-                ConstructionCompany = "",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -246,7 +204,6 @@ namespace TestWebApi
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
                 Expenses = -1000,
-                ConstructionCompany = "Empresa constructora",
                 Apartments = new List<NewApartmentInput>()
             };
 
@@ -265,7 +222,6 @@ namespace TestWebApi
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
                 Expenses = 1000,
-                ConstructionCompany = "Empresa constructora",
                 Apartments = new List<NewApartmentInput>()
                 {
                     new NewApartmentInput()
