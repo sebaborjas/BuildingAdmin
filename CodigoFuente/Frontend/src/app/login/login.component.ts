@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { SesionStorageService } from '../services/sesion-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +15,17 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
+  constructor(private _authService: AuthService, private _sesionStorageService: SesionStorageService, private _router: Router) { }
+
   login() {
-    console.log(this.email);
-    console.log(this.password);
+    this._authService.login(this.email, this.password).subscribe(
+      (response) => {
+        this._sesionStorageService.setToken(response.token);
+        this._router.navigate(['/home']);
+      },
+      (error) => {
+        console.error('Error', error);
+      }
+    );
   }
 }
