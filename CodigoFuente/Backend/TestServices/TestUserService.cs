@@ -14,6 +14,7 @@ public class TestUserService
     private Mock<IGenericRepository<Administrator>> _adminRepositoryMock;
     private Mock<IGenericRepository<MaintenanceOperator>> _operatorRepositoryMock;
     private Mock<IGenericRepository<Manager>> _managerRepositoryMock;
+    private Mock<IGenericRepository<CompanyAdministrator>> _companyAdministratorRepositoryMock;
     private Mock<ISessionService> _sessionService;
 
 
@@ -22,9 +23,10 @@ public class TestUserService
     public void SetUp()
     {
         _adminRepositoryMock = new Mock<IGenericRepository<Administrator>>(MockBehavior.Strict);
-        _operatorRepositoryMock = new Mock<IGenericRepository<MaintenanceOperator>>();
-        _managerRepositoryMock = new Mock<IGenericRepository<Manager>>();
-        _sessionService = new Mock<ISessionService>();
+        _operatorRepositoryMock = new Mock<IGenericRepository<MaintenanceOperator>>(MockBehavior.Strict);
+        _managerRepositoryMock = new Mock<IGenericRepository<Manager>>(MockBehavior.Strict);
+        _companyAdministratorRepositoryMock = new Mock<IGenericRepository<CompanyAdministrator>>(MockBehavior.Strict);
+        _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
     }
 
     [TestMethod]
@@ -35,7 +37,7 @@ public class TestUserService
 
         _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
 
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var administrator = new Administrator
         {
@@ -60,8 +62,7 @@ public class TestUserService
 
         _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
 
-
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var administrator = new Administrator
         {
@@ -104,7 +105,7 @@ public class TestUserService
         _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
         _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
         _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var maintenanceOperator = new MaintenanceOperator
         {
@@ -131,7 +132,7 @@ public class TestUserService
         _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
           .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => new Administrator());
 
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var maintenanceOperator = new MaintenanceOperator
         {
@@ -152,7 +153,7 @@ public class TestUserService
         _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(new Manager()).Verifiable();
         _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Verifiable();
 
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         _service.DeleteManager(1);
 
@@ -166,7 +167,7 @@ public class TestUserService
         _managerRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Manager)null);
         _managerRepositoryMock.Setup(r => r.Delete(It.IsAny<Manager>())).Throws(new ArgumentNullException());
 
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         _service.DeleteManager(1);
 
@@ -201,7 +202,7 @@ public class TestUserService
         _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Administrator)null);
         _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
         _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var maintenanceOperator = new MaintenanceOperator
         {
