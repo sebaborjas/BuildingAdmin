@@ -33,11 +33,26 @@ public class TestUserService
     public void CreateCorrectAdministrator()
     {
         _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>()))
-          .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => null);
+            .Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => null);
 
         _adminRepositoryMock.Setup(r => r.Insert(It.IsAny<Administrator>())).Verifiable();
 
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
+        _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>()))
+            .Returns((Expression<Func<Manager, bool>> predicate, List<string> includes) => null);
+
+        _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>()))
+            .Returns((Expression<Func<MaintenanceOperator, bool>> predicate, List<string> includes) => null);
+
+        _companyAdministratorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<CompanyAdministrator, bool>>>(), It.IsAny<List<string>>()))
+            .Returns((Expression<Func<CompanyAdministrator, bool>> predicate, List<string> includes) => null);
+
+        _service = new UserService(
+            _adminRepositoryMock.Object,
+            _operatorRepositoryMock.Object,
+            _managerRepositoryMock.Object,
+            _sessionService.Object,
+            _companyAdministratorRepositoryMock.Object
+        );
 
         var administrator = new Administrator
         {
@@ -85,11 +100,11 @@ public class TestUserService
             Id = 10,
             Name = "Edificio",
             Address = "Calle, 123, esquina",
-            Apartments = [],
+            Apartments = new List<Apartment>(),
             ConstructionCompany = new ConstructionCompany(),
             Expenses = 3000,
             Location = "123,123",
-            Tickets = []
+            Tickets = new List<Ticket>()
         };
         var currentUser = new Manager()
         {
@@ -98,13 +113,16 @@ public class TestUserService
             Email = "admin@mail.com",
             Id = 1,
             Password = "Pass123.!",
-            Buildings = [building]
+            Buildings = new List<Building> { building }
         };
+
         _operatorRepositoryMock.Setup(r => r.Insert(It.IsAny<MaintenanceOperator>())).Verifiable();
         _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Administrator)null);
         _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
         _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
+        _companyAdministratorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<CompanyAdministrator, bool>>>(), It.IsAny<List<string>>())).Returns((CompanyAdministrator)null);
         _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+
         _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var maintenanceOperator = new MaintenanceOperator
@@ -122,6 +140,7 @@ public class TestUserService
         _operatorRepositoryMock.VerifyAll();
         _adminRepositoryMock.VerifyAll();
         _managerRepositoryMock.VerifyAll();
+        _companyAdministratorRepositoryMock.VerifyAll();
         Assert.AreEqual(maintenanceOperator, createdOperator);
     }
 
@@ -183,11 +202,11 @@ public class TestUserService
             Id = 10,
             Name = "Edificio",
             Address = "Calle, 123, esquina",
-            Apartments = [],
+            Apartments = new List<Apartment>(),
             ConstructionCompany = new ConstructionCompany(),
             Expenses = 3000,
             Location = "123,123",
-            Tickets = []
+            Tickets = new List<Ticket>()
         };
         var currentUser = new Manager()
         {
@@ -196,12 +215,15 @@ public class TestUserService
             Email = "admin@mail.com",
             Id = 1,
             Password = "Pass123.!",
-            Buildings = [building]
+            Buildings = new List<Building> { building }
         };
+
         _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
         _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Administrator)null);
         _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
         _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
+        _companyAdministratorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<CompanyAdministrator, bool>>>(), It.IsAny<List<string>>())).Returns((CompanyAdministrator)null);
+
         _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var maintenanceOperator = new MaintenanceOperator
@@ -213,8 +235,7 @@ public class TestUserService
             Building = new Building() { Id = 11 }
         };
 
-        var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+        _service.CreateMaintenanceOperator(maintenanceOperator);
     }
-
 
 }

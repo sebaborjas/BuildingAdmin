@@ -17,6 +17,8 @@ namespace IServices
         
         List<Building> GetAllBuildingsForUser();
 
-        Building Get(int id);
+        Building Get();
+
+        String GetManagerName(int buildingId);
     }
 }

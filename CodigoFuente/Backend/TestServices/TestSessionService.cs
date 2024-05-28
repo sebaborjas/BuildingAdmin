@@ -34,14 +34,15 @@ namespace TestServices
         }
 
         [TestMethod]
-        public void TestGetCurrentUser() {
+        public void TestGetCurrentUser()
+        {
 
             var session = new Session()
             {
                 Id = 1,
                 User = new Administrator(),
             };
-            _sessionRepository.Setup(r=>r.GetByToken(It.IsAny<Guid>())).Returns(session);
+            _sessionRepository.Setup(r => r.GetByToken(It.IsAny<Guid>())).Returns(session);
             _sessionService = new SessionService(_sessionRepository.Object, _managerRepository.Object, _adminRepository.Object, _maintenanceOperatorRepository.Object, _companyAdministratorRepository.Object);
 
             var result = _sessionService.GetCurrentUser(session.Token);
@@ -58,7 +59,7 @@ namespace TestServices
             _sessionService = new SessionService(_sessionRepository.Object, _managerRepository.Object, _adminRepository.Object, _maintenanceOperatorRepository.Object, _companyAdministratorRepository.Object);
 
             var result = _sessionService.GetCurrentUser(Guid.NewGuid());
-            
+
             _sessionRepository.VerifyAll();
             Assert.IsNull(result);
         }
@@ -195,16 +196,18 @@ namespace TestServices
         [ExpectedException(typeof(UnauthorizedAccessException))]
         public void TestLoginWithWrongEmail()
         {
-            MaintenanceOperator maintenanceOperatorUser = null;
-            Administrator adminUser = null;
-            Manager managerUser = null;
-            _adminRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns(adminUser);
-            _managerRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns(managerUser);
-            _maintenanceOperatorRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns(maintenanceOperatorUser);
+            MaintenanceOperator maintenanceOperator = null;
+            Administrator admin = null;
+            Manager manager = null;
+            CompanyAdministrator companyAdministrator = null;
+
+            _adminRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns(admin);
+            _managerRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns(manager);
+            _maintenanceOperatorRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns(maintenanceOperator);
+            _companyAdministratorRepository.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<CompanyAdministrator, bool>>>(), It.IsAny<List<string>>())).Returns(companyAdministrator);
             _sessionService = new SessionService(_sessionRepository.Object, _managerRepository.Object, _adminRepository.Object, _maintenanceOperatorRepository.Object, _companyAdministratorRepository.Object);
 
             var session = _sessionService.Login("adminMal@correo.com", "Pass123.!");
-
         }
     }
 }

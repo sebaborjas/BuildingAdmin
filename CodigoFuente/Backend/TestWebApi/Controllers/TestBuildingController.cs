@@ -331,101 +331,50 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        public void TestGetAll()
-        {
-            var buildings = new List<Building>()
-            {
-                new Building()
-                {
-                    Id = 11,
-                    Address = "Calle, 123, esquina",
-                    Expenses = 1000,
-                    ConstructionCompany = new ConstructionCompany(),
-                    Location = "111,111",
-                    Name = "Edificio nuevo"
-                },
-                new Building()
-                {
-                    Id = 12,
-                    Address = "Otracalle, 123, otraesquina",
-                    Expenses = 1000,
-                    ConstructionCompany = new ConstructionCompany(),
-                    Location = "222,222",
-                    Name = "Otro edificio"
-                }
-            };
-            _buildingServices.Setup(r => r.GetAllBuildingsForUser()).Returns(buildings);
-            var buildingController = new BuildingController(_buildingServices.Object);
-            var buildingsExpected = new List<GetBuildingOutput>();
-            buildings.ForEach(building =>
-            {
-                buildingsExpected.Add(new GetBuildingOutput(building));
-            });
-
-            var result = buildingController.Get(null);
-            var okResult = result as OkObjectResult;
-            var buildingsRecieved = okResult.Value as List<GetBuildingOutput>;
-
-            _buildingServices.VerifyAll();
-            CollectionAssert.AreEqual(buildingsRecieved, buildingsExpected);
-        }
-
-        [TestMethod]
         public void TestGetBuilding()
         {
             var building = new Building()
             {
-                Id = 11,
+                Id = 10,
                 Address = "Calle, 123, esquina",
                 Expenses = 1000,
-                ConstructionCompany = new ConstructionCompany()
-                {
-                    Id = 1,
-                    Name = "Empresa constructora"
-                },
+                ConstructionCompany = new ConstructionCompany(),
                 Location = "111,111",
-                Name = "Edificio nuevo",
-                Apartments = new List<Apartment>()
-                {
-                    new Apartment()
-                    {
-                        Id = 1,
-                        Floor = 1,
-                        DoorNumber = 1,
-                        Owner = new Owner()
-                        {
-                            Id = 1,
-                            Name = "Nombre",
-                            LastName = "Apellido",
-                            Email = "test@email.com"
-                        },
-                        Rooms = 2,
-                        Bathrooms = 1,
-                        HasTerrace = false
-                    }
-                }
+                Name = "Edificio nuevo"
             };
-            _buildingServices.Setup(r => r.Get(It.IsAny<int>())).Returns(building);
-            var buildingController = new BuildingController(_buildingServices.Object);
-            var expectedResult = new GetBuildingOutput(building);
 
-            var result = buildingController.Get(11);
-            var okResult = result as OkObjectResult;
-            var buildingRecieved = okResult.Value as GetBuildingOutput;
+            _buildingServices.Setup(r => r.Get()).Returns(building);
+            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Returns("Manager");
+
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.Get();
 
             _buildingServices.VerifyAll();
-            Assert.AreEqual(buildingRecieved, expectedResult);
+            Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
-        public void TestGetBuildingNotFound()
+        public void TestGetBuildingWithoutData()
         {
-            Building building = null;
-            _buildingServices.Setup(r => r.Get(It.IsAny<int>())).Returns(building);
+            _buildingServices.Setup(r => r.Get()).Throws(new NullReferenceException());
             var buildingController = new BuildingController(_buildingServices.Object);
 
-            var result = buildingController.Get(11);
+            var result = buildingController.Get();
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestGetBuildingWithoutManager()
+        {
+            _buildingServices.Setup(r => r.Get()).Returns(new Building());
+            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Throws(new NullReferenceException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.Get();
 
             _buildingServices.VerifyAll();
         }

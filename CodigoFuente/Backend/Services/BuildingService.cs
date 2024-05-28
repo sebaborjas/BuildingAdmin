@@ -146,16 +146,35 @@ public class BuildingService : IBuildingService
 
     }
 
-    public Building Get(int id)
+    public Building Get()
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-        var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
-        if (buildingToReturn == null)
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
         {
-            throw new ArgumentNullException("Building not found");
+            throw new InvalidOperationException("Current user is not a company administrator");
         }
-        return buildingToReturn;
 
+        try
+        {
+            var building = _buildingRepository.GetByCondition(b => b.ConstructionCompany.Name == currentUser.ConstructionCompany.Name);
+            return building;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error getting building");
+        }
+       
+
+    }
+
+    public string GetManagerName(int buildingId)
+    {
+        var manager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));
+        if (manager == null)
+        {
+            throw new ArgumentNullException("Manager not found");
+        }
+        return manager.Name;
     }
 
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)

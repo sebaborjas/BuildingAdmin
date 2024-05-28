@@ -44,8 +44,8 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        /*[HttpGet]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult Get([FromQuery] int? id)
         {
             if (id == null)
@@ -64,6 +64,16 @@ namespace WebApi.Controllers
                 return Ok(new GetBuildingOutput(building));
             }
             
+        }*/
+
+        // se obtiene solo un edificio que es el que el CompanyAdministratorRole tiene, es decir no se recibe mas el id
+        [HttpGet]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+        public IActionResult Get()
+        {
+            var building = _buildingServices.Get();
+            var manager = _buildingServices.GetManagerName(building.Id);
+            return Ok(new GetBuildingOutput(building, manager));
         }
     }
 }

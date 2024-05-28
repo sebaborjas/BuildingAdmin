@@ -11,24 +11,17 @@ namespace DTO.Out
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public float Expenses { get; set; }
         public string Location { get; set; }
         public string Address { get; set; }
-        public string ConstructionCompany { get; set; }
-        public List<GetApartmentOutput> Apartments { get; set; } = new List<GetApartmentOutput>();
+        public string managerName { get; set; }
 
-        public GetBuildingOutput(Building building)
+        public GetBuildingOutput(Building building, string manager)
         {
             this.Id = building.Id;
             this.Name = building.Name;
-            this.Expenses = building.Expenses;
             this.Location = building.Location;
             this.Address = building.Address;
-            this.ConstructionCompany = building.ConstructionCompany.Name;
-            building.Apartments.ForEach(apartment =>
-            {
-                this.Apartments.Add(new GetApartmentOutput(apartment));
-            });
+            this.managerName = manager;
         }
 
         public override bool Equals(object obj)
