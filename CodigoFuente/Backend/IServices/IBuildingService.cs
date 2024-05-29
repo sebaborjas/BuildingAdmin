@@ -19,7 +19,7 @@ namespace IServices
 
         List<Building> GetAllBuildingsForCCompany();
 
-        Building Get();
+        Building Get(int id);
 
         String GetManagerName(int buildingId);
     }

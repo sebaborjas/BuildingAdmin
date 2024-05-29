@@ -46,11 +46,25 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] int? id)
         {
-            var building = _buildingServices.Get();
-            var manager = _buildingServices.GetManagerName(building.Id);
-            return Ok(new GetBuildingOutput(building, manager));
+            if (id == null)
+            {
+                var buildings = _buildingServices.GetAllBuildingsForCCompany();
+                var response = new List<GetBuildingOutput>();
+                buildings.ForEach(building =>
+                {
+                    var managerName = _buildingServices.GetManagerName(building.Id);
+                    response.Add(new GetBuildingOutput(building, managerName));
+                });
+                return Ok(response);
+            }
+            else
+            {
+                var building = _buildingServices.Get(id.Value);
+                var managerName = _buildingServices.GetManagerName(id.Value);
+                return Ok(new GetBuildingOutput(building, managerName));
+            }
         }
     }
 }

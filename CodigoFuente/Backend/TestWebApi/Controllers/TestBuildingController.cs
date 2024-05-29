@@ -339,12 +339,12 @@ namespace TestWebApi
                 Name = "Edificio nuevo"
             };
 
-            _buildingServices.Setup(r => r.Get()).Returns(building);
+            _buildingServices.Setup(r => r.Get(10)).Returns(building);
             _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Returns("Manager");
 
             var buildingController = new BuildingController(_buildingServices.Object);
 
-            var result = buildingController.Get();
+            var result = buildingController.Get(10);
 
             _buildingServices.VerifyAll();
             Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
@@ -354,10 +354,10 @@ namespace TestWebApi
         [ExpectedException(typeof(NullReferenceException))]
         public void TestGetBuildingWithoutData()
         {
-            _buildingServices.Setup(r => r.Get()).Throws(new NullReferenceException());
+            _buildingServices.Setup(r => r.Get(10)).Throws(new NullReferenceException());
             var buildingController = new BuildingController(_buildingServices.Object);
 
-            var result = buildingController.Get();
+            var result = buildingController.Get(10);
 
             _buildingServices.VerifyAll();
         }
@@ -366,11 +366,11 @@ namespace TestWebApi
         [ExpectedException(typeof(NullReferenceException))]
         public void TestGetBuildingWithoutManager()
         {
-            _buildingServices.Setup(r => r.Get()).Returns(new Building());
+            _buildingServices.Setup(r => r.Get(1)).Returns(new Building());
             _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Throws(new NullReferenceException());
             var buildingController = new BuildingController(_buildingServices.Object);
 
-            var result = buildingController.Get();
+            var result = buildingController.Get(1);
 
             _buildingServices.VerifyAll();
         }

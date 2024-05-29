@@ -165,7 +165,20 @@ public class BuildingService : IBuildingService
         }
     }
 
-    public Building Get()
+    /* public Building Get()
+     {
+         try
+         {
+             var building = _buildingRepository.GetByCondition(b => b.ConstructionCompany.Name == currentUser.ConstructionCompany.Name);
+             return building;
+         }
+         catch (Exception e)
+         {
+             throw new InvalidOperationException("Error getting building");
+         }
+     }*/
+
+    public Building Get(int id)
     {
         var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
         if (currentUser == null)
@@ -175,16 +188,15 @@ public class BuildingService : IBuildingService
 
         try
         {
-            var building = _buildingRepository.GetByCondition(b => b.ConstructionCompany.Name == currentUser.ConstructionCompany.Name);
+            var building = _buildingRepository.GetByCondition(b => b.Id == id);
             return building;
         }
         catch (Exception e)
         {
             throw new InvalidOperationException("Error getting building");
         }
-
-
     }
+
     public string GetManagerName(int buildingId)
     {
         var manager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));
