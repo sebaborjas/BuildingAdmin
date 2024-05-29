@@ -10,5 +10,7 @@ namespace IServices
     public interface IConstructionCompanyService
     {
         public ConstructionCompany CreateConstructionCompany(string name);
+
+        public ConstructionCompany ModifyConstructionCompany(string name);
     }   
 }

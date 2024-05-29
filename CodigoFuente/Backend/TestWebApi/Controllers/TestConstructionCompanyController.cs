@@ -108,4 +108,127 @@ public class TestConstructionCompanyController
 
         _constructionCompanyServiceMock.VerifyAll();
     }
+
+    [TestMethod]
+    public void TestModifyConstructionCompany()
+    {
+        var constructionCompany = new ConstructionCompany
+        {
+            Id = 1,
+            Name = "Test Construction Company"
+        };
+
+        _constructionCompanyServiceMock.Setup(x => x.ModifyConstructionCompany("Test Construction Company")).Returns(constructionCompany);
+
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+        var result = constructionCompanyController.ModifyConstructionCompany(new ModifyConstructionCompanyInput { Name = "Test Construction Company" });
+
+        var okResult = result as OkObjectResult;
+
+        var constructionCompanyModel = okResult.Value as ConstructionCompanyOutput;
+        Assert.AreEqual(constructionCompany.Id, constructionCompanyModel.Id);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestModifyConstructionCompanyWithNullInput()
+    {
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+        _constructionCompanyServiceMock.Setup(x => x.ModifyConstructionCompany(null)).Throws(new ArgumentNullException("name", "Invalid construction company"));
+
+        var result = constructionCompanyController.ModifyConstructionCompany(new ModifyConstructionCompanyInput());
+
+        _constructionCompanyServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestModifyConstructionCompanyWithEmptyName()
+    {
+        _constructionCompanyServiceMock
+            .Setup(x => x.ModifyConstructionCompany(It.Is<string>(s => string.IsNullOrEmpty(s))))
+            .Throws(new ArgumentNullException("name", "Invalid construction company"));
+
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+
+        var input = new ModifyConstructionCompanyInput { Name = "" };
+
+        var result = constructionCompanyController.ModifyConstructionCompany(input);
+
+        _constructionCompanyServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestModifyConstructionCompanyWithWhiteSpaceName()
+    {
+        _constructionCompanyServiceMock
+            .Setup(x => x.ModifyConstructionCompany(It.Is<string>(s => string.IsNullOrWhiteSpace(s))))
+            .Throws(new ArgumentNullException("name", "Invalid construction company"));
+
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+
+        var input = new ModifyConstructionCompanyInput { Name = "   " };
+
+        var result = constructionCompanyController.ModifyConstructionCompany(input);
+
+        _constructionCompanyServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestModifyConstructionCompanyWithExistingName()
+    {
+        _constructionCompanyServiceMock
+            .Setup(x => x.ModifyConstructionCompany("Test Construction Company"))
+            .Throws(new ArgumentException("Construction company already exist"));
+
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+
+        var input = new ModifyConstructionCompanyInput { Name = "Test Construction Company" };
+
+        var result = constructionCompanyController.ModifyConstructionCompany(input);
+
+        _constructionCompanyServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestModifyConstructionCompanyWithNoCurrentUser()
+    {
+        _constructionCompanyServiceMock
+            .Setup(x => x.ModifyConstructionCompany("Test Construction Company"))
+            .Throws(new InvalidOperationException("Current user is not authorized to update a construction company"));
+
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+
+        var input = new ModifyConstructionCompanyInput { Name = "Test Construction Company" };
+
+        var result = constructionCompanyController.ModifyConstructionCompany(input);
+
+        _constructionCompanyServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestModifyConstructionCompanyWithNoConstructionCompany()
+    {
+        _constructionCompanyServiceMock
+            .Setup(x => x.ModifyConstructionCompany("Test Construction Company"))
+            .Throws(new InvalidOperationException("Current user does not have a construction company"));
+
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+
+        var input = new ModifyConstructionCompanyInput
+        {
+            Name = "Test Construction Company"
+        };
+
+        var result = constructionCompanyController.ModifyConstructionCompany(input);
+
+        _constructionCompanyServiceMock.VerifyAll();
+    }
+
 }
+
+

@@ -54,5 +54,37 @@ namespace Services
                 throw new InvalidOperationException("Error creating construction company", e);
             }
         }
+
+        public ConstructionCompany ModifyConstructionCompany(string name)
+        {
+            var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+            if (currentUser == null)
+            {
+                throw new InvalidOperationException("Current user is not authorized to update a construction company");
+            }
+            var constructionCompany = currentUser.ConstructionCompany;
+            if (constructionCompany == null)
+            {
+                throw new InvalidOperationException("Current user does not have a construction company");
+            }
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("name", "Invalid construction company");
+            }
+            if (_constructionCompanyRepository.GetByCondition(c => c.Name == name) != null)
+            {
+                throw new ArgumentException("Construction company already exist");
+            }
+            try
+            {
+                constructionCompany.Name = name;
+                _constructionCompanyRepository.Update(constructionCompany);
+                return constructionCompany;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Error updating construction company", e);
+            }
+        }
     }
 }

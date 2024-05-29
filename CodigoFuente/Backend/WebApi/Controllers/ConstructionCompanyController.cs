@@ -26,5 +26,13 @@ namespace WebApi.Controllers
             return Ok(new ConstructionCompanyOutput(newConstructionCompany));
         }
 
+        [HttpPut]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+        public IActionResult ModifyConstructionCompany([FromBody] ModifyConstructionCompanyInput modifyConstructionCompanyInput)
+        {
+            var modifyConstructionCompany = _service.ModifyConstructionCompany(modifyConstructionCompanyInput.Name);
+            return Ok(new ConstructionCompanyOutput(modifyConstructionCompany));
+        }
+
     }
 }
