@@ -94,23 +94,17 @@ public class BuildingService : IBuildingService
 
     public Building ModifyBuilding(int buildingId, Building modifiedBuilding)
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
         if (currentUser == null)
         {
-            throw new InvalidOperationException("Current user is not a manager");
+            throw new InvalidOperationException("Current user is not a CompanyAdministrator");
         }
 
-        var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
+        var building = _buildingRepository.GetByCondition(b => b.Id == buildingId);
 
         if (building == null)
         {
             throw new ArgumentNullException("Building not found");
-        }
-
-
-        if (modifiedBuilding.ConstructionCompany != null)
-        {
-            building.ConstructionCompany = getConstructionCompany(modifiedBuilding);
         }
 
         if (modifiedBuilding.Expenses > 0)
@@ -143,7 +137,32 @@ public class BuildingService : IBuildingService
         {
             throw new InvalidOperationException("Error getting buildings");
         }
+    }
 
+    public List<Building> GetAllBuildingsForCCompany()
+    {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a company administrator");
+        }
+        var constructionCompany = currentUser.ConstructionCompany;
+        if (constructionCompany == null)
+        {
+            throw new InvalidOperationException("Current user does not have a construction company");
+        }
+
+        try
+        {
+            var allBuildings = _buildingRepository.GetAll<Building>();
+            var buildings = allBuildings.Where(b => b.ConstructionCompany.Name == constructionCompany.Name).ToList();
+
+            return buildings;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error getting buildings", e);
+        }
     }
 
     public Building Get()
@@ -163,10 +182,9 @@ public class BuildingService : IBuildingService
         {
             throw new InvalidOperationException("Error getting building");
         }
-       
+
 
     }
-
     public string GetManagerName(int buildingId)
     {
         var manager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));

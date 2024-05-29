@@ -271,15 +271,13 @@ namespace TestWebApi
             var buildingModified = new Building()
             {
                 Id = 10,
-                Expenses = 1000,
-                ConstructionCompany = new ConstructionCompany(),
+                Expenses = 1000
             };
             _buildingServices.Setup(r => r.ModifyBuilding(It.IsAny<int>(), It.IsAny<Building>())).Returns(buildingModified);
             var buildingController = new BuildingController(_buildingServices.Object);
 
             var input = new ModifyBuildingInput()
             {
-                ConstructionCompany = "Empresa nueva",
                 Expenses = 4000,
                 Apartments = new List<ModifyApartmentInput>() {
                     new ModifyApartmentInput()
@@ -306,7 +304,6 @@ namespace TestWebApi
 
             var input = new ModifyBuildingInput()
             {
-                ConstructionCompany = "Empresa nueva",
                 Expenses = 4000
             };
             var result = buildingController.ModifyBuilding(100, input);
@@ -315,14 +312,13 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestModifyBuildingWithInvalidData()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
 
             var input = new ModifyBuildingInput()
             {
-                ConstructionCompany = "",
                 Expenses = -1000
             };
             var result = buildingController.ModifyBuilding(100, input);

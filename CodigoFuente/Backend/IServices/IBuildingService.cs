@@ -13,9 +13,11 @@ namespace IServices
 
         void DeleteBuilding(int buildingId);
 
-        Building ModifyBuilding(int buildingId,  Building modifiedBuilding);
+        Building ModifyBuilding(int buildingId, Building modifiedBuilding);
         
         List<Building> GetAllBuildingsForUser();
+
+        List<Building> GetAllBuildingsForCCompany();
 
         Building Get();
 

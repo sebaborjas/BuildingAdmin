@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult DeleteBuilding(int id)
         {
             _buildingServices.DeleteBuilding(id);
@@ -37,36 +37,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
         {
             _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
             return Ok();
         }
 
-        /*[HttpGet]
-        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
-        public IActionResult Get([FromQuery] int? id)
-        {
-            if (id == null)
-            {
-                var buildings = _buildingServices.GetAllBuildingsForUser();
-                var response = new List<GetBuildingOutput>();
-                buildings.ForEach(building =>
-                {
-                    response.Add(new GetBuildingOutput(building));
-                });
-                return Ok(response);
-            }
-            else
-            {
-                var building = _buildingServices.Get(id.Value);
-                return Ok(new GetBuildingOutput(building));
-            }
-            
-        }*/
-
-        // se obtiene solo un edificio que es el que el CompanyAdministratorRole tiene, es decir no se recibe mas el id
         [HttpGet]
         [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult Get()
