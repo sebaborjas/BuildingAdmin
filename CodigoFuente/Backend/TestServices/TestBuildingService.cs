@@ -387,5 +387,134 @@ namespace TestServices
             _sessionServiceMock.VerifyAll();
             _buildingRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void TestChangeBuildingManager()
+        {
+            _building = new Building
+            {
+                Id = 1,
+                Name = "Building A",
+                Address = "Calle, 1234, esquina",
+                Location = "111, 222",
+                Expenses = 1000,
+                ConstructionCompany = new ConstructionCompany { Name = "Company" },
+                Apartments = new List<Apartment>()
+            };
+
+            var oldManager = new Manager
+            {
+                Id = 1,
+                Name = "Old manager",
+                Email = "old@mail.com",
+                Password = "Test.1234!",
+                Buildings = new List<Building> { _building }
+            };
+
+            var newManager = new Manager
+            {
+                Id = 2,
+                Name = "New manager",
+                Email = "new@mail.com",
+                Password = "Test.1234!",
+                Buildings = new List<Building>()
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+                .Returns(_building);
+
+            _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Expression<Func<Manager, bool>> predicate, List<string> includes) =>
+                {
+                    var compiledPredicate = predicate.Compile();
+                    if (compiledPredicate(oldManager)) return oldManager;
+                    if (compiledPredicate(newManager)) return newManager;
+                    return null;
+                });
+
+            _managerRepositoryMock.Setup(r => r.Update(It.IsAny<Manager>())).Verifiable();
+            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            _buildingService = new BuildingService(
+                _buildingRepositoryMock.Object,
+                _sessionServiceMock.Object,
+                _ownerRepositoryMock.Object,
+                _managerRepositoryMock.Object,
+                _constructionCompanyMock.Object
+            );
+
+            _buildingService.ChangeBuildingManager(_building.Id, newManager.Id);
+
+            _buildingRepositoryMock.Verify(r => r.Update(It.IsAny<Building>()), Times.Never);
+            _managerRepositoryMock.Verify(r => r.Update(It.Is<Manager>(m => m.Id == oldManager.Id)), Times.Once);
+            _managerRepositoryMock.Verify(r => r.Update(It.Is<Manager>(m => m.Id == newManager.Id)), Times.Once);
+            _sessionServiceMock.VerifyAll();
+
+            var managerName = _buildingService.GetManagerName(_building.Id);
+            Assert.AreEqual(newManager.Name, managerName);
+
+            Assert.IsFalse(oldManager.Buildings.Contains(_building));
+            Assert.IsTrue(newManager.Buildings.Contains(_building));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestChangeBuildingManagerBuildingNotFound()
+        {
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Building)null);
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            _buildingService.ChangeBuildingManager(1, 1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestChangeBuildingManagerOldManagerNotFound()
+        {
+            _building = new Building
+            {
+                Id = 1,
+                Name = "Building A",
+                Address = "Calle, 1234, esquina",
+                Location = "111, 222",
+                Expenses = 1000,
+                ConstructionCompany = new ConstructionCompany { Name = "Company" },
+                Apartments = new List<Apartment>()
+            };
+
+            var newManager = new Manager
+            {
+                Id = 2,
+                Name = "New manager",
+                Email = "test@mail.com",
+                Buildings = new List<Building>()
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>()))
+                .Returns(_building);
+
+            _managerRepositoryMock.SetupSequence(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Manager)null)
+                .Returns(newManager);
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            _buildingService.ChangeBuildingManager(_building.Id, newManager.Id);
+
+            _buildingRepositoryMock.VerifyAll();
+            _sessionServiceMock.VerifyAll();
+            _managerRepositoryMock.VerifyAll();
+            _constructionCompanyMock.VerifyAll();
+
+            _managerRepositoryMock.VerifyAll();
+        }
     }
 }

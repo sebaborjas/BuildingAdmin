@@ -374,5 +374,66 @@ namespace TestWebApi
 
             _buildingServices.VerifyAll();
         }
+
+        [TestMethod]
+        public void TestChangeBuildingManager()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>()));
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestChangeBuildingManagerWithoutData()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new NullReferenceException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TestChangeBuildingManagerWithInvalidData()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentOutOfRangeException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestChangeBuildingManagerWithoutManagerId()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentNullException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestChangeBuildingManagerWithInvalidManagerId()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentNullException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = -1 });
+
+            _buildingServices.VerifyAll();
+        }
+
     }
 }

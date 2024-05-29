@@ -66,5 +66,13 @@ namespace WebApi.Controllers
                 return Ok(new GetBuildingOutput(building, managerName));
             }
         }
+
+        [HttpPut("{id}/manager")]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+        public IActionResult ChangeBuildingManager(int buildingId, [FromBody] ChangeBuildingManagerInput changeBuildingManagerInput)
+        {
+            _buildingServices.ChangeBuildingManager(buildingId, changeBuildingManagerInput.ManagerId);
+            return Ok();
+        }
     }
 }

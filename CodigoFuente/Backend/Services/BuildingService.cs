@@ -165,19 +165,6 @@ public class BuildingService : IBuildingService
         }
     }
 
-    /* public Building Get()
-     {
-         try
-         {
-             var building = _buildingRepository.GetByCondition(b => b.ConstructionCompany.Name == currentUser.ConstructionCompany.Name);
-             return building;
-         }
-         catch (Exception e)
-         {
-             throw new InvalidOperationException("Error getting building");
-         }
-     }*/
-
     public Building Get(int id)
     {
         var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
@@ -205,6 +192,35 @@ public class BuildingService : IBuildingService
             throw new ArgumentNullException("Manager not found");
         }
         return manager.Name;
+    }
+
+    public void ChangeBuildingManager(int buildingId, int managerId)
+    {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a company administrator");
+        }
+
+        var building = _buildingRepository.GetByCondition(b => b.Id == buildingId);
+        if (building == null)
+        {
+            throw new ArgumentNullException("Building not found");
+        }
+
+        var manager = _managerRepository.GetByCondition(m => m.Id == managerId);
+        if (manager == null)
+        {
+            throw new ArgumentNullException("Manager not found");
+        }
+
+        var lastManager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));
+
+        if (lastManager != null)
+        {
+            removeBuildingFromManager(building, lastManager);
+        }
+        assignBuildingToManager(building, manager);
     }
 
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
@@ -238,22 +254,16 @@ public class BuildingService : IBuildingService
         }
     }
 
-    private ConstructionCompany getConstructionCompany(Building building)
+    private void removeBuildingFromManager(Building building, Manager manager)
     {
         try
         {
-            ConstructionCompany constructionCompanyModify = building.ConstructionCompany;
-            var constructionCompany = _constructionCompany.GetByCondition(c => c.Name == building.ConstructionCompany.Name);
-            if (constructionCompany == null)
-            {
-                _constructionCompany.Insert(constructionCompanyModify);
-                constructionCompany = constructionCompanyModify;
-            }
-            return constructionCompany;
+            manager.Buildings.Remove(building);
+            _managerRepository.Update(manager);
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException("Error getting construction company");
+            throw new InvalidOperationException("Error removing building from manager", e);
         }
     }
 

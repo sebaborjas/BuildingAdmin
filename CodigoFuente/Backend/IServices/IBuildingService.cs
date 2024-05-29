@@ -22,5 +22,7 @@ namespace IServices
         Building Get(int id);
 
         String GetManagerName(int buildingId);
+
+        public void ChangeBuildingManager(int buildingId, int managerId);
     }
 }
