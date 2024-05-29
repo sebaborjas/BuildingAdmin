@@ -107,7 +107,7 @@ namespace TestServices
         [TestMethod]
         public void TestModifyConstructionCompany()
         {
-            // Crear un usuario con una compañía de construcción asociada
+
             var currentUser = new CompanyAdministrator()
             {
                 Email = "companyAdmin@correo.com",

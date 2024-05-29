@@ -8,5 +8,7 @@ public interface IUserServices
   public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator);
 
   public void DeleteManager(int id);
+
+  public CompanyAdministrator CreateCompanyAdministrator(CompanyAdministrator companyAdministrator);
   
 }

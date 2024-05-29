@@ -42,4 +42,12 @@ public class UserController : ControllerBase
     _service.DeleteManager(id);
     return Ok("Se eliminó con éxito el encargado del sistema.");
   }
+
+    [HttpPost("company-administrator")]
+    [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+    public IActionResult CreateCompanyAdministrator([FromBody] CompanyAdministratorCreateInput newCompanyAdministrator)
+    {
+        CompanyAdministratorOutput companyAdministrator = new CompanyAdministratorOutput(_service.CreateCompanyAdministrator(newCompanyAdministrator.ToEntity()));
+        return Ok(companyAdministrator);
+    }
 }
