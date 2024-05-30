@@ -180,30 +180,23 @@ public class TestUserController
             LastName = "Doe",
             Email = "test@test.com",
             Password = "Prueba.1234",
-            Building = new Building { Id = 1, Name = "Building" }
+            Buildings = new List<Building> { new Building { Id = 1, Name = "Building" } }
         };
-
         var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
         {
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,
             Email = maintenanceOperator.Email,
             Password = maintenanceOperator.Password,
-            BuildingId = maintenanceOperator.Building.Id
+            Buildings = [maintenanceOperator.Buildings[0].Id]
         };
-
         _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
-
-
         var userController = new UserController(_userServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
         var okResult = result as OkObjectResult;
         var maintenanceOperatorModel = okResult.Value as MaintenanceOperatorModel;
-
         var expectedContent = new MaintenanceOperatorModel(maintenanceOperator);
-
-
 
         _userServiceMock.VerifyAll();
         Assert.AreEqual(maintenanceOperatorModel, expectedContent);
@@ -236,7 +229,7 @@ public class TestUserController
         {
             LastName = maintenanceOperator.LastName,
             Email = maintenanceOperator.Email,
-            BuildingId = 1,
+            Buildings = [1],
             Password = "Pass123.!"
         };
 
@@ -261,7 +254,7 @@ public class TestUserController
         {
             Name = maintenanceOperator.Name,
             Email = maintenanceOperator.Email,
-            BuildingId = 1,
+            Buildings = [1],
             Password = "Pass123.!"
         };
 
@@ -287,7 +280,7 @@ public class TestUserController
         {
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,
-            BuildingId = 1,
+            Buildings = [1],
             Password = "Pass123.!"
         };
 
@@ -335,7 +328,7 @@ public class TestUserController
             Name = "John",
             LastName = "Doe",
             Email = "test@test.com",
-            Building = new Building()
+            Buildings = [new Building() {Id = 100 }]
         };
 
         MaintenanceOperatorCreateModel maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
@@ -343,7 +336,7 @@ public class TestUserController
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,
             Email = maintenanceOperator.Email,
-            BuildingId = maintenanceOperator.Building.Id,
+            Buildings = [maintenanceOperator.Buildings[0].Id],
         };
 
         var userController = new UserController(_userServiceMock.Object);
@@ -382,5 +375,37 @@ public class TestUserController
         var result = userController.DeleteManager(id);
 
         _userServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void TestCreateMaintenanceOperatorWithMoreBuildings()
+    {
+        MaintenanceOperator maintenanceOperator = new MaintenanceOperator
+        {
+            Id = 1,
+            Name = "John",
+            LastName = "Doe",
+            Email = "test@test.com",
+            Password = "Prueba.1234",
+            Buildings = new List<Building> { new Building { Id = 1, Name = "Building" }, new Building { Id = 2, Name = "Otro building" } }
+        };
+        var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        {
+            Name = maintenanceOperator.Name,
+            LastName = maintenanceOperator.LastName,
+            Email = maintenanceOperator.Email,
+            Password = maintenanceOperator.Password,
+            Buildings = [maintenanceOperator.Buildings[0].Id, maintenanceOperator.Buildings[1].Id ]
+        };
+        _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
+        var userController = new UserController(_userServiceMock.Object);
+
+        var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
+        var okResult = result as OkObjectResult;
+        var maintenanceOperatorModel = okResult.Value as MaintenanceOperatorModel;
+        var expectedContent = new MaintenanceOperatorModel(maintenanceOperator);
+
+        _userServiceMock.VerifyAll();
+        Assert.AreEqual(maintenanceOperatorModel, expectedContent);
     }
 }
