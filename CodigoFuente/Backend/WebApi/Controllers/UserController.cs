@@ -13,10 +13,26 @@ namespace WebApi.Controllers;
 public class UserController : ControllerBase
 {
   private readonly IUserServices _service;
+  private readonly ISessionService _sessionService;
 
-  public UserController(IUserServices service)
+  public UserController(IUserServices service, ISessionService sessionService)
   {
     _service = service;
+    _sessionService = sessionService;
+  }
+
+  [HttpGet]
+  public IActionResult GetUserSession([FromQuery] string? token)
+  {
+    if (token == "") return BadRequest("Token invalido");
+
+    User user = _sessionService.GetCurrentUser(Guid.Parse(token));
+
+    if (user == null) return BadRequest("Token invalido, debe inicar sesion");
+
+    UserModel userModel = new UserModel(user);
+
+    return Ok(userModel);
   }
 
   [HttpPost("administrator")]

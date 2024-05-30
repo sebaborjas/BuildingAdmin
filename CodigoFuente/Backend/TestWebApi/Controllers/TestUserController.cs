@@ -12,11 +12,13 @@ namespace TestWebApi;
 public class TestUserController
 {
     private Mock<IUserServices> _userServiceMock;
+    private Mock<ISessionService> _sessionServiceMock;
 
     [TestInitialize]
     public void SetUp()
     {
         _userServiceMock = new Mock<IUserServices>(MockBehavior.Strict);
+        _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
     }
 
     [TestMethod]
@@ -42,7 +44,7 @@ public class TestUserController
         _userServiceMock.Setup(r => r.CreateAdministrator(It.IsAny<Administrator>())).Returns(admin);
 
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateAdministrator(administratorCreateModel);
         var okResult = result as OkObjectResult;
@@ -61,7 +63,7 @@ public class TestUserController
         AdministratorCreateInput administratorCreateModel = null;
         _userServiceMock.Setup(r => r.CreateAdministrator(It.IsAny<Administrator>())).Throws(new NullReferenceException());
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateAdministrator(administratorCreateModel);
         var okResult = result as OkObjectResult;
@@ -87,7 +89,7 @@ public class TestUserController
             Password = "Prueba.1234"
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateAdministrator(administratorCreateModel);
         var okResult = result as OkObjectResult;
@@ -112,7 +114,7 @@ public class TestUserController
             Email = admin.Email
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateAdministrator(administratorCreateModel);
 
@@ -135,7 +137,7 @@ public class TestUserController
             LastName = admin.LastName
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateAdministrator(administratorCreateModel);
 
@@ -162,7 +164,7 @@ public class TestUserController
             Email = admin.Email
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateAdministrator(administratorCreateModel);
 
@@ -195,7 +197,7 @@ public class TestUserController
         _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
 
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
         var okResult = result as OkObjectResult;
@@ -215,7 +217,7 @@ public class TestUserController
     {
         MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = null;
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
 
@@ -240,7 +242,7 @@ public class TestUserController
             Password = "Pass123.!"
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
 
@@ -265,7 +267,7 @@ public class TestUserController
             Password = "Pass123.!"
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
 
@@ -291,7 +293,7 @@ public class TestUserController
             Password = "Pass123.!"
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
 
@@ -319,7 +321,7 @@ public class TestUserController
             Password = maintenanceOperator.Password,
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
 
@@ -346,7 +348,7 @@ public class TestUserController
             BuildingId = maintenanceOperator.Building.Id,
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
 
@@ -360,7 +362,7 @@ public class TestUserController
 
         _userServiceMock.Setup(r => r.DeleteManager(id));
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.DeleteManager(id);
 
@@ -377,7 +379,7 @@ public class TestUserController
 
         _userServiceMock.Setup(r => r.DeleteManager(id)).Throws(new ArgumentOutOfRangeException());
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.DeleteManager(id);
 
@@ -408,7 +410,7 @@ public class TestUserController
 
         _userServiceMock.Setup(r => r.CreateCompanyAdministrator(It.IsAny<CompanyAdministrator>())).Returns(companyAdministrator);
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateCompanyAdministrator(companyAdministratorCreateModel);
         var okResult = result as OkObjectResult;
@@ -426,7 +428,7 @@ public class TestUserController
     {
         CompanyAdministratorCreateInput companyAdministratorCreateModel = null;
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateCompanyAdministrator(companyAdministratorCreateModel);
 
@@ -459,7 +461,7 @@ public class TestUserController
 
         _userServiceMock.Setup(r => r.CreateCompanyAdministrator(It.IsAny<CompanyAdministrator>())).Throws(new InvalidOperationException("Current user is not authorized to create a company administrator"));
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateCompanyAdministrator(companyAdministratorCreateModel);
         _userServiceMock.VerifyAll();
@@ -485,7 +487,7 @@ public class TestUserController
             Password = companyAdministrator.Password
         };
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateCompanyAdministrator(companyAdministratorCreateModel);
         _userServiceMock.VerifyAll();
@@ -514,7 +516,7 @@ public class TestUserController
 
         _userServiceMock.Setup(r => r.CreateCompanyAdministrator(It.IsAny<CompanyAdministrator>())).Throws(new ArgumentException("User already exist"));
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateCompanyAdministrator(companyAdministratorCreateModel);
         Assert.IsNotNull(result);
@@ -544,10 +546,63 @@ public class TestUserController
 
         _userServiceMock.Setup(r => r.CreateCompanyAdministrator(It.IsAny<CompanyAdministrator>())).Throws(new InvalidOperationException("Current user does not have a construction company"));
 
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateCompanyAdministrator(companyAdministratorCreateModel);
         Assert.IsNotNull(result);
+    }
 
+    public void TestGetUserByToken(){
+        var user = new Administrator
+        {
+            Name = "John",
+            LastName = "Doe",
+            Email = "prueba@test.com",
+        };
+
+        var userModel = new UserModel(user);
+
+        _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid>())).Returns(user);
+
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+
+        string token = Guid.NewGuid().ToString();
+
+        var result = userController.GetUserSession(token);
+
+        _userServiceMock.VerifyAll();
+
+        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+    }
+
+    [TestMethod]
+    public void TestGetUserByTokenNotFound(){
+
+        _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid>())).Returns(() => null);
+
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+
+        string token = Guid.NewGuid().ToString();
+
+        var result = userController.GetUserSession(token);
+
+        _userServiceMock.VerifyAll();
+        
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+    }
+
+    [TestMethod]
+    public void TestGetUserEmptyToken(){
+
+        _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid>())).Returns(() => null);
+
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+
+
+        var result = userController.GetUserSession("");
+
+        _userServiceMock.VerifyAll();
+        
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
     }
 }
