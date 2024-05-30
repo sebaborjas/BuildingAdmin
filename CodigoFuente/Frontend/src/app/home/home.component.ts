@@ -27,6 +27,7 @@ export class HomeComponent {
         }
         this.name = response.name;
         this.email = response.email;
+        console.log(response.name, response.email);
       },
       (error) => {
         console.error('Error', error);
