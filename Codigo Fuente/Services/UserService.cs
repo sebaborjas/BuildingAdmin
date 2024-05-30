@@ -77,14 +77,14 @@ public class UserService : IUserServices
         {
             throw new ArgumentException("User already exist");
         }
-        var operatorBuilding = ((Manager)_sessionService.GetCurrentUser()).Buildings.Find(building => building.Id == maintenanceOperator.Building.Id);
+        var operatorBuilding = ((Manager)_sessionService.GetCurrentUser()).Buildings.Find(building => building.Id == maintenanceOperator.Buildings[0].Id);
         if (operatorBuilding == null)
         {
             throw new ArgumentException("Invalid building");
         };
         try
         {
-            maintenanceOperator.Building = operatorBuilding;
+            maintenanceOperator.Buildings = [operatorBuilding];
             _operatorRepository.Insert(maintenanceOperator);
             return maintenanceOperator;
         }

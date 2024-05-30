@@ -146,7 +146,7 @@ namespace TestServices
                 Name = "Mantenimiento",
                 LastName = "Maintenance",
                 Password = "Contra123.!",
-                Building = new Building()
+                Buildings = new List<Building>()
             };
             Administrator adminUser = null;
             Manager managerUser = null;

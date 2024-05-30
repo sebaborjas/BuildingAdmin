@@ -26,7 +26,7 @@ public class TestUserService
         _managerRepositoryMock = new Mock<IGenericRepository<Manager>>();
         _sessionService = new Mock<ISessionService>();
     }
-
+    
     [TestMethod]
     public void CreateCorrectAdministrator()
     {
@@ -112,7 +112,7 @@ public class TestUserService
             LastName = "Marquez",
             Email = "papa@devalentino.es",
             Password = "Honda.1234",
-            Building = new Building() { Id = 10 }
+            Buildings = new List<Building>() { new Building() { Id = 10 } }
         };
 
         var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
@@ -209,7 +209,12 @@ public class TestUserService
             LastName = "Marquez",
             Email = "papa@devalentino.es",
             Password = "Honda.1234",
-            Building = new Building() { Id = 11 }
+            Buildings = new List<Building>() { new Building() { Id = 11 } }
+        };
+
+        var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+    }
+    
         };
 
         var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
