@@ -23,12 +23,6 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
         public IActionResult CreateTicket([FromBody] TicketCreateModel createTicketModel)
         {
-
-            if (!IsValidCreateTicketModel(createTicketModel))
-            {
-                return BadRequest();
-            }
-
             var ticket = createTicketModel.ToEntity();
             var createdTicket = _ticketServices.CreateTicket(ticket);
             var response = new TicketModel(createdTicket);
@@ -66,10 +60,6 @@ namespace WebApi.Controllers
         public IActionResult AssignTicket(int id, [FromBody] int maintenanceOperatorId)
         {
             var ticket = _ticketServices.AssignTicket(id, maintenanceOperatorId);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
             var response = new TicketModel(ticket);
             return Ok(response);
         }
@@ -79,10 +69,6 @@ namespace WebApi.Controllers
         public IActionResult StartTicket(int id)
         {
             var ticket = _ticketServices.StartTicket(id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
             var response = new TicketModel(ticket);
             return Ok(response);
         }
@@ -92,33 +78,8 @@ namespace WebApi.Controllers
         public IActionResult CompleteTicket(int id, [FromBody] float totalCost)
         {
             var ticket = _ticketServices.CompleteTicket(id, totalCost);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
             var response = new TicketModel(ticket);
             return Ok(response);
-        }
-
-        private bool IsValidCreateTicketModel(TicketCreateModel createTicketModel)
-        {
-
-            if (createTicketModel == null)
-            {
-                return false;
-            }
-
-            if (createTicketModel.ApartmentId <= 0)
-            {
-                return false;
-            }
-
-            if (createTicketModel.CategoryId <= 0)
-            {
-                return false;
-            }
-
-            return true;
         }
 
     }

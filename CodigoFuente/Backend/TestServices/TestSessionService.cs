@@ -166,7 +166,7 @@ namespace TestServices
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidDataException))]
+        [ExpectedException(typeof(UnauthorizedAccessException))]
         public void TestLoginWithWrongPassword()
         {
             var adminUser = new Administrator()
@@ -189,7 +189,7 @@ namespace TestServices
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidDataException))]
+        [ExpectedException(typeof(UnauthorizedAccessException))]
         public void TestLoginWithWrongEmail()
         {
             MaintenanceOperator maintenanceOperatorUser = null;

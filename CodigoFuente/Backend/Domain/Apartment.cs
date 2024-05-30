@@ -80,5 +80,20 @@ namespace Domain
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is Apartment apartment)
+            {
+                return apartment.Id == Id &&
+                        apartment.DoorNumber == DoorNumber &&
+                        apartment.Rooms == Rooms &&
+                        apartment.Bathrooms == Bathrooms &&
+                        apartment.Owner == Owner &&
+                        apartment.Floor == Floor &&
+                        apartment.HasTerrace == HasTerrace;
+            }
+            return false;
+        }
+
     }
 }

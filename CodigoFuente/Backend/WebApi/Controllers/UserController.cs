@@ -13,69 +13,47 @@ namespace WebApi.Controllers;
 public class UserController : ControllerBase
 {
   private readonly IUserServices _service;
+  private readonly ISessionService _sessionService;
 
-  public UserController(IUserServices service)
+  public UserController(IUserServices service, ISessionService sessionService)
   {
     _service = service;
+    _sessionService = sessionService;
+  }
+
+  [HttpGet]
+  public IActionResult GetUserSession([FromQuery] string? token)
+  {
+    if (token == "") return BadRequest("Token invalido");
+
+    User user = _sessionService.GetCurrentUser(Guid.Parse(token));
+
+    if (user == null) return BadRequest("Token invalido, debe inicar sesion");
+
+    return Ok(user);
   }
 
   [HttpPost("administrator")]
   [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
   public IActionResult CreateAdministrator([FromBody] AdministratorCreateModel newAdministrator)
   {
-    if(!IsNewAdministratorValid(newAdministrator))
-    {
-      return BadRequest("La solcitud no es válida.");
-    }
     AdministratorModel administratorModel = new AdministratorModel(_service.CreateAdministrator(newAdministrator.ToEntity()));
-    
     return Ok(administratorModel);
-  }
-
-  private bool IsNewAdministratorValid(AdministratorCreateModel administrator)
-  {
-    return administrator != null && 
-    administrator.Name != null && 
-    administrator.LastName != null && 
-    administrator.Email != null &&
-    administrator.Password != null;
   }
 
   [HttpPost("maintenance-operator")]
   [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
   public IActionResult CreateMaintenanceOperator([FromBody] MaintenanceOperatorCreateModel newMaintenanceOperator)
   {
-    if(!IsNewMaintenanceOperatorValid(newMaintenanceOperator))
-    {
-      return BadRequest("La solcitud no es válida.");
-    }
     MaintenanceOperatorModel maintenanceOperator = new MaintenanceOperatorModel(_service.CreateMaintenanceOperator(newMaintenanceOperator.ToEntity()));
-    
     return Ok(maintenanceOperator);
-  }
-
-  private bool IsNewMaintenanceOperatorValid(MaintenanceOperatorCreateModel maintenanceOperator)
-  {
-    return maintenanceOperator != null && 
-    maintenanceOperator.Name != null && 
-    maintenanceOperator.LastName != null && 
-    maintenanceOperator.Email != null &&
-    maintenanceOperator.Password != null &&
-    maintenanceOperator.BuildingId > 0;
   }
 
   [HttpDelete("manager/{id}")]
   [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
   public IActionResult DeleteManager(int id)
   {
-    try
-    {
-      _service.DeleteManager(id);
-      return Ok("Se eliminó con éxito el encargado del sistema.");
-    }
-    catch (ArgumentOutOfRangeException)
-    {
-      return NotFound("No se encontró el encargado especificado.");
-    }
+    _service.DeleteManager(id);
+    return Ok("Se eliminó con éxito el encargado del sistema.");
   }
 }
