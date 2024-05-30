@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SesionStorageService {
-
   private _userToken = 'userToken';
 
-  constructor() { }
+  constructor() {}
 
   setToken(token: string) {
     sessionStorage.setItem(this._userToken, token);
