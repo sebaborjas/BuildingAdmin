@@ -9,14 +9,16 @@ public class UserService : IUserServices
     private IGenericRepository<Administrator> _adminRepository;
     private IGenericRepository<MaintenanceOperator> _operatorRepository;
     private IGenericRepository<Manager> _managerRepository;
+    private IGenericRepository<CompanyAdministrator> _companyRepository;
     private ISessionService _sessionService;
 
-    public UserService(IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> operatorRepository, IGenericRepository<Manager> managerRepository, ISessionService sessionService)
+    public UserService(IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> operatorRepository, IGenericRepository<Manager> managerRepository, ISessionService sessionService, IGenericRepository<CompanyAdministrator> companyRepository)
     {
         _adminRepository = adminRepository;
         _operatorRepository = operatorRepository;
         _managerRepository = managerRepository;
         _sessionService = sessionService;
+        _companyRepository = companyRepository;
     }
 
     public Administrator CreateAdministrator(Administrator administrator)
@@ -36,6 +38,10 @@ public class UserService : IUserServices
         if (userAlreadyExist == null)
         {
             userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == administrator.Email);
+        }
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _companyRepository.GetByCondition(user => user.Email == administrator.Email);
         }
 
         if (userAlreadyExist != null)
@@ -70,6 +76,10 @@ public class UserService : IUserServices
         if (userAlreadyExist == null)
         {
             userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
+        }
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _companyRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
         }
 
 
@@ -115,6 +125,37 @@ public class UserService : IUserServices
         }
     }
 
+    public CompanyAdministrator CreateCompanyAdministrator(CompanyAdministrator companyAdministrator)
+    {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not authorized to create a company administrator");
+        }
+        if (!IsNewCompanyAdministratorValid(companyAdministrator))
+        {
+            throw new ArgumentException("Invalid company administrator data");
+        }
+        if(IsUserAlreadyExist(companyAdministrator))
+        {
+            throw new ArgumentException("User already exist");
+        }
+        if (currentUser.ConstructionCompany == null)
+        {
+            throw new InvalidOperationException("Current user does not have a construction company");
+        }
+        try
+        {
+            companyAdministrator.ConstructionCompany = currentUser.ConstructionCompany;
+            _companyRepository.Insert(companyAdministrator);
+            return companyAdministrator;
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error creating company administrator", e);
+        }
+    }
+
     private bool IsNewAdministratorValid(Administrator administrator)
     {
         return administrator != null && administrator.Name != null && administrator.LastName != null && administrator.Email != null && administrator.Password != null;
@@ -124,4 +165,28 @@ public class UserService : IUserServices
     {
         return maintenanceOperator != null && maintenanceOperator.Name != null && maintenanceOperator.LastName != null && maintenanceOperator.Email != null && maintenanceOperator.Password != null;
     }
+    private bool IsNewCompanyAdministratorValid(CompanyAdministrator companyAdministrator)
+    {
+        return companyAdministrator != null && companyAdministrator.Name != null && companyAdministrator.LastName != null && companyAdministrator.Email != null && companyAdministrator.Password != null;
+    }
+
+    private bool IsUserAlreadyExist(User user)
+    {
+        User userAlreadyExist = null;
+        userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == user.Email);
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _managerRepository.GetByCondition(user => user.Email == user.Email);
+        }
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == user.Email);
+        }
+        if (userAlreadyExist == null)
+        {
+            userAlreadyExist = _companyRepository.GetByCondition(user => user.Email == user.Email);
+        }
+        return userAlreadyExist != null;
+    }
 }
+

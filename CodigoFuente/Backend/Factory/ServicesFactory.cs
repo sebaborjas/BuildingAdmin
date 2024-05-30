@@ -36,6 +36,7 @@ namespace Factory
             _services.AddScoped<IGenericRepository<Administrator>, AdministratorRepository>();
             _services.AddScoped<IGenericRepository<MaintenanceOperator>, MaintenanceOperatorRepository>();
             _services.AddScoped<IGenericRepository<Manager>, ManagerRepository>();
+            _services.AddScoped<IGenericRepository<CompanyAdministrator>, CompanyAdministratorRepository>();
 
             _services.AddScoped<ISessionRepository, SessionRepository>();
 

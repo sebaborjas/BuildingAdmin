@@ -5,5 +5,6 @@
         public const string AdministratorRole = "Administrator";
         public const string ManagerRole = "Manager";
         public const string MaintenanceOperatorRole = "MaintenanceOperator";
+        public const string CompanyAdministratorRole = "CompanyAdministrator";
     }
 }

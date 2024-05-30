@@ -15,16 +15,17 @@ namespace Services
         private IGenericRepository<Manager> _managerRepository;
         private IGenericRepository<Administrator> _adminRepository;
         private IGenericRepository<MaintenanceOperator> _maintenanceOperatorRepository;
+        private IGenericRepository<CompanyAdministrator> _companyAdministratorRepository;
 
         private User? _currentUser;
 
-        public SessionService(ISessionRepository sessionRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> maintenanceOperatorRepository)
+        public SessionService(ISessionRepository sessionRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<MaintenanceOperator> maintenanceOperatorRepository, IGenericRepository<CompanyAdministrator> companyAdministrator)
         {
             _sessionRepository = sessionRepository;
             _managerRepository = managerRepository;
             _adminRepository = adminRepository;
             _maintenanceOperatorRepository = maintenanceOperatorRepository;
-
+            _companyAdministratorRepository = companyAdministrator;
         }
 
         public User? GetCurrentUser(Guid? token = null)
@@ -49,14 +50,20 @@ namespace Services
                 {
                     user = _maintenanceOperatorRepository.GetByCondition(user => user.Email == email);
                 }
+                if (user == null)
+                {
+                    user = _companyAdministratorRepository.GetByCondition(user => user.Email == email);
+                }
                 if (user == null || user.Password != password)
                 {
                     throw new InvalidDataException();
                 }
+
                 var newSession = new Session()
                 {
                     User = user
                 };
+
                 _sessionRepository.Insert(newSession);
                 return newSession;
             }

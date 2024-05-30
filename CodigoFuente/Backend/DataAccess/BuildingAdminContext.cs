@@ -23,6 +23,7 @@ namespace DataAccess
         public virtual DbSet<Apartment> Apartments { get; set; }
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
+        public virtual DbSet<CompanyAdministrator> CompanyAdministrators { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,7 @@ namespace DataAccess
             modelBuilder.Entity<Building>().Navigation(e => e.Tickets).AutoInclude();
             modelBuilder.Entity<Apartment>().Navigation(e => e.Owner).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(e => e.AssignedTo).AutoInclude();
+            modelBuilder.Entity<CompanyAdministrator>().Navigation(e => e.ConstructionCompany).AutoInclude();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

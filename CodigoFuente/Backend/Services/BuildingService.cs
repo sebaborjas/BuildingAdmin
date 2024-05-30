@@ -1,6 +1,8 @@
 using IServices;
 using Domain;
 using IDataAccess;
+using DTO.In;
+using System;
 
 namespace Services;
 
@@ -25,6 +27,17 @@ public class BuildingService : IBuildingService
 
     public Building CreateBuilding(Building building)
     {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not authorized to create a building");
+        }
+
+        if (currentUser.ConstructionCompany == null)
+        {
+            throw new InvalidOperationException("Current user does not have a construction company");
+        }
+
         var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name || b.Address == building.Address || b.Location == building.Location);
 
         if (buildingAlreadyExist != null)
@@ -40,14 +53,11 @@ public class BuildingService : IBuildingService
             throw new ArgumentException("Building must have at least one apartment");
         }
 
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-
         try
         {
-            building.ConstructionCompany = getConstructionCompany(building);
+            building.ConstructionCompany = currentUser.ConstructionCompany;
             SetApartmentsExistingOwnersByEmail(building.Apartments);
             _buildingRepository.Insert(building);
-            assignBuildingToManager(building, currentUser);
             return building;
         }
         catch (Exception e)
@@ -84,23 +94,17 @@ public class BuildingService : IBuildingService
 
     public Building ModifyBuilding(int buildingId, Building modifiedBuilding)
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
         if (currentUser == null)
         {
-            throw new InvalidOperationException("Current user is not a manager");
+            throw new InvalidOperationException("Current user is not a CompanyAdministrator");
         }
 
-        var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
+        var building = _buildingRepository.GetByCondition(b => b.Id == buildingId);
 
         if (building == null)
         {
             throw new ArgumentNullException("Building not found");
-        }
-
-
-        if (modifiedBuilding.ConstructionCompany != null)
-        {
-            building.ConstructionCompany = getConstructionCompany(modifiedBuilding);
         }
 
         if (modifiedBuilding.Expenses > 0)
@@ -133,19 +137,90 @@ public class BuildingService : IBuildingService
         {
             throw new InvalidOperationException("Error getting buildings");
         }
+    }
 
+    public List<Building> GetAllBuildingsForCCompany()
+    {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a company administrator");
+        }
+        var constructionCompany = currentUser.ConstructionCompany;
+        if (constructionCompany == null)
+        {
+            throw new InvalidOperationException("Current user does not have a construction company");
+        }
+
+        try
+        {
+            var allBuildings = _buildingRepository.GetAll<Building>();
+            var buildings = allBuildings.Where(b => b.ConstructionCompany.Name == constructionCompany.Name).ToList();
+
+            return buildings;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error getting buildings", e);
+        }
     }
 
     public Building Get(int id)
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-        var buildingToReturn = currentUser.Buildings.Find(building => building.Id == id);
-        if (buildingToReturn == null)
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a company administrator");
+        }
+
+        try
+        {
+            var building = _buildingRepository.GetByCondition(b => b.Id == id);
+            return building;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Error getting building");
+        }
+    }
+
+    public string GetManagerName(int buildingId)
+    {
+        var manager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));
+        if (manager == null)
+        {
+            throw new ArgumentNullException("Manager not found");
+        }
+        return manager.Name;
+    }
+
+    public void ChangeBuildingManager(int buildingId, int managerId)
+    {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a company administrator");
+        }
+
+        var building = _buildingRepository.GetByCondition(b => b.Id == buildingId);
+        if (building == null)
         {
             throw new ArgumentNullException("Building not found");
         }
-        return buildingToReturn;
 
+        var manager = _managerRepository.GetByCondition(m => m.Id == managerId);
+        if (manager == null)
+        {
+            throw new ArgumentNullException("Manager not found");
+        }
+
+        var lastManager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));
+
+        if (lastManager != null)
+        {
+            removeBuildingFromManager(building, lastManager);
+        }
+        assignBuildingToManager(building, manager);
     }
 
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
@@ -179,22 +254,16 @@ public class BuildingService : IBuildingService
         }
     }
 
-    private ConstructionCompany getConstructionCompany(Building building)
+    private void removeBuildingFromManager(Building building, Manager manager)
     {
         try
         {
-            ConstructionCompany constructionCompanyModify = building.ConstructionCompany;
-            var constructionCompany = _constructionCompany.GetByCondition(c => c.Name == building.ConstructionCompany.Name);
-            if (constructionCompany == null)
-            {
-                _constructionCompany.Insert(constructionCompanyModify);
-                constructionCompany = constructionCompanyModify;
-            }
-            return constructionCompany;
+            manager.Buildings.Remove(building);
+            _managerRepository.Update(manager);
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException("Error getting construction company");
+            throw new InvalidOperationException("Error removing building from manager", e);
         }
     }
 
@@ -225,6 +294,6 @@ public class BuildingService : IBuildingService
     private bool IsValidCreateBuilding(Building building)
     {
         return building != null && !string.IsNullOrWhiteSpace(building.Name) && !string.IsNullOrWhiteSpace(building.Address) &&
-                !string.IsNullOrWhiteSpace(building.Location) && !string.IsNullOrWhiteSpace(building.ConstructionCompany.Name) && building.Expenses >= 0;
+                !string.IsNullOrWhiteSpace(building.Location) && building.Expenses >= 0;
     }
 }

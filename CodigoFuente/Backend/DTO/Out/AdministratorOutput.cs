@@ -2,10 +2,10 @@ using Domain;
 
 namespace DTO.Out
 {
-    public class AdministratorModel
+    public class AdministratorOutput
     {
 
-      public AdministratorModel(Administrator administrator)
+      public AdministratorOutput(Administrator administrator)
       {
         Id = administrator.Id;
       }
@@ -17,7 +17,7 @@ namespace DTO.Out
         {
           return false;
         }
-        AdministratorModel administratorModel = (AdministratorModel)obj;
+        AdministratorOutput administratorModel = (AdministratorOutput)obj;
         return Id == administratorModel.Id;
       }
     }

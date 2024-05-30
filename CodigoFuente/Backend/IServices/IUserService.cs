@@ -3,10 +3,12 @@ using Domain;
 
 public interface IUserServices
 {
-  public Administrator CreateAdministrator(Administrator administrator);
+    public Administrator CreateAdministrator(Administrator administrator);
 
-  public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator);
+    public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator);
 
-  public void DeleteManager(int id);
-  
+    public void DeleteManager(int id);
+
+    public CompanyAdministrator CreateCompanyAdministrator(CompanyAdministrator companyAdministrator);
+
 }

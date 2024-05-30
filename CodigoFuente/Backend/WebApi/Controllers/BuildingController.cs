@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult CreateBuilding([FromBody] CreateBuildingInput createBuildingInput)
         {
             var newBuilding = _buildingServices.CreateBuilding(createBuildingInput.ToEntity());
@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult DeleteBuilding(int id)
         {
             _buildingServices.DeleteBuilding(id);
@@ -37,7 +37,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult ModifyBuilding(int id, [FromBody] ModifyBuildingInput modifyBuildingInput)
         {
             _buildingServices.ModifyBuilding(id, modifyBuildingInput.ToEntity());
@@ -45,25 +45,34 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult Get([FromQuery] int? id)
         {
             if (id == null)
             {
-                var buildings = _buildingServices.GetAllBuildingsForUser();
+                var buildings = _buildingServices.GetAllBuildingsForCCompany();
                 var response = new List<GetBuildingOutput>();
                 buildings.ForEach(building =>
                 {
-                    response.Add(new GetBuildingOutput(building));
+                    var managerName = _buildingServices.GetManagerName(building.Id);
+                    response.Add(new GetBuildingOutput(building, managerName));
                 });
                 return Ok(response);
             }
             else
             {
                 var building = _buildingServices.Get(id.Value);
-                return Ok(new GetBuildingOutput(building));
+                var managerName = _buildingServices.GetManagerName(id.Value);
+                return Ok(new GetBuildingOutput(building, managerName));
             }
-            
+        }
+
+        [HttpPut("{id}/manager")]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+        public IActionResult ChangeBuildingManager(int buildingId, [FromBody] ChangeBuildingManagerInput changeBuildingManagerInput)
+        {
+            _buildingServices.ChangeBuildingManager(buildingId, changeBuildingManagerInput.ManagerId);
+            return Ok();
         }
     }
 }

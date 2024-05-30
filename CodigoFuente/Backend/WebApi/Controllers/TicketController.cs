@@ -21,11 +21,11 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult CreateTicket([FromBody] TicketCreateModel createTicketModel)
+        public IActionResult CreateTicket([FromBody] TicketCreateInput createTicketModel)
         {
             var ticket = createTicketModel.ToEntity();
             var createdTicket = _ticketServices.CreateTicket(ticket);
-            var response = new TicketModel(createdTicket);
+            var response = new TicketOutput(createdTicket);
             return Ok(response);
         }
 
@@ -34,10 +34,10 @@ namespace WebApi.Controllers
         public IActionResult GetTickets([FromQuery]string? category = null)
         {
             var tickets = _ticketServices.GetTickets(category);
-            var response = new List<TicketModel>();
+            var response = new List<TicketOutput>();
             foreach (var ticket in tickets)
             {
-                response.Add(new TicketModel(ticket));
+                response.Add(new TicketOutput(ticket));
             }
             return Ok(response);
         }
@@ -47,10 +47,10 @@ namespace WebApi.Controllers
         public IActionResult GetAssignedTickets()
         {
             var tickets = _ticketServices.GetAssignedTickets();
-            var response = new List<TicketModel>();
+            var response = new List<TicketOutput>();
             foreach (var ticket in tickets)
             {
-                response.Add(new TicketModel(ticket));
+                response.Add(new TicketOutput(ticket));
             }
             return Ok(response);
         }
@@ -60,7 +60,7 @@ namespace WebApi.Controllers
         public IActionResult AssignTicket(int id, [FromBody] int maintenanceOperatorId)
         {
             var ticket = _ticketServices.AssignTicket(id, maintenanceOperatorId);
-            var response = new TicketModel(ticket);
+            var response = new TicketOutput(ticket);
             return Ok(response);
         }
 
@@ -69,7 +69,7 @@ namespace WebApi.Controllers
         public IActionResult StartTicket(int id)
         {
             var ticket = _ticketServices.StartTicket(id);
-            var response = new TicketModel(ticket);
+            var response = new TicketOutput(ticket);
             return Ok(response);
         }
 
@@ -78,7 +78,7 @@ namespace WebApi.Controllers
         public IActionResult CompleteTicket(int id, [FromBody] float totalCost)
         {
             var ticket = _ticketServices.CompleteTicket(id, totalCost);
-            var response = new TicketModel(ticket);
+            var response = new TicketOutput(ticket);
             return Ok(response);
         }
 

@@ -2,7 +2,7 @@ using Domain;
 
 namespace DTO.In
 {
-    public class MaintenanceOperatorCreateModel
+    public class MaintenanceOperatorCreateInput
     {
         public string Name { get; set; }
         public string LastName { get; set; }
