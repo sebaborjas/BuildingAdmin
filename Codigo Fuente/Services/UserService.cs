@@ -55,12 +55,10 @@ public class UserService : IUserServices
 
     public MaintenanceOperator CreateMaintenanceOperator(MaintenanceOperator maintenanceOperator)
     {
-
         if (!IsNewMaintenanceOperatorValid(maintenanceOperator))
         {
             throw new ArgumentException("Invalid maintenance operator data");
         }
-
         User userAlreadyExist = null;
         userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
         if (userAlreadyExist == null)
@@ -71,20 +69,24 @@ public class UserService : IUserServices
         {
             userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
         }
-
-
         if (userAlreadyExist != null)
         {
             throw new ArgumentException("User already exist");
         }
-        var operatorBuilding = ((Manager)_sessionService.GetCurrentUser()).Buildings.Find(building => building.Id == maintenanceOperator.Buildings[0].Id);
-        if (operatorBuilding == null)
+
+        List<Building> buildings = new List<Building>();
+        foreach (var buildingToAdd in maintenanceOperator.Buildings)
         {
-            throw new ArgumentException("Invalid building");
-        };
+            var operatorBuilding = ((Manager)_sessionService.GetCurrentUser()).Buildings.Find(building => building.Id == buildingToAdd.Id);
+            if (operatorBuilding == null)
+            {
+                throw new ArgumentException("Invalid building");
+            };
+            buildings.Add(operatorBuilding);
+        }
         try
         {
-            maintenanceOperator.Buildings = [operatorBuilding];
+            maintenanceOperator.Buildings = buildings;
             _operatorRepository.Insert(maintenanceOperator);
             return maintenanceOperator;
         }
@@ -92,7 +94,6 @@ public class UserService : IUserServices
         {
             throw new Exception("Error creating maintenance operator", e);
         }
-
     }
 
     public void DeleteManager(int id)
