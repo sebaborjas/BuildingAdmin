@@ -30,7 +30,9 @@ public class UserController : ControllerBase
 
     if (user == null) return BadRequest("Token invalido, debe inicar sesion");
 
-    return Ok(user);
+    UserModel userModel = new UserModel(user);
+
+    return Ok(userModel);
   }
 
   [HttpPost("administrator")]
