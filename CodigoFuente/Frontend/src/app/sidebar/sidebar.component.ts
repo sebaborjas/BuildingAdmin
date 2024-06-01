@@ -10,6 +10,7 @@ import { Component, Input } from '@angular/core';
 export class SidebarComponent {
   @Input() name?: string;
   @Input() email?: string;
+  @Input() role?: string;
 
   constructor() {}
 

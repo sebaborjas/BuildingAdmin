@@ -17,6 +17,7 @@ export class HomeComponent {
 
   name: string = '';
   email: string = '';
+  role: string = '';
 
   getUser() {
     this._userService.getUser().subscribe(
@@ -27,6 +28,7 @@ export class HomeComponent {
         }
         this.name = response.name;
         this.email = response.email;
+        this.role = response.role;
         console.log(response.name, response.email);
       },
       (error) => {
