@@ -249,7 +249,7 @@ namespace TestWebApi
 
 
             _invitationServiceMock.VerifyAll();
-            Assert.AreEqual(10, acceptInvitationResponse.ManagerId);
+            Assert.AreEqual(10, acceptInvitationResponse.UserId);
         }
 
         [TestMethod]
