@@ -395,7 +395,7 @@ public class TestUserController
             Password = "Prueba.1234",
             Buildings = new List<Building> { new Building { Id = 1, Name = "Building" }, new Building { Id = 2, Name = "Otro building" } }
         };
-        var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateModel
+        var maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
         {
             Name = maintenanceOperator.Name,
             LastName = maintenanceOperator.LastName,
@@ -404,12 +404,12 @@ public class TestUserController
             Buildings = [maintenanceOperator.Buildings[0].Id, maintenanceOperator.Buildings[1].Id ]
         };
         _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
-        var userController = new UserController(_userServiceMock.Object);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
 
         var result = userController.CreateMaintenanceOperator(maintenanceOperatorCreateModel);
         var okResult = result as OkObjectResult;
-        var maintenanceOperatorModel = okResult.Value as MaintenanceOperatorModel;
-        var expectedContent = new MaintenanceOperatorModel(maintenanceOperator);
+        var maintenanceOperatorModel = okResult.Value as MaintenanceOperatorOutput;
+        var expectedContent = new MaintenanceOperatorOutput(maintenanceOperator);
 
         _userServiceMock.VerifyAll();
         Assert.AreEqual(maintenanceOperatorModel, expectedContent);

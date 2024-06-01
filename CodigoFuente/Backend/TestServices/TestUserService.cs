@@ -274,8 +274,9 @@ public class TestUserService
         _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Administrator)null);
         _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
         _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
+        _companyAdministratorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<CompanyAdministrator, bool>>>(), It.IsAny<List<string>>())).Returns((CompanyAdministrator)null);
         _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
-        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         var maintenanceOperator = new MaintenanceOperator
         {
