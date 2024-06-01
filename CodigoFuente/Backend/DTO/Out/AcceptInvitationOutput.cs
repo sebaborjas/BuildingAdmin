@@ -9,10 +9,10 @@ namespace DTO.Out
 {
     public class AcceptInvitationOutput
     {
-        public AcceptInvitationOutput(Manager manager)
+        public AcceptInvitationOutput(User user)
         {
-            ManagerId = manager.Id;
+            UserId = user.Id;
         }
-        public int ManagerId {  get; set; }
+        public int UserId {  get; set; }
     }
 }

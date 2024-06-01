@@ -99,7 +99,7 @@ namespace Services
             }
         }
 
-        public Manager AcceptInvitation(Invitation invitation, string Password)
+        public User AcceptInvitation(Invitation invitation, string Password)
         {
 
             Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);

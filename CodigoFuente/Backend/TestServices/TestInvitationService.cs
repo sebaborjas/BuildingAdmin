@@ -174,7 +174,7 @@ namespace TestServices
 
 
         [TestMethod]
-        public void TestAcceptInvitation()
+        public void TestAcceptInvitationForManager()
         {
             _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
 
