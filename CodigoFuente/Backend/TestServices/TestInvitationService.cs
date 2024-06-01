@@ -19,22 +19,22 @@ namespace TestServices
         private Mock<IGenericRepository<Invitation>> _invitationRepositoryMock;
         private Mock<IGenericRepository<Administrator>> _adminRepositoryMock;
         private Mock<IGenericRepository<Manager>> _managerRepositoryMock;
+        private Mock<IGenericRepository<CompanyAdministrator>> _companyAdministratorRepositoryMock;
         private InvitationService _service;
 
         [TestInitialize]
-        public void setUp()
+        public void Setup()
         {
             _invitationRepositoryMock = new Mock<IGenericRepository<Invitation>>(MockBehavior.Strict);
             _adminRepositoryMock = new Mock<IGenericRepository<Administrator>>(MockBehavior.Strict);
             _managerRepositoryMock = new Mock<IGenericRepository<Manager>>(MockBehavior.Strict);
-
+            _companyAdministratorRepositoryMock = new Mock<IGenericRepository<CompanyAdministrator>>(MockBehavior.Strict);
+            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object, _companyAdministratorRepositoryMock.Object);
         }
-
+        
         [TestMethod]
         public void TestCreateInvitation()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => null);
             _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => null);
 
@@ -57,8 +57,6 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentException))]
         public void TestCreateInvitationAlreadyExist()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation()); ;
             _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Administrator, bool>> predicate, List<string> includes) => null);
 
@@ -78,8 +76,6 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentException))]
         public void TestCreateInvitationUserAlreadyExist()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             var existingUser = new Administrator
             {
                 Email = "user@test.com",
@@ -108,8 +104,6 @@ namespace TestServices
         [TestMethod]
         public void TestDeleteInvitation()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation());
 
             _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
@@ -123,8 +117,6 @@ namespace TestServices
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestDeleteInvitationAccepted()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation { Status = Domain.DataTypes.InvitationStatus.Accepted });
 
             _service.DeleteInvitation(1);
@@ -135,7 +127,6 @@ namespace TestServices
         [TestMethod]
         public void TestModifyInvitation()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
             _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation());
 
             _invitationRepositoryMock.Setup(r => r.Update(It.IsAny<Invitation>())).Verifiable();
@@ -150,8 +141,6 @@ namespace TestServices
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestModifyInvitationAccepted()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation { Status = Domain.DataTypes.InvitationStatus.Accepted });
 
             _service.ModifyInvitation(1, DateTime.Now.AddDays(5));
@@ -163,8 +152,6 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentException))]
         public void TestModifyInvitationNotExpired()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => new Invitation { ExpirationDate = DateTime.Now.AddDays(5), Status = Domain.DataTypes.InvitationStatus.Pending });
 
             _service.ModifyInvitation(1, DateTime.Now.AddDays(8));
@@ -172,25 +159,19 @@ namespace TestServices
             _invitationRepositoryMock.Verify(r => r.Get(It.IsAny<int>()), Times.Once);
         }
 
-
+        
         [TestMethod]
         public void TestAcceptInvitationForManager()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()))
-                .Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation() { Name = "Test", Email = "mail@test.com", ExpirationDate = DateTime.Now.AddDays(4), Id = 1, Status = InvitationStatus.Pending });
+                .Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation() { Name = "Test", Email = "mail@test.com", ExpirationDate = DateTime.Now.AddDays(4), Id = 1, Status = InvitationStatus.Pending, Role = InvitationRoles.Manager });
 
             _managerRepositoryMock.Setup(r => r.Insert(It.IsAny<Manager>())).Verifiable();
             _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
 
             var invitation = new Invitation
             {
-                Id = 1,
-                Name = "Test",
                 Email = "mail@test.com",
-                ExpirationDate = DateTime.Now.AddDays(4),
-                Status = InvitationStatus.Pending
             };
             var manager = _service.AcceptInvitation(invitation, "contraseña123!");
 
@@ -200,14 +181,12 @@ namespace TestServices
             _managerRepositoryMock.VerifyAll();
 
         }
-
+        
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TestAcceptInvitationDoesNotExist()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => null);
 
             var invitation = new Invitation
@@ -225,8 +204,6 @@ namespace TestServices
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestAcceptInvitationAlreadyAccepted()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation { Status = Domain.DataTypes.InvitationStatus.Accepted });
 
             var invitation = new Invitation
@@ -244,8 +221,6 @@ namespace TestServices
         [TestMethod]
         public void TestRejectInvitation()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => new Invitation());
 
             _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
@@ -259,8 +234,6 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentException))]
         public void TestRejectInvitationDoesNotExist()
         {
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object);
-
             _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>())).Returns((Expression<Func<Invitation, bool>> predicate, List<string> includes) => null);
 
             _service.RejectInvitation("mail@test.com");
@@ -268,5 +241,35 @@ namespace TestServices
 
         }
 
+        [TestMethod]
+        public void TestAcceptInvitationForConstructionCompanyAdministrator()
+        {
+            var invitation = new Invitation
+            {
+                Id = 1,
+                Name = "Test",
+                Email = "mail@test.com",
+                ExpirationDate = DateTime.Now.AddDays(4),
+                Status = InvitationStatus.Pending,
+                Role = InvitationRoles.ConstructionCompanyAdministrator
+            };
+            _invitationRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Invitation, bool>>>(), It.IsAny<List<string>>()))
+                .Returns(invitation);
+
+            _companyAdministratorRepositoryMock.Setup(r => r.Insert(It.IsAny<CompanyAdministrator>())).Verifiable();
+            _invitationRepositoryMock.Setup(r => r.Delete(It.IsAny<Invitation>())).Verifiable();
+
+            var invitationToAccept = new Invitation()
+            {
+                Email = invitation.Email
+            };
+            var companyAdministrator = _service.AcceptInvitation(invitationToAccept, "contraseña123!");
+
+            Assert.IsNotNull(companyAdministrator);
+
+            _invitationRepositoryMock.VerifyAll();
+            _managerRepositoryMock.VerifyAll();
+
+        }
     }
 }

@@ -15,12 +15,14 @@ namespace Services
         private IGenericRepository<Invitation> _invitationRepository;
         private IGenericRepository<Administrator> _adminRepository;
         private IGenericRepository<Manager> _managerRepository;
+        private IGenericRepository<CompanyAdministrator> _companyAdministratorRepository;
 
-        public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<Manager> managerRepository)
+        public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<CompanyAdministrator> companyAdministratorRepository)
         {
             _invitationRepository = invitationRepository;
             _adminRepository = adminRepository;
             _managerRepository = managerRepository;
+            _companyAdministratorRepository = companyAdministratorRepository;
         }
 
         public Invitation CreateInvitation(Invitation newInvitation)
@@ -119,17 +121,31 @@ namespace Services
             }
             try
             {
-                Manager newManager = new Manager
+                User userToAdd = null;
+                if(invitationToAccept.Role == InvitationRoles.Manager)
                 {
-                    Id = 1,
-                    Email = invitation.Email,
-                    Name = invitation.Name,
-                    Password = Password
-                };
+                    userToAdd = new Manager
+                    {
+                        Id = 1,
+                        Email = invitationToAccept.Email,
+                        Name = invitationToAccept.Name,
+                        Password = Password
+                    };
 
-                _managerRepository.Insert(newManager);
+                    _managerRepository.Insert((Manager)userToAdd);
+                } else if(invitationToAccept.Role == InvitationRoles.ConstructionCompanyAdministrator)
+                {
+                    userToAdd = new CompanyAdministrator
+                    {
+                        Email = invitationToAccept.Email,
+                        Name = invitationToAccept.Name,
+                        Password = Password
+                    };
+                    _companyAdministratorRepository.Insert((CompanyAdministrator)userToAdd);
+                }
+                
                 _invitationRepository.Delete(invitationToAccept);
-                return newManager;
+                return userToAdd;
             }
             catch (Exception e)
             {
