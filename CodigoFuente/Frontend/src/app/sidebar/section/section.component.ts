@@ -12,5 +12,5 @@ export class SectionComponent {
   constructor() {}
 
   @Input() title?: string;
-  @Input() selected?: boolean = true;
+  @Input() selected?: boolean;
 }
