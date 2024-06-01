@@ -23,7 +23,7 @@ namespace TestServices
         private Mock<ISessionService> _sessionService;
 
         private Manager _user;
-        private Building _building;
+        private List<Building> _buildings;
         private Apartment _apartment;
         private Category _category;
         private MaintenanceOperator _maintenance;
@@ -54,20 +54,22 @@ namespace TestServices
                 Rooms = 2
             };
 
-            _building = new Building()
+            _buildings = new List<Building>()
             {
-                Id = 1,
-                Apartments = [_apartment],
-                Address = "Rivera, 1111, Soca",
-                ConstructionCompany = new ConstructionCompany(),
-                Expenses = 2000,
-                Location = "111,111",
-                Name = "Edificio Las Delicias",
+                new Building(){
+                    Id = 1,
+                    Apartments = [_apartment],
+                    Address = "Rivera, 1111, Soca",
+                    ConstructionCompany = new ConstructionCompany(),
+                    Expenses = 2000,
+                    Location = "111,111",
+                    Name = "Edificio Las Delicias"
+                }
             };
 
             _user = new Manager()
             {
-                Buildings = [_building],
+                Buildings = _buildings,
                 Email = "manager@correo.com",
                 Id = 1,
                 Name = "Lucas",
@@ -172,7 +174,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
@@ -200,7 +202,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
@@ -280,9 +282,11 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = new Building()
+                Buildings = new List<Building>()
                 {
-                    Id = 80
+                    new Building() {
+                        Id = 80
+                    }
                 }
             };
             _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
@@ -316,7 +320,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
@@ -338,7 +342,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
 
             var expectedTicket = new Ticket()
@@ -388,7 +392,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             Ticket ticket = null;
             _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
@@ -412,7 +416,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             var ticket = new Ticket()
             {
@@ -445,7 +449,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             var ticket = new Ticket()
             {
@@ -478,7 +482,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             var ticket = new Ticket()
             {
@@ -513,7 +517,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             Ticket ticket = null;
             _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
@@ -537,7 +541,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             var ticket = new Ticket()
             {
@@ -570,7 +574,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             var ticket = new Ticket()
             {
@@ -602,7 +606,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             var ticket1 = new Ticket()
             {
@@ -670,7 +674,7 @@ namespace TestServices
                 Password = "Pass123.!",
                 Name = "Rodrigo",
                 LastName = "Rodriguez",
-                Building = _building
+                Buildings = _buildings
             };
             var ticket1 = new Ticket()
             {

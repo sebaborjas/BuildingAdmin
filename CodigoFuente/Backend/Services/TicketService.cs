@@ -86,7 +86,7 @@ namespace Services
             }
 
             var maintenance = _maintenanceRepository.Get(maintenanceOperatorId);
-            if (maintenance == null || !maintenance.Building.Equals(ticketBuilding))
+            if (maintenance == null || !maintenance.WorksWithBuilding(ticketBuilding))
             {
                 throw new InvalidDataException("Invalid maintenance operator id");
             }
