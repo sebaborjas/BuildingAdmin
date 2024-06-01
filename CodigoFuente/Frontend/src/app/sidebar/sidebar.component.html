@@ -110,7 +110,8 @@
   aria-label="Sidebar"
 >
   <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-    <app-admin></app-admin>
+    <app-admin *ngIf="role === 'Administrator'"></app-admin>
+    <app-manager *ngIf="role === 'Manager'"></app-manager>
   </div>
 </aside>
 
