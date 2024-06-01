@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingAdminContext))]
-    partial class BuildingAdminContextModelSnapshot : ModelSnapshot
+    [Migration("20240601224006_Updating-migrations")]
+    partial class Updatingmigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BuildingMaintenanceOperator", b =>
-                {
-                    b.Property<int>("BuildingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaintenanceOperatorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BuildingsId", "MaintenanceOperatorId");
-
-                    b.HasIndex("MaintenanceOperatorId");
-
-                    b.ToTable("BuildingMaintenanceOperator");
-                });
 
             modelBuilder.Entity("Domain.Apartment", b =>
                 {
@@ -95,6 +83,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MaintenanceOperatorId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
 
@@ -104,6 +95,8 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ConstructionCompanyId");
+
+                    b.HasIndex("MaintenanceOperatorId");
 
                     b.HasIndex("ManagerId");
 
@@ -333,21 +326,6 @@ namespace DataAccess.Migrations
                     b.HasDiscriminator().HasValue("Manager");
                 });
 
-            modelBuilder.Entity("BuildingMaintenanceOperator", b =>
-                {
-                    b.HasOne("Domain.Building", null)
-                        .WithMany()
-                        .HasForeignKey("BuildingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.MaintenanceOperator", null)
-                        .WithMany()
-                        .HasForeignKey("MaintenanceOperatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Apartment", b =>
                 {
                     b.HasOne("Domain.Building", null)
@@ -366,6 +344,10 @@ namespace DataAccess.Migrations
                     b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
                         .WithMany()
                         .HasForeignKey("ConstructionCompanyId");
+
+                    b.HasOne("Domain.MaintenanceOperator", null)
+                        .WithMany("Buildings")
+                        .HasForeignKey("MaintenanceOperatorId");
 
                     b.HasOne("Domain.Manager", null)
                         .WithMany("Buildings")
@@ -428,6 +410,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Apartments");
 
                     b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Domain.MaintenanceOperator", b =>
+                {
+                    b.Navigation("Buildings");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>
