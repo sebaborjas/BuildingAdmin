@@ -2,7 +2,7 @@
 using System.IO;
 using DTO.In;
 using IImporter;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace JSONImporter
 {
@@ -16,7 +16,13 @@ namespace JSONImporter
         public List<CreateBuildingInput> ImportFile(ImporterInput input)
         {
             var jsonFile = File.ReadAllText(input.Path);
-            var buildings = JsonConvert.DeserializeObject<List<CreateBuildingInput>>(jsonFile);
+
+            JsonSerializerOptions settings = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var buildings = JsonSerializer.Deserialize<List<CreateBuildingInput>>(jsonFile, settings);
 
             return buildings;
         }
