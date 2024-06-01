@@ -1,12 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { AdminComponent } from './admin/admin.component';
 import { ManagerComponent } from './manager/manager.component';
+import { MaintenanceOperatorComponent } from './maintenance-operator/maintenance-operator.component';
 import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [AdminComponent, ManagerComponent, NgIf],
+  imports: [
+    AdminComponent,
+    ManagerComponent,
+    NgIf,
+    MaintenanceOperatorComponent,
+  ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
