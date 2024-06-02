@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { UserService } from '../services/user.service';
 import { Router, RouterOutlet } from '@angular/router';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SidebarComponent, RouterOutlet],
+  imports: [SidebarComponent, RouterOutlet, LoadingComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-invitations',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './invitations.component.html',
   styleUrl: './invitations.component.css',
 })
-export class InvitationsComponent {}
+export class InvitationsComponent {
+  constructor(private loadingService: LoadingService) {
+    this.loadingService.loadingOn();
+  }
+
+  ngOnInit() {
+    this.loadingService.loadingOff();
+  }
+}
