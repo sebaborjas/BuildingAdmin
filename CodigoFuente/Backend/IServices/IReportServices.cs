@@ -42,11 +42,16 @@ namespace IServices
         public int TicketsClosed { get; set; }
     }
 
-    public struct TicketByApartment
+    public struct TicketByApartment: IEquatable<TicketByApartment>
     {
         public string ApartmentAndOwner { get; set; }
         public int TicketsOpen { get; set; }
         public int TicketsInProgress { get; set; }
         public int TicketsClosed { get; set; }
+
+        public bool Equals(TicketByApartment other)
+        {
+            return ApartmentAndOwner == other.ApartmentAndOwner && TicketsOpen == other.TicketsOpen && TicketsInProgress == other.TicketsInProgress && TicketsClosed == other.TicketsClosed;
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace TestServices
             _buildingRepositoryMock = new Mock<IGenericRepository<Building>>(MockBehavior.Strict);
             _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
         }
-
+        
         [TestMethod]
         public void TestGetTicketsByBuilding()
         {
@@ -382,6 +382,104 @@ namespace TestServices
                 t.CategoryName != "Category Dos" ||
                 (t.TicketsOpen == 2 && t.TicketsInProgress == 1 && t.TicketsClosed == 0)),
                 "Unexpected result for category 'Category Dos'");
+        }
+
+        
+        [TestMethod]
+        public void TestGetTicketsByApartment()
+        {
+
+            var apartment1 = new Apartment
+            {
+                Id = 1,
+                Owner = new Owner { Name = "Jose", LastName = "Rodriguez" },
+                DoorNumber = 101
+            };
+
+            var apartment2 = new Apartment
+            {
+                Id = 2,
+                Owner = new Owner { Name = "Miguel", LastName = "Gonzalez" },
+                DoorNumber = 102
+            };
+
+            Building firstBuilding = new Building
+            {
+                Id = 1,
+                Name = "BuildingUno",
+                Apartments = [apartment1, apartment2],
+                Tickets = new List<Ticket>
+                {
+                    new Ticket 
+                    { 
+                        Status = Domain.DataTypes.Status.Open,
+                        Apartment = apartment1
+                    },
+                    new Ticket
+                    {
+                        Status = Domain.DataTypes.Status.InProgress,
+                        Apartment = apartment1
+                    },
+                    new Ticket
+                    {
+                        Status = Domain.DataTypes.Status.InProgress,
+                        Apartment = apartment1
+                    },
+                    new Ticket
+                    {
+                        Status = Domain.DataTypes.Status.Open,
+                        Apartment = apartment2
+                    },
+                    new Ticket
+                    {
+                        Status = Domain.DataTypes.Status.InProgress,
+                        Apartment = apartment2
+                    },
+                    new Ticket
+                    {
+                        Status = Domain.DataTypes.Status.Closed,
+                        Apartment = apartment2
+                    },
+                    new Ticket
+                    {
+                        Status = Domain.DataTypes.Status.Closed,
+                        Apartment = apartment2
+                    },
+                }
+            };
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
+                .Returns(new Manager
+                {
+                    Buildings = new List<Building> { firstBuilding }
+                });
+
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+
+            var expected = new List<TicketByApartment>
+            { 
+                new TicketByApartment
+                {
+                    ApartmentAndOwner = "101 - Jose Rodriguez",
+                    TicketsOpen = 1,
+                    TicketsClosed = 0,
+                    TicketsInProgress = 2,
+                },
+                new TicketByApartment
+                {
+                    ApartmentAndOwner = "102 - Miguel Gonzalez",
+                    TicketsOpen = 1,
+                    TicketsClosed = 2,
+                    TicketsInProgress = 1,
+                }
+            };
+
+            var ticketsByApartment = _reportService.GetTicketsByApartment("BuildingUno");
+
+            _buildingRepositoryMock.VerifyAll();
+
+            Assert.AreEqual<TicketByApartment>(expected.ElementAt(0), ticketsByApartment.ElementAt(0));
+            Assert.AreEqual<TicketByApartment>(expected.ElementAt(1), ticketsByApartment.ElementAt(1));
         }
     }
 }
