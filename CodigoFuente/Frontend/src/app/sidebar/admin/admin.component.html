@@ -1,7 +1,7 @@
 <ul class="space-y-2 font-medium">
   <app-section
     [title]="'Dashboard'"
-    (click)="selectSection(1)"
+    (click)="selectSection(1); navigateToSection('dashboard')"
     [selected]="selectedSectionIndex === 1"
   ></app-section>
   <app-section
