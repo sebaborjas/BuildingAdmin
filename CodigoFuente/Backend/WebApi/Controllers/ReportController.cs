@@ -52,5 +52,11 @@ namespace WebApi.Controllers
             
             return Ok(_reportServices.GetTicketsByCategory(building));
         }
+
+        [HttpGet("tickets-by-apartment")]
+        public IActionResult GetTicketsByApartment([FromQuery] string building)
+        {
+            return Ok(_reportServices.GetTicketsByApartment(building));
+        }
     }
 }
