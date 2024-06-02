@@ -13,6 +13,8 @@ namespace IServices
         ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName = null);
         
         ICollection<TicketsByCategory> GetTicketsByCategory(string buildingName, string? categoryName = null);
+
+        ICollection<TicketByApartment> GetTicketsByApartment(string buildingName);
     }
 
     public struct TicketByBuilding
@@ -35,6 +37,14 @@ namespace IServices
     public struct TicketsByCategory
     {
         public string CategoryName { get; set; }
+        public int TicketsOpen { get; set; }
+        public int TicketsInProgress { get; set; }
+        public int TicketsClosed { get; set; }
+    }
+
+    public struct TicketByApartment
+    {
+        public string ApartmentAndOwner { get; set; }
         public int TicketsOpen { get; set; }
         public int TicketsInProgress { get; set; }
         public int TicketsClosed { get; set; }

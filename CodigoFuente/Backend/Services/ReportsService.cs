@@ -177,5 +177,10 @@ public class ReportsService : IReportServices
         return result;
     }
 
+    public ICollection<TicketByApartment> GetTicketsByApartment(string buildingName)
+    {
+       return new List<TicketByApartment>();
+    }
+
 }
 
