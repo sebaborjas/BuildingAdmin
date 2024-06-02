@@ -6,7 +6,7 @@
   ></app-section>
   <app-section
     [title]="'Invitaciones'"
-    (click)="selectSection(2)"
+    (click)="selectSection(2); navigateToSection('invitations')"
     [selected]="selectedSectionIndex === 2"
   ></app-section>
   <app-section
