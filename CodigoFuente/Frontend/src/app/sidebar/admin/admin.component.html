@@ -11,7 +11,7 @@
   ></app-section>
   <app-section
     [title]="'Reportes'"
-    (click)="selectSection(3)"
+    (click)="selectSection(3); navigateToSection('reports')"
     [selected]="selectedSectionIndex === 3"
   ></app-section>
 </ul>
