@@ -1,19 +1,51 @@
 import { Component } from '@angular/core';
 import { LoadingService } from '../../services/loading.service';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-invitations',
   standalone: true,
-  imports: [],
+  imports: [NgIf, FormsModule],
   templateUrl: './invitations.component.html',
   styleUrl: './invitations.component.css',
 })
 export class InvitationsComponent {
-  constructor(private loadingService: LoadingService) {
-    this.loadingService.loadingOn();
+  constructor(
+    private _loadingService: LoadingService,
+    private _adminService: AdminService
+  ) {
+    this._loadingService.loadingOn();
+  }
+
+  isVisible = false;
+  email = '';
+  name = '';
+  expirationDate = '';
+
+  showModal() {
+    this.isVisible = true;
+  }
+
+  hideModal() {
+    this.isVisible = false;
   }
 
   ngOnInit() {
-    this.loadingService.loadingOff();
+    this._loadingService.loadingOff();
+  }
+
+  createInvitation() {
+    this._adminService
+      .createInvitation(this.name, this.email, this.expirationDate)
+      .subscribe(
+        (response) => {
+          console.log('Invitation created', response);
+        },
+        (error) => {
+          console.error('Error', error);
+        }
+      );
   }
 }
