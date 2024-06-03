@@ -7,3 +7,9 @@ export interface UserModel {
   email: string;
   role: string;
 }
+
+export interface InvitationModel {
+  name: string;
+  email: string;
+  expirationDate: string;
+}
