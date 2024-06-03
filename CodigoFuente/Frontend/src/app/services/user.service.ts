@@ -21,9 +21,8 @@ export class UserService {
     const token = this._sesionStorageService.getToken() || '';
     let params = new HttpParams().set('token', token);
 
-    return this._httpClient.get<UserModel>(
-      `${environment.API_URL}${UserEndpoint.USER}`,
-      { params: params }
-    );
+    return this._httpClient.get<UserModel>(`${BASE_URL}${UserEndpoint.USER}`, {
+      params: params,
+    });
   }
 }
