@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Domain.DataTypes;
 
 namespace DTO.In
 {
@@ -12,6 +13,7 @@ namespace DTO.In
         public string Email { get; set; }
         public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public InvitationRoles Role { get; set; }
 
         public Invitation ToEntity()
         {
@@ -19,8 +21,9 @@ namespace DTO.In
             {
                 Email = Email,
                 ExpirationDate = ExpirationDate,
-                Status = Domain.DataTypes.InvitationStatus.Pending,
-                Name = Name
+                Status = InvitationStatus.Pending,
+                Name = Name,
+                Role = Role
             };
         }
     }

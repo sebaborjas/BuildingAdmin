@@ -59,5 +59,26 @@ namespace WebApi.Controllers
             _invitationService.RejectInvitation(rejectInvitationInput.Email);
             return Ok();
         }
+
+        [HttpGet]
+        [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
+        public IActionResult Get([FromQuery] int? id)
+        {
+            if (id == null)
+            {
+                var invitations = _invitationService.GetAllInvitations();
+                var response = new List<GetInvitationOutput>();
+                invitations.ForEach(invitation =>
+                {
+                    response.Add(new GetInvitationOutput(invitation));
+                });
+                return Ok(response);
+            }
+            else
+            {
+                var invitation = _invitationService.GetInvitation(id.Value);
+                return Ok(new GetInvitationOutput(invitation));
+            }
+        }
     }
 }
