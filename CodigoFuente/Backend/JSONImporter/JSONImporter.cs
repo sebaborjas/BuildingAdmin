@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using Domain;
 using DTO.In;
 using IImporter;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace JSONImporter
 {
@@ -16,9 +15,30 @@ namespace JSONImporter
         public List<CreateBuildingInput> ImportFile(ImporterInput input)
         {
             var jsonFile = File.ReadAllText(input.Path);
-            var buildings = JsonConvert.DeserializeObject<List<CreateBuildingInput>>(jsonFile);
 
-            return buildings;
+            JsonSerializerOptions settings = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            Dictionary<string, List<CreateBuildingInput>> buildingsInput;
+            try
+            {
+                buildingsInput = JsonSerializer.Deserialize<Dictionary<string, List<CreateBuildingInput>>>(jsonFile, settings);
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"Error deserializing JSON: {ex.Message}");
+                return new List<CreateBuildingInput>();
+            }
+
+            if (buildingsInput == null || !buildingsInput.ContainsKey("buildings"))
+            {
+                Console.WriteLine("The key 'edificios' was not found in the JSON.");
+                return new List<CreateBuildingInput>();
+            }
+
+            return buildingsInput["buildings"];
         }
     }
 }
