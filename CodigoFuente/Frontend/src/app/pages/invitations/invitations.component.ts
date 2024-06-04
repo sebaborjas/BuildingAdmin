@@ -45,7 +45,7 @@ export class InvitationsComponent {
         this._toastService.observe({
           loading: 'Creando invitacion',
           success: 'Invitacion creada con exito',
-          error: 'Ha ocurrido algun error al crear la invitacion',
+          error: (e) => e.error || 'Error al crear invitacion',
         })
       )
       .subscribe(
