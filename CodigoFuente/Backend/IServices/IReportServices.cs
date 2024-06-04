@@ -13,6 +13,8 @@ namespace IServices
         ICollection<TicketsByMaintenanceOperator> GetTicketsByMaintenanceOperator(string buildingName, string? operatorName = null);
         
         ICollection<TicketsByCategory> GetTicketsByCategory(string buildingName, string? categoryName = null);
+
+        ICollection<TicketByApartment> GetTicketsByApartment(string buildingName);
     }
 
     public struct TicketByBuilding
@@ -38,5 +40,18 @@ namespace IServices
         public int TicketsOpen { get; set; }
         public int TicketsInProgress { get; set; }
         public int TicketsClosed { get; set; }
+    }
+
+    public struct TicketByApartment: IEquatable<TicketByApartment>
+    {
+        public string ApartmentAndOwner { get; set; }
+        public int TicketsOpen { get; set; }
+        public int TicketsInProgress { get; set; }
+        public int TicketsClosed { get; set; }
+
+        public bool Equals(TicketByApartment other)
+        {
+            return ApartmentAndOwner == other.ApartmentAndOwner && TicketsOpen == other.TicketsOpen && TicketsInProgress == other.TicketsInProgress && TicketsClosed == other.TicketsClosed;
+        }
     }
 }

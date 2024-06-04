@@ -36,6 +36,11 @@ namespace DataAccess
             modelBuilder.Entity<Building>().Navigation(e => e.Tickets).AutoInclude();
             modelBuilder.Entity<Apartment>().Navigation(e => e.Owner).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(e => e.AssignedTo).AutoInclude();
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity<CompanyAdministrator>().Navigation(e => e.ConstructionCompany).AutoInclude();
+            modelBuilder.Entity<MaintenanceOperator>().HasMany(e => e.Buildings).WithMany();
+>>>>>>> develop
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

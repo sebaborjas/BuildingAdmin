@@ -26,7 +26,7 @@ public class TestUserService
         _companyAdministratorRepositoryMock = new Mock<IGenericRepository<CompanyAdministrator>>(MockBehavior.Strict);
         _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
     }
-
+    
     [TestMethod]
     public void CreateCorrectAdministrator()
     {
@@ -129,7 +129,7 @@ public class TestUserService
             LastName = "Marquez",
             Email = "papa@devalentino.es",
             Password = "Honda.1234",
-            Building = new Building() { Id = 10 }
+            Buildings = new List<Building>() { new Building() { Id = 10 } }
         };
 
         var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
@@ -230,10 +230,72 @@ public class TestUserService
             LastName = "Marquez",
             Email = "papa@devalentino.es",
             Password = "Honda.1234",
-            Building = new Building() { Id = 11 }
+            Buildings = new List<Building>() { new Building() { Id = 11 } }
         };
 
         _service.CreateMaintenanceOperator(maintenanceOperator);
+    }
+    
+    [TestMethod]
+    public void CreateMaintenanceOperatorWithMoreBuildings()
+    {
+        var building1 = new Building()
+        {
+            Id = 10,
+            Name = "Edificio Uno",
+            Address = "Calle, 123, esquina",
+            Apartments = [],
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 3000,
+            Location = "123,123",
+            Tickets = []
+        };
+        var building2 = new Building()
+        {
+            Id = 11,
+            Name = "Edificio Dos",
+            Address = "Calle, 321, esquina",
+            Apartments = [],
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 5000,
+            Location = "321,321",
+            Tickets = []
+        };
+        var currentUser = new Manager()
+        {
+            Name = "Administrador",
+            LastName = "Administrator",
+            Email = "admin@mail.com",
+            Id = 1,
+            Password = "Pass123.!",
+            Buildings = [building1, building2]
+        };
+        _operatorRepositoryMock.Setup(r => r.Insert(It.IsAny<MaintenanceOperator>())).Verifiable();
+        _adminRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Administrator, bool>>>(), It.IsAny<List<string>>())).Returns((Administrator)null);
+        _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
+        _operatorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(), It.IsAny<List<string>>())).Returns((MaintenanceOperator)null);
+        _companyAdministratorRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<CompanyAdministrator, bool>>>(), It.IsAny<List<string>>())).Returns((CompanyAdministrator)null);
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
+
+        var maintenanceOperator = new MaintenanceOperator
+        {
+            Name = "Marc",
+            LastName = "Marquez",
+            Email = "papa@devalentino.es",
+            Password = "Honda.1234",
+            Buildings = new List<Building>() { new Building() { Id = 10 }, new Building() { Id = 11 } }
+        };
+
+        var createdOperator = _service.CreateMaintenanceOperator(maintenanceOperator);
+
+        _sessionService.VerifyAll();
+        _operatorRepositoryMock.VerifyAll();
+        _adminRepositoryMock.VerifyAll();
+        _managerRepositoryMock.VerifyAll();
+        Assert.AreEqual(maintenanceOperator, createdOperator);
+        CollectionAssert.Contains(maintenanceOperator.Buildings, building1);
+        CollectionAssert.Contains(maintenanceOperator.Buildings, building2);
     }
 
     [TestMethod]

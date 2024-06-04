@@ -177,5 +177,37 @@ public class ReportsService : IReportServices
         return result;
     }
 
+    public ICollection<TicketByApartment> GetTicketsByApartment(string buildingName)
+    {
+        var currentUser = (Manager)_sessionService.GetCurrentUser();
+        try
+        {
+            var building = currentUser.Buildings.Where(userBuilding=> userBuilding.Name == buildingName).FirstOrDefault();
+            if(building == null)
+            {
+                throw new KeyNotFoundException("Building not found");
+            }
+            var result = new List<TicketByApartment>();
+
+            var apartments = building.Apartments;
+            foreach (var apartment in apartments)
+            {
+                var tickets = building.Tickets.Where(ticket=>ticket.Apartment == apartment).ToList();
+                result.Add(new TicketByApartment
+                {
+                    ApartmentAndOwner = $"{apartment.DoorNumber} - {apartment.Owner.Name} {apartment.Owner.LastName}",
+                    TicketsOpen = tickets.Where(ticket => ticket.Status == Domain.DataTypes.Status.Open).Count(),
+                    TicketsInProgress = tickets.Where(ticket => ticket.Status == Domain.DataTypes.Status.InProgress).Count(),
+                    TicketsClosed = tickets.Where(ticket => ticket.Status == Domain.DataTypes.Status.Closed).Count()
+                });
+            }
+            return result;
+        }
+        catch (Exception)
+        {
+            throw new InvalidOperationException("Error getting tickets by apartment");
+        }
+    }
+
 }
 

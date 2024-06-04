@@ -14,6 +14,11 @@ namespace Domain
             }
         }
 
-        public Building Building { get; set; }
+        public List<Building> Buildings { get; set; }
+
+        public bool WorksWithBuilding(Building building)
+        {
+            return Buildings.Contains(building);
+        }
     }
 }
