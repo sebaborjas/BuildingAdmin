@@ -24,23 +24,21 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        //[AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult GetAvailableImporters()
         {
             List<ImporterInterface> availableImporters = _importService.GetAllImporters();
             List<string> importerNames = availableImporters.Select(importer => importer.GetName()).ToList();
             return Ok(importerNames);
-            
+
         }
 
         [HttpPost]
-        // [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult ImportBuildings([FromBody] ImporterInput importerInput)
         {
             var buildings = _importService.ImportBuildings(importerInput.ImporterName, importerInput.Path);
             return Ok(buildings);
         }
-
-
     }
 }

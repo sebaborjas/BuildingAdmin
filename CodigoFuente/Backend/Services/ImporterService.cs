@@ -1,18 +1,17 @@
 ﻿using System.Reflection;
 using IServices;
 using IImporter;
-using System.Collections.Generic;
-using System.IO;
 using Domain;
-using System.Security.Cryptography;
 using DTO.In;
+using DTO.Out;
+
 
 namespace Services
 {
     public class ImportService : IImportService
     {
-        private readonly IBuildingService _buildingService;
-        private readonly ISessionService _sessionService;
+        private IBuildingService _buildingService;
+        private ISessionService _sessionService;
 
         private string ImportersPath = "./Importers";
 
@@ -49,7 +48,7 @@ namespace Services
             return availableImporters;
         }
 
-        public List<Building> ImportBuildings(string importerName, string path)
+        public ImporterOutput ImportBuildings(string importerName, string path)
         {
             if (string.IsNullOrEmpty(importerName) || string.IsNullOrEmpty(path))
             {
@@ -61,17 +60,7 @@ namespace Services
                 throw new FileNotFoundException("File not found");
             }
 
-            if (!Directory.Exists(ImportersPath))
-            {
-                throw new DirectoryNotFoundException("Importers directory not found");
-            }
-
             if (!Directory.GetFiles(ImportersPath).Any())
-            {
-                throw new InvalidOperationException("No importers found");
-            }
-
-            if (!GetAllImporters().Any())
             {
                 throw new InvalidOperationException("No importers found");
             }
@@ -81,55 +70,45 @@ namespace Services
                 throw new FileNotFoundException($"Importer with name '{importerName}' not found");
             }
 
-            if (GetAllImporters().Any(i => i.GetName() == importerName))
+            ImporterInterface importer = GetAllImporters().FirstOrDefault(i => i.GetName() == importerName);
+            if (importer == null)
             {
-                ImporterInterface importer = GetAllImporters().FirstOrDefault(i => i.GetName() == importerName);
-                if (importer == null)
+                throw new InvalidOperationException("Error creating importer");
+            }
+
+            try
+            {
+                var importerInput = new ImporterInput { ImporterName = importerName, Path = path };
+
+                var buildings = importer.ImportFile(importerInput);
+                if (buildings == null)
                 {
-                    throw new InvalidOperationException("Error creating importer");
+                    throw new InvalidOperationException("Error importing buildings");
                 }
-                var currentUser = _sessionService.GetCurrentUser();
-                /* CompanyAdministrator companyAdministrator = (CompanyAdministrator)currentUser;
 
-                 if (companyAdministrator.ConstructionCompany == null)
-                 {
-                     throw new InvalidOperationException("Company administrator does not belong to a construction company");
-                 }*/
+                var createdBuildingsIds = new List<CreateBuildingOutput>();
+                var errors = new List<string>();
 
-                try
+                foreach (CreateBuildingInput building in buildings)
                 {
-                    var importerInput = new ImporterInput { ImporterName = importerName, Path = path };
-
-                    List<CreateBuildingInput> buildings = importer.ImportFile(importerInput);
-                    Console.WriteLine("Buildings: " + buildings);
-                    if(buildings == null)
+                    var apartments = new List<Apartment>();
+                    foreach (NewApartmentInput apartment in building.Apartments)
                     {
-                       Console.WriteLine("Buildings not identify");
+                        Apartment apartmentToCreate = new Apartment
+                        {
+                            DoorNumber = apartment.DoorNumber,
+                            Floor = apartment.Floor,
+                            HasTerrace = apartment.HasTerrace,
+                            //Owner = new Owner { Email = apartment.OwnerEmail },
+                            Rooms = apartment.Rooms,
+                            Bathrooms = apartment.Bathrooms
+                        };
+                        apartments.Add(apartmentToCreate);
                     }
-                    foreach (CreateBuildingInput building in buildings)
+
+                    try
                     {
-
-                        /*if (building == null)
-                        {
-                            throw new InvalidOperationException("Buildings not identify");
-                        }*/
-                        List<Apartment> apartments = new List<Apartment>();
-                        foreach (NewApartmentInput apartment in building.Apartments)
-                        {
-                            Apartment apartmentToCreate = new Apartment
-                            {
-                                DoorNumber = apartment.DoorNumber,
-                                Floor = apartment.Floor,
-                                HasTerrace = apartment.HasTerrace,
-                                Owner = new Owner { Email = apartment.OwnerEmail },
-                                Rooms = apartment.Rooms,
-                                Bathrooms = apartment.Bathrooms
-                            };
-                            apartments.Add(apartmentToCreate);
-
-                        }
-
-                        Building buildingToCreate = new Building
+                        var buildingToCreate = new Building
                         {
                             Name = building.Name,
                             Address = building.Address,
@@ -139,16 +118,22 @@ namespace Services
                             Apartments = apartments
                         };
 
-                        _buildingService.CreateBuilding(buildingToCreate);
-                        return new List<Building> { buildingToCreate };
+                        var newBuilding = _buildingService.CreateBuilding(buildingToCreate);
+                        var response = new CreateBuildingOutput(newBuilding);
+                        createdBuildingsIds.Add(response);
                     }
+                    catch (Exception e)
+                    {
+                        errors.Add(building.Name);
+                    }
+
                 }
-                catch (Exception e)
-                {
-                    throw new InvalidOperationException("Error creating building", e);
-                }
+                return new ImporterOutput { CreatedBuildings = createdBuildingsIds, Errors = errors };
             }
-            return new List<Building>();
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Error creating building", e);
+            }
         }
 
         private bool FileIsDll(string file)

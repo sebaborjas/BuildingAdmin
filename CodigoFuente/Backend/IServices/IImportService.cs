@@ -1,5 +1,6 @@
 ﻿using IImporter;
 using Domain;
+using DTO.Out;
 
 namespace IServices
 {
@@ -7,6 +8,6 @@ namespace IServices
     {
         List<ImporterInterface> GetAllImporters();
 
-        List<Building> ImportBuildings(string importerName, string path);
+        ImporterOutput ImportBuildings(string importerName, string path);
     }
 }
