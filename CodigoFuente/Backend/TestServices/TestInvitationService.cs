@@ -284,5 +284,13 @@ namespace TestServices
             _service.GetInvitation(1);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestGetAllInvitationFailed()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => null);
+
+            _service.GetAllInvitations();
+        }
     }
 }
