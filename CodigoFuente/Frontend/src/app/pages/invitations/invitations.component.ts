@@ -57,6 +57,4 @@ export class InvitationsComponent {
         }
       );
   }
-
-  // Use templates
 }
