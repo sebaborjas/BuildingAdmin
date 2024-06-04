@@ -14,11 +14,13 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './Interceptors/auth.interceptor';
 import { UserInterceptor } from './Interceptors/user.interceptor';
 import { AdminInterceptor } from './Interceptors/admin.interceptor';
+import { provideHotToastConfig } from '@ngneat/hot-toast';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
+    provideHotToastConfig(),
     AuthService,
     UserInterceptor,
     SesionStorageService,

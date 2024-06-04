@@ -3,6 +3,7 @@ import { LoadingService } from '../../services/loading.service';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-invitations',
@@ -14,7 +15,8 @@ import { AdminService } from '../../services/admin.service';
 export class InvitationsComponent {
   constructor(
     private _loadingService: LoadingService,
-    private _adminService: AdminService
+    private _adminService: AdminService,
+    private _toastService: HotToastService
   ) {
     this._loadingService.loadingOn();
   }
@@ -39,6 +41,13 @@ export class InvitationsComponent {
   createInvitation() {
     this._adminService
       .createInvitation(this.name, this.email, this.expirationDate)
+      .pipe(
+        this._toastService.observe({
+          loading: 'Creando invitacion',
+          success: 'Invitacion creada con exito',
+          error: 'Ha ocurrido algun error al crear la invitacion',
+        })
+      )
       .subscribe(
         (response) => {
           console.log('Invitation created', response);
@@ -48,4 +57,6 @@ export class InvitationsComponent {
         }
       );
   }
+
+  // Use templates
 }
