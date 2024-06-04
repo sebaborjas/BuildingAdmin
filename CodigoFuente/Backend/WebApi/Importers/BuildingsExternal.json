@@ -1,16 +1,16 @@
 {
     "edificios": [
         {
-            "nombre": "Las torres",
+            "nombre": "Las t",
             "direccion": {
-                "calle_principal": "Av. 6 de Diciembre",
+                "calle_principal": "Av. 6 e",
                 "numero_puerta": 3030,
-                "calle_secundaria": "Av. Eloy Alfaro"
+                "calle_secundaria": "Av. Alfaro"
             },
             "encargado": null,
             "gps": {
-                "latitud": -0.176,
-                "longitud": -78.48
+                "latitud": -0.976,
+                "longitud": -78.98
             },
             "gastos_comunes": 5000,
             "departamentos": [
@@ -50,16 +50,16 @@
             ]
         },
         {
-            "nombre": "Edificio Central",
+            "nombre": "Central",
             "direccion": {
-                "calle_principal": "Calle de la República",
+                "calle_principal": "República",
                 "numero_puerta": 1456,
-                "calle_secundaria": "Calle 10 de Agosto"
+                "calle_secundaria": "10 de Agosto"
             },
             "encargado": "luis.torres@gmail.com",
             "gps": {
-                "latitud": -0.215,
-                "longitud": -78.5
+                "latitud": -0.615,
+                "longitud": -70.5
             },
             "gastos_comunes": 3500,
             "departamentos": [
@@ -98,16 +98,16 @@
             ]
         },
         {
-            "nombre": "Residencias del Sol",
+            "nombre": "Residencias",
             "direccion": {
-                "calle_principal": "Calle Bolívar",
+                "calle_principal": "Bolívar",
                 "numero_puerta": 789,
                 "calle_secundaria": "Calle Sucre"
             },
             "encargado": "miguel.fernandez@gmail.com",
             "gps": {
-                "latitud": -0.2,
-                "longitud": -78.45
+                "latitud": -0.25,
+                "longitud": -78.49
             },
             "gastos_comunes": 4200,
             "departamentos": [
@@ -146,16 +146,16 @@
             ]
         },
         {
-            "nombre": "Edificio Altavista",
+            "nombre": "Altavista",
             "direccion": {
-                "calle_principal": "Av. Amazonas",
+                "calle_principal": "Amazonas",
                 "numero_puerta": 1200,
                 "calle_secundaria": "Calle Pereira"
             },
             "encargado": "luis.torres@gmail.com",
             "gps": {
-                "latitud": -0.205,
-                "longitud": -78.42
+                "latitud": -0.295,
+                "longitud": -78.72
             },
             "gastos_comunes": 3800,
             "departamentos": [
