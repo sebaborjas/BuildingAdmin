@@ -29,13 +29,13 @@ namespace DataAccess
         {
             modelBuilder.Entity<Session>().Navigation(e => e.User).AutoInclude();
             modelBuilder.Entity<Manager>().Navigation(e => e.Buildings).AutoInclude();
+            modelBuilder.Entity<CompanyAdministrator>().Navigation(e => e.ConstructionCompany).AutoInclude();
             modelBuilder.Entity<Building>().Navigation(e => e.ConstructionCompany).AutoInclude();
             modelBuilder.Entity<Building>().Navigation(e => e.Apartments).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(e => e.Category).AutoInclude();
             modelBuilder.Entity<Building>().Navigation(e => e.Tickets).AutoInclude();
             modelBuilder.Entity<Apartment>().Navigation(e => e.Owner).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(e => e.AssignedTo).AutoInclude();
-            modelBuilder.Entity<CompanyAdministrator>().Navigation(e => e.ConstructionCompany).AutoInclude();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
