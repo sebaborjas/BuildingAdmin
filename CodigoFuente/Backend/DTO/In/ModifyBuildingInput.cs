@@ -9,17 +9,12 @@ namespace DTO.In
 {
     public class ModifyBuildingInput
     {
-        public string? ConstructionCompany {  get; set; }
         public float? Expenses { get; set; }
         public List<ModifyApartmentInput> Apartments { get; set; } = new List<ModifyApartmentInput>();
 
         public Building ToEntity()
         {
             var newBuilding = new Building();
-            if (this.ConstructionCompany != null)
-            {
-                newBuilding.ConstructionCompany = new ConstructionCompany() { Name = this.ConstructionCompany };
-            }
             
             if(this.Expenses != null)
             {

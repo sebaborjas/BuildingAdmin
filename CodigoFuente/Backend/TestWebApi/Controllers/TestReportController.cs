@@ -174,5 +174,37 @@ namespace TestWebApi
 
             Assert.AreEqual(expectedResult, result.Value);
         }
+
+        [TestMethod]
+        public void TestGetTicketsByApartmentReportForBuilding()
+        {
+            var expectedResult = new List<TicketByApartment>
+            {
+                new TicketByApartment
+                {
+                    ApartmentAndOwner = "1B - Jose Rodriguez",
+                    TicketsOpen = 4,
+                    TicketsClosed = 2,
+                    TicketsInProgress = 0,
+                },
+                new TicketByApartment
+                {
+                    ApartmentAndOwner = "3B - Miguel Angel",
+                    TicketsOpen = 0,
+                    TicketsClosed = 0,
+                    TicketsInProgress = 0,
+                }
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByApartment(It.IsAny<string>())).Returns(expectedResult);
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByApartment("EdificioUno") as OkObjectResult;
+
+            _reportServicesMock.VerifyAll();
+
+            Assert.AreEqual(expectedResult, result.Value);
+        }
     }
 }

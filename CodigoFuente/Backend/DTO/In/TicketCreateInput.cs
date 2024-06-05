@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DTO.In
 {
-    public class TicketCreateModel
+    public class TicketCreateInput
     {
         public string Description { get; set; }
         public int ApartmentId { get; set; }

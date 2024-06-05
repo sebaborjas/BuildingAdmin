@@ -7,7 +7,7 @@ using Domain;
 
 namespace DTO.In
 {
-    public class CreateCategoryModel
+    public class CreateCategoryInput
     {
         public string Name { get; set; }
 

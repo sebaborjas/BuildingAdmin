@@ -1,6 +1,7 @@
 using Domain;
 using Domain.DataTypes;
 using Domain.Exceptions;
+using System.Data;
 
 namespace TestDomain
 {
@@ -18,7 +19,8 @@ namespace TestDomain
                 Email = "test@test.com",
                 Name = "Test",
                 ExpirationDate = DateTime.Now.Date.AddDays(14),
-                Status = InvitationStatus.Pending
+                Status = InvitationStatus.Pending,
+                Role = InvitationRoles.Manager
             };
         }
 
@@ -162,6 +164,28 @@ namespace TestDomain
             _invitation.Name = name;
             Assert.AreEqual(name, _invitation.Name);
         }
+
+        [TestMethod]
+        public void TestGetRole()
+        {
+            var role = InvitationRoles.Manager;
+            Assert.AreEqual(role, _invitation.Role);
+        }
+
+        [TestMethod]
+        public void TestSetRole()
+        {
+            _invitation.Role = InvitationRoles.ConstructionCompanyAdministrator;
+            Assert.AreEqual(InvitationRoles.ConstructionCompanyAdministrator, _invitation.Role);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TestSetInvalidRole()
+        {
+            _invitation.Role = (InvitationRoles)3;
+        }
+
     }
 
 }

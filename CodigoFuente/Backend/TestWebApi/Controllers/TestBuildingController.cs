@@ -47,7 +47,6 @@ namespace TestWebApi
                 Name = "Edificio nuevo",
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
                 {
@@ -103,7 +102,6 @@ namespace TestWebApi
             {
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -121,7 +119,6 @@ namespace TestWebApi
                 Name = "",
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -138,7 +135,6 @@ namespace TestWebApi
             {
                 Name = "Edificio nuevo",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -156,7 +152,6 @@ namespace TestWebApi
                 Name = "Edificio nuevo",
                 Address = "",
                 Location = "111,111",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -174,7 +169,6 @@ namespace TestWebApi
             {
                 Name = "Edificio nuevo",
                 Address = "Calle, 123, esquina",
-                ConstructionCompany = "Empresa constructora",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -192,42 +186,6 @@ namespace TestWebApi
                 Name = "Edificio nuevo",
                 Address = "Calle, 123, esquina",
                 Location = "",
-                ConstructionCompany = "Empresa constructora",
-                Expenses = 1000,
-                Apartments = new List<NewApartmentInput>()
-            };
-
-            var result = buildingController.CreateBuilding(input);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestCreateBuildingWithoutConstructionCompany()
-        {
-            var buildingController = new BuildingController(_buildingServices.Object);
-            CreateBuildingInput input = new CreateBuildingInput()
-            {
-                Name = "Edificio nuevo",
-                Address = "Calle, 123, esquina",
-                Location = "111,111",
-                Expenses = 1000,
-                Apartments = new List<NewApartmentInput>()
-            };
-
-            var result = buildingController.CreateBuilding(input);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestCreateBuildingWithEmptyConstructionCompany()
-        {
-            var buildingController = new BuildingController(_buildingServices.Object);
-            CreateBuildingInput input = new CreateBuildingInput()
-            {
-                Name = "Edificio nuevo",
-                Address = "Calle, 123, esquina",
-                Location = "111,111",
-                ConstructionCompany = "",
                 Expenses = 1000,
                 Apartments = new List<NewApartmentInput>()
             };
@@ -246,7 +204,6 @@ namespace TestWebApi
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
                 Expenses = -1000,
-                ConstructionCompany = "Empresa constructora",
                 Apartments = new List<NewApartmentInput>()
             };
 
@@ -265,7 +222,6 @@ namespace TestWebApi
                 Address = "Calle, 123, esquina",
                 Location = "111,111",
                 Expenses = 1000,
-                ConstructionCompany = "Empresa constructora",
                 Apartments = new List<NewApartmentInput>()
                 {
                     new NewApartmentInput()
@@ -315,15 +271,13 @@ namespace TestWebApi
             var buildingModified = new Building()
             {
                 Id = 10,
-                Expenses = 1000,
-                ConstructionCompany = new ConstructionCompany(),
+                Expenses = 1000
             };
             _buildingServices.Setup(r => r.ModifyBuilding(It.IsAny<int>(), It.IsAny<Building>())).Returns(buildingModified);
             var buildingController = new BuildingController(_buildingServices.Object);
 
             var input = new ModifyBuildingInput()
             {
-                ConstructionCompany = "Empresa nueva",
                 Expenses = 4000,
                 Apartments = new List<ModifyApartmentInput>() {
                     new ModifyApartmentInput()
@@ -350,7 +304,6 @@ namespace TestWebApi
 
             var input = new ModifyBuildingInput()
             {
-                ConstructionCompany = "Empresa nueva",
                 Expenses = 4000
             };
             var result = buildingController.ModifyBuilding(100, input);
@@ -359,14 +312,13 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestModifyBuildingWithInvalidData()
         {
             var buildingController = new BuildingController(_buildingServices.Object);
 
             var input = new ModifyBuildingInput()
             {
-                ConstructionCompany = "",
                 Expenses = -1000
             };
             var result = buildingController.ModifyBuilding(100, input);
@@ -375,103 +327,113 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        public void TestGetAll()
-        {
-            var buildings = new List<Building>()
-            {
-                new Building()
-                {
-                    Id = 11,
-                    Address = "Calle, 123, esquina",
-                    Expenses = 1000,
-                    ConstructionCompany = new ConstructionCompany(),
-                    Location = "111,111",
-                    Name = "Edificio nuevo"
-                },
-                new Building()
-                {
-                    Id = 12,
-                    Address = "Otracalle, 123, otraesquina",
-                    Expenses = 1000,
-                    ConstructionCompany = new ConstructionCompany(),
-                    Location = "222,222",
-                    Name = "Otro edificio"
-                }
-            };
-            _buildingServices.Setup(r => r.GetAllBuildingsForUser()).Returns(buildings);
-            var buildingController = new BuildingController(_buildingServices.Object);
-            var buildingsExpected = new List<GetBuildingOutput>();
-            buildings.ForEach(building =>
-            {
-                buildingsExpected.Add(new GetBuildingOutput(building));
-            });
-
-            var result = buildingController.Get(null);
-            var okResult = result as OkObjectResult;
-            var buildingsRecieved = okResult.Value as List<GetBuildingOutput>;
-
-            _buildingServices.VerifyAll();
-            CollectionAssert.AreEqual(buildingsRecieved, buildingsExpected);
-        }
-
-        [TestMethod]
         public void TestGetBuilding()
         {
             var building = new Building()
             {
-                Id = 11,
+                Id = 10,
                 Address = "Calle, 123, esquina",
                 Expenses = 1000,
-                ConstructionCompany = new ConstructionCompany()
-                {
-                    Id = 1,
-                    Name = "Empresa constructora"
-                },
+                ConstructionCompany = new ConstructionCompany(),
                 Location = "111,111",
-                Name = "Edificio nuevo",
-                Apartments = new List<Apartment>()
-                {
-                    new Apartment()
-                    {
-                        Id = 1,
-                        Floor = 1,
-                        DoorNumber = 1,
-                        Owner = new Owner()
-                        {
-                            Id = 1,
-                            Name = "Nombre",
-                            LastName = "Apellido",
-                            Email = "test@email.com"
-                        },
-                        Rooms = 2,
-                        Bathrooms = 1,
-                        HasTerrace = false
-                    }
-                }
+                Name = "Edificio nuevo"
             };
-            _buildingServices.Setup(r => r.Get(It.IsAny<int>())).Returns(building);
-            var buildingController = new BuildingController(_buildingServices.Object);
-            var expectedResult = new GetBuildingOutput(building);
 
-            var result = buildingController.Get(11);
-            var okResult = result as OkObjectResult;
-            var buildingRecieved = okResult.Value as GetBuildingOutput;
+            _buildingServices.Setup(r => r.Get(10)).Returns(building);
+            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Returns("Manager");
+
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.Get(10);
 
             _buildingServices.VerifyAll();
-            Assert.AreEqual(buildingRecieved, expectedResult);
+            Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
         }
 
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
-        public void TestGetBuildingNotFound()
+        public void TestGetBuildingWithoutData()
         {
-            Building building = null;
-            _buildingServices.Setup(r => r.Get(It.IsAny<int>())).Returns(building);
+            _buildingServices.Setup(r => r.Get(10)).Throws(new NullReferenceException());
             var buildingController = new BuildingController(_buildingServices.Object);
 
-            var result = buildingController.Get(11);
+            var result = buildingController.Get(10);
 
             _buildingServices.VerifyAll();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestGetBuildingWithoutManager()
+        {
+            _buildingServices.Setup(r => r.Get(1)).Returns(new Building());
+            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Throws(new NullReferenceException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.Get(1);
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TestChangeBuildingManager()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>()));
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+            Assert.IsTrue(result.GetType().Equals(typeof(OkResult)));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestChangeBuildingManagerWithoutData()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new NullReferenceException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TestChangeBuildingManagerWithInvalidData()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentOutOfRangeException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestChangeBuildingManagerWithoutManagerId()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentNullException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = 1 });
+
+            _buildingServices.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestChangeBuildingManagerWithInvalidManagerId()
+        {
+            _buildingServices.Setup(r => r.ChangeBuildingManager(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentNullException());
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.ChangeBuildingManager(10, new ChangeBuildingManagerInput() { ManagerId = -1 });
+
+            _buildingServices.VerifyAll();
+        }
+
     }
 }

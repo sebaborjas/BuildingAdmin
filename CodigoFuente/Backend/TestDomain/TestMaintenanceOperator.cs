@@ -117,4 +117,100 @@ public class TestMaintenanceOperator
         Assert.AreEqual(password, _operator.Password);
     }
 
+    [TestMethod]
+    public void SetBuildings()
+    {
+        List<Building> buildings = new List<Building>(){
+            new Building()
+            {
+                Id = 1,
+                Address = "Calle, 1234, esquina",
+                Apartments = new List<Apartment>(),
+                ConstructionCompany = new ConstructionCompany(),
+                Expenses = 1200,
+                Location = "1234,1234",
+                Name = "Edificio uno",
+                Tickets= new List<Ticket>()
+            },
+            new Building()
+            {
+                Id = 12,
+                Address = "Calle, 4567, esquina",
+                Apartments = new List<Apartment>(),
+                ConstructionCompany = new ConstructionCompany(),
+                Expenses = 2100,
+                Location = "4321,4321",
+                Name = "Edificio dos",
+                Tickets= new List<Ticket>()
+            }
+        };
+        _operator.Buildings = buildings;
+
+        CollectionAssert.AreEqual(buildings, _operator.Buildings);
+    }
+
+    [TestMethod]
+    public void OperatorCanWorkOnBuilding()
+    {
+        var building1 = new Building()
+        {
+            Id = 1,
+            Address = "Calle, 1234, esquina",
+            Apartments = new List<Apartment>(),
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 1200,
+            Location = "1234,1234",
+            Name = "Edificio uno",
+            Tickets = new List<Ticket>()
+        };
+        var building2 = new Building()
+        {
+            Id = 12,
+            Address = "Calle, 4567, esquina",
+            Apartments = new List<Apartment>(),
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 2100,
+            Location = "4321,4321",
+            Name = "Edificio dos",
+            Tickets = new List<Ticket>()
+        };
+        _operator.Buildings = [building1, building2];
+
+        var result = _operator.WorksWithBuilding(building1);
+
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void OperatorCantWorkOnBuilding()
+    {
+        var building1 = new Building()
+        {
+            Id = 1,
+            Address = "Calle, 1234, esquina",
+            Apartments = new List<Apartment>(),
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 1200,
+            Location = "1234,1234",
+            Name = "Edificio uno",
+            Tickets = new List<Ticket>()
+        };
+        var building2 = new Building()
+        {
+            Id = 12,
+            Address = "Calle, 4567, esquina",
+            Apartments = new List<Apartment>(),
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 2100,
+            Location = "4321,4321",
+            Name = "Edificio dos",
+            Tickets = new List<Ticket>()
+        };
+        _operator.Buildings = [building1];
+
+        var result = _operator.WorksWithBuilding(building2);
+
+        Assert.IsFalse(result);
+    }
+
 }

@@ -7,13 +7,12 @@ using Domain;
 
 namespace DTO.Out
 {
-    public class CategoryModel
+    public class ConstructionCompanyOutput
     {
-        public CategoryModel(Category category)
+        public ConstructionCompanyOutput(ConstructionCompany constructionCompany)
         {
-            Id = category.Id;
+            Id = constructionCompany.Id;
         }
-
         public int Id { get; set; }
 
         public override bool Equals(object obj)
@@ -22,8 +21,8 @@ namespace DTO.Out
             {
                 return false;
             }
-            CategoryModel categoryModel = (CategoryModel)obj;
-            return Id == categoryModel.Id;
+            ConstructionCompanyOutput constructionCompanyOutput = (ConstructionCompanyOutput)obj;
+            return Id == constructionCompanyOutput.Id;
         }
     }
 }

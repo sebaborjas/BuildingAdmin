@@ -15,12 +15,16 @@ namespace Services
         private IGenericRepository<Invitation> _invitationRepository;
         private IGenericRepository<Administrator> _adminRepository;
         private IGenericRepository<Manager> _managerRepository;
+        private IGenericRepository<CompanyAdministrator> _companyAdministratorRepository;
+        private ISessionService _sessionService;
 
-        public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<Manager> managerRepository)
+        public InvitationService(IGenericRepository<Invitation> invitationRepository, IGenericRepository<Administrator> adminRepository, IGenericRepository<Manager> managerRepository, IGenericRepository<CompanyAdministrator> companyAdministratorRepository, ISessionService sessionService)
         {
             _invitationRepository = invitationRepository;
             _adminRepository = adminRepository;
             _managerRepository = managerRepository;
+            _companyAdministratorRepository = companyAdministratorRepository;
+            _sessionService = sessionService;
         }
 
         public Invitation CreateInvitation(Invitation newInvitation)
@@ -43,6 +47,7 @@ namespace Services
             {
                 throw new ArgumentException("Invalid invitation");
             }
+
             try
             {
                 _invitationRepository.Insert(newInvitation);
@@ -99,7 +104,7 @@ namespace Services
             }
         }
 
-        public Manager AcceptInvitation(Invitation invitation, string Password)
+        public User AcceptInvitation(Invitation invitation, string Password)
         {
 
             Invitation invitationToAccept = _invitationRepository.GetByCondition(i => i.Email == invitation.Email);
@@ -119,17 +124,32 @@ namespace Services
             }
             try
             {
-                Manager newManager = new Manager
+                User userToAdd = null;
+                if (invitationToAccept.Role == InvitationRoles.Manager)
                 {
-                    Id = 1,
-                    Email = invitation.Email,
-                    Name = invitation.Name,
-                    Password = Password
-                };
+                    userToAdd = new Manager
+                    {
+                        Id = 1,
+                        Email = invitationToAccept.Email,
+                        Name = invitationToAccept.Name,
+                        Password = Password
+                    };
 
-                _managerRepository.Insert(newManager);
+                    _managerRepository.Insert((Manager)userToAdd);
+                }
+                else if (invitationToAccept.Role == InvitationRoles.ConstructionCompanyAdministrator)
+                {
+                    userToAdd = new CompanyAdministrator
+                    {
+                        Email = invitationToAccept.Email,
+                        Name = invitationToAccept.Name,
+                        Password = Password
+                    };
+                    _companyAdministratorRepository.Insert((CompanyAdministrator)userToAdd);
+                }
+
                 _invitationRepository.Delete(invitationToAccept);
-                return newManager;
+                return userToAdd;
             }
             catch (Exception e)
             {
@@ -148,6 +168,40 @@ namespace Services
             {
                 throw new ArgumentException("Invitation does not exist");
             }
+        }
+
+        public Invitation GetInvitation(int invitationId)
+        {
+            var currentUser = _sessionService.GetCurrentUser() as Administrator;
+            if (currentUser == null)
+            {
+                throw new InvalidOperationException("Current user is not an administrator");
+            }
+
+            var invitation = _invitationRepository.GetByCondition(i => i.Id == invitationId);
+            if (invitation == null)
+            {
+                throw new ArgumentException("Invitation does not exist");
+            }
+
+            return invitation;
+        }
+
+        public List<Invitation> GetAllInvitations()
+        {
+            var currentUser = _sessionService.GetCurrentUser() as Administrator;
+            if (currentUser == null)
+            {
+                throw new InvalidOperationException("Current user is not an administrator");
+            }
+
+            var invitations = _invitationRepository.GetAll<Invitation>()?.ToList();
+            if (invitations == null)
+            {
+                throw new InvalidOperationException("No invitations found");
+            }
+            return invitations;
+
         }
 
         private bool IsValidCreateInvitation(Invitation invitation)

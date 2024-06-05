@@ -37,11 +37,11 @@ public class TestCategoryController
         _categoryServiceMock.Setup(x => x.CreateCategory("Test Category")).Returns(category);
 
         var categoryController = new CategoryController(_categoryServiceMock.Object);
-        var result = categoryController.CreateCategory(new CreateCategoryModel { Name = "Test Category" });
+        var result = categoryController.CreateCategory(new CreateCategoryInput { Name = "Test Category" });
 
         var okResult = result as OkObjectResult;
 
-        var categoryModel = okResult.Value as CategoryModel;
+        var categoryModel = okResult.Value as CategoryOutput;
         Assert.AreEqual(category.Id, categoryModel.Id);
     }
 
@@ -52,7 +52,7 @@ public class TestCategoryController
         var categoryController = new CategoryController(_categoryServiceMock.Object);
         _categoryServiceMock.Setup(x => x.CreateCategory(null)).Throws(new ArgumentNullException("name", "Invalid category"));
 
-        var result = categoryController.CreateCategory(new CreateCategoryModel());
+        var result = categoryController.CreateCategory(new CreateCategoryInput());
 
         _categoryServiceMock.VerifyAll();
     }
@@ -64,7 +64,7 @@ public class TestCategoryController
         var categoryController = new CategoryController(_categoryServiceMock.Object);
         _categoryServiceMock.Setup(x => x.CreateCategory("")).Throws(new ArgumentNullException("name", "Invalid category"));
 
-        var result = categoryController.CreateCategory(new CreateCategoryModel { Name = "" });
+        var result = categoryController.CreateCategory(new CreateCategoryInput { Name = "" });
 
         _categoryServiceMock.VerifyAll();
     }
