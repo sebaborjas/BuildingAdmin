@@ -18,5 +18,9 @@ namespace IServices
         User AcceptInvitation(Invitation invitation, string Password);
 
         void RejectInvitation(string email);
+
+        Invitation GetInvitation(int invitationId);
+
+        List<Invitation> GetAllInvitations();
     }
 }

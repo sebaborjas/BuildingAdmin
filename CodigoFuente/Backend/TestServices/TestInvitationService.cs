@@ -20,6 +20,7 @@ namespace TestServices
         private Mock<IGenericRepository<Administrator>> _adminRepositoryMock;
         private Mock<IGenericRepository<Manager>> _managerRepositoryMock;
         private Mock<IGenericRepository<CompanyAdministrator>> _companyAdministratorRepositoryMock;
+        private Mock<ISessionService> _sessionServiceMock;
         private InvitationService _service;
 
         [TestInitialize]
@@ -29,9 +30,10 @@ namespace TestServices
             _adminRepositoryMock = new Mock<IGenericRepository<Administrator>>(MockBehavior.Strict);
             _managerRepositoryMock = new Mock<IGenericRepository<Manager>>(MockBehavior.Strict);
             _companyAdministratorRepositoryMock = new Mock<IGenericRepository<CompanyAdministrator>>(MockBehavior.Strict);
-            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object, _companyAdministratorRepositoryMock.Object);
+            _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
+            _service = new InvitationService(_invitationRepositoryMock.Object, _adminRepositoryMock.Object, _managerRepositoryMock.Object, _companyAdministratorRepositoryMock.Object, null);
         }
-        
+
         [TestMethod]
         public void TestCreateInvitation()
         {
@@ -159,7 +161,7 @@ namespace TestServices
             _invitationRepositoryMock.Verify(r => r.Get(It.IsAny<int>()), Times.Once);
         }
 
-        
+
         [TestMethod]
         public void TestAcceptInvitationForManager()
         {
@@ -181,7 +183,7 @@ namespace TestServices
             _managerRepositoryMock.VerifyAll();
 
         }
-        
+
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -270,6 +272,25 @@ namespace TestServices
             _invitationRepositoryMock.VerifyAll();
             _managerRepositoryMock.VerifyAll();
 
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestGetInvitationFailed()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => null);
+
+            _service.GetInvitation(1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestGetAllInvitationFailed()
+        {
+            _invitationRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((int invitationId) => null);
+
+            _service.GetAllInvitations();
         }
     }
 }
