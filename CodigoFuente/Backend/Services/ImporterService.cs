@@ -4,6 +4,7 @@ using IImporter;
 using Domain;
 using DTO.In;
 using DTO.Out;
+using IDataAccess;
 
 
 namespace Services
@@ -12,13 +13,15 @@ namespace Services
     {
         private IBuildingService _buildingService;
         private ISessionService _sessionService;
+        private IGenericRepository<Owner> _ownerRepository;
 
         private string ImportersPath = "./Importers";
 
-        public ImportService(IBuildingService buildingService, ISessionService sessionService)
+        public ImportService(IBuildingService buildingService, ISessionService sessionService, IGenericRepository<Owner> ownerRepository)
         {
             _buildingService = buildingService;
             _sessionService = sessionService;
+            _ownerRepository = ownerRepository;
         }
 
         public List<ImporterInterface> GetAllImporters()
@@ -94,15 +97,22 @@ namespace Services
                     var apartments = new List<Apartment>();
                     foreach (NewApartmentInput apartment in building.Apartments)
                     {
+
                         Apartment apartmentToCreate = new Apartment
                         {
                             DoorNumber = apartment.DoorNumber,
                             Floor = apartment.Floor,
                             HasTerrace = apartment.HasTerrace,
-                            //Owner = new Owner { Email = apartment.OwnerEmail },
                             Rooms = apartment.Rooms,
                             Bathrooms = apartment.Bathrooms
                         };
+
+                        var owner = _ownerRepository.GetByCondition(o => o.Email == apartment.OwnerEmail);
+                        if (owner != null)
+                        {
+                            apartmentToCreate.Owner = owner;
+                        }
+
                         apartments.Add(apartmentToCreate);
                     }
 
