@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingService } from '../../services/loading.service';
-import { NgIf } from '@angular/common';
+import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -8,7 +8,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 @Component({
   selector: 'app-invitations',
   standalone: true,
-  imports: [NgIf, FormsModule],
+  imports: [NgIf, FormsModule, NgFor, CommonModule],
   templateUrl: './invitations.component.html',
   styleUrl: './invitations.component.css',
 })
@@ -24,7 +24,9 @@ export class InvitationsComponent {
   isVisible = false;
   email = '';
   name = '';
+  rol = '';
   expirationDate = '';
+  invitations: any = [];
 
   showModal() {
     this.isVisible = true;
@@ -36,16 +38,17 @@ export class InvitationsComponent {
 
   ngOnInit() {
     this._loadingService.loadingOff();
+    this.getAllInvitations();
   }
 
   createInvitation() {
     this._adminService
-      .createInvitation(this.name, this.email, this.expirationDate)
+      .createInvitation(this.name, this.email, this.rol, this.expirationDate)
       .pipe(
         this._toastService.observe({
           loading: 'Creando invitacion',
           success: 'Invitacion creada con exito',
-          error: (e) => e.error || 'Error al crear invitacion',
+          error: 'Error al crear invitacion',
         })
       )
       .subscribe(
@@ -56,5 +59,19 @@ export class InvitationsComponent {
           console.error('Error', error);
         }
       );
+  }
+
+  getAllInvitations() {
+    this._loadingService.loadingOn();
+    this._adminService.getAllInvitations().subscribe(
+      (response) => {
+        console.log('Invitations', response);
+        this.invitations = response;
+      },
+      (error) => {
+        console.error('Error', error);
+      }
+    );
+    this._loadingService.loadingOff();
   }
 }

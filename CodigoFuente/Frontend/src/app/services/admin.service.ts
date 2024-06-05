@@ -16,16 +16,24 @@ export class AdminService {
   createInvitation(
     name: string,
     email: string,
+    role: string,
     expirationDate: string
   ): Observable<InvitationModel> {
     const body = {
       email: email,
       name: name,
+      role: role,
       expirationDate: expirationDate,
     };
     return this._httpClient.post<InvitationModel>(
       `${BASE_URL}${InvitationEndpoint.INVITATIONS}`,
       body
+    );
+  }
+
+  getAllInvitations(): Observable<InvitationModel[]> {
+    return this._httpClient.get<InvitationModel[]>(
+      `${BASE_URL}${InvitationEndpoint.INVITATIONS}`
     );
   }
 }
