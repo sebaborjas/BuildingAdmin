@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.DataTypes;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers;
 using IServices;
@@ -28,7 +29,8 @@ namespace TestWebApi
                 Id = 11,
                 Email = "correoInvitado@correo.com",
                 Status = Domain.DataTypes.InvitationStatus.Pending,
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Role = InvitationRoles.Manager,
             };
             _invitationServiceMock.Setup(r => r.CreateInvitation(It.IsAny<Invitation>())).Returns(invitationCreated);
             InvitationController controller = new InvitationController(_invitationServiceMock.Object);
@@ -36,7 +38,8 @@ namespace TestWebApi
             {
                 Email = "correoInvitado@correo.com",
                 Name = "Nombre Invitado",
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Role = InvitationRoles.Manager
             };
 
             var result = controller.CreateInvitation(invitationInput);
@@ -427,5 +430,139 @@ namespace TestWebApi
             var result = controller.RejectInvitation(invitationInput);
             _invitationServiceMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void TestGetInvitation()
+        {
+            var invitation = new Invitation()
+            {
+                Id = 1,
+                Email = "test@mail.com",
+                Name = "Nombre",
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Role = InvitationRoles.Manager,
+                Status = InvitationStatus.Pending
+            };
+            var invitations = new List<Invitation>() { invitation };
+            _invitationServiceMock.Setup(r => r.GetAllInvitations()).Returns(invitations);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
+
+            var result = controller.Get(null);
+            var okResult = result as OkObjectResult;
+            var invitationsResponse = okResult.Value as List<GetInvitationOutput>;
+
+            _invitationServiceMock.VerifyAll();
+            Assert.AreEqual(invitations.Count, invitationsResponse.Count);
+        }
+
+        [TestMethod]
+        public void TestGetInvitationById()
+        {
+            var invitation = new Invitation()
+            {
+                Id = 1,
+                Email = "test@example.com",
+                Name = "Nombre",
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Role = InvitationRoles.Manager,
+                Status = InvitationStatus.Pending
+            };
+
+            _invitationServiceMock.Setup(r => r.GetInvitation(It.IsAny<int>())).Returns(invitation);
+
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
+            var result = controller.Get(1);
+            var okResult = result as OkObjectResult;
+            var invitationResponse = okResult.Value as GetInvitationOutput;
+
+            _invitationServiceMock.VerifyAll();
+            Assert.AreEqual(invitation.Id, invitationResponse.Id);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestGetInvalidInvitation()
+        {
+            _invitationServiceMock.Setup(r => r.GetInvitation(It.IsAny<int>())).Throws(new ArgumentException());
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
+            var result = controller.Get(1);
+
+            _invitationServiceMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TestGetInvitationWithNoInvitations()
+        {
+            _invitationServiceMock.Setup(r => r.GetAllInvitations()).Returns(new List<Invitation>());
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
+
+            var result = controller.Get(null);
+            var okResult = result as OkObjectResult;
+            var invitationsResponse = okResult.Value as List<GetInvitationOutput>;
+
+            _invitationServiceMock.VerifyAll();
+            Assert.AreEqual(0, invitationsResponse.Count);
+        }
+
+        // invalid id 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestGetInvitationByIdWithInvalidId()
+        {
+            _invitationServiceMock.Setup(r => r.GetInvitation(It.IsAny<int>())).Throws(new ArgumentException());
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
+            var result = controller.Get(1);
+
+            _invitationServiceMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TestGetInvitationWithInvitations()
+        {
+            var invitation = new Invitation()
+            {
+                Id = 1,
+                Email = "test@mail.com",
+                Name = "Nombre",
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Role = InvitationRoles.Manager,
+                Status = InvitationStatus.Pending
+            };
+            var invitations = new List<Invitation>() { invitation };
+            _invitationServiceMock.Setup(r => r.GetAllInvitations()).Returns(invitations);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
+
+            var result = controller.Get(null);
+            var okResult = result as OkObjectResult;
+            var invitationsResponse = okResult.Value as List<GetInvitationOutput>;
+
+            _invitationServiceMock.VerifyAll();
+            Assert.AreEqual(invitations.Count, invitationsResponse.Count);
+        }
+
+        [TestMethod]
+        public void TestGetInvitationByIdWithInvitations()
+        {
+            var invitation = new Invitation()
+            {
+                Id = 1,
+                Email = "test@mail.com",
+                Name = "Nombre",
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Role = InvitationRoles.Manager,
+                Status = InvitationStatus.Pending
+            };
+            _invitationServiceMock.Setup(r => r.GetInvitation(It.IsAny<int>())).Returns(invitation);
+            InvitationController controller = new InvitationController(_invitationServiceMock.Object);
+
+            var result = controller.Get(1);
+            var okResult = result as OkObjectResult;
+            var invitationResponse = okResult.Value as GetInvitationOutput;
+
+            _invitationServiceMock.VerifyAll();
+            Assert.AreEqual(invitation.Id, invitationResponse.Id);
+        }
     }
 }
+
+
