@@ -120,6 +120,8 @@ namespace Services
 
                     try
                     {
+                        var constructionCompany = ((CompanyAdministrator)_sessionService.GetCurrentUser()).ConstructionCompany;
+
                         var buildingToCreate = new Building
                         {
                             Name = building.Name,
@@ -127,7 +129,8 @@ namespace Services
                             Location = building.Location,
                             Expenses = building.Expenses,
                             Tickets = new List<Ticket>(),
-                            Apartments = apartments
+                            Apartments = apartments,
+                            ConstructionCompany = constructionCompany
                         };
                         if (building.ManagerEmail != null)
                         {
