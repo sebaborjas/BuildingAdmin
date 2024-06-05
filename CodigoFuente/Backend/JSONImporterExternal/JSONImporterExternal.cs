@@ -70,7 +70,8 @@ namespace JSONImporterExternal
                     Name = buildingInput.Name,
                     Apartments = apartments,
                     Expenses = buildingInput.Expenses,
-                    Location = $"{buildingInput.Gps.Latitude},{buildingInput.Gps.Longitude}"
+                    Location = $"{buildingInput.Gps.Latitude},{buildingInput.Gps.Longitude}",
+                    ManagerEmail = buildingInput.ManagerEmail
                 };
 
                 buildings.Add(building);

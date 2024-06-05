@@ -14,14 +14,16 @@ namespace Services
         private IBuildingService _buildingService;
         private ISessionService _sessionService;
         private IGenericRepository<Owner> _ownerRepository;
+        private IGenericRepository<Manager> _managerRepository;
 
         private string ImportersPath = "./Importers";
 
-        public ImportService(IBuildingService buildingService, ISessionService sessionService, IGenericRepository<Owner> ownerRepository)
+        public ImportService(IBuildingService buildingService, ISessionService sessionService, IGenericRepository<Owner> ownerRepository, IGenericRepository<Manager> managerRepository)
         {
             _buildingService = buildingService;
             _sessionService = sessionService;
             _ownerRepository = ownerRepository;
+            _managerRepository = managerRepository;
         }
 
         public List<ImporterInterface> GetAllImporters()
@@ -127,6 +129,15 @@ namespace Services
                             Tickets = new List<Ticket>(),
                             Apartments = apartments
                         };
+                        if (building.ManagerEmail != null)
+                        {
+                            var manager = _managerRepository.GetByCondition(m => m.Email == building.ManagerEmail);
+                            if (manager != null)
+                            {
+                                manager.Buildings.Add(buildingToCreate);
+                                _managerRepository.Update(manager);
+                            }
+                        }
 
                         var newBuilding = _buildingService.CreateBuilding(buildingToCreate);
                         var response = new CreateBuildingOutput(newBuilding);
