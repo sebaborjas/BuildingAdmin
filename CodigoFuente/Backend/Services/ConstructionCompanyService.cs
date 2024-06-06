@@ -89,7 +89,13 @@ namespace Services
 
         public ConstructionCompany GetUserCompany()
         {
-            return null;
+            var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+            var result = currentUser?.ConstructionCompany;
+            if(result == null)
+            {
+                throw new KeyNotFoundException("User has not a construction company");
+            }
+            return currentUser.ConstructionCompany;
         }
     }
 }
