@@ -11,6 +11,6 @@ export interface UserModel {
 export interface InvitationModel {
   name: string;
   email: string;
-  role: string;
+  role: number;
   expirationDate: string;
 }

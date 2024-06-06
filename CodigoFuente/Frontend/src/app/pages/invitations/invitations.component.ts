@@ -24,7 +24,7 @@ export class InvitationsComponent {
   isVisible = false;
   email = '';
   name = '';
-  rol = '';
+  rol: number = 1;
   expirationDate = '';
   invitations: any = [];
 
@@ -37,7 +37,6 @@ export class InvitationsComponent {
   }
 
   ngOnInit() {
-    this._loadingService.loadingOff();
     this.getAllInvitations();
   }
 

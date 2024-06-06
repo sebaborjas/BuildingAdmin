@@ -11,12 +11,12 @@ const BASE_URL = environment.API_URL;
   providedIn: 'root',
 })
 export class AdminService {
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   createInvitation(
     name: string,
     email: string,
-    role: string,
+    role: number,
     expirationDate: string
   ): Observable<InvitationModel> {
     const body = {
