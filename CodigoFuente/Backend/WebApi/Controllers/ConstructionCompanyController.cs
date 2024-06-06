@@ -34,6 +34,8 @@ namespace WebApi.Controllers
             return Ok(new ConstructionCompanyOutput(modifyConstructionCompany));
         }
 
+        [HttpGet]
+        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult GetUserCompany()
         {
             var userCompany = _service.GetUserCompany();
