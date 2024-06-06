@@ -51,4 +51,10 @@ export class AdminService {
       `${BASE_URL}${InvitationEndpoint.INVITATIONS}`
     );
   }
+
+  deleteInvitation(id: number): Observable<any> {
+    return this._httpClient.delete<any>(
+      `${BASE_URL}${InvitationEndpoint.INVITATIONS}/${id}`
+    );
+  }
 }

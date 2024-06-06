@@ -25,6 +25,8 @@ export class InvitationsComponent {
   modalText = '';
 
   isVisible = false;
+  isVisibleDeleteModal = false;
+  inputDisabled = false;
   id = 0;
   email = '';
   name = '';
@@ -38,6 +40,7 @@ export class InvitationsComponent {
 
   hideModal() {
     this.isVisible = false;
+    this.isVisibleDeleteModal = false;
   }
 
   ngOnInit() {
@@ -53,17 +56,24 @@ export class InvitationsComponent {
 
   createInvitationModal() {
     this.modalText = 'Crear Invitacion';
+    this.inputDisabled = false;
     this.showModal();
   }
 
   editInvitationModal(invitation: any) {
     this.modalText = 'Editar Invitacion';
+    this.inputDisabled = true;
     this.id = invitation.id;
     this.email = invitation.email;
     this.name = invitation.name;
     this.rol = this.convertRoleToNumber(invitation.rol);
     this.expirationDate = invitation.expirationDate.split('T')[0];
     this.showModal();
+  }
+
+  deleteInvitationModal(invitation: any) {
+    this.showDeleteModal();
+    this.id = invitation.id;
   }
 
   submitModal() {
@@ -73,6 +83,11 @@ export class InvitationsComponent {
       this.editInvitation();
     }
     this.hideModal();
+  }
+
+  showDeleteModal() {
+    this.modalText = 'Eliminar Invitacion';
+    this.isVisibleDeleteModal = true;
   }
 
   createInvitation() {
@@ -119,7 +134,6 @@ export class InvitationsComponent {
     this._loadingService.loadingOn();
     this._adminService.getAllInvitations().subscribe(
       (response) => {
-        console.log('Invitations', response);
         this.invitations = response;
       },
       (error) => {
@@ -127,5 +141,27 @@ export class InvitationsComponent {
       }
     );
     this._loadingService.loadingOff();
+  }
+
+  deleteInvitation() {
+    this._adminService
+      .deleteInvitation(this.id)
+      .pipe(
+        this._toastService.observe({
+          loading: 'Eliminando invitacion',
+          success: 'Invitacion eliminada con exito',
+          error: 'Error al eliminar invitacion',
+        })
+      )
+      .subscribe(
+        (response) => {
+          this.getAllInvitations();
+        },
+        (error) => {
+          console.error('Error', error);
+        }
+      );
+    this.hideModal();
+
   }
 }
