@@ -10,13 +10,6 @@ namespace DTO.In
     public class CreateCategoryInput
     {
         public string Name { get; set; }
-
-        public Category ToEntity()
-        {
-            return new Category()
-            {
-                Name = Name
-            };
-        }
+        public int? ParentCategoryId { get; set; }
     }
 }
