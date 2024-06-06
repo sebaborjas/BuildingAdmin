@@ -1,0 +1,17 @@
+<ul class="space-y-2 font-medium">
+  <app-section
+    [title]="'Dashboard'"
+    (click)="selectSection(1); navigateToSection('dashboard')"
+    [selected]="selectedSectionIndex === 1"
+  ></app-section>
+  <app-section
+    [title]="'Invitaciones'"
+    (click)="selectSection(2); navigateToSection('invitations')"
+    [selected]="selectedSectionIndex === 2"
+  ></app-section>
+  <app-section
+    [title]="'Reportes'"
+    (click)="selectSection(3); navigateToSection('reports')"
+    [selected]="selectedSectionIndex === 3"
+  ></app-section>
+</ul>
