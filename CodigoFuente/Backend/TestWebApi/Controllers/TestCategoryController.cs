@@ -24,7 +24,7 @@ public class TestCategoryController
     {
         _categoryServiceMock = new Mock<ICategoryService>(MockBehavior.Strict);
     }
-    /*
+    
     [TestMethod]
     public void TestCreateCategory()
     {
@@ -154,7 +154,7 @@ public class TestCategoryController
         var result = categoryController.Get(1);
 
         _categoryServiceMock.VerifyAll();
-    }*/
+    }
 
     [TestMethod]
     public void TestCreateCategoryWithParent()
@@ -181,6 +181,26 @@ public class TestCategoryController
         _categoryServiceMock.VerifyAll();
         Assert.AreEqual(expectedCategory.Id, categoryModel.Id);
 
+    }
+
+    [TestMethod]
+    public void TestGetCategoryWithParent()
+    {
+        var category = new Category()
+        {
+            Id = 2,
+            Name = "Electricista",
+            RelatedTo = new Category { Id = 1, Name = "Mantenimiento", RelatedTo = null }
+        };
+        _categoryServiceMock.Setup(r => r.Get(It.IsAny<int>())).Returns(category);
+        var categoryController = new CategoryController(_categoryServiceMock.Object);
+        
+        var result = categoryController.Get(2);
+        var okResult = result as OkObjectResult;
+        var categoryReturned = okResult.Value as GetCategoryOutput;
+
+        _categoryServiceMock.VerifyAll();
+        Assert.AreEqual(categoryReturned.ParentId, 1);
     }
 
 }
