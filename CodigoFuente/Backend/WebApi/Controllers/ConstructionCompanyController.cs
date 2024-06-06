@@ -34,5 +34,11 @@ namespace WebApi.Controllers
             return Ok(new ConstructionCompanyOutput(modifyConstructionCompany));
         }
 
+        public IActionResult GetUserCompany()
+        {
+            var userCompany = _service.GetUserCompany();
+            return Ok(new ConstructionCompanyOutput(userCompany));
+        }
+
     }
 }

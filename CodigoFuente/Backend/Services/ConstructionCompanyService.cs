@@ -86,5 +86,10 @@ namespace Services
                 throw new InvalidOperationException("Error updating construction company", e);
             }
         }
+
+        public ConstructionCompany GetUserCompany()
+        {
+            return null;
+        }
     }
 }
