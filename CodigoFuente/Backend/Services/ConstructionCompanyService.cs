@@ -86,5 +86,16 @@ namespace Services
                 throw new InvalidOperationException("Error updating construction company", e);
             }
         }
+
+        public ConstructionCompany GetUserCompany()
+        {
+            var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+            var result = currentUser?.ConstructionCompany;
+            if(result == null)
+            {
+                throw new KeyNotFoundException("User has not a construction company");
+            }
+            return currentUser.ConstructionCompany;
+        }
     }
 }

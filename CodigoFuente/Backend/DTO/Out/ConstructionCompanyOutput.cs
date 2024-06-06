@@ -12,8 +12,11 @@ namespace DTO.Out
         public ConstructionCompanyOutput(ConstructionCompany constructionCompany)
         {
             Id = constructionCompany.Id;
+            Name = constructionCompany.Name;
         }
         public int Id { get; set; }
+
+        public string Name { get; set; }
 
         public override bool Equals(object obj)
         {
