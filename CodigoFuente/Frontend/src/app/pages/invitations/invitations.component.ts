@@ -4,6 +4,7 @@ import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { RoleTypes } from './roleTypes';
 
 @Component({
   selector: 'app-invitations',
@@ -21,7 +22,10 @@ export class InvitationsComponent {
     this._loadingService.loadingOn();
   }
 
+  modalText = '';
+
   isVisible = false;
+  id = 0;
   email = '';
   name = '';
   rol: number = 1;
@@ -40,6 +44,37 @@ export class InvitationsComponent {
     this.getAllInvitations();
   }
 
+  convertRoleToNumber(rol: string): number {
+    if (rol === 'Administrator') {
+      return RoleTypes.Administrator;
+    }
+    return RoleTypes.Manager;
+  }
+
+  createInvitationModal() {
+    this.modalText = 'Crear Invitacion';
+    this.showModal();
+  }
+
+  editInvitationModal(invitation: any) {
+    this.modalText = 'Editar Invitacion';
+    this.id = invitation.id;
+    this.email = invitation.email;
+    this.name = invitation.name;
+    this.rol = this.convertRoleToNumber(invitation.rol);
+    this.expirationDate = invitation.expirationDate.split('T')[0];
+    this.showModal();
+  }
+
+  submitModal() {
+    if (this.modalText === 'Crear Invitacion') {
+      this.createInvitation();
+    } else {
+      this.editInvitation();
+    }
+    this.hideModal();
+  }
+
   createInvitation() {
     this._adminService
       .createInvitation(this.name, this.email, this.rol, this.expirationDate)
@@ -52,7 +87,27 @@ export class InvitationsComponent {
       )
       .subscribe(
         (response) => {
-          console.log('Invitation created', response);
+          this.getAllInvitations();
+        },
+        (error) => {
+          console.error('Error', error);
+        }
+      );
+  }
+
+  editInvitation() {
+    this._adminService
+      .editInvitation(this.id, this.expirationDate)
+      .pipe(
+        this._toastService.observe({
+          loading: 'Editando invitacion',
+          success: 'Invitacion editada con exito',
+          error: 'Error al editar invitacion',
+        })
+      )
+      .subscribe(
+        (response) => {
+          this.getAllInvitations();
         },
         (error) => {
           console.error('Error', error);

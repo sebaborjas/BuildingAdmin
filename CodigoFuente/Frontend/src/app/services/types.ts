@@ -14,3 +14,8 @@ export interface InvitationModel {
   role: number;
   expirationDate: string;
 }
+
+export interface EditInvitationModel {
+  id: number;
+  expirationDate: string;
+}
