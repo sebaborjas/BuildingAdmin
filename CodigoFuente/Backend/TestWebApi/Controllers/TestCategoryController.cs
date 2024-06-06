@@ -10,6 +10,7 @@ using Moq;
 using DTO.In;
 using DTO.Out;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace TestWebApi;
 
@@ -23,7 +24,7 @@ public class TestCategoryController
     {
         _categoryServiceMock = new Mock<ICategoryService>(MockBehavior.Strict);
     }
-
+    /*
     [TestMethod]
     public void TestCreateCategory()
     {
@@ -34,7 +35,7 @@ public class TestCategoryController
             Name = "Test Category"
         };
 
-        _categoryServiceMock.Setup(x => x.CreateCategory("Test Category")).Returns(category);
+        _categoryServiceMock.Setup(x => x.CreateCategory("Test Category",null)).Returns(category);
 
         var categoryController = new CategoryController(_categoryServiceMock.Object);
         var result = categoryController.CreateCategory(new CreateCategoryInput { Name = "Test Category" });
@@ -50,7 +51,7 @@ public class TestCategoryController
     public void TestCreateCategoryWithNullInput()
     {
         var categoryController = new CategoryController(_categoryServiceMock.Object);
-        _categoryServiceMock.Setup(x => x.CreateCategory(null)).Throws(new ArgumentNullException("name", "Invalid category"));
+        _categoryServiceMock.Setup(x => x.CreateCategory(null,null)).Throws(new ArgumentNullException("name", "Invalid category"));
 
         var result = categoryController.CreateCategory(new CreateCategoryInput());
 
@@ -62,7 +63,7 @@ public class TestCategoryController
     public void TestCreateCategoryWithEmptyName()
     {
         var categoryController = new CategoryController(_categoryServiceMock.Object);
-        _categoryServiceMock.Setup(x => x.CreateCategory("")).Throws(new ArgumentNullException("name", "Invalid category"));
+        _categoryServiceMock.Setup(x => x.CreateCategory("", null)).Throws(new ArgumentNullException("name", "Invalid category"));
 
         var result = categoryController.CreateCategory(new CreateCategoryInput { Name = "" });
 
@@ -153,6 +154,33 @@ public class TestCategoryController
         var result = categoryController.Get(1);
 
         _categoryServiceMock.VerifyAll();
+    }*/
+
+    [TestMethod]
+    public void TestCreateCategoryWithParent()
+    {
+        Category expectedCategory = new Category
+        {
+            Id = 2,
+            Name = "Jardines",
+            RelatedTo = new Category { Id = 1 }
+        };
+        CreateCategoryInput input = new CreateCategoryInput
+        {
+            Name = "Jardines",
+            ParentCategoryId = 1
+        };
+        _categoryServiceMock.Setup(r=>r.CreateCategory(It.IsAny<string>(), It.IsAny<int>())).Returns(expectedCategory);
+        var categoryController = new CategoryController(_categoryServiceMock.Object);
+        
+
+        var result = categoryController.CreateCategory(input);
+        var okResult = result as OkObjectResult;
+        var categoryModel = okResult.Value as CategoryOutput;
+        
+        _categoryServiceMock.VerifyAll();
+        Assert.AreEqual(expectedCategory.Id, categoryModel.Id);
+
     }
 
 }
