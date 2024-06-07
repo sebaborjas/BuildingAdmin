@@ -12,8 +12,8 @@ export class ConstructionCompanyService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  getConstructionCompany(): Observable<ConstructionCompanyModel[]> {
-    return this._httpClient.get<ConstructionCompanyModel[]>(`${environment.API_URL}${ConstructionCompany.CONSTRUCTION_COMPANIES}`);
+  getConstructionCompany(): Observable<ConstructionCompanyModel> {
+    return this._httpClient.get<ConstructionCompanyModel>(`${environment.API_URL}${ConstructionCompany.CONSTRUCTION_COMPANIES}`);
   }
 
   saveConstructionCompany(name: string): Observable<ConstructionCompanyModel> {

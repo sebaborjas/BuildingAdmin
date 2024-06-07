@@ -1,17 +1,16 @@
-<p>construction-company works!</p>
-<div class="bg-white shadow-md rounded-lg p-8 max-w-lg w-full mx-auto mt-10">
+<div class="bg-white shadow-md rounded-lg p-8 max-w-lg w-full mx-auto mt-10 dark:bg-gray-800 dark:border-gray-700">
 
     <div *ngIf="userHasCompany">
-      <h1 class="text-2xl font-semibold mb-4">Construction company information</h1>
-      <p class="mb-2"><span class="font-bold">Company:</span> {{ companyName }}</p>
-      <p class="mb-4"><span class="font-bold">ID:</span> {{ companyId }}</p>
+      <h1 class="text-2xl font-semibold mb-4 dark:text-white">Construction company information</h1>
+      <p class="mb-4 dark:text-white"><span class="font-bold">ID:</span> {{ companyId }}</p>
+      <p class="mb-2 dark:text-white"><span class="font-bold">Company:</span> {{ companyName }}</p>
     </div>
   
     <div *ngIf="!userHasCompany">
-      <h1 class="text-2xl font-semibold mb-4">Create new construction company</h1>
+      <h1 class="text-2xl font-semibold mb-4 dark:text-white">Create new construction company</h1>
       <div class="space-y-4">
         <div>
-          <label for="companyName" class="block text-sm font-medium text-gray-700">Company name</label>
+          <label for="companyName" class="block text-sm font-medium text-gray-700 dark:text-white">Company name</label>
           <input type="text" id="companyName" #companyName class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
         </div>
         <button (click)="saveCompany(companyName.value)" class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save company</button>

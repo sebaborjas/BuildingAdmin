@@ -30,9 +30,9 @@ export class ConstructionCompanyComponent {
   }
 
   getUserCompany(){
-    this._constructionCompanyService.getConstructionCompany().subscribe((data) => {
-      this.companyId = data[0].id;
-      this.companyName = data[0].name;
+    this._constructionCompanyService.getConstructionCompany().subscribe(data => {
+      this.companyId = data.id;
+      this.companyName = data.name;
       this.userHasCompany = true;
     }, (error) => {
       this.userHasCompany = false;
@@ -40,5 +40,5 @@ export class ConstructionCompanyComponent {
       console.log(error)
     });
   }
-  
+
 }
