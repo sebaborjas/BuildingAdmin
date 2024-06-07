@@ -9,3 +9,12 @@ export enum UserEndpoint {
 export enum InvitationEndpoint {
   INVITATIONS = '/api/v2/invitations',
 }
+
+export enum BuildingEndpoint {
+  BUILDINGS = '/api/v2/buildings',
+}
+
+export enum ConstructionCompany {
+  CONSTRUCTION_COMPANIES = '/api/v2/constructionCompanies',
+}
+

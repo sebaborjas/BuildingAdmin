@@ -14,3 +14,8 @@ export interface InvitationModel {
   role: number;
   expirationDate: string;
 }
+
+export interface ConstructionCompanyModel{
+  id: number;
+  name: string;
+}

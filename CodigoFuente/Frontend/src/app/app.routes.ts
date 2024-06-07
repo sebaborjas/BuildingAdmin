@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { InvitationsComponent } from './pages/invitations/invitations.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ReportsComponent } from './pages/reports/reports.component';
+import { ConstructionCompanyComponent } from './pages/construction-company/construction-company.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -14,6 +15,7 @@ export const routes: Routes = [
       { path: 'invitations', component: InvitationsComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'reports', component: ReportsComponent },
+      { path: 'constructionCompanies', component: ConstructionCompanyComponent}
     ],
   },
   { path: '**', component: LoginComponent },
