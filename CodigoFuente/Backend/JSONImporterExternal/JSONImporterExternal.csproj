@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj" />
     <ProjectReference Include="..\IImporter\IImporter.csproj" />
+    <ProjectReference Include="..\IServices\IServices.csproj" />
   </ItemGroup>
 
 </Project>

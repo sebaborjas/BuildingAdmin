@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain;
 
 namespace DTO.In
 {
-    public class CreateCategoryInput
+    public class ImporterInput
     {
-        public string Name { get; set; }
-        public int? ParentCategoryId { get; set; }
+        public string? ImporterName { get; init; }
+        public string? Path { get; init; }
+
     }
 }

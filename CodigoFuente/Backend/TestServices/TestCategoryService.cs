@@ -119,6 +119,37 @@ namespace TestServices
             _categoryRepositoryMock.VerifyAll();
             Assert.AreEqual(category, result);
         }
+
+        [TestMethod]
+        public void TestCreateCategoryWithParent()
+        {
+            var parentCategory = new Category()
+            {
+                Id = 1,
+                Name = "Jardines",
+                RelatedTo = null
+            };
+            _categoryRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns(parentCategory); 
+            _categoryRepositoryMock.Setup(r=>r.Insert(It.IsAny<Category>())).Verifiable();
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.CreateCategory("Jardineria", 1);
+
+            _categoryRepositoryMock.VerifyAll();
+            Assert.AreEqual(result.RelatedTo, parentCategory);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestCreateCategoryWithInvalidParent()
+        {
+            _categoryRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Category)null);
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.CreateCategory("Jardineria", 123);
+
+            _categoryRepositoryMock.VerifyAll();
+        }
     }
 
 }

@@ -12,9 +12,11 @@ namespace DTO.Out
         public GetCategoryOutput(Category category) {
             Id = category.Id;
             Name = category.Name;
+            ParentId = category.RelatedTo?.Id;
         }
         public int Id { get; set; }
         public string Name { get; set; }
+        public int? ParentId { get; set; }
 
         public override bool Equals(object obj)
         {

@@ -49,6 +49,8 @@ namespace Domain
             return regex.IsMatch(value);
         }
 
+        public Category? RelatedTo { get; set; }
+
     }
 
 }

@@ -31,9 +31,10 @@ public class Building
         {
             if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
-            bool isValid = value.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
+            string pattern = @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d]+$";
+            bool isValid = IsValidFormat(pattern, value);
 
-            if (!isValid) throw new InvalidDataException("El nombre solo puede contener letras y espacios");
+            if (!isValid) throw new InvalidDataException("Solo se permiten letras y números");
 
             _name = value;
         }
@@ -84,7 +85,7 @@ public class Building
         {
             if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
-            string pattern = @"^[a-zA-Z\s]+,\s\d{1,4},\s[a-zA-Z\s]+$";
+            string pattern = @"^\s*(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*-?\s*){2,}(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*),\s*\d{1,4},\s*(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*-?\s*){2,}(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*)$";
 
             bool isValid = IsValidFormat(pattern, value);
 
