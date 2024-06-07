@@ -9,7 +9,7 @@ namespace IServices
 {
     public interface ICategoryService
     {
-        public Category CreateCategory(string name);
+        public Category CreateCategory(string name, int? idRelatedCategory = null);
 
         public List<Category> GetAll();
 

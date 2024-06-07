@@ -18,17 +18,25 @@ namespace Services
             _categoryRepository = categoryRepository;
         }
 
-        public Category CreateCategory(string name)
+        public Category CreateCategory(string name, int? idRelatedCategory = null)
         {
-            if (name == null || string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException("name", "Invalid category");
+            }
+            Category relatedCategory = null;
+            if (idRelatedCategory != null)
+            {
+                relatedCategory = _categoryRepository.Get(idRelatedCategory.Value);
+                if (relatedCategory == null)
+                    throw new ArgumentException("Invalid related category");
             }
             try
             {
                 Category category = new Category
                 {
-                    Name = name
+                    Name = name,
+                    RelatedTo = relatedCategory
                 };
                 _categoryRepository.Insert(category);
                 return category;
