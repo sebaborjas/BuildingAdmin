@@ -29,6 +29,7 @@ namespace DataAccess
         {
             modelBuilder.Entity<Session>().Navigation(e => e.User).AutoInclude();
             modelBuilder.Entity<Manager>().Navigation(e => e.Buildings).AutoInclude();
+            modelBuilder.Entity<CompanyAdministrator>().Navigation(e => e.ConstructionCompany).AutoInclude();
             modelBuilder.Entity<Building>().Navigation(e => e.ConstructionCompany).AutoInclude();
             modelBuilder.Entity<Building>().Navigation(e => e.Apartments).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(e => e.Category).AutoInclude();

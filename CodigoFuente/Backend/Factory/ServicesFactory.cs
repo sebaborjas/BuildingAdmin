@@ -26,6 +26,7 @@ namespace Factory
             _services.AddScoped<IInvitationService, InvitationService>();
             _services.AddScoped<IReportServices, ReportsService>();
             _services.AddScoped<ITicketService, TicketService>();
+            _services.AddScoped<IImportService, ImportService>();
             _services.AddScoped<IConstructionCompanyService, ConstructionCompanyService>();
 
         }

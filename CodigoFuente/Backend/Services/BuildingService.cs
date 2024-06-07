@@ -35,7 +35,7 @@ public class BuildingService : IBuildingService
 
         if (currentUser.ConstructionCompany == null)
         {
-            throw new InvalidOperationException("Current user does not have a construction company");
+            throw new InvalidOperationException("Company administrator does not have a construction company");
         }
 
         var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name || b.Address == building.Address || b.Location == building.Location);
