@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj" />
-    <ProjectReference Include="..\IImporter\IImporter.csproj" />
   </ItemGroup>
 
 </Project>
