@@ -16,6 +16,7 @@ namespace TestServices
 
         private Mock<ISessionService> _sessionServiceMock;
         private Mock<IGenericRepository<ConstructionCompany>> _constructionCompanyRepositoryMock;
+        private Mock<IGenericRepository<CompanyAdministrator>> _companyAdministratorRepositoryMock;
 
         private CompanyAdministrator _user;
         private ConstructionCompany _company;
@@ -25,6 +26,8 @@ namespace TestServices
         {
             _constructionCompanyRepositoryMock = new Mock<IGenericRepository<ConstructionCompany>>(MockBehavior.Strict);
             _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
+            _companyAdministratorRepositoryMock = new Mock<IGenericRepository<CompanyAdministrator>>(MockBehavior.Strict);
+            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object, _companyAdministratorRepositoryMock.Object);
 
             _user = new CompanyAdministrator()
             {
@@ -39,25 +42,26 @@ namespace TestServices
         [TestMethod]
         public void TestCreateConstructionCompany()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
                 .Returns((Expression<Func<ConstructionCompany, bool>> predicate, List<string> includes) => null);
 
             _constructionCompanyRepositoryMock.Setup(r => r.Insert(It.IsAny<ConstructionCompany>())).Verifiable();
+            _companyAdministratorRepositoryMock.Setup(r => r.Update(It.IsAny<CompanyAdministrator>())).Verifiable();
 
             var constructionCompany = _service.CreateConstructionCompany("Test Construction Company");
 
             _constructionCompanyRepositoryMock.VerifyAll();
+            _companyAdministratorRepositoryMock.VerifyAll();
             Assert.AreEqual("Test Construction Company", constructionCompany.Name);
+            Assert.AreEqual(_user.ConstructionCompany, constructionCompany);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestCreateConstructionCompanyWithNullUser()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
@@ -74,7 +78,6 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentException))]
         public void TestCreateConstructionCompanyWithUserWithConstructionCompany()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
@@ -91,7 +94,6 @@ namespace TestServices
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestCreateConstructionCompanyWithNullName()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
@@ -122,7 +124,6 @@ namespace TestServices
                 }
             };
 
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
@@ -139,7 +140,6 @@ namespace TestServices
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestModifyConstructionCompanyWithNullUser()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
@@ -156,8 +156,7 @@ namespace TestServices
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestModifyConstructionCompanyWithUserWithoutConstructionCompany()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
-            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
                 .Returns((Expression<Func<ConstructionCompany, bool>> predicate, List<string> includes) => null);
@@ -173,7 +172,6 @@ namespace TestServices
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestModifyConstructionCompanyWithNullName()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
@@ -190,7 +188,6 @@ namespace TestServices
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestModifyConstructionCompanyWithEmptyName()
         {
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
