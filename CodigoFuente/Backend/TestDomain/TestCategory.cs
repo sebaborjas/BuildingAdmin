@@ -81,4 +81,23 @@ public class TestCategory
     {
         Category.Id = -1;
     }
+
+    [TestMethod]
+    public void TestRelatedCategory()
+    {
+        Category categoryParent = new Category();
+        categoryParent.Name = "Category Parent";
+        
+        Category.RelatedTo = categoryParent;
+
+        Assert.AreEqual(Category.RelatedTo, categoryParent);
+    }
+
+    [TestMethod]
+    public void TestNullRelatedCategory()
+    {
+        Category.RelatedTo = null;
+
+        Assert.IsNull(Category.RelatedTo);
+    }
 }

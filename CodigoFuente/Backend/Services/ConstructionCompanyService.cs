@@ -12,13 +12,15 @@ namespace Services
     public class ConstructionCompanyService : IConstructionCompanyService
     {
         public IGenericRepository<ConstructionCompany> _constructionCompanyRepository;
+        public IGenericRepository<CompanyAdministrator> _companyAdministratorRepository;
 
         private ISessionService _sessionService;
 
-        public ConstructionCompanyService(IGenericRepository<ConstructionCompany> constructionCompanyRepository, ISessionService sessionService)
+        public ConstructionCompanyService(IGenericRepository<ConstructionCompany> constructionCompanyRepository, ISessionService sessionService, IGenericRepository<CompanyAdministrator> companyAdministratorRepository)
         {
             _constructionCompanyRepository = constructionCompanyRepository;
             _sessionService = sessionService;
+            _companyAdministratorRepository = companyAdministratorRepository;
         }
 
         public ConstructionCompany CreateConstructionCompany(string name)
@@ -47,6 +49,8 @@ namespace Services
                     Name = name
                 };
                 _constructionCompanyRepository.Insert(constructionCompany);
+                currentUser.ConstructionCompany = constructionCompany;
+                _companyAdministratorRepository.Update(currentUser);
                 return constructionCompany;
             }
             catch (Exception e)
@@ -85,6 +89,17 @@ namespace Services
             {
                 throw new InvalidOperationException("Error updating construction company", e);
             }
+        }
+
+        public ConstructionCompany GetUserCompany()
+        {
+            var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+            var result = currentUser?.ConstructionCompany;
+            if(result == null)
+            {
+                throw new KeyNotFoundException("User has not a construction company");
+            }
+            return currentUser.ConstructionCompany;
         }
     }
 }
