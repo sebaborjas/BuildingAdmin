@@ -66,4 +66,17 @@ public class UserController : ControllerBase
         CompanyAdministratorOutput companyAdministrator = new CompanyAdministratorOutput(_service.CreateCompanyAdministrator(newCompanyAdministrator.ToEntity()));
         return Ok(companyAdministrator);
     }
+
+    [HttpGet("manager")]
+    [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+    public IActionResult GetManagers()
+    {
+        var managers = _service.GetManagers();
+        var result = new List<GetManagerOutput>();
+        foreach (var manager in managers)
+        {
+            result.Add(new GetManagerOutput(manager));
+        }
+        return Ok(result);
+    }
 }

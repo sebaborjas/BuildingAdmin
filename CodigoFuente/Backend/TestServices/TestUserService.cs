@@ -401,4 +401,20 @@ public class TestUserService
 
         _service.CreateCompanyAdministrator(companyAdministrator);
     }
+
+    [TestMethod]
+    public void TestGetManagers()
+    {
+        var managers = new List<Manager>
+        {
+            new Manager { Id = 1, Name = "Manager 1", Email = "mail@mail.com" },
+            new Manager { Id = 2, Name = "Manager 2", Email = "otroMail@mail.com" }
+        };
+        _managerRepositoryMock.Setup(r => r.GetAll<Manager>()).Returns(managers);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
+
+        var result = _service.GetManagers();
+
+        CollectionAssert.AreEqual(result, managers);
+    }
 }
