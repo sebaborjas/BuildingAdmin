@@ -57,9 +57,9 @@ namespace WebApi.Controllers
 
         [HttpPut("{id}/assign")]
         [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
-        public IActionResult AssignTicket(int id, [FromBody] int maintenanceOperatorId)
+        public IActionResult AssignTicket(int id, [FromBody] AssignTicketInput maintenanceOperatorInput)
         {
-            var ticket = _ticketServices.AssignTicket(id, maintenanceOperatorId);
+            var ticket = _ticketServices.AssignTicket(id, maintenanceOperatorInput.MaintenanceOperatorId);
             var response = new TicketOutput(ticket);
             return Ok(response);
         }
@@ -75,11 +75,11 @@ namespace WebApi.Controllers
 
         [HttpPut("{id}/complete")]
         [AuthenticationFilter(Role = RoleConstants.MaintenanceOperatorRole)]
-        public IActionResult CompleteTicket(int id, [FromBody] float totalCost)
+        public IActionResult CompleteTicket(int id, [FromBody] TicketCompleteInput totalCostInput)
         {
-            var ticket = _ticketServices.CompleteTicket(id, totalCost);
+            var ticket = _ticketServices.CompleteTicket(id, totalCostInput.TotalCost);
             var response = new TicketOutput(ticket);
-            return Ok(response);
+            return Ok(response.Id);
         }
 
     }
