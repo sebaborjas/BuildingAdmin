@@ -34,6 +34,11 @@ export class InvitationsComponent {
   expirationDate = '';
   invitations: any = [];
 
+  roles = [
+    { name: 'Manager', value: RoleTypes.Manager },
+    { name: 'ConstructionCompanyAdministrator', value: RoleTypes.ConstructionCompanyAdministrator }
+  ]
+
   showModal() {
     this.isVisible = true;
   }
@@ -47,11 +52,8 @@ export class InvitationsComponent {
     this.getAllInvitations();
   }
 
-  convertRoleToNumber(rol: string): number {
-    if (rol === 'Administrator') {
-      return RoleTypes.Administrator;
-    }
-    return RoleTypes.Manager;
+  selectRole(value: number) {
+    this.rol = value;
   }
 
   createInvitationModal() {
@@ -66,7 +68,7 @@ export class InvitationsComponent {
     this.id = invitation.id;
     this.email = invitation.email;
     this.name = invitation.name;
-    this.rol = this.convertRoleToNumber(invitation.rol);
+    this.rol = invitation.role;
     this.expirationDate = invitation.expirationDate.split('T')[0];
     this.showModal();
   }
