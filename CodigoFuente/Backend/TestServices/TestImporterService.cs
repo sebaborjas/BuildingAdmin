@@ -11,6 +11,7 @@ using IImporter;
 using Domain;
 using DTO.In;
 using DTO.Out;
+using IDataAccess;
 namespace TestServices
 {
     [TestClass]
@@ -19,13 +20,16 @@ namespace TestServices
         private Mock<IBuildingService> _buildingServiceMock;
         private Mock<ISessionService> _sessionServiceMock;
         private ImportService _importService;
+        private Mock<IGenericRepository<Owner>> _ownerRepository;
+        private Mock<IGenericRepository<Manager>> _managerRepository;
 
         [TestInitialize]
         public void Setup()
         {
             _buildingServiceMock = new Mock<IBuildingService>();
             _sessionServiceMock = new Mock<ISessionService>();
-            _importService = new ImportService(_buildingServiceMock.Object, _sessionServiceMock.Object);
+            _ownerRepository = new Mock<IGenericRepository<Owner>>();
+            _importService = new ImportService(_buildingServiceMock.Object, _sessionServiceMock.Object, _ownerRepository.Object, _managerRepository.Object);
         }
 
         [TestMethod]

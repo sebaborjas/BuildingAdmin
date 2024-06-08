@@ -84,6 +84,8 @@ namespace TestServices
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
             _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns((Building)null);
             _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns(_apartment.Owner);
+            _managerRepositoryMock.Setup(r=>r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns(_manager);
+            _managerRepositoryMock.Setup(r => r.Update(It.IsAny<Manager>())).Verifiable();
 
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
 
@@ -97,11 +99,12 @@ namespace TestServices
                 Apartments = new List<Apartment> { _apartment }
             };
 
-            var result = _buildingService.CreateBuilding(building);
+            var result = _buildingService.CreateBuilding(building, "manager@mail.com");
 
             _buildingRepositoryMock.VerifyAll();
             _sessionServiceMock.VerifyAll();
             _ownerRepositoryMock.VerifyAll();
+            _managerRepositoryMock.VerifyAll();
 
             Assert.AreEqual(building, result);
         }
@@ -348,13 +351,14 @@ namespace TestServices
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetManagerNameNotFound()
         {
             _managerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Manager, bool>>>(), It.IsAny<List<string>>())).Returns((Manager)null);
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
 
             var result = _buildingService.GetManagerName(1);
+
+            Assert.IsNull(result);
         }
 
         [TestMethod]

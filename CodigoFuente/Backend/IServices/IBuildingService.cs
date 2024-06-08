@@ -9,7 +9,7 @@ namespace IServices
 {
     public interface IBuildingService
     {
-        Building CreateBuilding(Building building);
+        Building CreateBuilding(Building building, string? managerEmail = null);
 
         void DeleteBuilding(int buildingId);
 
