@@ -210,7 +210,6 @@ namespace TestServices
             };
             _user.ConstructionCompany = company;
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
 
             var result = _service.GetUserCompany();
             
@@ -223,7 +222,6 @@ namespace TestServices
         public void TestGetNonExistentUserCompany()
         {
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
-            _service = new ConstructionCompanyService(_constructionCompanyRepositoryMock.Object, _sessionServiceMock.Object);
 
             var result = _service.GetUserCompany();
         }
