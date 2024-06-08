@@ -129,7 +129,6 @@ namespace Services
                 {
                     userToAdd = new Manager
                     {
-                        Id = 1,
                         Email = invitationToAccept.Email,
                         Name = invitationToAccept.Name,
                         Password = Password

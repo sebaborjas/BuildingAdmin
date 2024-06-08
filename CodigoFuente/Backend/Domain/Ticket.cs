@@ -6,16 +6,28 @@ public class Ticket
 {
     private int _id;
     private string _description;
-    public DateTime CreationDate { get; private set; } = DateTime.Now.Date;
+
     private Apartment _apartment;
     private float _totalCost;
-    public MaintenanceOperator AssignedTo { get; set; }
     private Manager _createdBy;
+
     public Category Category { get; set; }
+    public MaintenanceOperator AssignedTo { get; set; }
     public Status Status { get; set; } = Status.Open;
+    public DateTime CreationDate { get; private set; } = DateTime.Now.Date;
     public DateTime AttentionDate { get; private set; }
     public DateTime ClosingDate { get; private set; }
-    public float TotalCost { get => _totalCost; }
+
+    public float TotalCost
+    {
+        get => _totalCost;
+        private set
+        {
+            if (value < 0) throw new ArgumentOutOfRangeException();
+
+            _totalCost = value;
+        }
+    }   
 
     public int Id
     {

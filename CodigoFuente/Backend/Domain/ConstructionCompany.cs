@@ -13,9 +13,9 @@ public class ConstructionCompany
         {
             if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
             else if (!Regex.IsMatch(value, @"^[a-zA-Z\s]*$")) throw new InvalidDataException("El nombre debe contener solo letras y espacios.");
+            else if (value.Length > 100) throw new ArgumentOutOfRangeException("El nombre no puede contener mas de 100 caracteres");
 
             _name = value;
-
         }
     }
 
