@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { LoadingComponent } from '../../loading/loading.component';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BuildingsService } from '../../services/buildings.service';
-import { BuildingModel, CreateBuildingModel, CreateApartmentModel } from '../../services/types';
+import { BuildingModel, CreateBuildingModel, CreateApartmentModel, ManagerModel } from '../../services/types';
 import { LoadingService } from '../../services/loading.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-buildings',
@@ -19,6 +20,7 @@ export class BuildingsComponent {
   buildings: BuildingModel[] = [];
   isVisibleCreateBuildingModal: boolean = false;
   isVisibleAddApartmentModal: boolean = false;
+  isVisibleModifyManagerModal: boolean = false;
   createBuildingModel: CreateBuildingModel = {} as CreateBuildingModel;
   createApartmentModel: CreateApartmentModel = {} as CreateApartmentModel;
 
@@ -31,11 +33,17 @@ export class BuildingsComponent {
   apartmentBathrooms: number = 0;
   apartmentHasTerrace: boolean = false;
 
+  managers: ManagerModel[] = [];
+
+  selectedBuilding: BuildingModel = {} as BuildingModel;
+  selectedManager: number = -1;
+
   
-  constructor(private _buildingsService: BuildingsService, private _toastService: HotToastService, private _loadingService: LoadingService) { }
+  constructor(private _buildingsService: BuildingsService, private _toastService: HotToastService, private _loadingService: LoadingService, private _userService: UserService) { }
 
   ngOnInit(){
     this.getBuildings();
+    this.getManagers();
     this.createBuildingModel.apartments = [];
   }
 
@@ -45,11 +53,8 @@ export class BuildingsComponent {
       this.buildings = data;
       this._loadingService.loadingOff();
 
-      // Esto es para pruebas
-      this.buildings.push({id: 1, name: 'Building 1', address: 'Address 1', location: 'Location 1', managerName: 'Manager 1'});
     }, error=>{
       this._loadingService.loadingOff();
-      this.buildings.push({id: 1, name: 'Building 1', address: 'Address 1', location: 'Location 1'});
     });
   }
 
@@ -67,6 +72,18 @@ export class BuildingsComponent {
 
   hideAddApartmentModal(){
     this.isVisibleAddApartmentModal = false;
+  }
+
+  showModifyManager(selectedBuilding: BuildingModel){
+    this.isVisibleModifyManagerModal = true;
+    if(selectedBuilding.managerName){
+      this.selectedManager = this.managers.find(manager => manager.name === selectedBuilding.managerName)?.id || -1;
+    }
+    this.selectedBuilding = selectedBuilding;
+  }
+
+  hideModifyManager(){
+    this.isVisibleModifyManagerModal = false;
   }
 
   addApartment(){
@@ -97,7 +114,36 @@ export class BuildingsComponent {
     ).subscribe(response => {
       this.getBuildings();
     });
+  }
 
+  deleteBuilding(id: number){
+    this._buildingsService.deleteBuilding(id).pipe(
+      this._toastService.observe({
+        loading: 'Deleting building',
+        success: 'Building deleted successfully',
+        error: 'Error deleting building',
+      })
+    ).subscribe(response => {
+      this.getBuildings();
+    });
+  }
+
+  getManagers(){
+    this._userService.getManagers().subscribe(data => {
+      this.managers = data;
+    });
+  }
+
+  modifyManager(){
+    this._buildingsService.modifyManager(this.selectedBuilding.id, this.selectedManager).pipe(
+      this._toastService.observe({
+        loading: 'Modifing manager',
+        success: 'Manager modified successfully',
+        error: 'Error modifing manager',
+      })
+    ).subscribe(response => {
+      this.getBuildings();
+    });
   }
 
 }

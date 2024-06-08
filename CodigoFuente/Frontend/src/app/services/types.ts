@@ -47,3 +47,10 @@ export interface CreateBuildingModel {
   apartments: CreateApartmentModel[];
   managerEmail: string;
 }
+
+export interface ManagerModel {
+  id: number;
+  name: string;
+  email: string;
+  buildings: number[];
+}

@@ -19,4 +19,12 @@ export class BuildingsService {
   createBuilding(building: CreateBuildingModel){
     return this._httpClient.post(`${environment.API_URL}${BuildingEndpoint.BUILDINGS}`, building);
   }
+
+  deleteBuilding(buildingId: number){
+    return this._httpClient.delete(`${environment.API_URL}${BuildingEndpoint.BUILDINGS}/${buildingId}`);
+  }
+
+  modifyManager(buildingId: number, managerId: number){
+    return this._httpClient.put(`${environment.API_URL}${BuildingEndpoint.BUILDINGS}/${buildingId}/manager/`, {managerId: managerId});
+  }
 }

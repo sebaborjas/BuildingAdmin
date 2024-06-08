@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { UserEndpoint } from '../../networking/endpoints';
+import { UserEndpoints } from '../../networking/endpoints';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { UserModel } from './types';
+import { ManagerModel, UserModel } from './types';
 import { SesionStorageService } from './sesion-storage.service';
 
 const BASE_URL = environment.API_URL;
@@ -21,8 +21,12 @@ export class UserService {
     const token = this._sesionStorageService.getToken() || '';
     let params = new HttpParams().set('token', token);
 
-    return this._httpClient.get<UserModel>(`${BASE_URL}${UserEndpoint.USER}`, {
+    return this._httpClient.get<UserModel>(`${BASE_URL}${UserEndpoints.USER}`, {
       params: params,
     });
+  }
+
+  getManagers(): Observable<ManagerModel[]> {
+    return this._httpClient.get<ManagerModel[]>(`${BASE_URL}${UserEndpoints.MANAGER}`);
   }
 }
