@@ -6,6 +6,7 @@ import { AuthService } from './services/auth.service';
 import { SesionStorageService } from './services/sesion-storage.service';
 import { LoadingService } from './services/loading.service';
 import { AdminService } from './services/admin.service';
+import { TicketService } from './services/ticket.service';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
@@ -14,6 +15,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './Interceptors/auth.interceptor';
 import { UserInterceptor } from './Interceptors/user.interceptor';
 import { AdminInterceptor } from './Interceptors/admin.interceptor';
+import { MOperatorInterceptor } from './Interceptors/maintenance-operator.interceptor';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
 
 export const appConfig: ApplicationConfig = {
@@ -26,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     SesionStorageService,
     LoadingService,
     AdminService,
+    TicketService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -39,6 +42,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AdminInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MOperatorInterceptor,
       multi: true,
     },
   ],
