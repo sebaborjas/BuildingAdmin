@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { InvitationEndpoint, ReportEndpoint, CategoriesEndpoint } from '../../networking/endpoints';
+import { InvitationEndpoint, ReportEndpoint, CategoriesEndpoint, UserEndpoint } from '../../networking/endpoints';
 import { Observable } from 'rxjs';
-import { InvitationModel, EditInvitationModel, TicketsByCategories, Categories } from './types';
+import { InvitationModel, EditInvitationModel, TicketsByCategories, Categories, AdminModel, CreateCategoryModel } from './types';
 import { environment } from '../../environments/environment.development';
 
 const BASE_URL = environment.API_URL;
@@ -81,6 +81,29 @@ export class AdminService {
     return this._httpClient.get<Categories>(
       `${BASE_URL}${CategoriesEndpoint.CATEGORIES}`,
       { params: params }
+    );
+  }
+
+  createCategory(name: string): Observable<CreateCategoryModel> {
+    const body = {
+      name: name
+    };
+    return this._httpClient.post<CreateCategoryModel>(
+      `${BASE_URL}${CategoriesEndpoint.CATEGORIES}`,
+      body
+    );
+  }
+
+  createAdministartor(name: string, lastName: string, email: string, password: string): Observable<AdminModel> {
+    const body = {
+      name: name,
+      lastName: lastName,
+      email: email,
+      password: password
+    };
+    return this._httpClient.post<AdminModel>(
+      `${BASE_URL}${UserEndpoint.ADMINISTRATOR}`,
+      body
     );
   }
 }
