@@ -20,4 +20,8 @@ export class ConstructionCompanyService {
     return this._httpClient.post<ConstructionCompanyModel>(`${environment.API_URL}${ConstructionCompany.CONSTRUCTION_COMPANIES}`, { name: name });
   }
 
+  modifyConstructionCompany(name: string) {
+    return this._httpClient.put(`${environment.API_URL}${ConstructionCompany.CONSTRUCTION_COMPANIES}`, { name: name });
+  }
+
 }

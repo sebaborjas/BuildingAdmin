@@ -1,21 +1,50 @@
 <div class="bg-white shadow-md rounded-lg p-8 max-w-lg w-full mx-auto mt-10 dark:bg-gray-800 dark:border-gray-700">
 
-    <div *ngIf="userHasCompany">
-      <h1 class="text-2xl font-semibold mb-4 dark:text-white">Construction company information</h1>
-      <p class="mb-4 dark:text-white"><span class="font-bold">ID:</span> {{ companyId }}</p>
-      <p class="mb-2 dark:text-white"><span class="font-bold">Company:</span> {{ companyName }}</p>
+  <div *ngIf="userHasCompany">
+    <div class="flex items-center ">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Mi empresa constructora</h3>
+      <button (click)="editUserCompany()" title="Habilitar edición"
+        class="ml-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm p-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        type="button">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+        </svg>
+      </button>
     </div>
-  
-    <div *ngIf="!userHasCompany">
-      <h1 class="text-2xl font-semibold mb-4 dark:text-white">Create new construction company</h1>
-      <div class="space-y-4">
-        <div>
-          <label for="companyName" class="block text-sm font-medium text-gray-700 dark:text-white">Company name</label>
-          <input type="text" id="companyName" #companyName class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-        </div>
-        <button (click)="saveCompany(companyName.value)" class="w-full bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">Save company</button>
-      </div>
+    <label for="companyName" class="block text-sm font-medium text-gray-700 dark:text-white mt-2">Nombre</label>
+    <div class="flex items-center ">
+      <input type="text" id="companyName" [(ngModel)]="companyName"
+        class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white w-11/12"
+        [disabled]="!isEditing" [ngClass]="{ 'opacity-70': !isEditing }" required>
+      <button (click)="modifyCompany()" title="Guardar cambios" *ngIf="isEditing"
+        class="ml-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm p-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        type="button">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+            d="M4 5a1 1 0 0 1 1-1h11.586a1 1 0 0 1 .707.293l2.414 2.414a1 1 0 0 1 .293.707V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Z" />
+          <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+            d="M8 4h8v4H8V4Zm7 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+      </button>
     </div>
-  
+
   </div>
-  
+
+  <div *ngIf="!userHasCompany">
+    <h1 class="text-2xl font-semibold mb-4 dark:text-white">Crear nueva empresa constructora</h1>
+    <div class="space-y-4">
+      <div>
+        <label for="companyName" class="block text-sm font-medium text-gray-700 dark:text-white">Nombre</label>
+        <input type="text" id="companyName" #companyName
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required>
+      </div>
+      <button (click)="saveCompany(companyName.value)"
+        class="w-full bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">Guardar</button>
+    </div>
+  </div>
+
+</div>
