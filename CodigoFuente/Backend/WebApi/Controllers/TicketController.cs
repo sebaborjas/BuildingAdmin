@@ -79,7 +79,7 @@ namespace WebApi.Controllers
         {
             var ticket = _ticketServices.CompleteTicket(id, totalCostInput.TotalCost);
             var response = new TicketOutput(ticket);
-            return Ok(response.Id);
+            return Ok(response);
         }
 
     }
