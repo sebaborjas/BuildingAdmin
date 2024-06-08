@@ -107,9 +107,9 @@ export class BuildingsComponent {
   createBuilding(){
     this._buildingsService.createBuilding(this.createBuildingModel).pipe(
       this._toastService.observe({
-        loading: 'Creating building',
-        success: 'Building created successfully',
-        error: 'Error creating building',
+        loading: 'Creando edificio',
+        success: 'Edificio creado correctamente',
+        error: 'Error creando edificio',
       })
     ).subscribe(response => {
       this.getBuildings();
@@ -119,9 +119,9 @@ export class BuildingsComponent {
   deleteBuilding(id: number){
     this._buildingsService.deleteBuilding(id).pipe(
       this._toastService.observe({
-        loading: 'Deleting building',
-        success: 'Building deleted successfully',
-        error: 'Error deleting building',
+        loading: 'Borrando edificio',
+        success: 'Edificio borrado correctamente',
+        error: 'Error borrando edificio',
       })
     ).subscribe(response => {
       this.getBuildings();
@@ -137,9 +137,9 @@ export class BuildingsComponent {
   modifyManager(){
     this._buildingsService.modifyManager(this.selectedBuilding.id, this.selectedManager).pipe(
       this._toastService.observe({
-        loading: 'Modifing manager',
-        success: 'Manager modified successfully',
-        error: 'Error modifing manager',
+        loading: 'Modificando encargado',
+        success: 'Encargado modificado correctamente',
+        error: 'Error modificando encargado',
       })
     ).subscribe(response => {
       this.getBuildings();
