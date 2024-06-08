@@ -6,9 +6,12 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { AdministratorsComponent } from './pages/administrators/administrators.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'profile', component: ProfileComponent },
   {
     path: 'home',
     component: HomeComponent,

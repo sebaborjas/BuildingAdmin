@@ -4,8 +4,9 @@ import { ManagerComponent } from './manager/manager.component';
 import { MaintenanceOperatorComponent } from './maintenance-operator/maintenance-operator.component';
 import { CompanyAdminComponent } from './company-admin/company-admin.component';
 import { roles } from './roleTypes';
-
 import { NgIf } from '@angular/common';
+import { SesionStorageService } from '../services/sesion-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -30,7 +31,7 @@ export class SidebarComponent {
   maintenanceOperator = roles.MAINTENANCE_OPERATOR;
   companyAdmin = roles.COMPANY_ADMIN;
 
-  constructor() {}
+  constructor(private _sessionStorageService: SesionStorageService, private _router: Router) { }
 
   displayDropDown: boolean = false;
   showSideBar: boolean = false;
@@ -41,5 +42,14 @@ export class SidebarComponent {
 
   toggleSideBar() {
     this.showSideBar = !this.showSideBar;
+  }
+
+  navigateToProfile() {
+    this._router.navigate(['/profile']);
+  }
+
+  logout() {
+    this._sessionStorageService.removeToken();
+    this._router.navigate(['/login']);
   }
 }

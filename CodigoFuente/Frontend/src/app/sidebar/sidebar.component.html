@@ -79,20 +79,22 @@
             </div>
             <ul class="py-1" role="none">
               <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 selected text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                <button
+                  (click)="navigateToProfile()"
+                  class="block px-4 py-2 selected text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full"
                   role="menuitem"
-                  >Perfil</a
                 >
+                  Perfil
+                </button>
               </li>
               <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                <button
+                  (click)="logout()"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full"
                   role="menuitem"
-                  >Cerrar Sesión</a
                 >
+                  Cerrar Sesión
+                </button>
               </li>
             </ul>
           </div>
