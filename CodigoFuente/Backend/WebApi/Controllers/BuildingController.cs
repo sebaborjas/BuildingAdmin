@@ -67,7 +67,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPut("{id}/manager")]
+        [HttpPut("{buildingId}/manager")]
         [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
         public IActionResult ChangeBuildingManager(int buildingId, [FromBody] ChangeBuildingManagerInput changeBuildingManagerInput)
         {

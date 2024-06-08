@@ -633,4 +633,29 @@ public class TestUserController
         
         Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
     }
+
+    [TestMethod]
+    public void TestGetManagers()
+    {
+        List<Manager> managers = new List<Manager>()
+        {
+            new Manager { Id = 1, Name = "John", Email = "mail@mail.com", Buildings = [new Building { Id = 1 }]},
+            new Manager { Id = 2, Name = "Jane", Email = "otroMail@mail.com", Buildings = [new Building { Id = 2 }]}
+        };
+        _userServiceMock.Setup(r => r.GetManagers()).Returns(managers);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+        var expectedResult = new List<GetManagerOutput>()
+        {
+            new GetManagerOutput{ Id = 1, Name = "John", Email = "mail@mail.com", Buildings = [1]},
+            new GetManagerOutput{ Id = 2, Name = "Jane", Email = "otroMail@mail.com", Buildings = [2]}
+        };
+
+        var result = userController.GetManagers();
+        var okResult = result as OkObjectResult;
+        var getManagersResult = okResult.Value as List<GetManagerOutput>;
+
+        _userServiceMock.VerifyAll();
+        CollectionAssert.AreEqual(getManagersResult, expectedResult);
+
+    }
 }
