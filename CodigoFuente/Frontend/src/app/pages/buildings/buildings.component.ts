@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { LoadingComponent } from '../../loading/loading.component';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BuildingsService } from '../../services/buildings.service';
-import { BuildingModel, CreateBuildingModel, CreateApartmentModel, ManagerModel } from '../../services/types';
+import { BuildingModel, CreateBuildingModel, ApartmentModel, ManagerModel, ModifyApartmentModel, ModifyBuildingModel } from '../../services/types';
 import { LoadingService } from '../../services/loading.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,27 +18,36 @@ import { UserService } from '../../services/user.service';
 export class BuildingsComponent {
 
   buildings: BuildingModel[] = [];
-  isVisibleCreateBuildingModal: boolean = false;
-  isVisibleAddApartmentModal: boolean = false;
-  isVisibleModifyManagerModal: boolean = false;
-  createBuildingModel: CreateBuildingModel = {} as CreateBuildingModel;
-  createApartmentModel: CreateApartmentModel = {} as CreateApartmentModel;
-
-  apartmentFloor: number = 0;
-  apartmentDoorNumber: number = 0;
-  apartmentOwnerName: string = "";
-  apartmentOwnerLastName: string = "";
-  apartmentOwnerEmail: string = "";
-  apartmentRooms: number = 0;
-  apartmentBathrooms: number = 0;
-  apartmentHasTerrace: boolean = false;
-
   managers: ManagerModel[] = [];
+
+  isVisibleBuildingModal: boolean = false;
+  isVisibleApartmentModal: boolean = false;
+  isVisibleModifyManagerModal: boolean = false;
+  isEditingBuilding: boolean = false;
+  isEditingApartment: boolean = false;
+  
+  buildingNameInput: string = '';
+  buildingAddressInput: string = '';
+  buildingLocationInput: string = '';
+  buildingExpensesInput: number = 0;
+  buildingApartmentsInput: ApartmentModel[] = [];
+  buildingManagerEmailInput: string = '';
+  createBuildingModel: CreateBuildingModel = {} as CreateBuildingModel;
+
+  apartmentFloorInput: number = 0;
+  apartmentDoorNumberInput: number = 0;
+  apartmentOwnerNameInput: string = '';
+  apartmentOwnerLastNameInput: string = '';
+  apartmentOwnerEmailInput: string = '';
+  apartmentRoomsInput: number = 0;
+  apartmentBathroomsInput: number = 0;
+  apartmentHasTerraceInput: boolean = false;
+  createApartmentModel: ApartmentModel = {} as ApartmentModel;
 
   selectedBuilding: BuildingModel = {} as BuildingModel;
   selectedManager: number = -1;
+  selectedApartment: ApartmentModel = {} as ApartmentModel;
 
-  
   constructor(private _buildingsService: BuildingsService, private _toastService: HotToastService, private _loadingService: LoadingService, private _userService: UserService) { }
 
   ngOnInit(){
@@ -58,20 +67,44 @@ export class BuildingsComponent {
     });
   }
 
-  showCreateBuildingModal(){
-    this.isVisibleCreateBuildingModal = true;
+  showBuildingModal(editing: boolean, building?: BuildingModel){
+    this.isEditingBuilding = editing;
+    if(building){
+      this.selectedBuilding = building;
+      this.buildingNameInput = building.name;
+      this.buildingAddressInput = building.address;
+      this.buildingLocationInput = building.location;
+      this.buildingExpensesInput = building.expenses;
+      this.buildingApartmentsInput = building.apartments;
+      this.buildingManagerEmailInput = building.managerName || '';
+
+    }
+    this.isVisibleBuildingModal = true;
   }
 
-  hideCreateBuildingModal(){
-    this.isVisibleCreateBuildingModal = false;
+  hideBuildingModal(){
+    this.isVisibleBuildingModal = false;
   }
 
-  showAddApartmentModal(){
-    this.isVisibleAddApartmentModal = true;
+  showApartmentModal(editing: boolean, apartment?: ApartmentModel){
+    this.isEditingApartment = editing;
+    if(apartment){
+      this.selectedApartment = apartment;
+      this.apartmentDoorNumberInput = apartment.doorNumber;
+      this.apartmentFloorInput = apartment.floor;
+      this.apartmentOwnerEmailInput = apartment.ownerEmail;
+      this.apartmentOwnerLastNameInput = apartment.ownerLastName;
+      this.apartmentOwnerNameInput = apartment.ownerName;
+      this.apartmentRoomsInput = apartment.rooms;
+      this.apartmentBathroomsInput = apartment.bathrooms;
+      this.apartmentHasTerraceInput = apartment.hasTerrace;
+    }
+    this.isVisibleApartmentModal = true;
+
   }
 
-  hideAddApartmentModal(){
-    this.isVisibleAddApartmentModal = false;
+  hideApartmentModal(){
+    this.isVisibleApartmentModal = false;
   }
 
   showModifyManager(selectedBuilding: BuildingModel){
@@ -87,24 +120,32 @@ export class BuildingsComponent {
   }
 
   addApartment(){
-    let newApartment: CreateApartmentModel = {
-      floor: this.apartmentFloor,
-      doorNumber: this.apartmentDoorNumber,
-      ownerName: this.apartmentOwnerName,
-      ownerLastName: this.apartmentOwnerLastName,
-      ownerEmail: this.apartmentOwnerEmail,
-      rooms: this.apartmentRooms,
-      bathrooms: this.apartmentBathrooms,
-      hasTerrace: this.apartmentHasTerrace
+    let newApartment: ApartmentModel = {
+      floor: this.apartmentFloorInput,
+      doorNumber: this.apartmentDoorNumberInput,
+      ownerName: this.apartmentOwnerNameInput,
+      ownerLastName: this.apartmentOwnerLastNameInput,
+      ownerEmail: this.apartmentOwnerEmailInput,
+      rooms: this.apartmentRoomsInput,
+      bathrooms: this.apartmentBathroomsInput,
+      hasTerrace: this.apartmentHasTerraceInput
     };
-    this.createBuildingModel.apartments.push(newApartment);
+    this.buildingApartmentsInput.push(newApartment);
   }
 
   removeApartment(index: number){
-    this.createBuildingModel.apartments.splice(index, 1);
+    this.buildingApartmentsInput.splice(index, 1);
   }
 
   createBuilding(){
+    this.createBuildingModel = {
+      name: this.buildingNameInput,
+      address: this.buildingAddressInput,
+      location: this.buildingLocationInput,
+      expenses: this.buildingExpensesInput,
+      apartments: this.buildingApartmentsInput,
+      managerEmail: this.buildingManagerEmailInput
+    }
     this._buildingsService.createBuilding(this.createBuildingModel).pipe(
       this._toastService.observe({
         loading: 'Creando edificio',
@@ -126,6 +167,38 @@ export class BuildingsComponent {
     ).subscribe(response => {
       this.getBuildings();
     });
+  }
+
+  modifyBuilding() {
+    let modifyApartmentsInput: ModifyApartmentModel[] = [];
+    this.buildingApartmentsInput.forEach(apartment=>{
+      modifyApartmentsInput.push({
+        id: apartment.id || -1,
+        ownerEmail: apartment.ownerEmail,
+        ownerLastName: apartment.ownerLastName,
+        ownerName: apartment.ownerName
+      });
+    });
+    let modifyBuildingInput: ModifyBuildingModel = {
+      expenses: this.buildingExpensesInput,
+      apartments: modifyApartmentsInput
+    }
+    let buildingId = this.selectedBuilding.id;
+    this._buildingsService.modifyBuilding(modifyBuildingInput, buildingId).pipe(
+      this._toastService.observe({
+        loading: 'Modificando edificio',
+        success: 'Edificio modificado correctamente',
+        error: 'Error modificando edificio',
+      })
+    ).subscribe(result=>{
+      this.getBuildings();
+    })
+  }
+
+  modifyApartment(){
+    this.selectedApartment.ownerEmail = this.apartmentOwnerEmailInput;
+    this.selectedApartment.ownerLastName = this.apartmentOwnerLastNameInput;
+    this.selectedApartment.ownerName = this.apartmentOwnerNameInput;
   }
 
   getManagers(){

@@ -26,9 +26,12 @@ export interface BuildingModel {
   address: string;
   location: string;
   managerName?: string;
+  expenses: number;
+  apartments: ApartmentModel[];
 }
 
-export interface CreateApartmentModel {
+export interface ApartmentModel {
+  id?: number;
   floor: number;
   doorNumber: number;
   ownerName: string;
@@ -44,7 +47,7 @@ export interface CreateBuildingModel {
   address: string;
   location: string;
   expenses: number;
-  apartments: CreateApartmentModel[];
+  apartments: ApartmentModel[];
   managerEmail: string;
 }
 
@@ -53,4 +56,16 @@ export interface ManagerModel {
   name: string;
   email: string;
   buildings: number[];
+}
+
+export interface ModifyApartmentModel {
+  id: number;
+  ownerName:string;
+  ownerLastName: string;
+  ownerEmail: string;
+}
+
+export interface ModifyBuildingModel {
+  expenses: number;
+  apartments: ModifyApartmentModel[];
 }

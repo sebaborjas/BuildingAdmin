@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { BuildingEndpoint } from '../../networking/endpoints';
-import { BuildingModel, CreateBuildingModel } from './types';
+import { BuildingModel, CreateBuildingModel, ModifyBuildingModel } from './types';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -25,6 +25,10 @@ export class BuildingsService {
   }
 
   modifyManager(buildingId: number, managerId: number){
-    return this._httpClient.put(`${environment.API_URL}${BuildingEndpoint.BUILDINGS}/${buildingId}/manager/`, {managerId: managerId});
+    return this._httpClient.put(`${environment.API_URL}${BuildingEndpoint.BUILDINGS}/${buildingId}/manager/`, { managerId: managerId });
+  }
+
+  modifyBuilding(buildingInput: ModifyBuildingModel, buildingId: number){
+    return this._httpClient.put(`${environment.API_URL}${BuildingEndpoint.BUILDINGS}/${buildingId}`, buildingInput);
   }
 }
