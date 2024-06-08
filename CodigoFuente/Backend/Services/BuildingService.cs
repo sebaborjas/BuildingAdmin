@@ -25,7 +25,7 @@ public class BuildingService : IBuildingService
 
     }
 
-    public Building CreateBuilding(Building building)
+    public Building CreateBuilding(Building building, string? managerEmail = null)
     {
         var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
         if (currentUser == null)
@@ -58,6 +58,12 @@ public class BuildingService : IBuildingService
             building.ConstructionCompany = currentUser.ConstructionCompany;
             SetApartmentsExistingOwnersByEmail(building.Apartments);
             _buildingRepository.Insert(building);
+            var manager = _managerRepository.GetByCondition(m => m.Email == managerEmail);
+            if(manager != null)
+            {
+                manager.Buildings.Add(building);
+                _managerRepository.Update(manager);
+            }
             return building;
         }
         catch (Exception e)
@@ -184,12 +190,12 @@ public class BuildingService : IBuildingService
         }
     }
 
-    public string GetManagerName(int buildingId)
+    public string? GetManagerName(int buildingId)
     {
         var manager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));
         if (manager == null)
         {
-            throw new ArgumentNullException("Manager not found");
+            return null;
         }
         return manager.Name;
     }
