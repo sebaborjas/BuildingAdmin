@@ -256,6 +256,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<float>("TotalCost")
+                        .HasColumnType("real");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApartmentId");
