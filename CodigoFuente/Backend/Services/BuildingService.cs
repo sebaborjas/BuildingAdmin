@@ -75,13 +75,8 @@ public class BuildingService : IBuildingService
 
     public void DeleteBuilding(int buildingId)
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-        if (currentUser == null)
-        {
-            throw new InvalidOperationException("Current user is not a manager");
-        }
-
-        var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
+        var buildings = GetAllBuildingsForCCompany();
+        var building = buildings.FirstOrDefault(b=>b.Id == buildingId);
         if (building == null)
         {
             throw new ArgumentNullException("Building not found");
