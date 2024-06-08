@@ -5,13 +5,23 @@
     [selected]="selectedSectionIndex === 1"
   ></app-section>
   <app-section
-    [title]="'Invitaciones'"
-    (click)="selectSection(2); navigateToSection('invitations')"
+    [title]="'Administradores'"
+    (click)="selectSection(2); navigateToSection('administrators')"
     [selected]="selectedSectionIndex === 2"
   ></app-section>
   <app-section
-    [title]="'Reportes'"
-    (click)="selectSection(3); navigateToSection('reports')"
+    [title]="'Invitaciones'"
+    (click)="selectSection(3); navigateToSection('invitations')"
     [selected]="selectedSectionIndex === 3"
+  ></app-section>
+  <app-section
+    [title]="'Reportes'"
+    (click)="selectSection(4); navigateToSection('reports')"
+    [selected]="selectedSectionIndex === 4"
+  ></app-section>
+  <app-section
+    [title]="'Categorias'"
+    (click)="selectSection(5); navigateToSection('categories')"
+    [selected]="selectedSectionIndex === 5"
   ></app-section>
 </ul>
