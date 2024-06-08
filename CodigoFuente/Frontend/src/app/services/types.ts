@@ -19,3 +19,11 @@ export interface EditInvitationModel {
   id: number;
   expirationDate: string;
 }
+
+export interface TicketsByCategories {
+  tickets: Object[];
+}
+
+export interface Categories {
+  categories: Object[];
+}

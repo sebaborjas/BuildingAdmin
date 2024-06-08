@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AdminInterceptor implements HttpInterceptor {
-  constructor(private _sesionStorqageService: SesionStorageService) {}
+  constructor(private _sesionStorqageService: SesionStorageService) { }
 
   intercept(
     req: HttpRequest<unknown>,
@@ -18,7 +18,7 @@ export class AdminInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const token = this._sesionStorqageService.getToken();
     let newRequest = req;
-    if (req.url.includes('invitations')) {
+    if (req.url.includes('invitations') || req.url.includes('categories')) {
       return next.handle(req);
     }
 
