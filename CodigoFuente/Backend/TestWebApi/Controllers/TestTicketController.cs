@@ -154,7 +154,12 @@ namespace TestWebApi
             _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<int>())).Returns(ticket);
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
-            var result = ticketController.AssignTicket(1, 1);
+            var assignTicketInput = new AssignTicketInput()
+            {
+               MaintenanceOperatorId = 1
+            };  
+
+            var result = ticketController.AssignTicket(1, assignTicketInput);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketOutput;
 
@@ -171,7 +176,12 @@ namespace TestWebApi
             _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<int>())).Throws(new InvalidDataException());
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
-            var result = ticketController.AssignTicket(1, 1);
+            var assignTicketInput = new AssignTicketInput()
+            {
+               MaintenanceOperatorId = 1
+            };
+
+            var result = ticketController.AssignTicket(1, assignTicketInput);
             _ticketServiceMock.VerifyAll();
         }
 
@@ -221,7 +231,12 @@ namespace TestWebApi
             _ticketServiceMock.Setup(x => x.CompleteTicket(It.IsAny<int>(), It.IsAny<float>())).Returns(ticket);
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
-            var result = ticketController.CompleteTicket(1, 100);
+            var completeTicketInput = new TicketCompleteInput()
+            {
+                TotalCost = 100
+            };
+
+            var result = ticketController.CompleteTicket(1, completeTicketInput);
             var okResult = result as OkObjectResult;
             var ticketResponse = okResult.Value as TicketOutput;
 
@@ -237,7 +252,12 @@ namespace TestWebApi
             _ticketServiceMock.Setup(x => x.CompleteTicket(It.IsAny<int>(), It.IsAny<float>())).Throws(new InvalidDataException());
             var ticketController = new TicketController(_ticketServiceMock.Object);
 
-            var result = ticketController.CompleteTicket(1, 100);
+            var completeTicketInput = new TicketCompleteInput()
+            {
+                TotalCost = 100
+            };
+
+            var result = ticketController.CompleteTicket(1, completeTicketInput);
             _ticketServiceMock.VerifyAll();
         }
 

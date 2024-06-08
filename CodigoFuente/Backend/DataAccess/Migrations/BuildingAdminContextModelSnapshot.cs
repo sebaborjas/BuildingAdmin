@@ -121,7 +121,12 @@ namespace DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RelatedToId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RelatedToId");
 
                     b.ToTable("Categories");
                 });
@@ -251,6 +256,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<float>("TotalCost")
+                        .HasColumnType("real");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApartmentId");
@@ -372,6 +380,15 @@ namespace DataAccess.Migrations
                         .HasForeignKey("ManagerId");
 
                     b.Navigation("ConstructionCompany");
+                });
+
+            modelBuilder.Entity("Domain.Category", b =>
+                {
+                    b.HasOne("Domain.Category", "RelatedTo")
+                        .WithMany()
+                        .HasForeignKey("RelatedToId");
+
+                    b.Navigation("RelatedTo");
                 });
 
             modelBuilder.Entity("Domain.Session", b =>

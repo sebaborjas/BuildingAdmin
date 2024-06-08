@@ -1,0 +1,284 @@
+{
+  "buildings": [
+    {
+      "name": "Torres",
+      "address": "Diciembre, 5050, Quito",
+      "location": "-78.48, -0.176",
+      "expenses": 5000,
+      "apartments": [
+        {
+          "floor": 1,
+          "doorNumber": 101,
+          "ownerName": "Juan",
+          "ownerLastName": "Perez",
+          "ownerEmail": "juan.perez@gmail.com",
+          "rooms": 3,
+          "bathrooms": 2,
+          "hasTerrace": false
+        },
+        {
+          "floor": 2,
+          "doorNumber": 201,
+          "ownerName": "Pedro",
+          "ownerLastName": "Gonzalez",
+          "ownerEmail": "pedro.gonzalez@gmail.com",
+          "rooms": 2,
+          "bathrooms": 1,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Edificio Central",
+      "address": "Calle de la República, 1456, Quito",
+      "location": "-0.215, -78.5",
+      "expenses": 3500,
+      "apartments": [
+        {
+          "floor": 1,
+          "doorNumber": 101,
+          "ownerName": "Carlos",
+          "ownerLastName": "Lopez",
+          "ownerEmail": "carlos.lopez@gmail.com",
+          "rooms": 2,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 2,
+          "doorNumber": 202,
+          "ownerName": "Ana",
+          "ownerLastName": "Rodriguez",
+          "ownerEmail": "ana.rodriguez@gmail.com",
+          "rooms": 3,
+          "bathrooms": 2,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Residencias del Sol",
+      "address": "Calle Bolívar, 789, Quito",
+      "location": "-0.2, -78.45",
+      "expenses": 4200,
+      "apartments": [
+        {
+          "floor": 1,
+          "doorNumber": 102,
+          "ownerName": "Andres",
+          "ownerLastName": "Ortiz",
+          "ownerEmail": "andres.ortiz@gmail.com",
+          "rooms": 2,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 1,
+          "doorNumber": 101,
+          "ownerName": "Claudia",
+          "ownerLastName": "Ramirez",
+          "ownerEmail": "claudia.ramirez@gmail.com",
+          "rooms": 3,
+          "bathrooms": 2,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Edificio Altavista",
+      "address": "Av. Amazonas, 1200, Quito",
+      "location": "-0.205, -78.42",
+      "expenses": 3800,
+      "apartments": [
+        {
+          "floor": 1,
+          "doorNumber": 101,
+          "ownerName": "Alicia",
+          "ownerLastName": "Mendez",
+          "ownerEmail": "alicia.mendez@gmail.com",
+          "rooms": 2,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 2,
+          "doorNumber": 202,
+          "ownerName": "Roberto",
+          "ownerLastName": "Diaz",
+          "ownerEmail": "roberto.diaz@gmail.com",
+          "rooms": 3,
+          "bathrooms": 2,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Torre del Parque",
+      "address": "Av. Amazonas, 1500, Quito",
+      "location": "-0.210, -78.43",
+      "expenses": 4000,
+      "apartments": [
+        {
+          "floor": 3,
+          "doorNumber": 301,
+          "ownerName": "Miguel",
+          "ownerLastName": "Fernandez",
+          "ownerEmail": "miguel.fernandez@gmail.com",
+          "rooms": 1,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 4,
+          "doorNumber": 401,
+          "ownerName": "Luisa",
+          "ownerLastName": "Torres",
+          "ownerEmail": "luisa.torres@gmail.com",
+          "rooms": 4,
+          "bathrooms": 3,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Edificio Mirador",
+      "address": "Calle Venezuela, 1234, Quito",
+      "location": "-0.190, -78.48",
+      "expenses": 4500,
+      "apartments": [
+        {
+          "floor": 1,
+          "doorNumber": 101,
+          "ownerName": "Jose",
+          "ownerLastName": "Martinez",
+          "ownerEmail": "jose.martinez@gmail.com",
+          "rooms": 2,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 2,
+          "doorNumber": 201,
+          "ownerName": "Sofia",
+          "ownerLastName": "Ramirez",
+          "ownerEmail": "sofia.ramirez@gmail.com",
+          "rooms": 3,
+          "bathrooms": 2,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Torre Pacifico",
+      "address": "Calle Chile, 876, Quito",
+      "location": "-0.185, -78.49",
+      "expenses": 3700,
+      "apartments": [
+        {
+          "floor": 3,
+          "doorNumber": 302,
+          "ownerName": "Manuel",
+          "ownerLastName": "Garcia",
+          "ownerEmail": "manuel.garcia@gmail.com",
+          "rooms": 1,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 4,
+          "doorNumber": 402,
+          "ownerName": "Natalia",
+          "ownerLastName": "Herrera",
+          "ownerEmail": "natalia.herrera@gmail.com",
+          "rooms": 4,
+          "bathrooms": 3,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Residencial Quito",
+      "address": "Calle Sucre, 456, Quito",
+      "location": "-0.200, -78.47",
+      "expenses": 4300,
+      "apartments": [
+        {
+          "floor": 1,
+          "doorNumber": 101,
+          "ownerName": "Pablo",
+          "ownerLastName": "Castro",
+          "ownerEmail": "pablo.castro@gmail.com",
+          "rooms": 2,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 2,
+          "doorNumber": 202,
+          "ownerName": "Elena",
+          "ownerLastName": "Morales",
+          "ownerEmail": "elena.morales@gmail.com",
+          "rooms": 3,
+          "bathrooms": 2,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Edificio Los Andes",
+      "address": "Calle Colon, 321, Quito",
+      "location": "-0.175, -78.46",
+      "expenses": 4100,
+      "apartments": [
+        {
+          "floor": 1,
+          "doorNumber": 101,
+          "ownerName": "Gabriel",
+          "ownerLastName": "Alvarez",
+          "ownerEmail": "gabriel.alvarez@gmail.com",
+          "rooms": 2,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 2,
+          "doorNumber": 202,
+          "ownerName": "Valeria",
+          "ownerLastName": "Reyes",
+          "ownerEmail": "valeria.reyes@gmail.com",
+          "rooms": 3,
+          "bathrooms": 2,
+          "hasTerrace": true
+        }
+      ]
+    },
+    {
+      "name": "Edificio Horizonte",
+      "address": "Calle Espejo, 999, Quito",
+      "location": "-0.165, -78.44",
+      "expenses": 3900,
+      "apartments": [
+        {
+          "floor": 3,
+          "doorNumber": 303,
+          "ownerName": "Felipe",
+          "ownerLastName": "Lozano",
+          "ownerEmail": "felipe.lozano@gmail.com",
+          "rooms": 1,
+          "bathrooms": 1,
+          "hasTerrace": false
+        },
+        {
+          "floor": 4,
+          "doorNumber": 404,
+          "ownerName": "Marina",
+          "ownerLastName": "Sanchez",
+          "ownerEmail": "marina.sanchez@gmail.com",
+          "rooms": 4,
+          "bathrooms": 3,
+          "hasTerrace": true
+        }
+      ]
+    }
+  ]
+}

@@ -158,6 +158,11 @@ public class UserService : IUserServices
         }
     }
 
+    public List<Manager> GetManagers()
+    {
+        return _managerRepository.GetAll<Manager>().ToList();
+    }
+
     private bool IsNewAdministratorValid(Administrator administrator)
     {
         return administrator != null && administrator.Name != null && administrator.LastName != null && administrator.Email != null && administrator.Password != null;

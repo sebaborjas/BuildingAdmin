@@ -19,6 +19,7 @@ namespace DTO.In
         public string Location { get; set; }
         public float Expenses { get; set; }
         public List<NewApartmentInput> Apartments { get; set; }
+        public string ManagerEmail { get; set; } = null;
 
         public Building ToEntity()
         {

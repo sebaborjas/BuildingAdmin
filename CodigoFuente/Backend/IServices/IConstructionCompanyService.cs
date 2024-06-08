@@ -12,5 +12,7 @@ namespace IServices
         public ConstructionCompany CreateConstructionCompany(string name);
 
         public ConstructionCompany ModifyConstructionCompany(string name);
+
+        public ConstructionCompany GetUserCompany();
     }   
 }

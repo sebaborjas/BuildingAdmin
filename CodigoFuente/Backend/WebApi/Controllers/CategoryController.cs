@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         [AuthenticationFilter(Role = RoleConstants.AdministratorRole)]
         public IActionResult CreateCategory([FromBody] CreateCategoryInput createCategoryModel)
         {
-            var category = _service.CreateCategory(createCategoryModel.Name);
+            var category = _service.CreateCategory(createCategoryModel.Name, createCategoryModel.ParentCategoryId);
             return Ok(new CategoryOutput(category));
         }
 

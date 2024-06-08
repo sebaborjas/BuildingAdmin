@@ -10,6 +10,7 @@ using Moq;
 using DTO.In;
 using DTO.Out;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TestWebApi;
 
@@ -227,6 +228,37 @@ public class TestConstructionCompanyController
         var result = constructionCompanyController.ModifyConstructionCompany(input);
 
         _constructionCompanyServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void TestGetUserConstructionCompany()
+    {
+        var company = new ConstructionCompany
+        {
+            Id = 1,
+            Name = "Empresa"
+        };
+        _constructionCompanyServiceMock.Setup(r=>r.GetUserCompany()).Returns(company);
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+        
+        var result = constructionCompanyController.GetUserCompany();
+        
+        var okResult = result as OkObjectResult;
+        var companyReturned = okResult.Value as ConstructionCompanyOutput;
+        _constructionCompanyServiceMock.VerifyAll();
+        Assert.AreEqual(companyReturned.Id, company.Id);
+        Assert.AreEqual(companyReturned.Name, company.Name);
+
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(KeyNotFoundException))]
+    public void TestNonExistenUserCompany()
+    {
+        _constructionCompanyServiceMock.Setup(r => r.GetUserCompany()).Throws(new KeyNotFoundException());
+        var constructionCompanyController = new ConstructionCompanyController(_constructionCompanyServiceMock.Object);
+
+        var result = constructionCompanyController.GetUserCompany();
     }
 
 }
