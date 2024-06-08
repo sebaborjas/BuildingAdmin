@@ -4,6 +4,7 @@ export enum LoginEndpoint {
 
 export enum UserEndpoint {
   USER = '/api/v2/users',
+  ADMINISTRATOR = '/api/v2/users/administrator',
 }
 
 export enum InvitationEndpoint {

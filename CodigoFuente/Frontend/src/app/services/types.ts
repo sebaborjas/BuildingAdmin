@@ -27,3 +27,15 @@ export interface TicketsByCategories {
 export interface Categories {
   categories: Object[];
 }
+
+export interface CreateCategoryModel {
+  name: string;
+}
+
+
+export interface AdminModel {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
