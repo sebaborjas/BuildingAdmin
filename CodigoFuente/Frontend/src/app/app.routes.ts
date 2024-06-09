@@ -8,6 +8,7 @@ import { ConstructionCompanyComponent } from './pages/construction-company/const
 import { BuildingsComponent } from './pages/buildings/buildings.component';
 import { CompanyAdministratorsComponent } from './pages/company-administrators/company-administrators.component';
 import { ImportBuildingsComponent } from './pages/import-buildings/import-buildings.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,7 +22,8 @@ export const routes: Routes = [
       { path: 'constructionCompanies', component: ConstructionCompanyComponent},
       { path: 'buildings', component: BuildingsComponent},
       { path: 'companyAdministrators', component: CompanyAdministratorsComponent},
-      { path: 'importBuildings', component: ImportBuildingsComponent}
+      { path: 'importBuildings', component: ImportBuildingsComponent},
+      { path: 'profile', component: ProfileComponent },
     ],
   },
   { path: '**', component: LoginComponent },

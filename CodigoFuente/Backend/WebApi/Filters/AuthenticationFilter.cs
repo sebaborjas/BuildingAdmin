@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using IServices;
+using System.Data;
 
 namespace WebApi.Filters
 {
     public class AuthenticationFilter : Attribute, IAuthorizationFilter
     {
 
-        public string Role {  get; set; }
+        public string Role { get; set; }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
@@ -31,11 +32,18 @@ namespace WebApi.Filters
                     {
                         context.Result = new JsonResult("Sign in") { StatusCode = 401 };
                     }
-                    else if (currentUser.GetType().Name != Role)
+                    else
                     {
-                        context.Result = new JsonResult("You do not have enough permissions") { StatusCode = 401 };
+                        var roles = Role.Split(',').Select(r => r.Trim()).ToList();
+
+                        if (!roles.Contains(currentUser.GetType().Name))
+                        {
+                            context.Result = new JsonResult("You do not have enough permissions") { StatusCode = 401 };
+                        }
                     }
-                } catch (Exception ex)
+
+                }
+                catch (Exception ex)
                 {
                     context.Result = new JsonResult("Internal server error") { StatusCode = 500 };
                 }

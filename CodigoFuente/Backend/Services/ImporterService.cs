@@ -113,6 +113,14 @@ namespace Services
                         if (owner != null)
                         {
                             apartmentToCreate.Owner = owner;
+                        } else
+                        {
+                            apartmentToCreate.Owner = new Owner
+                            {
+                                Email = apartment.OwnerEmail,
+                                Name = apartment.OwnerName,
+                                LastName = apartment.OwnerLastName
+                            };
                         }
 
                         apartments.Add(apartmentToCreate);

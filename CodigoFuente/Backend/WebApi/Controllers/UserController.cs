@@ -79,4 +79,17 @@ public class UserController : ControllerBase
         }
         return Ok(result);
     }
+
+    [HttpGet("company-administrator")]
+    [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+    public IActionResult GetCompanyAdministrators()
+    {
+        var companyAdministrators = _service.GetCompanyAdministrators();
+        var result = new List<CompanyAdministratorOutput>();
+        foreach (var companyAdministrator in companyAdministrators)
+        {
+            result.Add(new CompanyAdministratorOutput(companyAdministrator));
+        }
+        return Ok(result);
+    }
 }

@@ -658,4 +658,34 @@ public class TestUserController
         CollectionAssert.AreEqual(getManagersResult, expectedResult);
 
     }
+
+    [TestMethod]
+    public void TestGetAdministratorsForCompany()
+    {
+        ConstructionCompany company = new ConstructionCompany()
+        {
+            Id = 1,
+            Name = "Company"
+        };
+        List<CompanyAdministrator> administrators = new List<CompanyAdministrator>()
+        {
+            new CompanyAdministrator { Id = 1, Name = "John", Email = "mail1@mail.com",ConstructionCompany = company },
+            new CompanyAdministrator { Id = 2, Name = "Jane", Email = "mail2@mail.com", ConstructionCompany = company }
+        };
+        _userServiceMock.Setup(r=>r.GetCompanyAdministrators()).Returns(administrators);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+        var expectedResult = new List<CompanyAdministratorOutput>()
+        {
+            new CompanyAdministratorOutput{ Id = 1, Name = "John", Email = "mail1@mail.com", ConstructionCompany = new ConstructionCompanyOutput(company)},
+            new CompanyAdministratorOutput{ Id = 2, Name = "Jane", Email = "mail2@mail.com", ConstructionCompany = new ConstructionCompanyOutput(company)}
+        };
+
+        var result = userController.GetCompanyAdministrators();
+        var okResult = result as OkObjectResult;
+        var getCompanyAdministratorsResult = okResult.Value as List<CompanyAdministratorOutput>;
+
+        _userServiceMock.VerifyAll();
+        CollectionAssert.AreEqual(getCompanyAdministratorsResult, expectedResult);
+
+    }
 }

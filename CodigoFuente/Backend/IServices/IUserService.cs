@@ -14,4 +14,6 @@ public interface IUserServices
 
     public List<Manager> GetManagers();
 
+    public List<CompanyAdministrator> GetCompanyAdministrators();
+
 }
