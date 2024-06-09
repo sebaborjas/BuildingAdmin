@@ -7,6 +7,7 @@ export enum UserEndpoint {
   MANAGER = '/api/v2/users/manager',
   COMPANYADMINISTRATOR = '/api/v2/users/company-administrator',
   ADMINISTRATOR = '/api/v2/users/administrator',
+  MAINTENANCEOPERATOR = '/api/v2/users/maintenance-operator',
 }
 
 export enum InvitationEndpoint {
