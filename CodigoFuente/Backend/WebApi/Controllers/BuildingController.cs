@@ -45,7 +45,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole + "," + RoleConstants.ManagerRole +  "," + RoleConstants.AdministratorRole)]
+        [AuthenticationFilter(Role = $"{RoleConstants.CompanyAdministratorRole},{RoleConstants.ManagerRole},{RoleConstants.AdministratorRole}")]
         public IActionResult Get([FromQuery] int? id)
         {
            var buildings = _buildingServices.Get(id);
