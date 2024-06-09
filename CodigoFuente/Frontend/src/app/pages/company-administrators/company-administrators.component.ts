@@ -55,12 +55,15 @@ export class CompanyAdministratorsComponent implements OnInit{
   }
 
   getCompanyAdministrators(){
+    this._loadingService.loadingOn();
     this._userService.getCompanyAdministrators().subscribe(result=>{
       this.companyAdministrators = result;
+      this._loadingService.loadingOff();
     }, error=>{
       if(error.status === 400){
         this._toastService.error('El usuario no tiene una empresa asignada');
       }
+      this._loadingService.loadingOff();
     });
   }
   
