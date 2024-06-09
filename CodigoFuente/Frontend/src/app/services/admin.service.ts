@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 import {
   InvitationModel,
   EditInvitationModel,
-  TicketsByCategories,
-  Categories,
+  CategoryModel,
   AdminModel,
   CreateCategoryModel,
-  BuildingModel
+  BuildingModel,
+  TicketModel,
+  TicketsByCategoriesModel,
 } from './types';
 import { environment } from '../../environments/environment.development';
 
@@ -60,40 +61,40 @@ export class AdminService {
     );
   }
 
-  deleteInvitation(id: number): Observable<any> {
-    return this._httpClient.delete<any>(
+  deleteInvitation(id: number): Observable<InvitationModel> {
+    return this._httpClient.delete<InvitationModel>(
       `${BASE_URL}${InvitationEndpoint.INVITATIONS}/${id}`
     );
   }
 
-  getReportTicketsByCategories(name: string, category?: string): Observable<TicketsByCategories> {
+  getReportTicketsByCategories(name: string, category?: string): Observable<TicketsByCategoriesModel[]> {
     let params = new HttpParams().set('building', name);
 
     if (category) {
       params = params.set('category', category);
     }
 
-    return this._httpClient.get<TicketsByCategories>(
+    return this._httpClient.get<TicketsByCategoriesModel[]>(
       `${BASE_URL}${ReportEndpoint.REPORT_TICKETS_BY_CATEGORIES}`,
       { params: params }
     );
   }
 
-  getCategories(id?: string): Observable<Categories> {
+  getCategories(id?: string): Observable<CategoryModel[]> {
     let params = new HttpParams()
 
     if (id) {
       params = params.set('id', id);
     }
 
-    return this._httpClient.get<Categories>(
+    return this._httpClient.get<CategoryModel[]>(
       `${BASE_URL}${CategoriesEndpoint.CATEGORIES}`,
       { params: params }
     );
   }
 
-  getBuildings(): Observable<BuildingModel> {
-    return this._httpClient.get<BuildingModel>(
+  getBuildings(): Observable<BuildingModel[]> {
+    return this._httpClient.get<BuildingModel[]>(
       `${BASE_URL}${BuildingEndpoint.BUILDINGS}`,
     );
   }
