@@ -1,18 +1,18 @@
 import { NgIf, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
-import { AdminService } from '../../services/admin.service';
+import { AdminService } from '../../../services/admin.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { LoadingService } from '../../services/loading.service';
+import { LoadingService } from '../../../services/loading.service';
 
 
 @Component({
-  selector: 'app-reports',
+  selector: 'app-admin-reports',
   standalone: true,
   imports: [NgIf, NgFor],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css'
 })
-export class ReportsComponent {
+export class ReportsAdminComponent {
   constructor(
     private _adminService: AdminService,
     private _toastService: HotToastService,
