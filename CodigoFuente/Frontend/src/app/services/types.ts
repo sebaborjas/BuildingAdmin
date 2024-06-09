@@ -69,3 +69,16 @@ export interface ModifyBuildingModel {
   expenses: number;
   apartments: ModifyApartmentModel[];
 }
+
+export interface CompanyAdministratorModel {
+  id: number;
+  name: string;
+  email: string;
+  constructionCompanny: ConstructionCompanyModel;
+}
+
+export interface CreateCompanyAdministratorModel {
+  name: string;
+  email: string;
+  password: string;
+}

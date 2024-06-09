@@ -6,6 +6,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { ConstructionCompanyComponent } from './pages/construction-company/construction-company.component';
 import { BuildingsComponent } from './pages/buildings/buildings.component';
+import { CompanyAdministratorsComponent } from './pages/company-administrators/company-administrators.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
       { path: 'reports', component: ReportsComponent },
       { path: 'constructionCompanies', component: ConstructionCompanyComponent},
       { path: 'buildings', component: BuildingsComponent},
+      { path: 'companyAdministrators', component: CompanyAdministratorsComponent},
     ],
   },
   { path: '**', component: LoginComponent },

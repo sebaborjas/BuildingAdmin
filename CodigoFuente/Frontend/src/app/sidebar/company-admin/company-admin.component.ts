@@ -18,7 +18,8 @@ export class CompanyAdminComponent {
     this.selectedSectionIndex = index;
   }
 
-  navigateToSection(section: string) {
+  navigateToSection(section: string, index: number) {
+    this.selectSection(index);
     this._router.navigate(['home', section]);
   }
 }

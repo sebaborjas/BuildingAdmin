@@ -4,7 +4,8 @@ export enum LoginEndpoint {
 
 export enum UserEndpoints {
   USER = '/api/v2/users',
-  MANAGER = '/api/v2/users/manager'
+  MANAGER = '/api/v2/users/manager',
+  COMPANYADMINISTRATOR = '/api/v2/users/company-administrator',
 }
 
 export enum InvitationEndpoint {
@@ -18,4 +19,5 @@ export enum BuildingEndpoint {
 export enum ConstructionCompany {
   CONSTRUCTION_COMPANIES = '/api/v2/constructionCompanies',
 }
+
 
