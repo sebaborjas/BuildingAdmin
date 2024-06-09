@@ -19,7 +19,7 @@ namespace Domain
             {
                 if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
-                string pattern = @"^[a-zA-Z\s]*$";
+                string pattern = @"^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]*$";
 
                 bool isValid = IsValidFormat(pattern, value);
                 bool isLengthValid = (value.Length >= 3 && value.Length <= 20);
