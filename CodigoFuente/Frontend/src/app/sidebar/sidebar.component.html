@@ -80,7 +80,8 @@
             <ul class="py-1" role="none">
               <li>
                 <button
-                  (click)="navigateToProfile()"
+                  (click)="hideDropDown()"
+                  routerLink="/home/profile"
                   class="block px-4 py-2 selected text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full"
                   role="menuitem"
                 >
@@ -115,7 +116,7 @@
     <div>
       <button
         routerLink="/home/dashboard"
-        (click)="selectSection(1)"
+        (click)="selectSection(1); hideSideBar()"
         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
         [ngClass]="{
           'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -149,7 +150,7 @@
       <div>
         <button
           routerLink="/home/administrators"
-          (click)="selectSection(2)"
+          (click)="selectSection(2); hideSideBar()"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -182,7 +183,7 @@
       <div>
         <button
           routerLink="/home/invitations"
-          (click)="selectSection(3)"
+          (click)="selectSection(3); hideSideBar()"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -214,7 +215,7 @@
       <div>
         <button
           routerLink="/home/categories"
-          (click)="selectSection(4)"
+          (click)="selectSection(4); hideSideBar()"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -247,7 +248,7 @@
       <div>
         <button
           routerLink="/home/reports"
-          (click)="selectSection(5)"
+          (click)="selectSection(5); hideSideBar()"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(

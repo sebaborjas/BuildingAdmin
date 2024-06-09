@@ -37,10 +37,6 @@ export class SidebarComponent {
     this.selectedSectionIndex = index;
   }
 
-  navigateTo(section: string) {
-    this._router.navigate(['home', section]);
-  }
-
   toggleDropDown() {
     this.displayDropDown = !this.displayDropDown;
   }
@@ -49,8 +45,12 @@ export class SidebarComponent {
     this.showSideBar = !this.showSideBar;
   }
 
-  navigateToProfile() {
-    this._router.navigate(['/profile']);
+  hideSideBar() {
+    this.showSideBar = false;
+  }
+
+  hideDropDown() {
+    this.displayDropDown = false;
   }
 
   logout() {

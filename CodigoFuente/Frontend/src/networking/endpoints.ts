@@ -18,3 +18,7 @@ export enum ReportEndpoint {
 export enum CategoriesEndpoint {
   CATEGORIES = '/api/v2/categories',
 }
+
+export enum BuildingEndpoint {
+  BUILDINGS = '/api/v2/buildings',
+}

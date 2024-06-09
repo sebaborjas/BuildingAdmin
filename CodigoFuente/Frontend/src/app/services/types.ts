@@ -32,6 +32,9 @@ export interface CreateCategoryModel {
   name: string;
 }
 
+export interface BuildingModel {
+  buildings: Object[];
+}
 
 export interface AdminModel {
   name: string;

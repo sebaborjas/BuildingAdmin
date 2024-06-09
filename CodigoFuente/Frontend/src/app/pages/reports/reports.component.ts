@@ -21,26 +21,34 @@ export class ReportsComponent {
   ) { }
 
   isVisibleReport: boolean = false;
-  buildingName: string = 'Casa Migues';
+  buildingName: string = '';
   categoryName: string = '';
 
   ticketsByCategories: any = [];
   categories: any = [];
+  buildings: any = [];
 
   ngOnInit(): void {
     this.isVisibleReport = false;
     this.getCategories();
+    this.getBuilings();
   }
 
   showReport() {
+    if (this.buildingName == '') {
+      this._toastService.error('Debe seleccionar un edificio');
+      return;
+    }
     this.isVisibleReport = true;
     this.getTicketsByCategories();
   }
 
   setCategoryName(categoryName: string) {
     this.categoryName = categoryName;
-    console.log(this.categoryName);
+  }
 
+  setBuildingName(buildingName: string) {
+    this.buildingName = buildingName;
   }
 
   getTicketsByCategories() {
@@ -62,6 +70,20 @@ export class ReportsComponent {
           this._loadingService.loadingOff();
         }
 
+      );
+  }
+
+  getBuilings() {
+    this._loadingService.loadingOn();
+    this._adminService.getBuildings()
+      .subscribe((response) => {
+        this.buildings = response;
+        this._loadingService.loadingOff();
+      },
+        (error) => {
+          console.log(error);
+          this._loadingService.loadingOff();
+        }
       );
   }
 

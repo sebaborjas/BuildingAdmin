@@ -18,7 +18,7 @@ export class AdminInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const token = this._sesionStorqageService.getToken();
     let newRequest = req;
-    if (req.url.includes('invitations') || req.url.includes('categories')) {
+    if (req.url.includes('invitations') || req.url.includes('categories') || req.url.includes('administrator') || req.url.includes('buildings')) {
       return next.handle(req);
     }
 
