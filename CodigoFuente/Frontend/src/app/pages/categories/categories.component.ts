@@ -71,7 +71,6 @@ export class CategoriesComponent {
     this._adminService.getCategories()
       .subscribe((response: CategoryModel[]) => {
         this.categories = response;
-        console.log(response);
 
         this._loadingService.loadingOff();
       },
