@@ -61,8 +61,8 @@ export class AdminService {
     );
   }
 
-  deleteInvitation(id: number): Observable<any> {
-    return this._httpClient.delete<any>(
+  deleteInvitation(id: number): Observable<InvitationModel> {
+    return this._httpClient.delete<InvitationModel>(
       `${BASE_URL}${InvitationEndpoint.INVITATIONS}/${id}`
     );
   }

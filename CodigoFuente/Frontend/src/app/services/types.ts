@@ -90,15 +90,6 @@ export interface CreateCompanyAdministratorModel {
   password: string;
 }
 
-export interface AssignedTo {
-  lastName: string;
-  buildings: any | null;
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
-
 export interface ImporterInputModel {
   importerName: string;
   path: string;
@@ -117,7 +108,7 @@ export interface Category {
 
 export interface AssignedTo {
   lastName: string;
-  buildings: any | null;
+  buildings: BuildingModel[] | null;
   id: number;
   name: string;
   email: string;
