@@ -8,10 +8,8 @@ import { AdministratorsComponent } from './pages/administrators/administrators.c
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
-
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent },
   {
     path: 'home',
     component: HomeComponent,
@@ -21,6 +19,7 @@ export const routes: Routes = [
       { path: 'reports', component: ReportsComponent },
       { path: 'categories', component: CategoriesComponent },
       { path: 'administrators', component: AdministratorsComponent },
+      { path: 'profile', component: ProfileComponent },
     ],
   },
   { path: '**', component: LoginComponent },
