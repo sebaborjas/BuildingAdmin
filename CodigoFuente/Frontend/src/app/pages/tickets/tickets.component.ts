@@ -25,7 +25,7 @@ export class TicketsComponent {
 
   isVisibleCompleteTicket = false;
   isVisibleTicketDetails = false;
-  assignedTickets: any = [];
+  assignedTickets: TicketModel[] = [];
   totalCost: number = 0;
   selectedCompleteTicketId: number = 0;
   selectedTicketDetails: TicketModel = {
@@ -83,47 +83,47 @@ export class TicketsComponent {
   getAssignedTickets() {
     this._loadingService.loadingOn();
     this._ticketService.GetAssignedTickets()
-    .pipe(
-      this._toastService.observe({
-        loading: 'Cargando tickets asignados',
-        success: 'Tickets asignados cargados con exito',
-        error: 'Error al cargar los tickets asignados',
-      })
-    )
-    .subscribe(
-      (response) => {
-        this.assignedTickets = response;
-        this.assignedTickets.forEach((ticket: TicketModel) => {
-          ticket.status = StatusTypes[parseInt(ticket.status)];
-        });
-        this._loadingService.loadingOff();
-      },
-      (error) => {
-        this._loadingService.loadingOff();
-      }
-    );
+      .pipe(
+        this._toastService.observe({
+          loading: 'Cargando tickets asignados',
+          success: 'Tickets asignados cargados con exito',
+          error: 'Error al cargar los tickets asignados',
+        })
+      )
+      .subscribe(
+        (response: TicketModel[]) => {
+          this.assignedTickets = response;
+          this.assignedTickets.forEach((ticket: TicketModel) => {
+            ticket.status = StatusTypes[parseInt(ticket.status)];
+          });
+          this._loadingService.loadingOff();
+        },
+        (error) => {
+          this._loadingService.loadingOff();
+        }
+      );
     this._loadingService.loadingOff();
   }
 
   attendTicket(id: number) {
     this._loadingService.loadingOn();
     this._ticketService.StartTicket(id)
-    .pipe(
-      this._toastService.observe({
-        loading: 'Atendiendo ticket',
-        success: 'Ticket atendido con exito',
-        error: 'Error al atender ticket',
-      })
-    )
-    .subscribe(
-      (response) => {
-        this.getAssignedTickets();
-        this._loadingService.loadingOff();
-      },
-      (error) => {
-        this._loadingService.loadingOff();
-      }
-    );
+      .pipe(
+        this._toastService.observe({
+          loading: 'Atendiendo ticket',
+          success: 'Ticket atendido con exito',
+          error: 'Error al atender ticket',
+        })
+      )
+      .subscribe(
+        (response) => {
+          this.getAssignedTickets();
+          this._loadingService.loadingOff();
+        },
+        (error) => {
+          this._loadingService.loadingOff();
+        }
+      );
   }
 
   finishTicket() {
@@ -133,22 +133,22 @@ export class TicketsComponent {
     }
     this._loadingService.loadingOn();
     this._ticketService.CompleteTicket(this.selectedCompleteTicketId, this.totalCost)
-    .pipe(
-      this._toastService.observe({
-        loading: 'Finalizando ticket',
-        success: 'Ticket finalizado con exito',
-        error: 'Error al finalizar ticket',
-      })
-    )
-    .subscribe(
-      (response) => {
-        this._loadingService.loadingOff();
-        this.getAssignedTickets();
-      },
-      (error) => {
-        this._loadingService.loadingOff();
-      }
-    );
+      .pipe(
+        this._toastService.observe({
+          loading: 'Finalizando ticket',
+          success: 'Ticket finalizado con exito',
+          error: 'Error al finalizar ticket',
+        })
+      )
+      .subscribe(
+        (response) => {
+          this._loadingService.loadingOff();
+          this.getAssignedTickets();
+        },
+        (error) => {
+          this._loadingService.loadingOff();
+        }
+      );
     this.hideCompleteTicketModal();
   }
 }

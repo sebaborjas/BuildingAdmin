@@ -4,7 +4,7 @@ import { AdminService } from '../../services/admin.service';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 import { LoadingService } from '../../services/loading.service';
-import { CreateCategoryModel } from '../../services/types';
+import { CategoryModel } from '../../services/types';
 
 
 
@@ -24,7 +24,7 @@ export class CategoriesComponent {
   name: string = '';
   emptyFields: boolean = false;
 
-  categories: any = [];
+  categories: CategoryModel[] = [];
   relatedCategory: number = -1;
 
   ngOnInit(): void {
@@ -55,8 +55,8 @@ export class CategoriesComponent {
     this.createCategory();
   }
 
-  findCategoryById(id: number): string {
-    return this.categories.find((category: any) => category.id === id).name;
+  findCategoryById(id: number): string | undefined {
+    return this.categories.find((category) => category.id === id)?.name;
   }
 
   checkEmptyFields() {
@@ -69,7 +69,7 @@ export class CategoriesComponent {
   getCategories() {
     this._loadingService.loadingOn();
     this._adminService.getCategories()
-      .subscribe((response) => {
+      .subscribe((response: CategoryModel[]) => {
         this.categories = response;
         console.log(response);
 
