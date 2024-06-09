@@ -153,13 +153,17 @@ export interface CreateCategoryModel {
   name: string;
 }
 
-export interface BuildingModel {
-  buildings: Object[];
-}
-
 export interface AdminModel {
   name: string;
   lastName: string;
   email: string;
   password: string;
+}
+
+export interface MaintenanceOperatorModel {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+  buildings: number[];
 }
