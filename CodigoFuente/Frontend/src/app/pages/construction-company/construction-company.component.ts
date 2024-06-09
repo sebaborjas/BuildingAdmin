@@ -22,17 +22,31 @@ export class ConstructionCompanyComponent {
   companyName: string = "";
   companyId: number = -1;
   isEditing: boolean = false;
+  isVisibleModal: boolean = false;
   
   ngOnInit() {
     this.getUserCompany();
   }
-  
+
+  showEditModal() {
+    this.isVisibleModal = true;
+  }
+
+  cancelEdit() {
+    this.isVisibleModal = false;
+  }
+
+  saveEditedCompany() {
+    this.isVisibleModal = false;
+    this.modifyCompany();
+  }
+
   saveCompany(name: string) {
     this._constructionCompanyService.saveConstructionCompany(name).pipe(
       this._toastService.observe({
         loading: 'Creando empresa',
         success: 'Empresa creada exitosamente',
-        error: 'Error creando empresa',
+        error: (e) => e?.error || 'Error creando empresa',
       })
     ).subscribe((data) => {
       this.getUserCompany();
@@ -49,8 +63,6 @@ export class ConstructionCompanyComponent {
       this._loadingService.loadingOff();
     }, (error) => {
       this.userHasCompany = false;
-      console.log("User has no company");
-      console.log(error);
       this._loadingService.loadingOff();
     });
   }
@@ -64,7 +76,7 @@ export class ConstructionCompanyComponent {
       this._toastService.observe({
         loading: 'Modificando empresa',
         success: 'Empresa modificada exitosamente',
-        error: 'Error modificando empresa',
+        error: (e) => e?.error || 'Error modificando empresa',
       })
     ).subscribe(result => {
       this.getUserCompany();
