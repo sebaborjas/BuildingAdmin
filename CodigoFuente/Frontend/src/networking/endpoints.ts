@@ -11,6 +11,10 @@ export enum InvitationEndpoint {
   INVITATIONS = '/api/v2/invitations',
 }
 
+export enum TicketEndpoint {
+  TICKETS = '/api/v2/tickets',
+}
+
 export enum ReportEndpoint {
   REPORT_TICKETS_BY_CATEGORIES = '/api/v2/reports/categories',
 }
