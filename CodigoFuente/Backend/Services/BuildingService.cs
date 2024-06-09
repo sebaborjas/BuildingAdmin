@@ -59,7 +59,7 @@ public class BuildingService : IBuildingService
             SetApartmentsExistingOwnersByEmail(building.Apartments);
             _buildingRepository.Insert(building);
             var manager = _managerRepository.GetByCondition(m => m.Email == managerEmail);
-            if(manager != null)
+            if (manager != null)
             {
                 manager.Buildings.Add(building);
                 _managerRepository.Update(manager);
@@ -76,7 +76,7 @@ public class BuildingService : IBuildingService
     public void DeleteBuilding(int buildingId)
     {
         var buildings = GetAllBuildingsForCCompany();
-        var building = buildings.FirstOrDefault(b=>b.Id == buildingId);
+        var building = buildings.FirstOrDefault(b => b.Id == buildingId);
         if (building == null)
         {
             throw new ArgumentNullException("Building not found");
@@ -126,11 +126,15 @@ public class BuildingService : IBuildingService
         }
     }
 
-    public List<Building> GetAllBuildingsForUser()
+    private List<Building> GetAllBuildingsForUser()
     {
         try
         {
             var currentUser = _sessionService.GetCurrentUser() as Manager;
+            if (currentUser == null)
+            {
+                throw new InvalidOperationException("Current user is not a manager");
+            }
             var buildings = currentUser.Buildings;
             return buildings;
         }
@@ -140,7 +144,7 @@ public class BuildingService : IBuildingService
         }
     }
 
-    public List<Building> GetAllBuildingsForCCompany()
+    private List<Building> GetAllBuildingsForCCompany()
     {
         var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
         if (currentUser == null)
@@ -166,24 +170,51 @@ public class BuildingService : IBuildingService
         }
     }
 
-    public Building Get(int id)
+    public List<Building> Get(int? id)
     {
-        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        var currentUser = _sessionService.GetCurrentUser();
         if (currentUser == null)
         {
-            throw new InvalidOperationException("Current user is not a company administrator");
+            throw new InvalidOperationException("Current user is not authenticated");
         }
 
-        try
+        if (currentUser is CompanyAdministrator companyAdmin)
         {
-            var building = _buildingRepository.GetByCondition(b => b.Id == id);
-            return building;
+            if (id == null)
+            {
+                return GetAllBuildingsForCCompany();
+            }
+            var building = _buildingRepository.GetByCondition(b => b.Id == id && b.ConstructionCompany.Name == companyAdmin.ConstructionCompany.Name);
+            if (building == null)
+            {
+                throw new InvalidOperationException("Building not found");
+            }
+            return new List<Building> { building };
         }
-        catch (Exception e)
+
+        if (currentUser is Manager manager)
         {
-            throw new InvalidOperationException("Error getting building");
+            if (id == null)
+            {
+                return GetAllBuildingsForUser();
+            }
+            var building = manager.Buildings.FirstOrDefault(b => b.Id == id);
+            if (building == null)
+            {
+                throw new InvalidOperationException("Building not found");
+            }
+            return new List<Building> { building };
         }
+
+        if (currentUser is Administrator)
+        {
+            var buildings = _buildingRepository.GetAll<Building>();
+            return buildings.ToList();
+        }
+
+        throw new InvalidOperationException("Current user role is not supported");
     }
+
 
     public string? GetManagerName(int buildingId)
     {
