@@ -163,6 +163,18 @@ public class UserService : IUserServices
         return _managerRepository.GetAll<Manager>().ToList();
     }
 
+    public List<CompanyAdministrator> GetCompanyAdministrators()
+    {
+        var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
+        if(currentUser.ConstructionCompany == null)
+        {
+            throw new InvalidOperationException("Current user does not have a construction company");
+        }
+        var userCompany = currentUser.ConstructionCompany;
+        var companyAdministrators = _companyRepository.GetAll<CompanyAdministrator>().ToList();
+        return companyAdministrators.Where(companyAdministrator => companyAdministrator.ConstructionCompany.Id == userCompany.Id).ToList();
+    }
+
     private bool IsNewAdministratorValid(Administrator administrator)
     {
         return administrator != null && administrator.Name != null && administrator.LastName != null && administrator.Email != null && administrator.Password != null;
@@ -177,21 +189,21 @@ public class UserService : IUserServices
         return companyAdministrator != null && companyAdministrator.Name != null && companyAdministrator.LastName != null && companyAdministrator.Email != null && companyAdministrator.Password != null;
     }
 
-    private bool IsUserAlreadyExist(User user)
+    private bool IsUserAlreadyExist(User newUser)
     {
         User userAlreadyExist = null;
-        userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == user.Email);
+        userAlreadyExist = _adminRepository.GetByCondition(user => user.Email == newUser.Email);
         if (userAlreadyExist == null)
         {
-            userAlreadyExist = _managerRepository.GetByCondition(user => user.Email == user.Email);
+            userAlreadyExist = _managerRepository.GetByCondition(user => user.Email == newUser.Email);
         }
         if (userAlreadyExist == null)
         {
-            userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == user.Email);
+            userAlreadyExist = _operatorRepository.GetByCondition(user => user.Email == newUser.Email);
         }
         if (userAlreadyExist == null)
         {
-            userAlreadyExist = _companyRepository.GetByCondition(user => user.Email == user.Email);
+            userAlreadyExist = _companyRepository.GetByCondition(user => user.Email == newUser.Email);
         }
         return userAlreadyExist != null;
     }

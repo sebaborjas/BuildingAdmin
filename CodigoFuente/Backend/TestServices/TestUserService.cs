@@ -417,4 +417,56 @@ public class TestUserService
 
         CollectionAssert.AreEqual(result, managers);
     }
+
+    [TestMethod]
+    public void TestGetCompanyAdministrators()
+    {
+        var company = new ConstructionCompany
+        {
+            Name = "Empresa",
+            Id = 1
+        };
+        var currentUser = new CompanyAdministrator
+        {
+            Id = 1,
+            Name = "Admin",
+            Email = "admin@mail.com",
+            ConstructionCompany = company
+        };
+        var administrators = new List<CompanyAdministrator>
+        {
+            new CompanyAdministrator { Id = 2, Name = "Admin", Email = "mail@mail.com", ConstructionCompany = company },
+            new CompanyAdministrator { Id = 3, Name = "OtroAdmin", Email = "otroMail@mail.com", ConstructionCompany = company },
+            new CompanyAdministrator { Id = 4, Name = "OtroAdminMas", Email = "otroMailMas@mail.com", ConstructionCompany = new ConstructionCompany() }
+        };
+        _companyAdministratorRepositoryMock.Setup(r => r.GetAll<CompanyAdministrator>()).Returns(administrators);
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
+
+        var result = _service.GetCompanyAdministrators();
+
+        _companyAdministratorRepositoryMock.VerifyAll();
+        _sessionService.VerifyAll();
+
+        Assert.AreEqual(result.Count, 2);
+        Assert.IsTrue(!result.Any(r => r.ConstructionCompany != company));
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestGetCompanyAdministratorsWhenNoCompany()
+    {
+        var currentUser = new CompanyAdministrator
+        {
+            Id = 1,
+            Name = "Admin",
+            Email = "admin@mail.com",
+            ConstructionCompany = null
+        };
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
+
+        var result = _service.GetCompanyAdministrators();
+
+    }
 }
