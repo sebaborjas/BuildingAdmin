@@ -82,6 +82,7 @@ namespace TestWebApi
 
             _buildingServices.VerifyAll();
             Assert.AreEqual(11, newBuildingResponse.BuildingId);
+            Assert.AreEqual("Edificio nuevo", newBuildingResponse.Name);
         }
 
         [TestMethod]

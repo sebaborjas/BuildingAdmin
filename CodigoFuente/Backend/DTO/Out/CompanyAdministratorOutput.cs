@@ -19,6 +19,10 @@ namespace DTO.Out
             ConstructionCompany = new ConstructionCompanyOutput(companyAdministrator.ConstructionCompany);
         }
 
+        public CompanyAdministratorOutput()
+        {
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -26,7 +30,7 @@ namespace DTO.Out
                 return false;
             }
             CompanyAdministratorOutput companyAdministratorModel = (CompanyAdministratorOutput)obj;
-            return Id == companyAdministratorModel.Id;
+            return Id == companyAdministratorModel.Id && Name == companyAdministratorModel.Name && LastName == companyAdministratorModel.LastName && Email == companyAdministratorModel.Email && ConstructionCompany.Equals(companyAdministratorModel.ConstructionCompany);
         }
     }
 }

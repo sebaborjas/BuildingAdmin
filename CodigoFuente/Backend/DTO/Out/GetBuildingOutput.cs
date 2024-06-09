@@ -14,17 +14,24 @@ namespace DTO.Out
         public string Location { get; set; }
         public string Address { get; set; }
         public string? ManagerName { get; set; }
+        public float Expenses { get; set; }
+        public List<GetApartmentOutput> Apartments { get; set; } = new List<GetApartmentOutput>();
 
         public GetBuildingOutput(Building building, string? manager)
         {
-            this.Id = building.Id;
-            this.Name = building.Name;
-            this.Location = building.Location;
-            this.Address = building.Address;
-            if(manager != null)
+            Id = building.Id;
+            Name = building.Name;
+            Location = building.Location;
+            Address = building.Address;
+            Expenses = building.Expenses;
+            if (manager != null)
             {
-                this.ManagerName = manager;
-            }
+                ManagerName = manager;
+            };
+            foreach(var apartment in building.Apartments)
+            {
+                Apartments.Add(new GetApartmentOutput(apartment));
+            };
         }
 
         public override bool Equals(object obj)

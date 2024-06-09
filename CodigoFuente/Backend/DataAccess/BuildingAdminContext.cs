@@ -53,7 +53,7 @@ namespace DataAccess
 
                 var connectionString = configuration.GetConnectionString(@"BuildingAdmin");
 
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlServer(connectionString, o=> o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
             }
         }
     }

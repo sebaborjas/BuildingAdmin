@@ -25,7 +25,7 @@ namespace DTO.Out
                 return false;
             }
             ConstructionCompanyOutput constructionCompanyOutput = (ConstructionCompanyOutput)obj;
-            return Id == constructionCompanyOutput.Id;
+            return Id == constructionCompanyOutput.Id && Name == constructionCompanyOutput.Name;
         }
     }
 }
