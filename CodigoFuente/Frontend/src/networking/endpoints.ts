@@ -4,6 +4,7 @@ export enum LoginEndpoint {
 
 export enum UserEndpoint {
   USER = '/api/v2/users',
+  ADMINISTRATOR = '/api/v2/users/administrator',
 }
 
 export enum InvitationEndpoint {
@@ -12,4 +13,16 @@ export enum InvitationEndpoint {
 
 export enum TicketEndpoint {
   TICKETS = '/api/v2/tickets',
+}
+
+export enum ReportEndpoint {
+  REPORT_TICKETS_BY_CATEGORIES = '/api/v2/reports/categories',
+}
+
+export enum CategoriesEndpoint {
+  CATEGORIES = '/api/v2/categories',
+}
+
+export enum BuildingEndpoint {
+  BUILDINGS = '/api/v2/buildings',
 }

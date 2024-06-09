@@ -4,7 +4,6 @@ import { NgIf, NgClass } from '@angular/common';
 import { SesionStorageService } from '../services/sesion-storage.service';
 import { Router, RouterLink } from '@angular/router';
 
-
 @Component({
   selector: 'app-sidebar',
   standalone: true,

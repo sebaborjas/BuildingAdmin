@@ -43,3 +43,30 @@ export interface TicketModel {
   closingDate: string;
   assignedTo: AssignedTo;
 }
+export interface EditInvitationModel {
+  id: number;
+  expirationDate: string;
+}
+
+export interface TicketsByCategories {
+  tickets: Object[];
+}
+
+export interface Categories {
+  categories: Object[];
+}
+
+export interface CreateCategoryModel {
+  name: string;
+}
+
+export interface BuildingModel {
+  buildings: Object[];
+}
+
+export interface AdminModel {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
