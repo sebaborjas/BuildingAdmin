@@ -9,7 +9,10 @@ export enum UserEndpoint {
 
 export enum InvitationEndpoint {
   INVITATIONS = '/api/v2/invitations',
+  ACCEPT = '/api/v2/invitations/accept',
+  REJECT = '/api/v2/invitations/reject',
 }
+
 
 export enum TicketEndpoint {
   TICKETS = '/api/v2/tickets',
