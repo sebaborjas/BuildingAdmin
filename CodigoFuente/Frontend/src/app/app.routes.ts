@@ -8,6 +8,9 @@ import { ConstructionCompanyComponent } from './pages/construction-company/const
 import { BuildingsComponent } from './pages/buildings/buildings.component';
 import { CompanyAdministratorsComponent } from './pages/company-administrators/company-administrators.component';
 import { ImportBuildingsComponent } from './pages/import-buildings/import-buildings.component';
+import { TicketsComponent } from './pages/tickets/tickets.component';
+import { AdministratorsComponent } from './pages/administrators/administrators.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
@@ -23,6 +26,9 @@ export const routes: Routes = [
       { path: 'buildings', component: BuildingsComponent},
       { path: 'companyAdministrators', component: CompanyAdministratorsComponent},
       { path: 'importBuildings', component: ImportBuildingsComponent},
+      { path: 'tickets', component: TicketsComponent },
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'administrators', component: AdministratorsComponent },
       { path: 'profile', component: ProfileComponent },
     ],
   },

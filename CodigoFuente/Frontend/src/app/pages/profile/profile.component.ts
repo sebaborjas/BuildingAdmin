@@ -3,6 +3,7 @@ import { UserService } from '../../services/user.service';
 import { LoadingService } from '../../services/loading.service';
 
 
+
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -11,6 +12,7 @@ import { LoadingService } from '../../services/loading.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
+
 
   constructor(private _userService: UserService, private _loadingService: LoadingService) { }
 

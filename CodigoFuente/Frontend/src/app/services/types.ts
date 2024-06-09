@@ -88,6 +88,15 @@ export interface CreateCompanyAdministratorModel {
   password: string;
 }
 
+export interface AssignedTo {
+  lastName: string;
+  buildings: any | null;
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface ImporterInputModel {
   importerName: string;
   path: string;
@@ -96,4 +105,61 @@ export interface ImporterInputModel {
 export interface ImporterOutputModel{
   createdBuildings: CreateBuildingOutputModel[];
   errors: string[];
+}
+
+export interface Category {
+  name: string;
+  id: number;
+  relatedTo: string | null;
+}
+
+export interface AssignedTo {
+  lastName: string;
+  buildings: any | null;
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface TicketModel {
+  id: number;
+  description: string;
+  creationDate: string;
+  apartment: string | null;
+  totalCost: number;
+  createdBy: string | null;
+  category: Category;
+  status: string;
+  attentionDate: string;
+  closingDate: string;
+  assignedTo: AssignedTo;
+}
+
+export interface EditInvitationModel {
+  id: number;
+  expirationDate: string;
+}
+
+export interface TicketsByCategories {
+  tickets: Object[];
+}
+
+export interface Categories {
+  categories: Object[];
+}
+
+export interface CreateCategoryModel {
+  name: string;
+}
+
+export interface BuildingModel {
+  buildings: Object[];
+}
+
+export interface AdminModel {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
 }

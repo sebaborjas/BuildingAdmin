@@ -9,8 +9,8 @@ import { SesionStorageService } from '../services/sesion-storage.service';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class AdminInterceptor implements HttpInterceptor {
-  constructor(private _sesionStorqageService: SesionStorageService) { }
+export class MOperatorInterceptor implements HttpInterceptor {
+  constructor(private _sesionStorqageService: SesionStorageService) {}
 
   intercept(
     req: HttpRequest<unknown>,
@@ -18,7 +18,10 @@ export class AdminInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const token = this._sesionStorqageService.getToken();
     let newRequest = req;
-    if (req.url.includes('invitations') || req.url.includes('categories') || req.url.includes('administrator') || req.url.includes('buildings')) {
+    if (req.url.includes('tickets')) {
+      return next.handle(req);
+    }
+    if (req.url.includes('dashboard')) {
       return next.handle(req);
     }
 
