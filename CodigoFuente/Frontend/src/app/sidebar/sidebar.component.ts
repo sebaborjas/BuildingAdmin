@@ -44,6 +44,10 @@ export class SidebarComponent {
     this.showSideBar = !this.showSideBar;
   }
 
+  goHome(){
+    this._router.navigate(['home']);
+  }
+  
   hideSideBar() {
     this.showSideBar = false;
   }
