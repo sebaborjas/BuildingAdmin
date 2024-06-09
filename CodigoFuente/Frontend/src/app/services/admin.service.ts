@@ -6,7 +6,7 @@ import {
   InvitationModel,
   EditInvitationModel,
   TicketsByCategories,
-  Categories,
+  CategoryModel,
   AdminModel,
   CreateCategoryModel,
   BuildingModel
@@ -79,14 +79,14 @@ export class AdminService {
     );
   }
 
-  getCategories(id?: string): Observable<Categories> {
+  getCategories(id?: string): Observable<CategoryModel[]> {
     let params = new HttpParams()
 
     if (id) {
       params = params.set('id', id);
     }
 
-    return this._httpClient.get<Categories>(
+    return this._httpClient.get<CategoryModel[]>(
       `${BASE_URL}${CategoriesEndpoint.CATEGORIES}`,
       { params: params }
     );

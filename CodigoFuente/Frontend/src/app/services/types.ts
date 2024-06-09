@@ -15,7 +15,7 @@ export interface InvitationModel {
   expirationDate: string;
 }
 
-export interface ConstructionCompanyModel{
+export interface ConstructionCompanyModel {
   id: number;
   name: string;
 }
@@ -65,7 +65,7 @@ export interface ManagerModel {
 
 export interface ModifyApartmentModel {
   id: number;
-  ownerName:string;
+  ownerName: string;
   ownerLastName: string;
   ownerEmail: string;
 }
@@ -102,7 +102,7 @@ export interface ImporterInputModel {
   path: string;
 }
 
-export interface ImporterOutputModel{
+export interface ImporterOutputModel {
   createdBuildings: CreateBuildingOutputModel[];
   errors: string[];
 }
@@ -145,8 +145,10 @@ export interface TicketsByCategories {
   tickets: Object[];
 }
 
-export interface Categories {
-  categories: Object[];
+export interface CategoryModel {
+  id: number;
+  name: string;
+  parentId: number | null;
 }
 
 export interface CreateCategoryModel {
