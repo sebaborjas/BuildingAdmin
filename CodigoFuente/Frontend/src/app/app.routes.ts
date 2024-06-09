@@ -5,6 +5,7 @@ import { InvitationsComponent } from './pages/invitations/invitations.component'
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { TicketsComponent } from './pages/tickets/tickets.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,6 +17,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'reports', component: ReportsComponent },
       { path: 'tickets', component: TicketsComponent },
+      { path: 'profile', component: ProfileComponent },
     ],
   },
   { path: '**', component: LoginComponent },

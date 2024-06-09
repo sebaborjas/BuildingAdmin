@@ -14,12 +14,8 @@ namespace IServices
         void DeleteBuilding(int buildingId);
 
         Building ModifyBuilding(int buildingId, Building modifiedBuilding);
-        
-        List<Building> GetAllBuildingsForUser();
 
-        List<Building> GetAllBuildingsForCCompany();
-
-        Building Get(int id);
+        List<Building> Get(int? buildingId);
 
         String GetManagerName(int buildingId);
 
