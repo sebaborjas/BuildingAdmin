@@ -1,5 +1,6 @@
 ﻿namespace IServices;
 using Domain;
+using System.Net;
 
 public interface IUserServices
 {
@@ -10,5 +11,7 @@ public interface IUserServices
     public void DeleteManager(int id);
 
     public CompanyAdministrator CreateCompanyAdministrator(CompanyAdministrator companyAdministrator);
+
+    public List<Manager> GetManagers();
 
 }

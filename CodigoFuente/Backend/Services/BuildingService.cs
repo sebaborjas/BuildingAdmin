@@ -25,7 +25,7 @@ public class BuildingService : IBuildingService
 
     }
 
-    public Building CreateBuilding(Building building)
+    public Building CreateBuilding(Building building, string? managerEmail = null)
     {
         var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
         if (currentUser == null)
@@ -35,7 +35,7 @@ public class BuildingService : IBuildingService
 
         if (currentUser.ConstructionCompany == null)
         {
-            throw new InvalidOperationException("Current user does not have a construction company");
+            throw new InvalidOperationException("Company administrator does not have a construction company");
         }
 
         var buildingAlreadyExist = _buildingRepository.GetByCondition(b => b.Name == building.Name || b.Address == building.Address || b.Location == building.Location);
@@ -58,6 +58,12 @@ public class BuildingService : IBuildingService
             building.ConstructionCompany = currentUser.ConstructionCompany;
             SetApartmentsExistingOwnersByEmail(building.Apartments);
             _buildingRepository.Insert(building);
+            var manager = _managerRepository.GetByCondition(m => m.Email == managerEmail);
+            if(manager != null)
+            {
+                manager.Buildings.Add(building);
+                _managerRepository.Update(manager);
+            }
             return building;
         }
         catch (Exception e)
@@ -69,13 +75,8 @@ public class BuildingService : IBuildingService
 
     public void DeleteBuilding(int buildingId)
     {
-        var currentUser = _sessionService.GetCurrentUser() as Manager;
-        if (currentUser == null)
-        {
-            throw new InvalidOperationException("Current user is not a manager");
-        }
-
-        var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
+        var buildings = GetAllBuildingsForCCompany();
+        var building = buildings.FirstOrDefault(b=>b.Id == buildingId);
         if (building == null)
         {
             throw new ArgumentNullException("Building not found");
@@ -184,12 +185,12 @@ public class BuildingService : IBuildingService
         }
     }
 
-    public string GetManagerName(int buildingId)
+    public string? GetManagerName(int buildingId)
     {
         var manager = _managerRepository.GetByCondition(m => m.Buildings.Any(b => b.Id == buildingId));
         if (manager == null)
         {
-            throw new ArgumentNullException("Manager not found");
+            return null;
         }
         return manager.Name;
     }

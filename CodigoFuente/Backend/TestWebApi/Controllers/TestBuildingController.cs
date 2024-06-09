@@ -40,7 +40,7 @@ namespace TestWebApi
                 Name = "Edificio nuevo"
             };
 
-            _buildingServices.Setup(r => r.CreateBuilding(It.IsAny<Building>())).Returns(newBuilding);
+            _buildingServices.Setup(r => r.CreateBuilding(It.IsAny<Building>(), null)).Returns(newBuilding);
             var buildingController = new BuildingController(_buildingServices.Object);
             var input = new CreateBuildingInput()
             {
@@ -72,7 +72,8 @@ namespace TestWebApi
                         Bathrooms = 1,
                         HasTerrace = true
                     }
-                }
+                },
+                ManagerEmail = "manager@mail.com"
             };
 
             var result = buildingController.CreateBuilding(input);
@@ -363,16 +364,29 @@ namespace TestWebApi
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
         public void TestGetBuildingWithoutManager()
         {
-            _buildingServices.Setup(r => r.Get(1)).Returns(new Building());
-            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Throws(new NullReferenceException());
+            var building = new Building()
+            {
+                Id = 10,
+                Address = "Calle, 123, esquina",
+                Expenses = 1000,
+                ConstructionCompany = new ConstructionCompany(),
+                Location = "111,111",
+                Name = "Edificio nuevo"
+            };
+            _buildingServices.Setup(r => r.Get(10)).Returns(building);
+            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Returns((string)null);
             var buildingController = new BuildingController(_buildingServices.Object);
+            
+            var result = buildingController.Get(10);
+            var okResult = result as OkObjectResult;
+            var getBuildingOutput = okResult.Value as GetBuildingOutput;
 
-            var result = buildingController.Get(1);
 
             _buildingServices.VerifyAll();
+            Assert.AreEqual(getBuildingOutput.Id, building.Id);
+            Assert.IsNull(getBuildingOutput.ManagerName);
         }
 
         [TestMethod]

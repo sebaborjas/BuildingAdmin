@@ -13,15 +13,18 @@ namespace DTO.Out
         public string Name { get; set; }
         public string Location { get; set; }
         public string Address { get; set; }
-        public string managerName { get; set; }
+        public string? ManagerName { get; set; }
 
-        public GetBuildingOutput(Building building, string manager)
+        public GetBuildingOutput(Building building, string? manager)
         {
             this.Id = building.Id;
             this.Name = building.Name;
             this.Location = building.Location;
             this.Address = building.Address;
-            this.managerName = manager;
+            if(manager != null)
+            {
+                this.ManagerName = manager;
+            }
         }
 
         public override bool Equals(object obj)
