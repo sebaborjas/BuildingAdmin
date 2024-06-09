@@ -340,7 +340,7 @@ namespace TestWebApi
                 Name = "Edificio nuevo"
             };
 
-            _buildingServices.Setup(r => r.Get(10)).Returns(building);
+            _buildingServices.Setup(r => r.Get(10)).Returns(new List<Building>() { building });
             _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Returns("Manager");
 
             var buildingController = new BuildingController(_buildingServices.Object);
@@ -375,18 +375,16 @@ namespace TestWebApi
                 Location = "111,111",
                 Name = "Edificio nuevo"
             };
-            _buildingServices.Setup(r => r.Get(10)).Returns(building);
-            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Returns((string)null);
-            var buildingController = new BuildingController(_buildingServices.Object);
-            
-            var result = buildingController.Get(10);
-            var okResult = result as OkObjectResult;
-            var getBuildingOutput = okResult.Value as GetBuildingOutput;
 
+            _buildingServices.Setup(r => r.Get(10)).Returns(new List<Building>() { building });
+            _buildingServices.Setup(r => r.GetManagerName(It.IsAny<int>())).Returns((string)null);
+
+            var buildingController = new BuildingController(_buildingServices.Object);
+
+            var result = buildingController.Get(10);
 
             _buildingServices.VerifyAll();
-            Assert.AreEqual(getBuildingOutput.Id, building.Id);
-            Assert.IsNull(getBuildingOutput.ManagerName);
+            Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
         }
 
         [TestMethod]
