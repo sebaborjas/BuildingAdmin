@@ -13,6 +13,7 @@ import { AdministratorsComponent } from './pages/administrators/administrators.c
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ManageInvitationComponent } from './manage-invitation/manage-invitation.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,15 +25,15 @@ export const routes: Routes = [
       { path: 'invitations', component: InvitationsComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'reports', component: ReportsComponent },
-      { path: 'constructionCompanies', component: ConstructionCompanyComponent},
-      { path: 'buildings', component: BuildingsComponent},
-      { path: 'companyAdministrators', component: CompanyAdministratorsComponent},
-      { path: 'importBuildings', component: ImportBuildingsComponent},
+      { path: 'constructionCompanies', component: ConstructionCompanyComponent },
+      { path: 'buildings', component: BuildingsComponent },
+      { path: 'companyAdministrators', component: CompanyAdministratorsComponent },
+      { path: 'importBuildings', component: ImportBuildingsComponent },
       { path: 'tickets', component: TicketsComponent },
       { path: 'categories', component: CategoriesComponent },
       { path: 'administrators', component: AdministratorsComponent },
       { path: 'profile', component: ProfileComponent },
     ],
   },
-  { path: '**', component: LoginComponent },
+  { path: '**', component: NotFoundComponent },
 ];
