@@ -111,7 +111,7 @@
 >
   <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
     <div *ngIf="role === admin">
-      <li>
+      <div>
         <button
           (click)="selectSection(1); navigateTo('dashboard')"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
@@ -138,8 +138,8 @@
           </svg>
           <span class="ms-3">Dashboard</span>
         </button>
-      </li>
-      <li>
+      </div>
+      <div>
         <button
           (click)="selectSection(2); navigateTo('invitations')"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
@@ -166,8 +166,8 @@
           </svg>
           <span class="ms-3">Invitaciones</span>
         </button>
-      </li>
-      <li>
+      </div>
+      <div>
         <button
           (click)="selectSection(3); navigateTo('reports')"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
@@ -194,7 +194,7 @@
           </svg>
           <span class="ms-3">Reportes</span>
         </button>
-      </li>
+      </div>
     </div>
     <div *ngIf="role === manager"></div>
     <div *ngIf="role === maintenanceOperator"></div>
