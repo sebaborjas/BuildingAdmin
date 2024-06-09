@@ -152,7 +152,7 @@ export class BuildingsComponent {
         success: 'Edificio creado correctamente',
         error: 'Error creando edificio',
       })
-    ).subscribe(response => {
+    ).subscribe(result => {
       this.getBuildings();
     });
   }
@@ -164,7 +164,7 @@ export class BuildingsComponent {
         success: 'Edificio borrado correctamente',
         error: 'Error borrando edificio',
       })
-    ).subscribe(response => {
+    ).subscribe(() => {
       this.getBuildings();
     });
   }
@@ -190,7 +190,7 @@ export class BuildingsComponent {
         success: 'Edificio modificado correctamente',
         error: 'Error modificando edificio',
       })
-    ).subscribe(result=>{
+    ).subscribe(()=>{
       this.getBuildings();
     })
   }
@@ -214,7 +214,7 @@ export class BuildingsComponent {
         success: 'Encargado modificado correctamente',
         error: 'Error modificando encargado',
       })
-    ).subscribe(response => {
+    ).subscribe(() => {
       this.getBuildings();
     });
   }

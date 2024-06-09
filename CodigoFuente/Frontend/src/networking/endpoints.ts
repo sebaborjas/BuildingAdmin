@@ -20,4 +20,8 @@ export enum ConstructionCompany {
   CONSTRUCTION_COMPANIES = '/api/v2/constructionCompanies',
 }
 
+export enum ImporterEndpoint{
+  IMPORTERS = '/api/v2/importers',
+}
+
 

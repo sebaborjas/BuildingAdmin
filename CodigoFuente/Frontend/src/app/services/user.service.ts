@@ -34,7 +34,7 @@ export class UserService {
     return this._httpClient.get<CompanyAdministratorModel[]>(`${BASE_URL}${UserEndpoints.COMPANYADMINISTRATOR}`);
   }
 
-  createCompanyAdministrator(administrator: CreateCompanyAdministratorModel): Observable<any>{
-    return this._httpClient.post(`${BASE_URL}${UserEndpoints.COMPANYADMINISTRATOR}`, administrator);
+  createCompanyAdministrator(administrator: CreateCompanyAdministratorModel): Observable<CompanyAdministratorModel>{
+    return this._httpClient.post<CompanyAdministratorModel>(`${BASE_URL}${UserEndpoints.COMPANYADMINISTRATOR}`, administrator);
   }
 }

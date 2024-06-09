@@ -66,7 +66,7 @@ export class ConstructionCompanyComponent {
         success: 'Empresa modificada exitosamente',
         error: 'Error modificando empresa',
       })
-    ).subscribe(data => {
+    ).subscribe(result => {
       this.getUserCompany();
       this.isEditing = false;
     });
