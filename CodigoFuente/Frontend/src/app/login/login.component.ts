@@ -21,7 +21,7 @@ export class LoginComponent {
     this._authService.login(this.email, this.password).subscribe(
       (response) => {
         this._sesionStorageService.setToken(response.token);
-        this._router.navigate(['/home']);
+        this._router.navigate(['/home/dahsboard']);
       },
       (error) => {
         console.error('Error', error);
