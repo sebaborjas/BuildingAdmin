@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { UserEndpoints } from '../../networking/endpoints';
+import { UserEndpoint } from '../../networking/endpoints';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { CompanyAdministratorModel, CreateCompanyAdministratorModel, ManagerModel, UserModel } from './types';
@@ -21,20 +21,20 @@ export class UserService {
     const token = this._sesionStorageService.getToken() || '';
     let params = new HttpParams().set('token', token);
 
-    return this._httpClient.get<UserModel>(`${BASE_URL}${UserEndpoints.USER}`, {
+    return this._httpClient.get<UserModel>(`${BASE_URL}${UserEndpoint.USER}`, {
       params: params,
     });
   }
 
   getManagers(): Observable<ManagerModel[]> {
-    return this._httpClient.get<ManagerModel[]>(`${BASE_URL}${UserEndpoints.MANAGER}`);
+    return this._httpClient.get<ManagerModel[]>(`${BASE_URL}${UserEndpoint.MANAGER}`);
   }
 
   getCompanyAdministrators(): Observable<CompanyAdministratorModel[]>{
-    return this._httpClient.get<CompanyAdministratorModel[]>(`${BASE_URL}${UserEndpoints.COMPANYADMINISTRATOR}`);
+    return this._httpClient.get<CompanyAdministratorModel[]>(`${BASE_URL}${UserEndpoint.COMPANYADMINISTRATOR}`);
   }
 
   createCompanyAdministrator(administrator: CreateCompanyAdministratorModel): Observable<CompanyAdministratorModel>{
-    return this._httpClient.post<CompanyAdministratorModel>(`${BASE_URL}${UserEndpoints.COMPANYADMINISTRATOR}`, administrator);
+    return this._httpClient.post<CompanyAdministratorModel>(`${BASE_URL}${UserEndpoint.COMPANYADMINISTRATOR}`, administrator);
   }
 }
