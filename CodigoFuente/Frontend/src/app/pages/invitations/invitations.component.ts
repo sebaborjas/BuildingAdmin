@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { RoleTypes } from './roleTypes';
+import { InvitationModel } from '../../services/types';
 
 @Component({
   selector: 'app-invitations',
@@ -30,7 +31,7 @@ export class InvitationsComponent {
   name = '';
   rol: number = 1;
   expirationDate = '';
-  invitations: any = [];
+  invitations: InvitationModel[] = [];
 
   roles = [
     { name: 'Manager', value: RoleTypes.Manager },
@@ -60,7 +61,7 @@ export class InvitationsComponent {
     this.showModal();
   }
 
-  editInvitationModal(invitation: any) {
+  editInvitationModal(invitation: InvitationModel) {
     this.modalText = 'Editar Invitacion';
     this.inputDisabled = true;
     this.id = invitation.id;
@@ -71,7 +72,7 @@ export class InvitationsComponent {
     this.showModal();
   }
 
-  deleteInvitationModal(invitation: any) {
+  deleteInvitationModal(invitation: InvitationModel) {
     this.showDeleteModal();
     this.id = invitation.id;
   }

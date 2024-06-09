@@ -9,9 +9,11 @@ export interface UserModel {
 }
 
 export interface InvitationModel {
+  id: number;
   name: string;
   email: string;
   role: number;
+  status: string;
   expirationDate: string;
 }
 
