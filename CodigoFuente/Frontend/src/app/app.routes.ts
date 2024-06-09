@@ -13,9 +13,11 @@ import { AdministratorsComponent } from './pages/administrators/administrators.c
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ManageInvitationComponent } from './manage-invitation/manage-invitation.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { roles } from './sidebar/roleTypes';
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -48,9 +50,7 @@ export const routes: Routes = [
       { path: 'companyAdministrators', component: CompanyAdministratorsComponent },
       { path: 'importBuildings', component: ImportBuildingsComponent },
       { path: 'tickets', component: TicketsComponent, },
-
-
     ],
   },
-  { path: '**', component: LoginComponent },
+  { path: '**', component: NotFoundComponent },
 ];
