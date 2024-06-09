@@ -41,7 +41,6 @@ export class ImportBuildingsComponent implements OnInit {
         error: 'Error al importar',
       })
     ).subscribe(result=>{
-      console.log(result);
       this.importedBuildings = result.createdBuildings;
       this.errorBuildings = result.errors;
       this.showResults = true;
