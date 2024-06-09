@@ -12,8 +12,10 @@ namespace DTO.Out
         public CreateBuildingOutput(Building building)
         {
             BuildingId = building.Id;
+            Name = building.Name;
         }
 
         public int BuildingId {  get; set; }
+        public string Name { get; set; }
     }
 }

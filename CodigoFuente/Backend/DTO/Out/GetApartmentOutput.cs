@@ -17,17 +17,21 @@ namespace DTO.Out
         public string OwnerName { get; set; }
         public string OwnerLastName { get; set; }
         public string OwnerEmail { get; set; }
+        public int Floor { get; set; }
+        public bool HasTerrace { get; set; }
 
         public GetApartmentOutput(Apartment apartment)
         {
-            this.Id = apartment.Id;
-            this.DoorNumber = apartment.DoorNumber;
-            this.Rooms = apartment.Rooms;
-            this.Bathrooms = apartment.Bathrooms;
-            this.OwnerId = apartment.Owner.Id;
-            this.OwnerName = apartment.Owner.Name;
-            this.OwnerLastName = apartment.Owner.LastName;
-            this.OwnerEmail = apartment.Owner.Email;
+            Id = apartment.Id;
+            DoorNumber = apartment.DoorNumber;
+            Rooms = apartment.Rooms;
+            Bathrooms = apartment.Bathrooms;
+            OwnerId = apartment.Owner.Id;
+            OwnerName = apartment.Owner.Name;
+            OwnerLastName = apartment.Owner.LastName;
+            OwnerEmail = apartment.Owner.Email;
+            HasTerrace = apartment.HasTerrace;
+            Floor = apartment.Floor;
         }
     }
 }
