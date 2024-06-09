@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 import {
   InvitationModel,
   EditInvitationModel,
-  TicketsByCategories,
   CategoryModel,
   AdminModel,
   CreateCategoryModel,
-  BuildingModel
+  BuildingModel,
+  TicketModel,
+  TicketsByCategoriesModel,
 } from './types';
 import { environment } from '../../environments/environment.development';
 
@@ -66,14 +67,14 @@ export class AdminService {
     );
   }
 
-  getReportTicketsByCategories(name: string, category?: string): Observable<TicketsByCategories> {
+  getReportTicketsByCategories(name: string, category?: string): Observable<TicketsByCategoriesModel[]> {
     let params = new HttpParams().set('building', name);
 
     if (category) {
       params = params.set('category', category);
     }
 
-    return this._httpClient.get<TicketsByCategories>(
+    return this._httpClient.get<TicketsByCategoriesModel[]>(
       `${BASE_URL}${ReportEndpoint.REPORT_TICKETS_BY_CATEGORIES}`,
       { params: params }
     );
@@ -92,8 +93,8 @@ export class AdminService {
     );
   }
 
-  getBuildings(): Observable<BuildingModel> {
-    return this._httpClient.get<BuildingModel>(
+  getBuildings(): Observable<BuildingModel[]> {
+    return this._httpClient.get<BuildingModel[]>(
       `${BASE_URL}${BuildingEndpoint.BUILDINGS}`,
     );
   }

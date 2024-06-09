@@ -143,8 +143,11 @@ export interface EditInvitationModel {
   expirationDate: string;
 }
 
-export interface TicketsByCategories {
-  tickets: Object[];
+export interface TicketsByCategoriesModel {
+  categoryName: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
 }
 
 export interface CategoryModel {
