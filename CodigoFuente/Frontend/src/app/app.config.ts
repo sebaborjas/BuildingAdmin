@@ -17,7 +17,7 @@ import { UserInterceptor } from './Interceptors/user.interceptor';
 import { AdminInterceptor } from './Interceptors/admin.interceptor';
 import { MOperatorInterceptor } from './Interceptors/maintenance-operator.interceptor';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
-import { ConnectionInterceptor } from './Interceptors/connection-interceptor.interceptor';
+import { ConnectionInterceptor } from './Interceptors/connection.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
