@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { LoadingService } from '../../services/loading.service';
+import { LoadingService } from '../../../services/loading.service';
 import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TicketService } from '../../services/ticket.service';
+import { TicketService } from '../../../services/ticket.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { StatusTypes } from './statusTypes';
-import { TicketModel, Category, AssignedTo } from '../../services/types';
+import { StatusTypes } from '../statusTypes';
+import { TicketModel, Category, AssignedTo } from '../../../services/types';
 
 @Component({
-  selector: 'app-tickets',
+  selector: 'app-maintenance-tickets',
   standalone: true,
   imports: [NgIf, FormsModule, NgFor, CommonModule],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.css'
 })
-export class TicketsComponent {
+export class TicketsMaintenanceComponent {
   constructor(
     private _loadingService: LoadingService,
     private _ticketService: TicketService,
