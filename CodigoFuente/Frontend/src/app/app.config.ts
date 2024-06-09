@@ -18,6 +18,9 @@ import { AdminInterceptor } from './Interceptors/admin.interceptor';
 import { MOperatorInterceptor } from './Interceptors/maintenance-operator.interceptor';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
 
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -29,6 +32,8 @@ export const appConfig: ApplicationConfig = {
     LoadingService,
     AdminService,
     TicketService,
+    AuthGuard,
+    RoleGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
