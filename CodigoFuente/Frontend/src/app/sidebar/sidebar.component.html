@@ -147,7 +147,7 @@
         </button>
       </div>
       <div>
-        <button routerLink="/home/reports" (click)="selectSection(5); hideSideBar()"
+        <button routerLink="/home/reports/admin" (click)="selectSection(5); hideSideBar()"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -165,16 +165,67 @@
         </button>
       </div>
     </div>
-    <div *ngIf="role === manager"></div>
-    <div *ngIf="role === maintenanceOperator">
+    <div *ngIf="role === manager">
       <div>
-        <button routerLink="/home/tickets" (click)="selectSection(6); hideSideBar()"
+        <button routerLink="/home/tickets/manager" (click)="selectSection(2); hideSideBar()"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
-              selectedSectionIndex === 3
+              selectedSectionIndex === 2
             ),
-            'bg-gray-100 dark:bg-gray-700': selectedSectionIndex === 3
+            'bg-gray-100 dark:bg-gray-700': selectedSectionIndex === 2
+          }">
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M18.5 12A2.5 2.5 0 0 1 21 9.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v2.5a2.5 2.5 0 0 1 0 5V17a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+          </svg>
+          <span class="ms-3">Tickets</span>
+        </button>
+
+        <button routerLink="/home/reports/manager" (click)="selectSection(3); hideSideBar()"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
+          [ngClass]="{
+          'hover:bg-gray-100 dark:hover:bg-gray-700': !(
+            selectedSectionIndex === 3
+          ),
+          'bg-gray-100 dark:bg-gray-700': selectedSectionIndex === 3
+        }">
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"
+              d="M19 7h1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h11.5M7 14h6m-6 3h6m0-10h.5m-.5 3h.5M7 7h3v3H7V7Z" />
+          </svg>
+
+          <span class="ms-3">Reportes</span>
+        </button>
+
+        <button routerLink="/home/maintenanceOperators" (click)="selectSection(4); hideSideBar()"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
+          [ngClass]="{
+          'hover:bg-gray-100 dark:hover:bg-gray-700': !(
+            selectedSectionIndex === 4
+          ),
+          'bg-gray-100 dark:bg-gray-700': selectedSectionIndex === 4
+        }">
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M18.5 12A2.5 2.5 0 0 1 21 9.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v2.5a2.5 2.5 0 0 1 0 5V17a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+          </svg>
+          <span class="ms-3">Operadores de mantenimiento</span>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="role === maintenanceOperator">
+      <div>
+        <button routerLink="/home/tickets/maintenance" (click)="selectSection(2); hideSideBar()"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
+          [ngClass]="{
+            'hover:bg-gray-100 dark:hover:bg-gray-700': !(
+              selectedSectionIndex === 2
+            ),
+            'bg-gray-100 dark:bg-gray-700': selectedSectionIndex === 2
           }">
           <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
             width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -187,8 +238,7 @@
     </div>
     <div *ngIf="role === companyAdmin">
       <div>
-        <button (click)="selectSection(2);"
-        routerLink="/home/buildings"
+        <button (click)="selectSection(2);" routerLink="/home/buildings"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -205,8 +255,7 @@
         </button>
       </div>
       <div>
-        <button (click)="selectSection(3);"
-        routerLink="/home/constructionCompanies"
+        <button (click)="selectSection(3);" routerLink="/home/constructionCompanies"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -223,8 +272,7 @@
         </button>
       </div>
       <div>
-        <button (click)="selectSection(4);"
-        routerLink="/home/companyAdministrators"
+        <button (click)="selectSection(4);" routerLink="/home/companyAdministrators"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
@@ -242,8 +290,7 @@
         </button>
       </div>
       <div>
-        <button (click)="selectSection(5);"
-        routerLink="/home/importBuildings"
+        <button (click)="selectSection(5);" routerLink="/home/importBuildings"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mb-2"
           [ngClass]="{
             'hover:bg-gray-100 dark:hover:bg-gray-700': !(
