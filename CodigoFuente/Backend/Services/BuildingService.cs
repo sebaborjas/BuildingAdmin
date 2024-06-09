@@ -135,7 +135,7 @@ public class BuildingService : IBuildingService
             {
                 throw new InvalidOperationException("Current user is not a manager");
             }
-            if(buildingId != null)
+            if (buildingId != null)
             {
                 var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
                 if (building == null)
@@ -167,7 +167,7 @@ public class BuildingService : IBuildingService
 
         try
         {
-            if(buildingId != null)
+            if (buildingId != null)
             {
                 var building = _buildingRepository.GetByCondition(b => b.Id == buildingId && b.ConstructionCompany.Name == constructionCompany.Name);
                 if (building == null)

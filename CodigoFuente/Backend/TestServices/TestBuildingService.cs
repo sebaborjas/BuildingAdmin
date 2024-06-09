@@ -358,7 +358,7 @@ namespace TestServices
                 Password = "Test.1234!",
                 ConstructionCompany = new ConstructionCompany() { Name = "Constructora" }
             };
-            _buildingRepositoryMock.Setup(_buildingRepositoryMock => _buildingRepositoryMock.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns(building); 
+            _buildingRepositoryMock.Setup(_buildingRepositoryMock => _buildingRepositoryMock.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns(building);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(companyAdmin);
 
             _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
