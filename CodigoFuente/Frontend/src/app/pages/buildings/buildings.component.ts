@@ -11,7 +11,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-buildings',
   standalone: true,
-  imports: [ CommonModule, FormsModule ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './buildings.component.html',
   styleUrl: './buildings.component.css'
 })
@@ -25,7 +25,8 @@ export class BuildingsComponent {
   isVisibleModifyManagerModal: boolean = false;
   isEditingBuilding: boolean = false;
   isEditingApartment: boolean = false;
-  
+  isVisibleDeleteConfirmation: boolean = false;
+
   buildingNameInput: string = '';
   buildingAddressInput: string = '';
   buildingLocationInput: string = '';
@@ -50,26 +51,40 @@ export class BuildingsComponent {
 
   constructor(private _buildingsService: BuildingsService, private _toastService: HotToastService, private _loadingService: LoadingService, private _userService: UserService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getBuildings();
     this.getManagers();
     this.createBuildingModel.apartments = [];
   }
 
-  getBuildings(){
+  getBuildings() {
     this._loadingService.loadingOn();
     this._buildingsService.getBuildings().subscribe(data => {
       this.buildings = data;
       this._loadingService.loadingOff();
 
-    }, error=>{
+    }, error => {
       this._loadingService.loadingOff();
     });
   }
 
-  showBuildingModal(editing: boolean, building?: BuildingModel){
+  showDeleteConfirmation(building: BuildingModel) {
+    this.selectedBuilding = building;
+    this.isVisibleDeleteConfirmation = true;
+  }
+
+  deleteBuildingConfirmed() {
+    this.deleteBuilding(this.selectedBuilding.id);
+    this.isVisibleDeleteConfirmation = false;
+  }
+
+  cancelDelete() {
+    this.isVisibleDeleteConfirmation = false;
+  }
+
+  showBuildingModal(editing: boolean, building?: BuildingModel) {
     this.isEditingBuilding = editing;
-    if(building){
+    if (building) {
       this.selectedBuilding = building;
       this.buildingNameInput = building.name;
       this.buildingAddressInput = building.address;
@@ -82,13 +97,13 @@ export class BuildingsComponent {
     this.isVisibleBuildingModal = true;
   }
 
-  hideBuildingModal(){
+  hideBuildingModal() {
     this.isVisibleBuildingModal = false;
   }
 
-  showApartmentModal(editing: boolean, apartment?: ApartmentModel){
+  showApartmentModal(editing: boolean, apartment?: ApartmentModel) {
     this.isEditingApartment = editing;
-    if(apartment){
+    if (apartment) {
       this.selectedApartment = apartment;
       this.apartmentDoorNumberInput = apartment.doorNumber;
       this.apartmentFloorInput = apartment.floor;
@@ -103,23 +118,23 @@ export class BuildingsComponent {
 
   }
 
-  hideApartmentModal(){
+  hideApartmentModal() {
     this.isVisibleApartmentModal = false;
   }
 
-  showModifyManager(selectedBuilding: BuildingModel){
+  showModifyManager(selectedBuilding: BuildingModel) {
     this.isVisibleModifyManagerModal = true;
-    if(selectedBuilding.managerName){
+    if (selectedBuilding.managerName) {
       this.selectedManager = this.managers.find(manager => manager.name === selectedBuilding.managerName)?.id || -1;
     }
     this.selectedBuilding = selectedBuilding;
   }
 
-  hideModifyManager(){
+  hideModifyManager() {
     this.isVisibleModifyManagerModal = false;
   }
 
-  addApartment(){
+  addApartment() {
     let newApartment: ApartmentModel = {
       floor: this.apartmentFloorInput,
       doorNumber: this.apartmentDoorNumberInput,
@@ -133,11 +148,11 @@ export class BuildingsComponent {
     this.buildingApartmentsInput.push(newApartment);
   }
 
-  removeApartment(index: number){
+  removeApartment(index: number) {
     this.buildingApartmentsInput.splice(index, 1);
   }
 
-  createBuilding(){
+  createBuilding() {
     this.createBuildingModel = {
       name: this.buildingNameInput,
       address: this.buildingAddressInput,
@@ -150,19 +165,19 @@ export class BuildingsComponent {
       this._toastService.observe({
         loading: 'Creando edificio',
         success: 'Edificio creado correctamente',
-        error: 'Error creando edificio',
+        error: (e) => e?.error || 'Error creando edificio',
       })
     ).subscribe(result => {
       this.getBuildings();
     });
   }
 
-  deleteBuilding(id: number){
+  deleteBuilding(id: number) {
     this._buildingsService.deleteBuilding(id).pipe(
       this._toastService.observe({
         loading: 'Borrando edificio',
         success: 'Edificio borrado correctamente',
-        error: 'Error borrando edificio',
+        error: (e) => e?.error || 'Error borrando edificio',
       })
     ).subscribe(() => {
       this.getBuildings();
@@ -171,7 +186,7 @@ export class BuildingsComponent {
 
   modifyBuilding() {
     let modifyApartmentsInput: ModifyApartmentModel[] = [];
-    this.buildingApartmentsInput.forEach(apartment=>{
+    this.buildingApartmentsInput.forEach(apartment => {
       modifyApartmentsInput.push({
         id: apartment.id || -1,
         ownerEmail: apartment.ownerEmail,
@@ -188,31 +203,31 @@ export class BuildingsComponent {
       this._toastService.observe({
         loading: 'Modificando edificio',
         success: 'Edificio modificado correctamente',
-        error: 'Error modificando edificio',
+        error: (e) => e?.error || 'Error modificando edificio',
       })
-    ).subscribe(()=>{
+    ).subscribe(() => {
       this.getBuildings();
     })
   }
 
-  modifyApartment(){
+  modifyApartment() {
     this.selectedApartment.ownerEmail = this.apartmentOwnerEmailInput;
     this.selectedApartment.ownerLastName = this.apartmentOwnerLastNameInput;
     this.selectedApartment.ownerName = this.apartmentOwnerNameInput;
   }
 
-  getManagers(){
+  getManagers() {
     this._userService.getManagers().subscribe(data => {
       this.managers = data;
     });
   }
 
-  modifyManager(){
+  modifyManager() {
     this._buildingsService.modifyManager(this.selectedBuilding.id, this.selectedManager).pipe(
       this._toastService.observe({
         loading: 'Modificando encargado',
         success: 'Encargado modificado correctamente',
-        error: 'Error modificando encargado',
+        error: (e) => e?.error || 'Error modificando encargado',
       })
     ).subscribe(() => {
       this.getBuildings();
