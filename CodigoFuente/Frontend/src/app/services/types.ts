@@ -51,6 +51,11 @@ export interface CreateBuildingModel {
   managerEmail: string;
 }
 
+export interface CreateBuildingOutputModel {
+  id: number;
+  name: string;
+}
+
 export interface ManagerModel {
   id: number;
   name: string;
@@ -81,4 +86,14 @@ export interface CreateCompanyAdministratorModel {
   name: string;
   email: string;
   password: string;
+}
+
+export interface ImporterInputModel {
+  importerName: string;
+  path: string;
+}
+
+export interface ImporterOutputModel{
+  createdBuildings: CreateBuildingOutputModel[];
+  errors: string[];
 }
