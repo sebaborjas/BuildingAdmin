@@ -2,6 +2,8 @@ import { NgIf, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { LoadingService } from '../../services/loading.service';
+
 
 @Component({
   selector: 'app-reports',
@@ -11,7 +13,12 @@ import { HotToastService } from '@ngneat/hot-toast';
   styleUrl: './reports.component.css'
 })
 export class ReportsComponent {
-  constructor(private _adminService: AdminService, private _toastService: HotToastService) { }
+  constructor(
+    private _adminService: AdminService,
+    private _toastService: HotToastService,
+    private _loadingService: LoadingService,
+
+  ) { }
 
   isVisibleReport: boolean = false;
   buildingName: string = 'Casa Migues';
@@ -37,6 +44,7 @@ export class ReportsComponent {
   }
 
   getTicketsByCategories() {
+    this._loadingService.loadingOn();
     this._adminService.getReportTicketsByCategories(this.buildingName, this.categoryName)
       .pipe(
         this._toastService.observe({
@@ -47,20 +55,26 @@ export class ReportsComponent {
       )
       .subscribe((response) => {
         this.ticketsByCategories = response;
+        this._loadingService.loadingOff();
       },
         (error) => {
           console.log(error);
+          this._loadingService.loadingOff();
         }
+
       );
   }
 
   getCategories() {
+    this._loadingService.loadingOn();
     this._adminService.getCategories()
       .subscribe((response) => {
         this.categories = response;
+        this._loadingService.loadingOff();
       },
         (error) => {
           console.log(error);
+          this._loadingService.loadingOff();
         }
       );
   }

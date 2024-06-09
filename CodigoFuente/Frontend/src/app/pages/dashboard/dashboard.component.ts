@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { RoleTypes } from '../invitations/roleTypes';
+import { LoadingService } from '../../services/loading.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -10,17 +11,19 @@ import { RoleTypes } from '../invitations/roleTypes';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  constructor(private _userService: UserService) { }
+  constructor(private _userService: UserService, private _loadingService: LoadingService) { }
 
   name: string = '';
   email: string = '';
   rol: string = '';
 
   ngOnInit() {
+    this._loadingService.loadingOn();
     this._userService.getUser().subscribe((user) => {
       this.name = user.name;
       this.email = user.email;
       this.rol = user.role;
+      this._loadingService.loadingOff();
     });
   }
 }

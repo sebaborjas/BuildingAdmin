@@ -18,9 +18,7 @@ export class InvitationsComponent {
     private _loadingService: LoadingService,
     private _adminService: AdminService,
     private _toastService: HotToastService
-  ) {
-    this._loadingService.loadingOn();
-  }
+  ) { }
 
   modalText = '';
 
@@ -137,12 +135,14 @@ export class InvitationsComponent {
     this._adminService.getAllInvitations().subscribe(
       (response) => {
         this.invitations = response;
+        this._loadingService.loadingOff();
       },
       (error) => {
         console.error('Error', error);
+        this._loadingService.loadingOff();
       }
     );
-    this._loadingService.loadingOff();
+
   }
 
   deleteInvitation() {
