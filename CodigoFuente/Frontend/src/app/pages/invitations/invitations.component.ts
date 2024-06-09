@@ -97,7 +97,7 @@ export class InvitationsComponent {
         this._toastService.observe({
           loading: 'Creando invitacion',
           success: 'Invitacion creada con exito',
-          error: 'Error al crear invitacion',
+          error: (e) => e?.error || 'Error al crear invitacion',
         })
       )
       .subscribe(
@@ -117,7 +117,7 @@ export class InvitationsComponent {
         this._toastService.observe({
           loading: 'Editando invitacion',
           success: 'Invitacion editada con exito',
-          error: 'Error al editar invitacion',
+          error: (e) => e?.error || 'Error al editar invitacion',
         })
       )
       .subscribe(
@@ -152,7 +152,7 @@ export class InvitationsComponent {
         this._toastService.observe({
           loading: 'Eliminando invitacion',
           success: 'Invitacion eliminada con exito',
-          error: 'Error al eliminar invitacion',
+          error: (e) => e?.error || 'Error al eliminar invitacion',
         })
       )
       .subscribe(

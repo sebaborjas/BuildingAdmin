@@ -43,7 +43,7 @@ export class CompanyAdministratorsComponent implements OnInit{
       this._toastService.observe({
         loading: 'Creando nuevo administrador',
         success: 'Administrador creado correctamente',
-        error: 'Error creando administrador',
+        error: (e) => e?.error || 'Error creando administrador',
       })
     ).subscribe(result=>{
       this.getCompanyAdministrators();

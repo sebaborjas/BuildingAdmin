@@ -87,7 +87,7 @@ export class TicketsMaintenanceComponent {
       this._toastService.observe({
         loading: 'Cargando tickets asignados',
         success: 'Tickets asignados cargados con exito',
-        error: 'Error al cargar los tickets asignados',
+        error: (e) => e?.error || 'Error al cargar los tickets asignados',
       })
     )
     .subscribe(
@@ -112,7 +112,7 @@ export class TicketsMaintenanceComponent {
       this._toastService.observe({
         loading: 'Atendiendo ticket',
         success: 'Ticket atendido con exito',
-        error: 'Error al atender ticket',
+        error: (e) => e?.error || 'Error al atender ticket',
       })
     )
     .subscribe(
@@ -137,7 +137,7 @@ export class TicketsMaintenanceComponent {
       this._toastService.observe({
         loading: 'Finalizando ticket',
         success: 'Ticket finalizado con exito',
-        error: 'Error al finalizar ticket',
+        error: (e) => e?.error || 'Error al finalizar ticket',
       })
     )
     .subscribe(
