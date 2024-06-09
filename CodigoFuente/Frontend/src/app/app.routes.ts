@@ -12,9 +12,11 @@ import { TicketsComponent } from './pages/tickets/tickets.component';
 import { AdministratorsComponent } from './pages/administrators/administrators.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { ManageInvitationComponent } from './manage-invitation/manage-invitation.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'invitation', component: ManageInvitationComponent },
   {
     path: 'home',
     component: HomeComponent,

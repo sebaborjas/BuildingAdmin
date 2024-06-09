@@ -163,3 +163,16 @@ export interface AdminModel {
   email: string;
   password: string;
 }
+
+export interface AcceptInvitationModel {
+  email: string;
+  password: string;
+}
+
+export interface RejectInvitationModel {
+  email: string;
+}
+
+export interface AcceptInvitationOutputModel{
+  userId: number;
+}
