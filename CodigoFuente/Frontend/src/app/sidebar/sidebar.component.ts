@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { roles } from './roleTypes';
-import { NgClass, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { NgIf, NgClass } from '@angular/common';
+import { SesionStorageService } from '../services/sesion-storage.service';
+import { Router, RouterLink } from '@angular/router';
 
 
 @Component({
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
   imports: [
     NgIf,
     NgClass,
+    RouterLink
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
@@ -24,7 +26,7 @@ export class SidebarComponent {
   maintenanceOperator = roles.MAINTENANCE_OPERATOR;
   companyAdmin = roles.COMPANY_ADMIN;
 
-  constructor(private _router: Router) { }
+  constructor(private _sessionStorageService: SesionStorageService, private _router: Router) { }
 
   displayDropDown: boolean = false;
   showSideBar: boolean = false;
@@ -35,15 +37,24 @@ export class SidebarComponent {
     this.selectedSectionIndex = index;
   }
 
-  navigateTo(section: string) {
-    this._router.navigate(['home', section]);
-  }
-
   toggleDropDown() {
     this.displayDropDown = !this.displayDropDown;
   }
 
   toggleSideBar() {
     this.showSideBar = !this.showSideBar;
+  }
+
+  hideSideBar() {
+    this.showSideBar = false;
+  }
+
+  hideDropDown() {
+    this.displayDropDown = false;
+  }
+
+  logout() {
+    this._sessionStorageService.removeToken();
+    this._router.navigate(['/login']);
   }
 }
