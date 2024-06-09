@@ -85,8 +85,11 @@ public class Building
         {
             if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
-            string pattern = @"^\s*(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*-?\s*){2,}(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*),\s*\d{1,4},\s*(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*-?\s*){2,}(?:[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s*)$";
+            string patternCalle = @"[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d]+";
+            string patternNumero = @"\d{1,4}";
+            string patternEsquina = @"[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d]+";
 
+            string pattern = $"^{patternCalle}, {patternNumero}, {patternEsquina}$";   
             bool isValid = IsValidFormat(pattern, value);
 
             if (!isValid) throw new InvalidDataException("Formato esperado: calle principal, número de puerta, esquina");
