@@ -1,22 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { AdminComponent } from './admin/admin.component';
-import { ManagerComponent } from './manager/manager.component';
-import { MaintenanceOperatorComponent } from './maintenance-operator/maintenance-operator.component';
-import { CompanyAdminComponent } from './company-admin/company-admin.component';
 import { roles } from './roleTypes';
-import { NgIf } from '@angular/common';
+import { NgIf, NgClass } from '@angular/common';
 import { SesionStorageService } from '../services/sesion-storage.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    AdminComponent,
-    ManagerComponent,
     NgIf,
-    MaintenanceOperatorComponent,
-    CompanyAdminComponent,
+    NgClass,
+    RouterLink
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
@@ -35,6 +30,16 @@ export class SidebarComponent {
 
   displayDropDown: boolean = false;
   showSideBar: boolean = false;
+
+  selectedSectionIndex: number = -1;
+
+  selectSection(index: number) {
+    this.selectedSectionIndex = index;
+  }
+
+  navigateTo(section: string) {
+    this._router.navigate(['home', section]);
+  }
 
   toggleDropDown() {
     this.displayDropDown = !this.displayDropDown;
