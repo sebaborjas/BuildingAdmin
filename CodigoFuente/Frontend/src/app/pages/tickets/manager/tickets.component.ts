@@ -7,7 +7,8 @@ import { CategoryService } from '../../../services/category.service';
 import { TicketService } from '../../../services/ticket.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { StatusTypes } from '../statusTypes';
-import { BuildingModel, CategoryModel, TicketCreateModel, ApartmentModel, TicketModel } from '../../../services/types';
+import { BuildingModel, CategoryModel, TicketCreateModel, ApartmentModel, TicketModel, MaintenanceOperatorModelOut } from '../../../services/types';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-manager-tickets',
@@ -23,11 +24,13 @@ export class TicketsManagerComponent implements OnInit {
     private _toastService: HotToastService,
     private _buildingService: BuildingsService,
     private _categoryService: CategoryService,
-    private _ticketService: TicketService
+    private _ticketService: TicketService,
+    private _userService: UserService
   ) { }
 
   isVisibleModal: boolean = false;
-  isDetailModelVisible = false;
+  isDetailModelVisible: boolean = false;
+  isVisibleModalAssign: boolean = false;
   selectedTicket: TicketModel = {
     id: 0,
     description: '',
@@ -62,6 +65,7 @@ export class TicketsManagerComponent implements OnInit {
       password: ''
     }
   };
+  selectedMaintenanceOperator: number = 0;
   description: string = '';
   categorySelected: number = 0;
   apartmentSelected: number = 0;
@@ -79,12 +83,13 @@ export class TicketsManagerComponent implements OnInit {
   categories: CategoryModel[] = [];
   apartments: ApartmentModel[] = [];
   tickets: TicketModel[] = [];
+  maintenanceOperators: MaintenanceOperatorModelOut[] = [];
 
   ngOnInit(): void {
     this.getBuildings();
     this.getCategories();
-  
-   this.getTickets();
+    this.getTickets();
+    this.getMaintenanceOperators();
   }
 
   showMoreInfo(ticket: TicketModel) {
@@ -98,6 +103,11 @@ export class TicketsManagerComponent implements OnInit {
 
   showModal() {
     this.isVisibleModal = true;
+  }
+
+  showAssignModal(ticket: TicketModel) {
+    this.selectedTicket = ticket;
+    this.isVisibleModalAssign = true;
   }
 
   hideModal() {
@@ -123,7 +133,6 @@ export class TicketsManagerComponent implements OnInit {
       categoryId: this.categorySelected,
       apartmentId: this.apartmentSelected
     };
-    console.log(ticketCreate);
     this._ticketService.createTicket(ticketCreate)
       .pipe(
         this._toastService.observe({
@@ -134,10 +143,10 @@ export class TicketsManagerComponent implements OnInit {
       )
       .subscribe((response: TicketModel) => {
         this.hideModal();
+        this.getTickets();
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
@@ -158,7 +167,6 @@ export class TicketsManagerComponent implements OnInit {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         });
   }
@@ -178,7 +186,6 @@ export class TicketsManagerComponent implements OnInit {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
@@ -195,18 +202,59 @@ export class TicketsManagerComponent implements OnInit {
         })
       )
       .subscribe((response: TicketModel[]) => {
-        console.log(response);
         this.tickets = response;
         this.tickets.forEach((ticket: TicketModel) => {
           ticket.status = StatusTypes[parseInt(ticket.status)];
         });
-       
+
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
-    }
+  }
+
+  getMaintenanceOperators() {
+    this._loadingService.loadingOn();
+    this._userService.getMaintenanceOperators()
+      .pipe(
+        this._toastService.observe({
+          loading: 'Obteniendo operadores de mantenimiento',
+          success: 'Operadores de mantenimiento obtenidos con éxito',
+          error: 'Error al obtener operadores de mantenimiento'
+        })
+      )
+      .subscribe((response: MaintenanceOperatorModelOut[]) => {
+        this.maintenanceOperators = response;
+        this._loadingService.loadingOff();
+      },
+        (error) => {
+          this._loadingService.loadingOff();
+        }
+      );
+  }
+
+  assignTicket() {
+    this._loadingService.loadingOn();
+    console.log("assignTicket", this.selectedTicket.id, this.selectedMaintenanceOperator);
+    this._ticketService.AssignTicket(this.selectedTicket.id, this.selectedMaintenanceOperator)
+      .pipe(
+        this._toastService.observe({
+          loading: 'Asignando ticket',
+          success: 'Ticket asignado con éxito',
+          error: 'Error al asignar ticket'
+        })
+      )
+      .subscribe((response: TicketModel) => {
+        this.getTickets();
+        this.isVisibleModalAssign = false;
+        this._loadingService.loadingOff();
+      },
+        (error) => {
+          console.log("assignTicket",error);
+          this._loadingService.loadingOff();
+        }
+      );
+  }
 }

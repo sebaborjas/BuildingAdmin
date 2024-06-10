@@ -155,6 +155,14 @@ export interface TicketsByApartmentsModel {
   ticketsClosed: number;
 }
 
+export interface TicketsByMaintenanceOperatorModel {
+  operatorName: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
+  averageTimeToClose: string;
+}
+
 export interface CategoryModel {
   id: number;
   name: string;
@@ -181,7 +189,7 @@ export interface RejectInvitationModel {
   email: string;
 }
 
-export interface AcceptInvitationOutputModel{
+export interface AcceptInvitationOutputModel {
   userId: number;
 }
 
@@ -197,4 +205,11 @@ export interface MaintenanceOperatorModel {
   email: string;
   password: string;
   buildings: number[];
+}
+
+export interface MaintenanceOperatorModelOut {
+  id: number;
+  name: string;
+  lastName: string;
+  email: string;
 }
