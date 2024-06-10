@@ -9,13 +9,15 @@ export interface UserModel {
 }
 
 export interface InvitationModel {
+  id: number;
   name: string;
   email: string;
   role: number;
+  status: string;
   expirationDate: string;
 }
 
-export interface ConstructionCompanyModel{
+export interface ConstructionCompanyModel {
   id: number;
   name: string;
 }
@@ -65,7 +67,7 @@ export interface ManagerModel {
 
 export interface ModifyApartmentModel {
   id: number;
-  ownerName:string;
+  ownerName: string;
   ownerLastName: string;
   ownerEmail: string;
 }
@@ -88,21 +90,12 @@ export interface CreateCompanyAdministratorModel {
   password: string;
 }
 
-export interface AssignedTo {
-  lastName: string;
-  buildings: any | null;
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
-
 export interface ImporterInputModel {
   importerName: string;
   path: string;
 }
 
-export interface ImporterOutputModel{
+export interface ImporterOutputModel {
   createdBuildings: CreateBuildingOutputModel[];
   errors: string[];
 }
@@ -115,7 +108,7 @@ export interface Category {
 
 export interface AssignedTo {
   lastName: string;
-  buildings: any | null;
+  buildings: BuildingModel[] | null;
   id: number;
   name: string;
   email: string;
@@ -141,12 +134,17 @@ export interface EditInvitationModel {
   expirationDate: string;
 }
 
-export interface TicketsByCategories {
-  tickets: Object[];
+export interface TicketsByCategoriesModel {
+  categoryName: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
 }
 
-export interface Categories {
-  categories: Object[];
+export interface CategoryModel {
+  id: number;
+  name: string;
+  parentId: number | null;
 }
 
 export interface CreateCategoryModel {

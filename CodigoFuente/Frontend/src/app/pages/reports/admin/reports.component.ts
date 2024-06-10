@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { LoadingService } from '../../../services/loading.service';
+import { CategoryModel, BuildingModel, TicketsByCategoriesModel } from '../../../services/types';
 
 
 @Component({
@@ -24,9 +25,9 @@ export class ReportsAdminComponent {
   buildingName: string = '';
   categoryName: string = '';
 
-  ticketsByCategories: any = [];
-  categories: any = [];
-  buildings: any = [];
+  ticketsByCategories: TicketsByCategoriesModel[] = [];
+  categories: CategoryModel[] = [];
+  buildings: BuildingModel[] = [];
 
   ngOnInit(): void {
     this.isVisibleReport = false;
@@ -61,7 +62,7 @@ export class ReportsAdminComponent {
           error: (e) => e.message || 'Ha ocurrido un error',
         })
       )
-      .subscribe((response) => {
+      .subscribe((response: TicketsByCategoriesModel[]) => {
         this.ticketsByCategories = response;
         this._loadingService.loadingOff();
       },
@@ -76,7 +77,7 @@ export class ReportsAdminComponent {
   getBuilings() {
     this._loadingService.loadingOn();
     this._adminService.getBuildings()
-      .subscribe((response) => {
+      .subscribe((response: BuildingModel[]) => {
         this.buildings = response;
         this._loadingService.loadingOff();
       },
@@ -90,7 +91,7 @@ export class ReportsAdminComponent {
   getCategories() {
     this._loadingService.loadingOn();
     this._adminService.getCategories()
-      .subscribe((response) => {
+      .subscribe((response: CategoryModel[]) => {
         this.categories = response;
         this._loadingService.loadingOff();
       },
