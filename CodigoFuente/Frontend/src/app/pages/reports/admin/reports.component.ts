@@ -1,10 +1,10 @@
 import { NgIf, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
+import { CategoryService } from '../../../services/category.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { LoadingService } from '../../../services/loading.service';
 import { CategoryModel, BuildingModel, TicketsByCategoriesModel } from '../../../services/types';
-
 
 @Component({
   selector: 'app-admin-reports',
@@ -18,6 +18,7 @@ export class ReportsAdminComponent {
     private _adminService: AdminService,
     private _toastService: HotToastService,
     private _loadingService: LoadingService,
+    private _categoryService: CategoryService,
 
   ) { }
 
@@ -90,8 +91,8 @@ export class ReportsAdminComponent {
 
   getCategories() {
     this._loadingService.loadingOn();
-    this._adminService.getCategories()
-      .subscribe((response: CategoryModel[]) => {
+    this._categoryService.getCategories()
+      .subscribe((response) => {
         this.categories = response;
         this._loadingService.loadingOff();
       },
