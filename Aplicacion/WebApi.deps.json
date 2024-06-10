@@ -629,9 +629,18 @@
           "IDataAccess.dll": {}
         }
       },
-      "IServices/1.0.0": {
+      "IImporter/1.0.0": {
         "dependencies": {
           "DTO": "1.0.0"
+        },
+        "runtime": {
+          "IImporter.dll": {}
+        }
+      },
+      "IServices/1.0.0": {
+        "dependencies": {
+          "DTO": "1.0.0",
+          "IImporter": "1.0.0"
         },
         "runtime": {
           "IServices.dll": {}
@@ -641,6 +650,7 @@
         "dependencies": {
           "Domain": "1.0.0",
           "IDataAccess": "1.0.0",
+          "IImporter": "1.0.0",
           "IServices": "1.0.0"
         },
         "runtime": {
@@ -1138,6 +1148,11 @@
       "sha512": ""
     },
     "IDataAccess/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IImporter/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
