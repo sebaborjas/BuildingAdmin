@@ -229,9 +229,6 @@ namespace DataAccess.Migrations
                     b.Property<int?>("ApartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AssignedToId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("AttentionDate")
                         .HasColumnType("datetime2");
 
@@ -253,6 +250,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("IdOperatorAssigned")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -262,8 +262,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApartmentId");
-
-                    b.HasIndex("AssignedToId");
 
                     b.HasIndex("BuildingId");
 
@@ -406,10 +404,6 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ApartmentId");
 
-                    b.HasOne("Domain.MaintenanceOperator", "AssignedTo")
-                        .WithMany()
-                        .HasForeignKey("AssignedToId");
-
                     b.HasOne("Domain.Building", null)
                         .WithMany("Tickets")
                         .HasForeignKey("BuildingId");
@@ -423,8 +417,6 @@ namespace DataAccess.Migrations
                         .HasForeignKey("CreatedById");
 
                     b.Navigation("Apartment");
-
-                    b.Navigation("AssignedTo");
 
                     b.Navigation("Category");
 

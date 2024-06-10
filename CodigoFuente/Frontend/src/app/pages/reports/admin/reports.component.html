@@ -11,11 +11,11 @@
         <select
           id="building"
           class="bg-gray-50 w-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        >
+          (change)="setBuildingName($event)"
+          >
           <option selected disabled>Selecciona un edificio</option>
           <option
             *ngFor="let building of buildings"
-            (click)="setBuildingName(building.name)"
           >
             {{ building.name }}
           </option>
@@ -29,14 +29,15 @@
         >
         <select
           id="categories"
+          (change)="setCategoryName($event)"
           class="bg-gray-50 border w-100 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
-          <option selected (click)="setCategoryName('')">
+          <option selected value="" >
             Cualquier categoria
           </option>
           <option
             *ngFor="let category of categories"
-            (click)="setCategoryName(category.name)"
+            
           >
             {{ category.name }}
           </option>

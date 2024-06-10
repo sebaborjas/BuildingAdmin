@@ -77,7 +77,6 @@ export class CategoriesComponent {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
@@ -98,8 +97,7 @@ export class CategoriesComponent {
           this.getCategories();
         },
         (error) => {
-          console.log(error);
-
+          this._loadingService.loadingOff();
         }
       );
   }

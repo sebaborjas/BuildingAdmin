@@ -79,7 +79,7 @@ public class UserService : IUserServices
         {
             userAlreadyExist = _companyRepository.GetByCondition(user => user.Email == maintenanceOperator.Email);
         }
-        
+
         if (userAlreadyExist != null)
         {
             throw new ArgumentException("User already exist");
@@ -138,7 +138,7 @@ public class UserService : IUserServices
         {
             throw new ArgumentException("Invalid company administrator data");
         }
-        if(IsUserAlreadyExist(companyAdministrator))
+        if (IsUserAlreadyExist(companyAdministrator))
         {
             throw new ArgumentException("User already exist");
         }
@@ -166,13 +166,31 @@ public class UserService : IUserServices
     public List<CompanyAdministrator> GetCompanyAdministrators()
     {
         var currentUser = _sessionService.GetCurrentUser() as CompanyAdministrator;
-        if(currentUser.ConstructionCompany == null)
+        if (currentUser.ConstructionCompany == null)
         {
             throw new InvalidOperationException("Current user does not have a construction company");
         }
         var userCompany = currentUser.ConstructionCompany;
         var companyAdministrators = _companyRepository.GetAll<CompanyAdministrator>().ToList();
         return companyAdministrators.Where(companyAdministrator => companyAdministrator.ConstructionCompany.Id == userCompany.Id).ToList();
+    }
+
+    public List<MaintenanceOperator> GetMaintenanceOperators()
+    {
+        var currentUser = _sessionService.GetCurrentUser() as Manager;
+        if (currentUser == null)
+        {
+            throw new InvalidOperationException("Current user is not a manager");
+        }
+        var buildings = currentUser.Buildings;
+        if (buildings.Count == 0)
+        {
+            throw new InvalidOperationException("Manager does not have buildings");
+        }
+        var maintenanceOperators = _operatorRepository.GetAll<MaintenanceOperator>().ToList();
+
+        return maintenanceOperators.Where(maintenanceOperator => maintenanceOperator.Buildings.Any(building => buildings.Any(managerBuilding => managerBuilding.Id == building.Id))).ToList();
+        
     }
 
     private bool IsNewAdministratorValid(Administrator administrator)

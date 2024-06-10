@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserEndpoint } from '../../networking/endpoints';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { CompanyAdministratorModel, CreateCompanyAdministratorModel, ManagerModel, UserModel, MaintenanceOperatorModel } from './types';
+import { CompanyAdministratorModel, CreateCompanyAdministratorModel, ManagerModel, UserModel, MaintenanceOperatorModel, MaintenanceOperatorModelOut } from './types';
 import { SesionStorageService } from './sesion-storage.service';
 
 const BASE_URL = environment.API_URL;
@@ -40,6 +40,10 @@ export class UserService {
 
   createMaintenanceOperator(maintenanceOperator: MaintenanceOperatorModel): Observable<MaintenanceOperatorModel>{
     return this._httpClient.post<MaintenanceOperatorModel>(`${BASE_URL}${UserEndpoint.MAINTENANCEOPERATOR}`, maintenanceOperator);
+  }
+
+  getMaintenanceOperators(): Observable<MaintenanceOperatorModelOut[]>{
+    return this._httpClient.get<MaintenanceOperatorModelOut[]>(`${BASE_URL}${UserEndpoint.MAINTENANCEOPERATOR}`);
   }
 
 }

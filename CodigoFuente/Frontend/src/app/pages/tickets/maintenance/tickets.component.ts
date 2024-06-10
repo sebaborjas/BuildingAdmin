@@ -34,14 +34,7 @@ export class TicketsMaintenanceComponent {
     creationDate: '',
     apartment: {
       id: 0,
-      floor: 0,
-      doorNumber: 0,
-      ownerName: '',
-      ownerLastName: '',
-      ownerEmail: '',
-      rooms: 0,
-      bathrooms: 0,
-      hasTerrace: false
+      doorNumber: 0
     },
     totalCost: 0,
     createdBy: null,
@@ -53,14 +46,7 @@ export class TicketsMaintenanceComponent {
     status: '',
     attentionDate: '',
     closingDate: '',
-    assignedTo: {
-      lastName: '',
-      buildings: null,
-      id: 0,
-      name: '',
-      email: '',
-      password: ''
-    }
+    idOperatorAssignedTo: 0
   };
 
   showCompleteTicketModal(id: number) {

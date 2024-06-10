@@ -34,14 +34,9 @@ export class TicketService {
   }
 
   createTicket(ticket: TicketCreateModel): Observable<TicketModel> {
-
-    const body = {
-      ticket: ticket
-    };
-
     return this._httpClient.post<TicketModel>(
       `${BASE_URL}${TicketEndpoint.TICKETS}`,
-      body
+      ticket
     );
   }
 
@@ -50,4 +45,13 @@ export class TicketService {
       `${BASE_URL}${TicketEndpoint.TICKETS}`
     );
   }
+  
+  AssignTicket(tiketId: number, maintenanceOperatorId: number): Observable<TicketModel> {
+    
+    return this._httpClient.put<TicketModel>(
+      `${BASE_URL}${TicketEndpoint.TICKETS}/${tiketId}/assign`,
+      { maintenanceOperatorId }
+    );
+  }
+
 }

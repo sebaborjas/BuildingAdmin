@@ -334,7 +334,7 @@ public class TestUserController
             Name = "John",
             LastName = "Doe",
             Email = "test@test.com",
-            Buildings = [new Building() {Id = 100 }]
+            Buildings = [new Building() { Id = 100 }]
         };
 
         MaintenanceOperatorCreateInput maintenanceOperatorCreateModel = new MaintenanceOperatorCreateInput
@@ -401,7 +401,7 @@ public class TestUserController
             LastName = maintenanceOperator.LastName,
             Email = maintenanceOperator.Email,
             Password = maintenanceOperator.Password,
-            Buildings = [maintenanceOperator.Buildings[0].Id, maintenanceOperator.Buildings[1].Id ]
+            Buildings = [maintenanceOperator.Buildings[0].Id, maintenanceOperator.Buildings[1].Id]
         };
         _userServiceMock.Setup(r => r.CreateMaintenanceOperator(It.IsAny<MaintenanceOperator>())).Returns(maintenanceOperator);
         var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
@@ -486,7 +486,7 @@ public class TestUserController
             ConstructionCompany = new ConstructionCompany { Id = 1, Name = "Company" }
         };
 
-        CompanyAdministratorCreateInput companyAdministratorCreateModel = new CompanyAdministratorCreateInput { Name = companyAdministrator.Name, LastName = companyAdministrator.LastName, Email = companyAdministrator.Email, Password = companyAdministrator.Password};
+        CompanyAdministratorCreateInput companyAdministratorCreateModel = new CompanyAdministratorCreateInput { Name = companyAdministrator.Name, LastName = companyAdministrator.LastName, Email = companyAdministrator.Email, Password = companyAdministrator.Password };
 
         _userServiceMock.Setup(r => r.CreateCompanyAdministrator(It.IsAny<CompanyAdministrator>())).Throws(new InvalidOperationException("Current user is not authorized to create a company administrator"));
 
@@ -494,7 +494,7 @@ public class TestUserController
 
         var result = userController.CreateCompanyAdministrator(companyAdministratorCreateModel);
         _userServiceMock.VerifyAll();
-           
+
     }
 
     [TestMethod]
@@ -582,7 +582,8 @@ public class TestUserController
     }
 
     [TestMethod]
-    public void TestGetUserByToken(){
+    public void TestGetUserByToken()
+    {
         var user = new Administrator
         {
             Name = "John",
@@ -606,7 +607,8 @@ public class TestUserController
     }
 
     [TestMethod]
-    public void TestGetUserByTokenNotFound(){
+    public void TestGetUserByTokenNotFound()
+    {
 
         _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid>())).Returns(() => null);
 
@@ -617,12 +619,13 @@ public class TestUserController
         var result = userController.GetUserSession(token);
 
         _userServiceMock.VerifyAll();
-        
+
         Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
     }
 
     [TestMethod]
-    public void TestGetUserEmptyToken(){
+    public void TestGetUserEmptyToken()
+    {
 
         _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid>())).Returns(() => null);
 
@@ -632,7 +635,7 @@ public class TestUserController
         var result = userController.GetUserSession("");
 
         _userServiceMock.VerifyAll();
-        
+
         Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
     }
 
@@ -674,7 +677,7 @@ public class TestUserController
             new CompanyAdministrator { Id = 1, Name = "John", Email = "mail1@mail.com",ConstructionCompany = company },
             new CompanyAdministrator { Id = 2, Name = "Jane", Email = "mail2@mail.com", ConstructionCompany = company }
         };
-        _userServiceMock.Setup(r=>r.GetCompanyAdministrators()).Returns(administrators);
+        _userServiceMock.Setup(r => r.GetCompanyAdministrators()).Returns(administrators);
         var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
         var expectedResult = new List<CompanyAdministratorOutput>()
         {
@@ -688,6 +691,55 @@ public class TestUserController
 
         _userServiceMock.VerifyAll();
         CollectionAssert.AreEqual(getCompanyAdministratorsResult, expectedResult);
+
+    }
+
+    // test for GetMaintenanceOperators
+    [TestMethod]
+    public void TestGetMaintenanceOperators()
+    {
+        List<MaintenanceOperator> maintenanceOperators = new List<MaintenanceOperator>()
+        {
+            new MaintenanceOperator { Id = 1, Name = "John", LastName = "Test", Email = "john@test.com", Buildings = [new Building { Id = 1 }]}
+            };
+        _userServiceMock.Setup(r => r.GetMaintenanceOperators()).Returns(maintenanceOperators);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+        var expectedResult = new List<MaintenanceOperatorOutput>()
+        {
+            new MaintenanceOperatorOutput(maintenanceOperators[0])
+        };
+        var result = userController.GetMaintenanceOperators();
+        var okResult = result as OkObjectResult;
+        var getMaintenanceOperatorsResult = okResult.Value as List<MaintenanceOperatorOutput>;
+
+        _userServiceMock.VerifyAll();
+        CollectionAssert.AreEqual(getMaintenanceOperatorsResult, expectedResult);
+
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestGetMaintenanceOperatorsWithNoManager()
+    {
+        _userServiceMock.Setup(r => r.GetMaintenanceOperators()).Throws(new InvalidOperationException("Current user is not a manager"));
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+        var result = userController.GetMaintenanceOperators();
+        _userServiceMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void TestGetMaintenanceOperatorsWithNoOperators()
+    {
+        List<MaintenanceOperator> maintenanceOperators = new List<MaintenanceOperator>();
+        _userServiceMock.Setup(r => r.GetMaintenanceOperators()).Returns(maintenanceOperators);
+        var userController = new UserController(_userServiceMock.Object, _sessionServiceMock.Object);
+        var expectedResult = new List<MaintenanceOperatorOutput>();
+        var result = userController.GetMaintenanceOperators();
+        var okResult = result as OkObjectResult;
+        var getMaintenanceOperatorsResult = okResult.Value as List<MaintenanceOperatorOutput>;
+
+        _userServiceMock.VerifyAll();
+        CollectionAssert.AreEqual(getMaintenanceOperatorsResult, expectedResult);
 
     }
 }

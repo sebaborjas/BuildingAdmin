@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ReportEndpoint } from '../../networking/endpoints';
 import { Observable } from 'rxjs';
-import { TicketsByApartmentsModel, TicketsByBuildingModel, TicketsByCategoriesModel } from './types';
+import { TicketsByApartmentsModel, TicketsByBuildingModel, TicketsByCategoriesModel, TicketsByMaintenanceOperatorModel } from './types';
 import { environment } from '../../environments/environment.development';
 
 const BASE_URL = environment.API_URL;
@@ -58,7 +58,7 @@ export class ReportService {
     );
   }
 
-  getReportOperators(building: string, name?: string): Observable<TicketsByCategoriesModel[]> {
+  getReportOperators(building: string, name?: string): Observable<TicketsByMaintenanceOperatorModel[]> {
 
     let params = new HttpParams().set('building', building);
 
@@ -66,7 +66,7 @@ export class ReportService {
       params = params.set('name', name);
     }
 
-    return this._httpClient.get<TicketsByCategoriesModel[]>(
+    return this._httpClient.get<TicketsByMaintenanceOperatorModel[]>(
       `${BASE_URL}${ReportEndpoint.REPORTS}/operators`,
       { params: params }
     );

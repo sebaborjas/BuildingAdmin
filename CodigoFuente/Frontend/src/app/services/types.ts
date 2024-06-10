@@ -32,6 +32,11 @@ export interface BuildingModel {
   apartments: ApartmentModel[];
 }
 
+export interface ApartmentTicketModel {
+  id?: number;
+  doorNumber: number;
+}
+
 export interface ApartmentModel {
   id?: number;
   floor: number;
@@ -119,14 +124,14 @@ export interface TicketModel {
   id: number;
   description: string;
   creationDate: string;
-  apartment: ApartmentModel;
+  apartment: ApartmentTicketModel;
   totalCost: number;
   createdBy: string | null;
   category: Category;
   status: string;
   attentionDate: string;
   closingDate: string;
-  assignedTo: AssignedTo;
+  idOperatorAssignedTo: number | null;
 }
 
 export interface EditInvitationModel {
@@ -155,6 +160,14 @@ export interface TicketsByApartmentsModel {
   ticketsClosed: number;
 }
 
+export interface TicketsByMaintenanceOperatorModel {
+  operatorName: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
+  averageTimeToClose: string;
+}
+
 export interface CategoryModel {
   id: number;
   name: string;
@@ -181,7 +194,7 @@ export interface RejectInvitationModel {
   email: string;
 }
 
-export interface AcceptInvitationOutputModel{
+export interface AcceptInvitationOutputModel {
   userId: number;
 }
 
@@ -197,4 +210,11 @@ export interface MaintenanceOperatorModel {
   email: string;
   password: string;
   buildings: number[];
+}
+
+export interface MaintenanceOperatorModelOut {
+  id: number;
+  name: string;
+  lastName: string;
+  email: string;
 }
