@@ -8,7 +8,7 @@ ENV MSSQL_USER=SA
 RUN mkdir -p /Backups
 
 COPY levantarBase.sh /Backups/
-COPY Backup.bak /Backups/
+COPY DbInitialize.bak /Backups/
 
 RUN chmod +x /Backups/levantarBase.sh
 
