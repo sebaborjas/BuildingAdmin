@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   frontend:
+    container_name: frontend
     build:
       context: ./Frontend
       dockerfile: Dockerfile
@@ -9,7 +10,8 @@ services:
     networks:
       - da2-network
 
-  api:
+  backend:
+    container_name: backend
     build:
       context: ./Backend
       dockerfile: Dockerfile
@@ -25,6 +27,7 @@ services:
       - ASPNETCORE_URLS=http://+:5222
 
   database:
+    container_name: database
     build:
       context: ../BaseDeDatos
       dockerfile: Dockerfile
