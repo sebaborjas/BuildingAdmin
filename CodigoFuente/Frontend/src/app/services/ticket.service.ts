@@ -34,9 +34,14 @@ export class TicketService {
   }
 
   createTicket(ticket: TicketCreateModel): Observable<TicketModel> {
+
+    const body = {
+      ticket: ticket
+    };
+
     return this._httpClient.post<TicketModel>(
       `${BASE_URL}${TicketEndpoint.TICKETS}`,
-      { ticket }
+      body
     );
   }
 
