@@ -21,9 +21,54 @@ export class ReportService {
     }
 
     return this._httpClient.get<TicketsByCategoriesModel[]>(
-      `${BASE_URL}${ReportEndpoint.REPORT_TICKETS_BY_CATEGORIES}`,
+      `${BASE_URL}${ReportEndpoint.REPORTS}/categories`,
       { params: params }
     );
   }
 
+  getReportBuildings(building?: string): Observable<TicketsByCategoriesModel[]> {
+
+    if (building) {
+      let params = new HttpParams().set('building', building);
+
+      return this._httpClient.get<TicketsByCategoriesModel[]>(
+        `${BASE_URL}${ReportEndpoint.REPORTS}/buildings`,
+        { params: params }
+      );
+    }
+
+    return this._httpClient.get<TicketsByCategoriesModel[]>(
+      `${BASE_URL}${ReportEndpoint.REPORTS}/buildings`
+    );
+  }
+
+  getReportTicketsByApartment(building?: string): Observable<TicketsByCategoriesModel[]> {
+
+    if (building) {
+      let params = new HttpParams().set('building', building);
+
+      return this._httpClient.get<TicketsByCategoriesModel[]>(
+        `${BASE_URL}${ReportEndpoint.REPORTS}/tickets-by-apartment`,
+        { params: params }
+      );
+    }
+
+    return this._httpClient.get<TicketsByCategoriesModel[]>(
+      `${BASE_URL}${ReportEndpoint.REPORTS}/tickets-by-apartment`
+    );
+  }
+
+  getReportOperators(building: string, name?: string): Observable<TicketsByCategoriesModel[]> {
+
+    let params = new HttpParams().set('building', building);
+
+    if (name) {
+      params = params.set('name', name);
+    }
+
+    return this._httpClient.get<TicketsByCategoriesModel[]>(
+      `${BASE_URL}${ReportEndpoint.REPORTS}/operators`,
+      { params: params }
+    );
+  }
 }
