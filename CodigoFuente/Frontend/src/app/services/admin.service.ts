@@ -99,17 +99,6 @@ export class AdminService {
     );
   }
 
-  createCategory(name: string, parentCategoryId?: number): Observable<CreateCategoryModel> {
-    const body = {
-      name: name,
-      parentCategoryId: parentCategoryId
-    };
-    return this._httpClient.post<CreateCategoryModel>(
-      `${BASE_URL}${CategoriesEndpoint.CATEGORIES}`,
-      body
-    );
-  }
-
   createAdministartor(name: string, lastName: string, email: string, password: string): Observable<AdminModel> {
     const body = {
       name: name,
