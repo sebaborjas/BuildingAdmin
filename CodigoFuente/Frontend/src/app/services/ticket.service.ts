@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TicketEndpoint } from '../../networking/endpoints';
 import { Observable } from 'rxjs';
-import { TicketModel } from './types';
+import { TicketModel, TicketCreateModel } from './types';
 import { environment } from '../../environments/environment.development';
 
 const BASE_URL = environment.API_URL;
@@ -32,4 +32,12 @@ export class TicketService {
       { totalCost }
     );
   }
+
+  createTicket(ticket: TicketCreateModel): Observable<TicketModel> {
+    return this._httpClient.post<TicketModel>(
+      `${BASE_URL}${TicketEndpoint.TICKETS}`,
+      { ticket }
+    );
+  }
+  
 }

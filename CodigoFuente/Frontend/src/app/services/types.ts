@@ -158,6 +158,12 @@ export interface AdminModel {
   password: string;
 }
 
+export interface TicketCreateModel {
+  description: string;
+  apartmentId: number;
+  categoryId: number;
+}
+
 export interface MaintenanceOperatorModel {
   name: string;
   lastName: string;
