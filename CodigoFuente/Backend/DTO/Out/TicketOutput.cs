@@ -17,7 +17,7 @@ namespace DTO.Out
             CreationDate = ticket.CreationDate;
             Apartment = new GetTicketApartmentOutput(ticket.Apartment);
             TotalCost = ticket.TotalCost;
-            CreatedBy = new GetTicketCreatedByUserOutput(ticket.CreatedBy);
+            if(ticket.CreatedBy != null) CreatedBy = new GetTicketCreatedByUserOutput(ticket.CreatedBy);
             Category = new GetCategoryOutput(ticket.Category);
             Status = ticket.Status;
             AttentionDate = ticket.AttentionDate;
