@@ -492,7 +492,7 @@ public class TestUserService
     [ExpectedException(typeof(ArgumentException))]
     public void TestCreateInvalidCompanyAdministrator()
     {
-        _sessionService.Setup(r=>r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new CompanyAdministrator());
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new CompanyAdministrator());
         _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
 
         _service.CreateCompanyAdministrator(null);
@@ -638,6 +638,96 @@ public class TestUserService
         _companyAdministratorRepositoryMock.Setup(r => r.Insert(It.IsAny<CompanyAdministrator>())).Throws(new Exception());
 
         var createdCompanyAdministrator = _service.CreateCompanyAdministrator(companyAdministrator);
+
+    }
+
+    [TestMethod]
+    public void TestGetMaintenanceOperators_CurrentUserIsManager_ReturnsOperatorsForBuildings()
+    {
+        var building1 = new Building()
+        {
+            Id = 10,
+            Name = "Edificio Uno",
+            Address = "Calle, 123, esquina",
+            Apartments = [],
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 3000,
+            Location = "123,123",
+            Tickets = []
+        };
+        var building2 = new Building()
+        {
+            Id = 11,
+            Name = "Edificio Dos",
+            Address = "Calle, 321, esquina",
+            Apartments = [],
+            ConstructionCompany = new ConstructionCompany(),
+            Expenses = 5000,
+            Location = "321,321",
+            Tickets = []
+        };
+        
+        var currentUser = new Manager()
+        {
+            Name = "Manager",
+            Email = "manager@test.com",
+            Buildings = [building1, building2]
+};
+        var operators = new List<MaintenanceOperator>
+        {
+                new MaintenanceOperator { Id = 1, Name = "Operator", Email = "test@test.com", LastName = "Test", Buildings = new List<Building> { building1 } }
+        };
+        _operatorRepositoryMock.Setup(r => r.GetAll<MaintenanceOperator>()).Returns(operators);
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        _service = new UserService(_adminRepositoryMock.Object, _operatorRepositoryMock.Object, _managerRepositoryMock.Object, _sessionService.Object, _companyAdministratorRepositoryMock.Object);
+
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void TestGetMaintenanceOperators_CurrentUserIsNotManager_ThrowsException()
+    {
+        var currentUser = new Administrator();
+
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+
+        _service.GetMaintenanceOperators();
+
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void TestGetMaintenanceOperators_NoBuildings_ThrowsException()
+    {
+        var currentUser = new Manager()
+        {
+            Buildings = new List<Building>()
+        };
+
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+
+        _service.GetMaintenanceOperators();
+
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void TestGetMaintenanceOperators_NoOperators_ThrowsException()
+    {
+        var currentUser = new Manager()
+        {
+            Buildings = new List<Building>()
+            {
+                new Building() { Id = 1 },
+                new Building() { Id = 2 }
+            }
+        };
+
+        _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+
+        _operatorRepositoryMock.Setup(x => x.GetAll<MaintenanceOperator>()).Returns(new List<MaintenanceOperator>());
+
+        _service.GetMaintenanceOperators();
 
     }
 
