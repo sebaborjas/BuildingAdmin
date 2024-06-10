@@ -50,11 +50,13 @@ export class ReportsAdminComponent {
     this.getTicketsByCategories();
   }
 
-  setCategoryName(categoryName: string) {
+  setCategoryName(event: Event) {
+    const categoryName = (event.target as HTMLSelectElement).value;
     this.categoryName = categoryName;
   }
 
-  setBuildingName(buildingName: string) {
+  setBuildingName(event: Event) {
+    const buildingName = (event.target as HTMLSelectElement).value;
     this.buildingName = buildingName;
   }
 
