@@ -39,4 +39,18 @@ public class TestConstructionCompany
         ConstructionCompany.Id = 1;
         Assert.AreEqual(1, ConstructionCompany.Id);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestNameWithMoreThan100Characters()
+    {
+        ConstructionCompany.Name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    }
+
+    [TestMethod]
+    public void TestEqualsWithOtherObject()
+    {
+        ConstructionCompany.Id = 1;
+        ConstructionCompany.Equals(new Object());
+    }
 }

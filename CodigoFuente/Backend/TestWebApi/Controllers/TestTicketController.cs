@@ -261,6 +261,42 @@ namespace TestWebApi
             _ticketServiceMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void TestGetAssignedTickets()
+        {
+            List<Ticket> tickets = new List<Ticket>()
+            {
+                new Ticket()
+                {
+                    Description = "Ventana rota",
+                    Apartment = _apartment,
+                    Category = new Category() { Id = 1, Name = "Maintenance" }
+                },
+                new Ticket()
+                {
+                    Description = "Limpieza grasera",
+                    Apartment = _apartment,
+                    Category = new Category() { Id = 2, Name = "Plumber" }
+                }
+            };
+
+            _ticketServiceMock.Setup(x => x.GetAssignedTickets()).Returns(tickets);
+            var ticketController = new TicketController(_ticketServiceMock.Object);
+
+            var result = ticketController.GetAssignedTickets();
+            var okResult = result as OkObjectResult;
+            var ticketsResponse = okResult.Value as List<TicketOutput>;
+
+            var expectedTickets = new List<TicketOutput>();
+            foreach (var ticket in tickets)
+            {
+                expectedTickets.Add(new TicketOutput(ticket));
+            }
+
+            _ticketServiceMock.VerifyAll();
+            CollectionAssert.AreEqual(ticketsResponse, expectedTickets);
+        }
+
     }
 
 

@@ -77,11 +77,6 @@ public class BuildingService : IBuildingService
     {
         var building = GetBuildingsForCCompany(buildingId);
 
-        if (building == null)
-        {
-            throw new ArgumentNullException("Building not found");
-        }
-
         try
         {
             _buildingRepository.Delete(building[0]);
@@ -131,10 +126,7 @@ public class BuildingService : IBuildingService
         try
         {
             var currentUser = _sessionService.GetCurrentUser() as Manager;
-            if (currentUser == null)
-            {
-                throw new InvalidOperationException("Current user is not a manager");
-            }
+            
             if(buildingId != null)
             {
                 var building = currentUser.Buildings.FirstOrDefault(b => b.Id == buildingId);
@@ -259,9 +251,9 @@ public class BuildingService : IBuildingService
 
         if (lastManager != null)
         {
-            removeBuildingFromManager(building, lastManager);
+            RemoveBuildingFromManager(building, lastManager);
         }
-        assignBuildingToManager(building, manager);
+        AssignBuildingToManager(building, manager);
     }
 
     private void ModifyApartments(List<Apartment> originalApartments, List<Apartment> modifiedApartments)
@@ -282,7 +274,7 @@ public class BuildingService : IBuildingService
         });
     }
 
-    private void assignBuildingToManager(Building building, Manager manager)
+    private void AssignBuildingToManager(Building building, Manager manager)
     {
         try
         {
@@ -295,7 +287,7 @@ public class BuildingService : IBuildingService
         }
     }
 
-    private void removeBuildingFromManager(Building building, Manager manager)
+    private void RemoveBuildingFromManager(Building building, Manager manager)
     {
         try
         {

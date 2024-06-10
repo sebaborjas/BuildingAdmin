@@ -481,5 +481,54 @@ namespace TestServices
             Assert.AreEqual<TicketByApartment>(expected.ElementAt(0), ticketsByApartment.ElementAt(0));
             Assert.AreEqual<TicketByApartment>(expected.ElementAt(1), ticketsByApartment.ElementAt(1));
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetTicketsByBuildingError()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((Manager)null);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService.GetTicketsByBuilding();
+        }
+        
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetTicketsByMaintenanceOperatorError()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService.GetTicketsByMaintenanceOperator("Edificio");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetTicketsByCategoryError()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService.GetTicketsByCategory("Edificio");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetTicketsByApartmentError()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService.GetTicketsByApartment("Edificio");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetTicketsByApartmentWithInvalidBuilding()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new Manager() { Buildings = [new Building { Name = "Edificio"}]});
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService.GetTicketsByApartment("Edificio mal");
+        }
+
+
+
     }
 }

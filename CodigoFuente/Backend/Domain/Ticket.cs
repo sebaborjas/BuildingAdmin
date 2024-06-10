@@ -91,7 +91,7 @@ public class Ticket
         if (Status != Status.InProgress) throw new InvalidOperationException("No se puede cerrar un ticket sin estar en progreso");
 
         ClosingDate = DateTime.Now;
-        _totalCost = totalCost;
+        TotalCost = totalCost;
         Status = Status.Closed;
     }
 

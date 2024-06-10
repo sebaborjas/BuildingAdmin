@@ -29,6 +29,7 @@ namespace TestServices
             _buildingServiceMock = new Mock<IBuildingService>();
             _sessionServiceMock = new Mock<ISessionService>();
             _ownerRepository = new Mock<IGenericRepository<Owner>>();
+            _managerRepository = new Mock<IGenericRepository<Manager>>();
             _importService = new ImportService(_buildingServiceMock.Object, _sessionServiceMock.Object, _ownerRepository.Object, _managerRepository.Object);
         }
 
