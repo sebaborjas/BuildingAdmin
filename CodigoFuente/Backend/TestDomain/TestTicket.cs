@@ -192,4 +192,22 @@ public class TestTicket
         ticket.CloseTicket(totalCost);
         Assert.IsNotNull(ticket.ClosingDate);
     }
+
+    [TestMethod]
+    public void TestNotEquals()
+    {
+        Ticket ticket1 = new Ticket() { Id = 1 };
+        Ticket ticket2 = new Ticket() { Id = 2 };
+
+        Assert.AreNotEqual(ticket1, ticket2);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestCloseTicketWithInvalidCost()
+    {
+        ticket.AttendTicket();
+        float totalCost = -1;
+        ticket.CloseTicket(totalCost);
+    }
 }

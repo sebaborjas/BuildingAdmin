@@ -113,5 +113,29 @@ namespace TestDomain
             owner.Email = "probando";
         }
 
+        [TestMethod]
+        public void TestEquals()
+        {
+            Owner owner = new Owner() { Id = 1, Email = "mail@mail.com", Name = "Federico", LastName = "Valverde" };
+            Owner ownerCopy = new Owner() { Id = 1, Email = "mail@mail.com", Name = "Federico", LastName = "Valverde" };
+
+            Assert.IsTrue(owner.Equals(ownerCopy));
+        }
+
+        [TestMethod]
+        public void TestEqualsWithOtherObject()
+        {
+            Owner owner = new Owner() { Id = 1, Email = "mail@mail.com", Name = "Federico", LastName = "Valverde" };
+            Assert.IsFalse(owner.Equals(new Object()));
+        }
+
+        [TestMethod]
+        public void TestNotEquals()
+        {
+            Owner owner = new Owner() { Id = 1, Email = "mail@mail.com", Name = "Federico", LastName = "Valverde" };
+            Owner otherOwner = new Owner() { Id = 2, Email = "mail2@mail.com", Name = "Rodrigo", LastName = "Bentancur" };
+            Assert.IsFalse(owner.Equals(otherOwner));
+        }
+
     }
 }

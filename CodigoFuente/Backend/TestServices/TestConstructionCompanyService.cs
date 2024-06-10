@@ -225,5 +225,119 @@ namespace TestServices
 
             var result = _service.GetUserCompany();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestCreateConstructionCompanyWhenHavingOther()
+        {
+            _user.ConstructionCompany = new ConstructionCompany();
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            var constructionCompany = _service.CreateConstructionCompany("Test Construction Company");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestCreateConstructionCompanyError()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+
+            _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Expression<Func<ConstructionCompany, bool>> predicate, List<string> includes) => null);
+
+            _constructionCompanyRepositoryMock.Setup(r => r.Insert(It.IsAny<ConstructionCompany>())).Throws(new Exception());
+            _companyAdministratorRepositoryMock.Setup(r => r.Update(It.IsAny<CompanyAdministrator>())).Verifiable();
+
+            var constructionCompany = _service.CreateConstructionCompany("Test Construction Company");
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestModifyConstructionCompanyWithInvalidName()
+        {
+
+            var currentUser = new CompanyAdministrator()
+            {
+                Email = "companyAdmin@correo.com",
+                Id = 1,
+                Name = "Test",
+                LastName = "Example",
+                Password = "Test.1234!",
+                ConstructionCompany = new ConstructionCompany()
+                {
+                    Id = 1,
+                    Name = "Test Construction Company"
+                }
+            };
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+
+            _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Expression<Func<ConstructionCompany, bool>> predicate, List<string> includes) => null);
+
+            _constructionCompanyRepositoryMock.Setup(r => r.Update(It.IsAny<ConstructionCompany>())).Verifiable();
+
+            var constructionCompany = _service.ModifyConstructionCompany("");
+            
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestModifyConstructionCompanyWithExistentName()
+        {
+
+            var currentUser = new CompanyAdministrator()
+            {
+                Email = "companyAdmin@correo.com",
+                Id = 1,
+                Name = "Test",
+                LastName = "Example",
+                Password = "Test.1234!",
+                ConstructionCompany = new ConstructionCompany()
+                {
+                    Id = 1,
+                    Name = "Test Construction Company"
+                }
+            };
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+
+            _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
+                .Returns(new ConstructionCompany());
+
+            var constructionCompany = _service.ModifyConstructionCompany("Construction Company");
+            
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestModifyConstructionCompanyError()
+        {
+
+            var currentUser = new CompanyAdministrator()
+            {
+                Email = "companyAdmin@correo.com",
+                Id = 1,
+                Name = "Test",
+                LastName = "Example",
+                Password = "Test.1234!",
+                ConstructionCompany = new ConstructionCompany()
+                {
+                    Id = 1,
+                    Name = "Test Construction Company"
+                }
+            };
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+
+            _constructionCompanyRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>()))
+                .Returns((Expression<Func<ConstructionCompany, bool>> predicate, List<string> includes) => null);
+
+            _constructionCompanyRepositoryMock.Setup(r => r.Update(It.IsAny<ConstructionCompany>())).Throws(new Exception());
+
+            var constructionCompany = _service.ModifyConstructionCompany("Construction Company");
+            
+        }
     }
 }

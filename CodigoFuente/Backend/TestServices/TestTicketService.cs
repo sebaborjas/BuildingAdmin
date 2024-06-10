@@ -745,5 +745,193 @@ namespace TestServices
             _ticketRepository.VerifyAll();
             Assert.AreEqual(0, result.Count);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void TestCreateInvalidTicket()
+        {
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
+            _ticketService.CreateTicket(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestCreateTicketError()
+        {
+            var ticket = new Ticket()
+            {
+                Category = new Category() { Id = 1 },
+                Apartment = new Apartment() { Id = 1 },
+                Description = "Perdida de agua",
+            };
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketRepository.Setup(r => r.Insert(It.IsAny<Ticket>())).Throws(new Exception());
+            _categoryRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(_category);
+            _buildingRepository.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
+
+            var result = _ticketService.CreateTicket(ticket);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestAssignTicketError()
+        {
+            var ticket = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+            };
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Buildings = _buildings
+            };
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_user);
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _ticketRepository.Setup(r => r.Update(It.IsAny<Ticket>())).Throws(new Exception());
+            _maintenanceOperatorRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
+
+            var result = _ticketService.AssignTicket(1, 2);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestCompleteTicketError()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Buildings = _buildings
+            };
+            var ticket = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.InProgress,
+                CreatedBy = _user
+            };
+            _ticketRepository.Setup(r => r.Get(It.IsAny<int>())).Returns(ticket);
+            _ticketRepository.Setup(r => r.Update(It.IsAny<Ticket>())).Throws(new Exception());
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
+
+            var result = _ticketService.CompleteTicket(1, 2000);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestGetTicketsError()
+        {
+            _ticketRepository.Setup(r => r.GetAll<Ticket>()).Throws(new Exception());
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
+
+            var result = _ticketService.GetTickets(null);
+        }
+
+        [TestMethod]
+        public void TestGetAssignedTickets()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Buildings = _buildings
+            };
+            var ticket1 = new Ticket()
+            {
+                Id = 1,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var ticket2 = new Ticket()
+            {
+                Id = 2,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var ticket3 = new Ticket()
+            {
+                Id = 3,
+                Category = _category,
+                Apartment = new Apartment(),
+                Description = "Perdida de agua",
+                AssignedTo = _maintenance,
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = new Manager()
+            };
+            var ticket4 = new Ticket()
+            {
+                Id = 4,
+                Category = _category,
+                Apartment = _apartment,
+                Description = "Perdida de agua",
+                AssignedTo = new MaintenanceOperator(),
+                Status = Domain.DataTypes.Status.Open,
+                CreatedBy = _user
+            };
+            var allTickets = new List<Ticket>
+            {
+                ticket1, ticket2, ticket3, ticket4
+            };
+            _ticketRepository.Setup(r => r.GetAll<Ticket>()).Returns(allTickets);
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
+
+            var result = _ticketService.GetAssignedTickets();
+
+            _sessionService.VerifyAll();
+            _ticketRepository.VerifyAll();
+            Assert.AreEqual(result.Count, 3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestGetAssignedTicketsError()
+        {
+            _maintenance = new MaintenanceOperator()
+            {
+                Id = 2,
+                Email = "mantenimiento@correo.com",
+                Password = "Pass123.!",
+                Name = "Rodrigo",
+                LastName = "Rodriguez",
+                Buildings = _buildings
+            };
+            _ticketRepository.Setup(r => r.GetAll<Ticket>()).Throws(new Exception());
+            _sessionService.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_maintenance);
+            _ticketService = new TicketService(_ticketRepository.Object, _sessionService.Object, _categoryRepository.Object, _maintenanceOperatorRepository.Object, _buildingRepository.Object);
+
+            var result = _ticketService.GetAssignedTickets();
+
+        }
     }
 }
