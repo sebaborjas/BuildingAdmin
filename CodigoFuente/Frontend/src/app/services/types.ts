@@ -141,6 +141,20 @@ export interface TicketsByCategoriesModel {
   ticketsClosed: number;
 }
 
+export interface TicketsByBuildingModel {
+  buildingName: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
+}
+
+export interface TicketsByApartmentsModel {
+  apartmentAndOwner: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
+}
+
 export interface CategoryModel {
   id: number;
   name: string;
