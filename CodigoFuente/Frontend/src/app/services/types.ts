@@ -119,7 +119,7 @@ export interface TicketModel {
   id: number;
   description: string;
   creationDate: string;
-  apartment: string | null;
+  apartment: ApartmentModel;
   totalCost: number;
   createdBy: string | null;
   category: Category;
