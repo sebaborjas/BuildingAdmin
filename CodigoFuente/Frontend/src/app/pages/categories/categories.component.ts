@@ -73,7 +73,6 @@ export class CategoriesComponent {
     this._categoryService.getCategories()
       .subscribe((response) => {
         this.categories = response;
-        console.log(response);
 
         this._loadingService.loadingOff();
       },

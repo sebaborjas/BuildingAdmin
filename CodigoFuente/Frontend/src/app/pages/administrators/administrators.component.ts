@@ -32,7 +32,6 @@ export class AdministratorsComponent {
   emptyFields: boolean = false;
 
   createAdministratorModal() {
-    console.log('createAdministratorModal');
     this.modalVisible = true;
   }
 

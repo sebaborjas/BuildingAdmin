@@ -15,36 +15,58 @@ import { AdministratorsComponent } from './pages/administrators/administrators.c
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { MaintenanceOperatorsComponent } from './pages/maintenance-operators/maintenance-operators.component';
+import { ManageInvitationComponent } from './manage-invitation/manage-invitation.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
+import { roles } from './sidebar/roleTypes';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'invitation', component: ManageInvitationComponent },
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: 'invitations', component: InvitationsComponent },
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'reports', 
+      {
+        path: 'reports',
         children: [
-          { path: 'admin', component: ReportsAdminComponent },
-          { path: 'manager', component: ReportsManagerComponent}
+          {
+            path: 'admin', component: ReportsAdminComponent,
+            canActivate: [RoleGuard], data: { expectedRole: roles.ADMINISTRATOR }
+          },
+          { path: 'manager', component: ReportsManagerComponent }
         ]
       },
-      { path: 'constructionCompanies', component: ConstructionCompanyComponent},
-      { path: 'buildings', component: BuildingsComponent},
-      { path: 'companyAdministrators', component: CompanyAdministratorsComponent},
-      { path: 'importBuildings', component: ImportBuildingsComponent},
-      { path: 'tickets', 
+      { path: 'constructionCompanies', component: ConstructionCompanyComponent },
+      { path: 'buildings', component: BuildingsComponent },
+      { path: 'companyAdministrators', component: CompanyAdministratorsComponent },
+      { path: 'importBuildings', component: ImportBuildingsComponent },
+      {
+        path: 'tickets',
         children: [
           { path: 'maintenance', component: TicketsMaintenanceComponent },
-          { path: 'manager', component: TicketsManagerComponent}
+          { path: 'manager', component: TicketsManagerComponent }
         ]
       },
-      { path: 'categories', component: CategoriesComponent },
-      { path: 'administrators', component: AdministratorsComponent },
+      {
+        path: 'categories', component: CategoriesComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.ADMINISTRATOR }
+      },
+      {
+        path: 'administrators', component: AdministratorsComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.ADMINISTRATOR }
+      },
       { path: 'profile', component: ProfileComponent },
       { path: 'maintenanceOperators', component: MaintenanceOperatorsComponent },
+      {
+        path: 'invitations', component: InvitationsComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.ADMINISTRATOR }
+      },
+
     ],
   },
-  { path: '**', component: LoginComponent },
+  { path: '**', component: NotFoundComponent },
 ];

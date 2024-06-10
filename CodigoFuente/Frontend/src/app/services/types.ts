@@ -172,6 +172,19 @@ export interface AdminModel {
   password: string;
 }
 
+export interface AcceptInvitationModel {
+  email: string;
+  password: string;
+}
+
+export interface RejectInvitationModel {
+  email: string;
+}
+
+export interface AcceptInvitationOutputModel{
+  userId: number;
+}
+
 export interface TicketCreateModel {
   description: string;
   apartmentId: number;
