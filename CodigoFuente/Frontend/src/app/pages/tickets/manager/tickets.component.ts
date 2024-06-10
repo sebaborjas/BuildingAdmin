@@ -7,7 +7,7 @@ import { CategoryService } from '../../../services/category.service';
 import { TicketService } from '../../../services/ticket.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { StatusTypes } from '../statusTypes';
-import { BuildingModel, CategoryModel, TicketCreateModel, ApartmentModel, TicketModel, MaintenanceOperatorModelOut } from '../../../services/types';
+import { BuildingModel, CategoryModel, TicketCreateModel, ApartmentTicketModel, TicketModel, MaintenanceOperatorModelOut } from '../../../services/types';
 import { UserService } from '../../../services/user.service';
 
 @Component({
@@ -37,14 +37,7 @@ export class TicketsManagerComponent implements OnInit {
     creationDate: '',
     apartment: {
       id: 0,
-      floor: 0,
-      doorNumber: 0,
-      ownerName: '',
-      ownerLastName: '',
-      ownerEmail: '',
-      rooms: 0,
-      bathrooms: 0,
-      hasTerrace: false
+      doorNumber: 0
     },
     totalCost: 0,
     createdBy: null,
@@ -56,14 +49,7 @@ export class TicketsManagerComponent implements OnInit {
     status: '',
     attentionDate: '',
     closingDate: '',
-    assignedTo: {
-      lastName: '',
-      buildings: null,
-      id: 0,
-      name: '',
-      email: '',
-      password: ''
-    }
+    idOperatorAssignedTo : 0,
   };
   selectedMaintenanceOperator: number = 0;
   description: string = '';
@@ -81,7 +67,7 @@ export class TicketsManagerComponent implements OnInit {
 
   buildings: BuildingModel[] = [];
   categories: CategoryModel[] = [];
-  apartments: ApartmentModel[] = [];
+  apartments: ApartmentTicketModel[] = [];
   tickets: TicketModel[] = [];
   maintenanceOperators: MaintenanceOperatorModelOut[] = [];
 
@@ -109,6 +95,11 @@ export class TicketsManagerComponent implements OnInit {
     this.selectedTicket = ticket;
     this.isVisibleModalAssign = true;
   }
+
+  hideAssignModal() {
+    this.isVisibleModalAssign = false;
+  }
+
 
   hideModal() {
     this.isVisibleModal = false;
@@ -237,7 +228,6 @@ export class TicketsManagerComponent implements OnInit {
 
   assignTicket() {
     this._loadingService.loadingOn();
-    console.log("assignTicket", this.selectedTicket.id, this.selectedMaintenanceOperator);
     this._ticketService.AssignTicket(this.selectedTicket.id, this.selectedMaintenanceOperator)
       .pipe(
         this._toastService.observe({
@@ -252,7 +242,6 @@ export class TicketsManagerComponent implements OnInit {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log("assignTicket",error);
           this._loadingService.loadingOff();
         }
       );
