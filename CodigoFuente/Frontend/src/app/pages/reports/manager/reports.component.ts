@@ -66,8 +66,13 @@ export class ReportsManagerComponent {
       );
   }
 
-  setBuildingName(buildingName: string) {
-    console.log(buildingName);
+  setBuildingName(event: Event) {
+    const buildingName = (event.target as HTMLSelectElement).value;
+    this.buildingSelected = buildingName;
+  }
+
+  setBuildingNameApartment(event: Event) {
+    const buildingName = (event.target as HTMLSelectElement).value;
     this.buildingSelected = buildingName;
   }
 
@@ -76,6 +81,10 @@ export class ReportsManagerComponent {
     this.showReportBuilding();
   }
 
+  clearReportByBuilding() {
+    this.isVisibleReportBuilding = false;
+    this.ticketsByBuilding = [];
+  }
 
   showReportBuilding() {
     this._loadingService.loadingOn();
@@ -101,6 +110,10 @@ export class ReportsManagerComponent {
     this.getReportTicketsByApartment();
   }
 
+  clearReportByApartment() {
+    this.isVisibleReportApartment = false;
+    this.ticketsByApartment = [];
+  }
 
   getReportTicketsByApartment() {
     this._loadingService.loadingOn();
@@ -116,5 +129,5 @@ export class ReportsManagerComponent {
         }
       );
   }
-
+  
 }
