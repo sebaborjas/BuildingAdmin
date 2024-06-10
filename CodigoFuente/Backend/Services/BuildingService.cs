@@ -168,8 +168,9 @@ public class BuildingService : IBuildingService
                 }
                 return new List<Building> { building };
             }
-            var buildings = _buildingRepository.GetByCondition(b => b.ConstructionCompany.Name == constructionCompany.Name);
-            return new List<Building> { buildings };
+            var allBuildings = _buildingRepository.GetAll<Building>();
+            var buildings = allBuildings.Where(building => building.ConstructionCompany.Name == constructionCompany.Name).ToList();
+            return buildings;
         }
         catch (Exception e)
         {
