@@ -49,7 +49,15 @@ namespace TestWebApi
             {
                 Description = "Ventana rota",
                 Apartment = _apartment,
-                Category = new Category() { Id = 1, Name = "Maintenance" }
+                Category = new Category() { Id = 1, Name = "Maintenance" },
+                CreatedBy = new Manager()
+                {
+                    Id = 1,
+                    Name = "Juan",
+                    LastName = "Perez",
+                    Email = "mail@mail.com"
+                }
+                
             };
 
             _ticketServiceMock.Setup(x => x.CreateTicket(It.IsAny<Ticket>())).Returns(ticket);
@@ -70,7 +78,7 @@ namespace TestWebApi
             _ticketServiceMock.VerifyAll();
             Assert.AreEqual(ticketResponse, expectedTicket);
         }
-
+        
         [TestMethod]
         [ExpectedException(typeof(InvalidDataException))]
         public void TestCreateTicketBadRequest()
@@ -98,13 +106,23 @@ namespace TestWebApi
                 {
                     Description = "Ventana rota",
                     Apartment = _apartment,
-                    Category = new Category() { Id = 1, Name = "Maintenance" }
+                    Category = new Category() { Id = 1, Name = "Maintenance" },
+                    CreatedBy = new Manager()
+                    {
+                        Id = 1,
+                        Name = "Manager"
+                    }
                 },
                 new Ticket()
                 {
                     Description = "Limpieza grasera",
                     Apartment = _apartment,
-                    Category = new Category() { Id = 2, Name = "Plumber" }
+                    Category = new Category() { Id = 2, Name = "Plumber" },
+                    CreatedBy = new Manager()
+                    {
+                        Id = 1,
+                        Name = "Manager"
+                    }
                 }
             };
 
@@ -148,7 +166,14 @@ namespace TestWebApi
             {
                 Description = "Ventana rota",
                 Apartment = _apartment,
-                Category = new Category() { Id = 1, Name = "Maintenance" }
+                Category = new Category() { Id = 1, Name = "Maintenance" },
+                CreatedBy = new Manager()
+                {
+                    Id = 1,
+                    Name = "Juan",
+                    LastName = "Perez",
+                    Email = "mail@mail.com"
+                }
             };
 
             _ticketServiceMock.Setup(x => x.AssignTicket(It.IsAny<int>(), It.IsAny<int>())).Returns(ticket);
@@ -192,7 +217,12 @@ namespace TestWebApi
             {
                 Description = "Ventana rota",
                 Apartment = _apartment,
-                Category = new Category() { Id = 1, Name = "Maintenance" }
+                Category = new Category() { Id = 1, Name = "Maintenance" },
+                CreatedBy = new Manager()
+                {
+                    Id = 1,
+                    Name = "Manager"
+                }
             };
 
             _ticketServiceMock.Setup(x => x.StartTicket(It.IsAny<int>())).Returns(ticket);
@@ -225,7 +255,12 @@ namespace TestWebApi
             {
                 Description = "Ventana rota",
                 Apartment = _apartment,
-                Category = new Category() { Id = 1, Name = "Maintenance" }
+                Category = new Category() { Id = 1, Name = "Maintenance" },
+                CreatedBy = new Manager()
+                {
+                    Id = 1,
+                    Name = "Manager"
+                }
             };
 
             _ticketServiceMock.Setup(x => x.CompleteTicket(It.IsAny<int>(), It.IsAny<float>())).Returns(ticket);
@@ -270,13 +305,23 @@ namespace TestWebApi
                 {
                     Description = "Ventana rota",
                     Apartment = _apartment,
-                    Category = new Category() { Id = 1, Name = "Maintenance" }
+                    Category = new Category() { Id = 1, Name = "Maintenance" },
+                    CreatedBy = new Manager()
+                    {
+                        Id = 1,
+                        Name = "Manager"
+                    }
                 },
                 new Ticket()
                 {
                     Description = "Limpieza grasera",
                     Apartment = _apartment,
-                    Category = new Category() { Id = 2, Name = "Plumber" }
+                    Category = new Category() { Id = 2, Name = "Plumber" },
+                    CreatedBy = new Manager()
+                    {
+                        Id = 1,
+                        Name = "Manager"
+                    }
                 }
             };
 
@@ -296,7 +341,7 @@ namespace TestWebApi
             _ticketServiceMock.VerifyAll();
             CollectionAssert.AreEqual(ticketsResponse, expectedTickets);
         }
-
+        
     }
 
 

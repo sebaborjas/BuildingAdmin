@@ -15,34 +15,27 @@ namespace DTO.Out
             Id = ticket.Id;
             Description = ticket.Description;
             CreationDate = ticket.CreationDate;
-            Apartment = new GetApartmentOutput(ticket.Apartment);
+            Apartment = new GetTicketApartmentOutput(ticket.Apartment);
             TotalCost = ticket.TotalCost;
-            CreatedBy = new GetManagerOutput(ticket.CreatedBy);
+            CreatedBy = new GetTicketCreatedByUserOutput(ticket.CreatedBy);
             Category = new GetCategoryOutput(ticket.Category);
             Status = ticket.Status;
             AttentionDate = ticket.AttentionDate;
             ClosingDate = ticket.ClosingDate;
-            if(ticket.AssignedTo != null)
-            {
-                AssignedTo = new MaintenanceOperatorOutput(ticket.AssignedTo);
-            }
-            else
-            {
-                AssignedTo = null;
-            }
+            IdOperatorAssignedTo = ticket.IdOperatorAssigned;
         }
 
         public int Id { get; set; }
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
-        public GetApartmentOutput Apartment { get; set; }
+        public GetTicketApartmentOutput Apartment { get; set; }
         public float TotalCost { get; set; }
-        public GetManagerOutput CreatedBy { get; set; }
+        public GetTicketCreatedByUserOutput CreatedBy { get; set; }
         public GetCategoryOutput Category { get; set; }
         public Status Status { get; set; }
         public DateTime AttentionDate { get; set; }
         public DateTime ClosingDate { get; set; }
-        public MaintenanceOperatorOutput AssignedTo { get; set; }
+        public int? IdOperatorAssignedTo { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -51,18 +44,63 @@ namespace DTO.Out
                 return false;
             }
             TicketOutput ticketModel = (TicketOutput)obj;
-            return obj is TicketOutput output &&
+            var output = (TicketOutput)obj;
+            return output != null &&
                     Id == output.Id &&
                     Description == output.Description &&
-                    CreationDate == output.CreationDate &&
-                    Apartment == output.Apartment &&
+                    CreationDate.Equals(output.CreationDate) &&
+                    Apartment.Equals(output.Apartment) &&
                     TotalCost == output.TotalCost &&
-                    CreatedBy == output.CreatedBy &&
-                    Category == output.Category &&
+                    CreatedBy.Equals(output.CreatedBy) &&
+                    Category.Equals(output.Category) &&
                     Status == output.Status &&
                     AttentionDate == output.AttentionDate &&
                     ClosingDate == output.ClosingDate &&
-                    AssignedTo == output.AssignedTo;
+                    IdOperatorAssignedTo == output.IdOperatorAssignedTo;
+        }
+    }
+
+    public class GetTicketApartmentOutput
+    {
+        public int Id { get; set; }
+        public int DoorNumber { get; set; }
+
+        public GetTicketApartmentOutput(Apartment apartment)
+        {
+            Id = apartment.Id;
+            DoorNumber = apartment.DoorNumber;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is GetTicketApartmentOutput)
+            {
+                var objToCompare = (GetTicketApartmentOutput)obj;
+                return objToCompare.Id == Id && objToCompare.DoorNumber == DoorNumber;
+            }
+            return false;
+        }
+    }
+
+    public class GetTicketCreatedByUserOutput
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public GetTicketCreatedByUserOutput(Manager user)
+        {
+            Id = user.Id;
+            Name = user.Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GetTicketCreatedByUserOutput)
+            {
+                var objToCompare = (GetTicketCreatedByUserOutput)obj;
+                return objToCompare.Id == Id && objToCompare.Name == Name;
+            }
+            return false;
         }
     }
 }

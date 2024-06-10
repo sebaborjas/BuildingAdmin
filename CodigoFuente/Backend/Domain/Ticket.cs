@@ -12,7 +12,7 @@ public class Ticket
     private Manager _createdBy;
 
     public Category Category { get; set; }
-    public MaintenanceOperator AssignedTo { get; set; }
+    public int? IdOperatorAssigned { get; set; }
     public Status Status { get; set; } = Status.Open;
     public DateTime CreationDate { get; private set; } = DateTime.Now.Date;
     public DateTime AttentionDate { get; private set; }

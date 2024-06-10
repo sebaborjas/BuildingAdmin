@@ -7,13 +7,15 @@ namespace Services;
 public class ReportsService : IReportServices
 {
     private readonly IGenericRepository<Building> _buildingRepository;
+    private readonly IGenericRepository<MaintenanceOperator> _maintenanceOperatorRepository;
 
     private readonly ISessionService _sessionService;
 
-    public ReportsService(IGenericRepository<Building> buildingRepository, ISessionService sessionService)
+    public ReportsService(IGenericRepository<Building> buildingRepository, ISessionService sessionService, IGenericRepository<MaintenanceOperator> maintenanceOperatorRepository)
     {
         _buildingRepository = buildingRepository;
         _sessionService = sessionService;
+        _maintenanceOperatorRepository = maintenanceOperatorRepository;
     }
 
     public ICollection<TicketByBuilding> GetTicketsByBuilding(string? name = null)
@@ -64,12 +66,13 @@ public class ReportsService : IReportServices
             var building = buildings.FirstOrDefault(b => b.Name == buildingName);
 
             var tickets = building.Tickets;
-
+            
             var result = new List<TicketsByMaintenanceOperator>();
 
             if (operatorName != null)
             {
-                tickets = tickets.Where(t => t.AssignedTo?.Name == operatorName).ToList();
+                var maintenanceOperator = _maintenanceOperatorRepository.GetByCondition(o => o.Name == operatorName);
+                tickets = tickets.Where(t => t.IdOperatorAssigned != null && t.IdOperatorAssigned == maintenanceOperator.Id).ToList();
 
                 var reportData = new TicketsByMaintenanceOperator
                 {
@@ -84,13 +87,14 @@ public class ReportsService : IReportServices
             }
             else
             {
-                var ticketsAgrupedByOperator = tickets.GroupBy(t => t.AssignedTo?.Name);
+                var operators = _maintenanceOperatorRepository.GetAll<MaintenanceOperator>();
+                var ticketsAgrupedByOperator = tickets.GroupBy(t => t.IdOperatorAssigned);
 
-                foreach (var ticketGroup in ticketsAgrupedByOperator)
+                foreach (var ticketGroup in ticketsAgrupedByOperator.Where(ticket=>ticket.Key != null))
                 {
                     var reportData = new TicketsByMaintenanceOperator
                     {
-                        OperatorName = ticketGroup.Key,
+                        OperatorName = operators.FirstOrDefault(mOperator=>mOperator.Id == ticketGroup.Key)?.Name,
                         TicketsOpen = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Open),
                         TicketsInProgress = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.InProgress),
                         TicketsClosed = ticketGroup.Count(t => t.Status == Domain.DataTypes.Status.Closed),

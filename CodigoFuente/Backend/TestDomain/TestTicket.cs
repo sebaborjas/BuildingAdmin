@@ -100,8 +100,8 @@ public class TestTicket
     [TestMethod]
     public void TestAssignedTo()
     {
-        ticket.AssignedTo = new MaintenanceOperator();
-        Assert.IsNotNull(ticket.AssignedTo);
+        ticket.IdOperatorAssigned = 1;
+        Assert.AreEqual(ticket.IdOperatorAssigned, 1);
     }
 
     [TestMethod]

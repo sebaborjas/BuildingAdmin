@@ -187,7 +187,7 @@ namespace TestServices
             _sessionService.VerifyAll();
             _ticketRepository.VerifyAll();
             _maintenanceOperatorRepository.VerifyAll();
-            Assert.AreEqual(result.AssignedTo, _maintenance);
+            Assert.AreEqual(result.IdOperatorAssigned, _maintenance.Id);
         }
 
         [TestMethod]
@@ -351,7 +351,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.InProgress,
                 CreatedBy = _user
             };
@@ -362,7 +362,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -424,7 +424,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = new MaintenanceOperator(),
+                IdOperatorAssigned = 5,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -457,7 +457,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.InProgress,
                 CreatedBy = _user
             };
@@ -490,7 +490,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.InProgress,
                 CreatedBy = _user
             };
@@ -549,7 +549,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = new MaintenanceOperator(),
+                IdOperatorAssigned = 5,
                 Status = Domain.DataTypes.Status.InProgress,
                 CreatedBy = _user
             };
@@ -582,7 +582,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -614,7 +614,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -624,7 +624,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -634,7 +634,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = new Apartment(),
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = new Manager()
             };
@@ -644,7 +644,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -682,7 +682,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -692,7 +692,7 @@ namespace TestServices
                 Category = new Category() { Id = 5, Name = "Otra categoria" },
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -702,7 +702,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = new Apartment(),
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = new Manager()
             };
@@ -712,7 +712,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -823,7 +823,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.InProgress,
                 CreatedBy = _user
             };
@@ -864,7 +864,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -874,7 +874,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };
@@ -884,7 +884,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = new Apartment(),
                 Description = "Perdida de agua",
-                AssignedTo = _maintenance,
+                IdOperatorAssigned = _maintenance.Id,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = new Manager()
             };
@@ -894,7 +894,7 @@ namespace TestServices
                 Category = _category,
                 Apartment = _apartment,
                 Description = "Perdida de agua",
-                AssignedTo = new MaintenanceOperator(),
+                IdOperatorAssigned = 100,
                 Status = Domain.DataTypes.Status.Open,
                 CreatedBy = _user
             };

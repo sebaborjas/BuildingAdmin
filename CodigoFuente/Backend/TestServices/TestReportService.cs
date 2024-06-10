@@ -17,12 +17,14 @@ namespace TestServices
 
         Mock<ISessionService> _sessionServiceMock;
         Mock<IGenericRepository<Building>> _buildingRepositoryMock;
+        Mock<IGenericRepository<MaintenanceOperator>> _maintenanceOperatorMock;
 
         [TestInitialize]
         public void SetUp()
         {
             _buildingRepositoryMock = new Mock<IGenericRepository<Building>>(MockBehavior.Strict);
             _sessionServiceMock = new Mock<ISessionService>(MockBehavior.Strict);
+            _maintenanceOperatorMock = new Mock<IGenericRepository<MaintenanceOperator>>(MockBehavior.Strict);
         }
         
         [TestMethod]
@@ -58,7 +60,7 @@ namespace TestServices
                     Buildings = new List<Building> { firstBuilding, secondBuilding }
                 });
 
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
 
             var ticketsByBuilding = _reportService.GetTicketsByBuilding();
 
@@ -113,7 +115,7 @@ namespace TestServices
                     Buildings = new List<Building> { firstBuilding, secondBuilding }
                 });
 
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
 
             var expected = new
             {
@@ -142,22 +144,25 @@ namespace TestServices
         [TestMethod]
         public void TestGetTicketsByMaintenanceOperator()
         {
-            MaintenanceOperator operatorUno = new MaintenanceOperator { Name = "Operator Uno" };
-            MaintenanceOperator operatorDos = new MaintenanceOperator { Name = "Operator Dos" };
+            var apartment = new Apartment {Id = 1, DoorNumber = 100 };
+            var building = new Building { Id = 1, Apartments = [apartment] };
+            MaintenanceOperator operatorUno = new MaintenanceOperator { Id = 1, Name = "Operator Uno", Buildings = [building] };
+            MaintenanceOperator operatorDos = new MaintenanceOperator { Id = 2, Name = "Operator Dos", Buildings = [building] };
 
-            Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+            Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 1, Apartment = apartment };
             ticketUno.AttendTicket();
 
-            Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+            Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 2, Apartment = apartment };
             ticketDos.AttendTicket();
             ticketDos.CloseTicket(100);
 
-            Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
-            Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
-            Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+            Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 1, Apartment = apartment };
+            Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 2, Apartment = apartment };
+            Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 2, Apartment = apartment };
             ticketCinco.AttendTicket();
-            Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
-
+            Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 2, Apartment = apartment };
+            _maintenanceOperatorMock.Setup(r => r.GetAll<MaintenanceOperator>()).Returns([operatorUno, operatorDos]);
+                
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
                 .Returns(new Manager
                 {
@@ -180,7 +185,7 @@ namespace TestServices
                     }
                 });
 
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
 
             var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno");
 
@@ -192,7 +197,7 @@ namespace TestServices
                     OperatorName = "Operator Uno",
                     TicketsOpen = 1,
                     TicketsInProgress = 1,
-                    TicketsClosed = 1,
+                    TicketsClosed = 0,
                     AverageTimeToClose = "00:00"
                 },
                 new
@@ -200,7 +205,7 @@ namespace TestServices
                     OperatorName = "Operator Dos",
                     TicketsOpen = 2,
                     TicketsInProgress = 1,
-                    TicketsClosed = 0,
+                    TicketsClosed = 1,
                     AverageTimeToClose = "00:00"
                 }
             };
@@ -220,22 +225,23 @@ namespace TestServices
         [TestMethod]
         public void TestGetTicketsBySpecificMaintenanceOperator()
         {
-            MaintenanceOperator operatorUno = new MaintenanceOperator { Name = "Operator Uno" };
-            MaintenanceOperator operatorDos = new MaintenanceOperator { Name = "Operator Dos" };
+            MaintenanceOperator operatorUno = new MaintenanceOperator { Id = 1, Name = "Operator Uno" };
+            MaintenanceOperator operatorDos = new MaintenanceOperator { Id = 2, Name = "Operator Dos" };
 
-            Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+            Ticket ticketUno = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 1 };
             ticketUno.AttendTicket();
 
-            Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
+            Ticket ticketDos = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 1 };
             ticketDos.AttendTicket();
             ticketDos.CloseTicket(100);
 
-            Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorUno };
-            Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
-            Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
+            Ticket ticketTres = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 1 };
+            Ticket ticketCuatro = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 2 };
+            Ticket ticketCinco = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 2 };
             ticketCinco.AttendTicket();
-            Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, AssignedTo = operatorDos };
-
+            Ticket ticketSeis = new Ticket { Status = Domain.DataTypes.Status.Open, IdOperatorAssigned = 2 };
+            _maintenanceOperatorMock.Setup(r=>r.GetByCondition(It.IsAny<Expression<Func<MaintenanceOperator, bool>>>(),null))
+                .Returns(operatorUno);
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>()))
                 .Returns(new Manager
                 {
@@ -258,7 +264,7 @@ namespace TestServices
                     }
                 });
 
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
 
             var ticketsByOperator = _reportService.GetTicketsByMaintenanceOperator("Building Uno", "Operator Uno");
 
@@ -323,7 +329,7 @@ namespace TestServices
                     }
                 });
 
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
 
             var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno");
 
@@ -372,7 +378,7 @@ namespace TestServices
                     }
                 });
 
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
 
             var ticketsByOperator = _reportService.GetTicketsByCategory("Building Uno", "Category Dos");
 
@@ -454,7 +460,7 @@ namespace TestServices
                     Buildings = new List<Building> { firstBuilding }
                 });
 
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
 
             var expected = new List<TicketByApartment>
             { 
@@ -487,7 +493,7 @@ namespace TestServices
         public void GetTicketsByBuildingError()
         {
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((Manager)null);
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
             _reportService.GetTicketsByBuilding();
         }
         
@@ -497,7 +503,7 @@ namespace TestServices
         public void GetTicketsByMaintenanceOperatorError()
         {
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
             _reportService.GetTicketsByMaintenanceOperator("Edificio");
         }
 
@@ -506,7 +512,7 @@ namespace TestServices
         public void GetTicketsByCategoryError()
         {
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
             _reportService.GetTicketsByCategory("Edificio");
         }
 
@@ -515,7 +521,7 @@ namespace TestServices
         public void GetTicketsByApartmentError()
         {
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
             _reportService.GetTicketsByApartment("Edificio");
         }
 
@@ -524,7 +530,7 @@ namespace TestServices
         public void GetTicketsByApartmentWithInvalidBuilding()
         {
             _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new Manager() { Buildings = [new Building { Name = "Edificio"}]});
-            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object);
+            _reportService = new ReportsService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _maintenanceOperatorMock.Object);
             _reportService.GetTicketsByApartment("Edificio mal");
         }
 
