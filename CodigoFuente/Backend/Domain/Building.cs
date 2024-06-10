@@ -85,9 +85,9 @@ public class Building
         {
             if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException();
 
-            string patternCalle = @"[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d]+";
+            string patternCalle = @"[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d\.]+";
             string patternNumero = @"\d{1,4}";
-            string patternEsquina = @"[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d]+";
+            string patternEsquina = @"[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\d\.]+";
 
             string pattern = $"^{patternCalle}, {patternNumero}, {patternEsquina}$";   
             bool isValid = IsValidFormat(pattern, value);
