@@ -31,10 +31,9 @@ export enum TicketEndpoint {
 }
 
 export enum ReportEndpoint {
-  REPORT_TICKETS_BY_CATEGORIES = '/api/v2/reports/categories',
+  REPORTS = '/api/v2/reports',
 }
 
 export enum CategoriesEndpoint {
   CATEGORIES = '/api/v2/categories',
 }
-
