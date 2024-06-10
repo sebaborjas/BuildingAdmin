@@ -37,18 +37,39 @@ export const routes: Routes = [
             path: 'admin', component: ReportsAdminComponent,
             canActivate: [RoleGuard], data: { expectedRole: roles.ADMINISTRATOR }
           },
-          { path: 'manager', component: ReportsManagerComponent }
+          {
+            path: 'manager', component: ReportsManagerComponent,
+            canActivate: [RoleGuard], data: { expectedRole: roles.MANAGER }
+          },
         ]
       },
-      { path: 'constructionCompanies', component: ConstructionCompanyComponent },
-      { path: 'buildings', component: BuildingsComponent },
-      { path: 'companyAdministrators', component: CompanyAdministratorsComponent },
-      { path: 'importBuildings', component: ImportBuildingsComponent },
+      {
+        path: 'constructionCompanies', component: ConstructionCompanyComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.COMPANY_ADMIN }
+      },
+      {
+        path: 'buildings', component: BuildingsComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.COMPANY_ADMIN }
+      },
+      {
+        path: 'companyAdministrators', component: CompanyAdministratorsComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.COMPANY_ADMIN }
+      },
+      {
+        path: 'importBuildings', component: ImportBuildingsComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.COMPANY_ADMIN }
+      },
       {
         path: 'tickets',
         children: [
-          { path: 'maintenance', component: TicketsMaintenanceComponent },
-          { path: 'manager', component: TicketsManagerComponent }
+          {
+            path: 'maintenance', component: TicketsMaintenanceComponent,
+            canActivate: [RoleGuard], data: { expectedRole: roles.MAINTENANCE_OPERATOR }
+          },
+          {
+            path: 'manager', component: TicketsManagerComponent,
+            canActivate: [RoleGuard], data: { expectedRole: roles.MANAGER }
+          },
         ]
       },
       {
@@ -60,7 +81,10 @@ export const routes: Routes = [
         canActivate: [RoleGuard], data: { expectedRole: roles.ADMINISTRATOR }
       },
       { path: 'profile', component: ProfileComponent },
-      { path: 'maintenanceOperators', component: MaintenanceOperatorsComponent },
+      {
+        path: 'maintenanceOperators', component: MaintenanceOperatorsComponent,
+        canActivate: [RoleGuard], data: { expectedRole: roles.MANAGER }
+      },
       {
         path: 'invitations', component: InvitationsComponent,
         canActivate: [RoleGuard], data: { expectedRole: roles.ADMINISTRATOR }
