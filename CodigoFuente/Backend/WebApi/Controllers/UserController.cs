@@ -59,37 +59,50 @@ public class UserController : ControllerBase
     return Ok("Se eliminó con éxito el encargado del sistema.");
   }
 
-    [HttpPost("company-administrator")]
-    [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
-    public IActionResult CreateCompanyAdministrator([FromBody] CompanyAdministratorCreateInput newCompanyAdministrator)
-    {
-        CompanyAdministratorOutput companyAdministrator = new CompanyAdministratorOutput(_service.CreateCompanyAdministrator(newCompanyAdministrator.ToEntity()));
-        return Ok(companyAdministrator);
-    }
+  [HttpPost("company-administrator")]
+  [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+  public IActionResult CreateCompanyAdministrator([FromBody] CompanyAdministratorCreateInput newCompanyAdministrator)
+  {
+    CompanyAdministratorOutput companyAdministrator = new CompanyAdministratorOutput(_service.CreateCompanyAdministrator(newCompanyAdministrator.ToEntity()));
+    return Ok(companyAdministrator);
+  }
 
-    [HttpGet("manager")]
-    [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
-    public IActionResult GetManagers()
+  [HttpGet("manager")]
+  [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+  public IActionResult GetManagers()
+  {
+    var managers = _service.GetManagers();
+    var result = new List<GetManagerOutput>();
+    foreach (var manager in managers)
     {
-        var managers = _service.GetManagers();
-        var result = new List<GetManagerOutput>();
-        foreach (var manager in managers)
-        {
-            result.Add(new GetManagerOutput(manager));
-        }
-        return Ok(result);
+      result.Add(new GetManagerOutput(manager));
     }
+    return Ok(result);
+  }
 
-    [HttpGet("company-administrator")]
-    [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
-    public IActionResult GetCompanyAdministrators()
+  [HttpGet("company-administrator")]
+  [AuthenticationFilter(Role = RoleConstants.CompanyAdministratorRole)]
+  public IActionResult GetCompanyAdministrators()
+  {
+    var companyAdministrators = _service.GetCompanyAdministrators();
+    var result = new List<CompanyAdministratorOutput>();
+    foreach (var companyAdministrator in companyAdministrators)
     {
-        var companyAdministrators = _service.GetCompanyAdministrators();
-        var result = new List<CompanyAdministratorOutput>();
-        foreach (var companyAdministrator in companyAdministrators)
-        {
-            result.Add(new CompanyAdministratorOutput(companyAdministrator));
-        }
-        return Ok(result);
+      result.Add(new CompanyAdministratorOutput(companyAdministrator));
     }
+    return Ok(result);
+  }
+
+  [AuthenticationFilter(Role = RoleConstants.ManagerRole)]
+  [HttpGet("maintenance-operator")]
+  public IActionResult GetMaintenanceOperators()
+  {
+    var maintenanceOperators = _service.GetMaintenanceOperators();
+    var result = new List<MaintenanceOperatorOutput>();
+    foreach (var maintenanceOperator in maintenanceOperators)
+    {
+      result.Add(new MaintenanceOperatorOutput(maintenanceOperator));
+    }
+    return Ok(result);
+  }
 }

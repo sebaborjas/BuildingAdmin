@@ -14,7 +14,7 @@ namespace Domain
             }
         }
 
-        public List<Building> Buildings { get; set; }
+        public List<Building> Buildings { get; set; } = new List<Building>();
 
         public bool WorksWithBuilding(Building building)
         {
