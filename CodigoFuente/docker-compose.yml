@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - da2-network
+
+  backend:
+    container_name: backend
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "5222:5222"
+      - "5223:5223"
+    depends_on:
+      - database
+    networks:
+      - da2-network
+    environment:
+      - ASPNETCORE_HTTP_PORT=https://+:5223
+      - ASPNETCORE_URLS=http://+:5222
+
+  database:
+    container_name: database
+    build:
+      context: ../BaseDeDatos
+      dockerfile: Dockerfile
+    ports:
+      - "1433:1433"
+    networks:
+      - da2-network
+
+networks:
+  da2-network:
+    driver: bridge
