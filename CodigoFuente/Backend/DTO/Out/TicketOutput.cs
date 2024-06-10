@@ -15,27 +15,34 @@ namespace DTO.Out
             Id = ticket.Id;
             Description = ticket.Description;
             CreationDate = ticket.CreationDate;
-            Apartment = ticket.Apartment;
+            Apartment = new GetApartmentOutput(ticket.Apartment);
             TotalCost = ticket.TotalCost;
-            CreatedBy = ticket.CreatedBy;
-            Category = ticket.Category;
+            CreatedBy = new GetManagerOutput(ticket.CreatedBy);
+            Category = new GetCategoryOutput(ticket.Category);
             Status = ticket.Status;
             AttentionDate = ticket.AttentionDate;
             ClosingDate = ticket.ClosingDate;
-            AssignedTo = ticket.AssignedTo;
+            if(ticket.AssignedTo != null)
+            {
+                AssignedTo = new MaintenanceOperatorOutput(ticket.AssignedTo);
+            }
+            else
+            {
+                AssignedTo = null;
+            }
         }
 
         public int Id { get; set; }
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
-        public Apartment Apartment { get; set; }
+        public GetApartmentOutput Apartment { get; set; }
         public float TotalCost { get; set; }
-        public Manager CreatedBy { get; set; }
-        public Category Category { get; set; }
+        public GetManagerOutput CreatedBy { get; set; }
+        public GetCategoryOutput Category { get; set; }
         public Status Status { get; set; }
         public DateTime AttentionDate { get; set; }
         public DateTime ClosingDate { get; set; }
-        public MaintenanceOperator AssignedTo { get; set; }
+        public MaintenanceOperatorOutput AssignedTo { get; set; }
 
         public override bool Equals(object obj)
         {
