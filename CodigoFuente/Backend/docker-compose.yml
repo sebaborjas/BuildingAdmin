@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    image: api-image
+    ports:
+      - "5035:5035"
+    volumes:
+      - ./:/app
+    mem_limit: 2GB
+    networks:
+      - building_admin
+
+networks:
+  building_admin:
+    external: true

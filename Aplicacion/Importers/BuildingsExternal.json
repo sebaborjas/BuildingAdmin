@@ -1,0 +1,197 @@
+{
+  "edificios": [
+    {
+      "nombre": "Palacio Salvo",
+      "direccion": {
+        "calle_principal": "Av. 18 de Julio",
+        "numero_puerta": 1371,
+        "calle_secundaria": "Plaza Independencia"
+      },
+      "encargado": null,
+      "gps": {
+        "latitud": -34.9069,
+        "longitud": -56.1991
+      },
+      "gastos_comunes": 5000,
+      "departamentos": [
+        {
+          "piso": 1,
+          "numero_puerta": 101,
+          "habitaciones": 3,
+          "conTerraza": false,
+          "baños": 2,
+          "propietarioEmail": "juan.perez@gmail.com"
+        },
+        {
+          "piso": 2,
+          "numero_puerta": 201,
+          "habitaciones": 2,
+          "conTerraza": true,
+          "baños": 1,
+          "propietarioEmail": "pedro.gonzalez@gmail.com"
+        },
+        {
+          "piso": 3,
+          "numero_puerta": 301,
+          "habitaciones": 1,
+          "conTerraza": false,
+          "baños": 1,
+          "encargado": null,
+          "propietarioEmail": "maria.gonzalez@gmail.com"
+        },
+        {
+          "piso": 4,
+          "numero_puerta": 401,
+          "habitaciones": 3,
+          "conTerraza": true,
+          "baños": 2,
+          "propietarioEmail": "juan.perez@gmail.com"
+        }
+      ]
+    },
+    {
+      "nombre": "Torre de las Telecomunicaciones",
+      "direccion": {
+        "calle_principal": "Guatemala",
+        "numero_puerta": 1075,
+        "calle_secundaria": "Paraguay"
+      },
+      "encargado": "luis.torres@gmail.com",
+      "gps": {
+        "latitud": -34.8833,
+        "longitud": -56.1719
+      },
+      "gastos_comunes": 3500,
+      "departamentos": [
+        {
+          "piso": 1,
+          "numero_puerta": 101,
+          "habitaciones": 2,
+          "conTerraza": false,
+          "baños": 1,
+          "propietarioEmail": "carlos.lopez@gmail.com"
+        },
+        {
+          "piso": 2,
+          "numero_puerta": 202,
+          "habitaciones": 3,
+          "conTerraza": true,
+          "baños": 2,
+          "propietarioEmail": "ana.rodriguez@gmail.com"
+        },
+        {
+          "piso": 3,
+          "numero_puerta": 303,
+          "habitaciones": 1,
+          "conTerraza": false,
+          "baños": 1,
+          "propietarioEmail": "luis.sanchez@gmail.com"
+        },
+        {
+          "piso": 4,
+          "numero_puerta": 404,
+          "habitaciones": 4,
+          "conTerraza": true,
+          "baños": 3,
+          "propietarioEmail": "marta.garcia@gmail.com"
+        }
+      ]
+    },
+    {
+      "nombre": "World Trade Center Montevideo",
+      "direccion": {
+        "calle_principal": "Luis Alberto de Herrera",
+        "numero_puerta": 1248,
+        "calle_secundaria": "26 de Marzo"
+      },
+      "encargado": "miguel.fernandez@gmail.com",
+      "gps": {
+        "latitud": -34.9006,
+        "longitud": -56.1373
+      },
+      "gastos_comunes": 4200,
+      "departamentos": [
+        {
+          "piso": 1,
+          "numero_puerta": 102,
+          "habitaciones": 2,
+          "conTerraza": false,
+          "baños": 1,
+          "propietarioEmail": "andres.ortiz@gmail.com"
+        },
+        {
+          "piso": 1,
+          "numero_puerta": 101,
+          "habitaciones": 3,
+          "conTerraza": true,
+          "baños": 2,
+          "propietarioEmail": "claudia.ramirez@gmail.com"
+        },
+        {
+          "piso": 2,
+          "numero_puerta": 201,
+          "habitaciones": 1,
+          "conTerraza": false,
+          "baños": 1,
+          "propietarioEmail": "fernando.silva@gmail.com"
+        },
+        {
+          "piso": 2,
+          "numero_puerta": 202,
+          "habitaciones": 3,
+          "conTerraza": true,
+          "baños": 2,
+          "propietarioEmail": "mariana.gomez@gmail.com"
+        }
+      ]
+    },
+    {
+      "nombre": "Edificio Libertador",
+      "direccion": {
+        "calle_principal": "Av. Libertador",
+        "numero_puerta": 1409,
+        "calle_secundaria": "Av. Uruguay"
+      },
+      "encargado": "luis.torres@gmail.com",
+      "gps": {
+        "latitud": -34.9022,
+        "longitud": -56.1925
+      },
+      "gastos_comunes": 3800,
+      "departamentos": [
+        {
+          "piso": 1,
+          "numero_puerta": 101,
+          "habitaciones": 2,
+          "conTerraza": false,
+          "baños": 1,
+          "propietarioEmail": "alicia.mendez@gmail.com"
+        },
+        {
+          "piso": 2,
+          "numero_puerta": 202,
+          "habitaciones": 3,
+          "conTerraza": true,
+          "baños": 2,
+          "propietarioEmail": "roberto.diaz@gmail.com"
+        },
+        {
+          "piso": 3,
+          "numero_puerta": 303,
+          "habitaciones": 1,
+          "conTerraza": false,
+          "baños": 1,
+          "propietarioEmail": "carmen.lopez@gmail.com"
+        },
+        {
+          "piso": 4,
+          "numero_puerta": 404,
+          "habitaciones": 4,
+          "conTerraza": true,
+          "baños": 3,
+          "propietarioEmail": "david.morales@gmail.com"
+        }
+      ]
+    }
+  ]
+}
