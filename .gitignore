@@ -9,11 +9,6 @@
 
 .github
 .vscode
-.Dockerfile.swp
-docker-compose.yml
-Dockerfile
-launchsettings.json
-appsettings.json
 
 # User-specific files
 *.rsuser
