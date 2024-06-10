@@ -32,7 +32,17 @@ export class TicketsMaintenanceComponent {
     id: 0,
     description: '',
     creationDate: '',
-    apartment: null,
+    apartment: {
+      id: 0,
+      floor: 0,
+      doorNumber: 0,
+      ownerName: '',
+      ownerLastName: '',
+      ownerEmail: '',
+      rooms: 0,
+      bathrooms: 0,
+      hasTerrace: false
+    },
     totalCost: 0,
     createdBy: null,
     category: {

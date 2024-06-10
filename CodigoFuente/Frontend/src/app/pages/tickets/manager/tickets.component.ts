@@ -6,6 +6,7 @@ import { BuildingsService } from '../../../services/buildings.service';
 import { CategoryService } from '../../../services/category.service';
 import { TicketService } from '../../../services/ticket.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { StatusTypes } from '../statusTypes';
 import { BuildingModel, CategoryModel, TicketCreateModel, ApartmentModel, TicketModel } from '../../../services/types';
 
 @Component({
@@ -26,6 +27,41 @@ export class TicketsManagerComponent implements OnInit {
   ) { }
 
   isVisibleModal: boolean = false;
+  isDetailModelVisible = false;
+  selectedTicket: TicketModel = {
+    id: 0,
+    description: '',
+    creationDate: '',
+    apartment: {
+      id: 0,
+      floor: 0,
+      doorNumber: 0,
+      ownerName: '',
+      ownerLastName: '',
+      ownerEmail: '',
+      rooms: 0,
+      bathrooms: 0,
+      hasTerrace: false
+    },
+    totalCost: 0,
+    createdBy: null,
+    category: {
+      name: '',
+      id: 0,
+      relatedTo: null
+    },
+    status: '',
+    attentionDate: '',
+    closingDate: '',
+    assignedTo: {
+      lastName: '',
+      buildings: null,
+      id: 0,
+      name: '',
+      email: '',
+      password: ''
+    }
+  };
   description: string = '';
   categorySelected: number = 0;
   apartmentSelected: number = 0;
@@ -42,10 +78,22 @@ export class TicketsManagerComponent implements OnInit {
   buildings: BuildingModel[] = [];
   categories: CategoryModel[] = [];
   apartments: ApartmentModel[] = [];
+  tickets: TicketModel[] = [];
 
   ngOnInit(): void {
-    this.getCategories();
     this.getBuildings();
+    this.getCategories();
+  
+   this.getTickets();
+  }
+
+  showMoreInfo(ticket: TicketModel) {
+    this.selectedTicket = ticket;
+    this.isDetailModelVisible = true;
+  }
+
+  hideMoreInfo() {
+    this.isDetailModelVisible = false;
   }
 
   showModal() {
@@ -108,7 +156,11 @@ export class TicketsManagerComponent implements OnInit {
       .subscribe((response: BuildingModel[]) => {
         this.buildings = response;
         this._loadingService.loadingOff();
-      });
+      },
+        (error) => {
+          console.log(error);
+          this._loadingService.loadingOff();
+        });
   }
 
   getCategories() {
@@ -124,6 +176,37 @@ export class TicketsManagerComponent implements OnInit {
       .subscribe((response: CategoryModel[]) => {
         this.categories = response;
         this._loadingService.loadingOff();
-      });
+      },
+        (error) => {
+          console.log(error);
+          this._loadingService.loadingOff();
+        }
+      );
   }
+
+  getTickets() {
+    this._loadingService.loadingOn();
+    this._ticketService.GetTickets()
+      .pipe(
+        this._toastService.observe({
+          loading: 'Obteniendo tickets',
+          success: 'Tickets obtenidos con éxito',
+          error: 'Error al obtener tickets'
+        })
+      )
+      .subscribe((response: TicketModel[]) => {
+        console.log(response);
+        this.tickets = response;
+        this.tickets.forEach((ticket: TicketModel) => {
+          ticket.status = StatusTypes[parseInt(ticket.status)];
+        });
+       
+        this._loadingService.loadingOff();
+      },
+        (error) => {
+          console.log(error);
+          this._loadingService.loadingOff();
+        }
+      );
+    }
 }

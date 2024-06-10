@@ -78,3 +78,153 @@
         </div>
     </div>
 </div>
+
+<div class="mt-4">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-800 dark:bg-gray-900">
+            <tr>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-100 dark:text-gray-400 uppercase tracking-wider">
+                    Descripción
+                </th>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-100 dark:text-gray-400 uppercase tracking-wider">
+                    Categoría
+                </th>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-100 dark:text-gray-400 uppercase tracking-wider">
+                    Apartamento
+                </th>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-100 dark:text-gray-400 uppercase tracking-wider">
+                    Asignado
+                </th>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-100 dark:text-gray-400 uppercase tracking-wider">
+                    Estado
+                </th>
+                
+                <th scope="col" class="relative px-6 py-3">
+                    <span class="sr-only">Acciones</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-gray-700 divide-y divide-gray-600 dark:divide-gray-800">
+            <tr *ngFor="let ticket of tickets" class="hover:bg-gray-600 dark:hover:bg-gray-700">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-100 dark:text-white">{{ ticket.description }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-100 dark:text-white">{{ ticket.category.name }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-100 dark:text-white">{{ ticket.apartment.doorNumber }}</div>
+                </td>
+                
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-100 dark:text-white">{{ ticket.assignedTo ? 'Sí' : 'No' }}</div>
+                </td>
+
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span *ngIf="ticket.status === 'Abierto'"
+                        class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-600 text-blue-100 dark:bg-blue-800 dark:text-blue-100">
+                        {{ ticket.status }}
+                    </span>
+                    <span *ngIf="ticket.status === 'En Proceso'"
+                        class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-600 text-green-100 dark:bg-green-800 dark:text-green-100">
+                        {{ ticket.status }}
+                    </span>
+                    <span *ngIf="ticket.status === 'Cerrado'"
+                        class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-600 text-red-100 dark:bg-red-800 dark:text-red-100">
+                        {{ ticket.status }}
+                    </span>
+                </td>
+                <td class="p-2 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <!-- (click)="showAssignModal(ticket)"-->
+                    <button *ngIf="!ticket.assignedTo"
+                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2 mx-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        Asignar
+                    </button>
+
+                    <button (click)="showMoreInfo(ticket)"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Ver más
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div *ngIf="isDetailModelVisible" id="ticket-info-modal" tabindex="-1"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-auto">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Información del Ticket
+                </h3>
+                <button (click)="hideMoreInfo()"
+                    class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span class="sr-only">Cerrar modal</span>
+                </button>
+            </div>
+            <div class="p-4 md:p-5">
+                <div class="space-y-4">
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Descripción: </strong> {{ selectedTicket.description }}
+                    </p>
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Fecha de creación: </strong> {{ selectedTicket.creationDate | date:'short' }}
+                    </p>
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Categoría: </strong> {{ selectedTicket.category.name }}
+                    </p>
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Estado: </strong> {{ selectedTicket.status }}
+                    </p>
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Costo total: </strong> {{ selectedTicket.totalCost | currency }}
+                    </p>
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Fecha de atención: </strong> {{ selectedTicket.attentionDate | date:'short' }}
+                    </p>
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Fecha de cierre: </strong> {{ selectedTicket.closingDate | date:'short' }}
+                    </p>
+                    <p class="flex items-center text-gray-900 dark:text-gray-100">
+                        <strong>Asignado a: </strong> {{ selectedTicket.assignedTo.name }} {{
+                        selectedTicket.assignedTo.lastName }} ({{ selectedTicket.assignedTo.email }})
+                    </p>
+                    <div class="space-y-2">
+                        <p class="flex items-center text-gray-900 dark:text-gray-100">
+                            <strong>Información del apartamento: </strong>
+                        </p>
+                        <ul class="ml-6 list-disc text-gray-900 dark:text-gray-100">
+                            <li><strong>Puerta: </strong> {{ selectedTicket.apartment.doorNumber }}</li>
+                            <li><strong>Habitaciones: </strong> {{ selectedTicket.apartment.rooms }}</li>
+                            <li><strong>Baños: </strong> {{ selectedTicket.apartment.bathrooms }}</li>
+                            <li><strong>Piso: </strong> {{ selectedTicket.apartment.floor }}</li>
+                            <li><strong>Terraza: </strong> {{ selectedTicket.apartment.hasTerrace ? 'Sí' : 'No' }}</li>
+                            <li><strong>Propietario: </strong> {{ selectedTicket.apartment.ownerName }} {{
+                                selectedTicket.apartment.ownerLastName }} ({{ selectedTicket.apartment.ownerEmail }})
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 md:p-5 border-t rounded-b dark:border-gray-600 text-right">
+                <button (click)="hideMoreInfo()" type="button"
+                    class="text-white bg-red-600 hover:bg-gray-200 rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
