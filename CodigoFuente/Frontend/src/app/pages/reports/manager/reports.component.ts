@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoadingService } from '../../../services/loading.service';
 import { BuildingsService } from '../../../services/buildings.service';
+import { CategoryService } from '../../../services/category.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { BuildingModel, ApartmentModel, TicketsByBuildingModel } from '../../../services/types';
+import { BuildingModel, ApartmentModel, TicketsByBuildingModel, TicketsByApartmentsModel } from '../../../services/types';
 import { ReportService } from '../../../services/report.service';
 
 @Component({
@@ -20,16 +21,20 @@ export class ReportsManagerComponent {
     private _loadingService: LoadingService,
     private _toastService: HotToastService,
     private _buildingService: BuildingsService,
+    private _categoryService: CategoryService,
     private _reportService: ReportService
 
   ) { }
 
   isVisibleReportBuilding: boolean = false;
+  isVisibleReportApartment: boolean = false;
+  apartmentSelected: number = 0;
   buildingSelected: string = '';
 
   buildings: BuildingModel[] = [];
   apartments: ApartmentModel[] = [];
   ticketsByBuilding: TicketsByBuildingModel[] = [];
+  ticketsByApartment: TicketsByApartmentsModel[] = [];
 
   ngOnInit(): void {
     this.getBuilings();
@@ -87,5 +92,29 @@ export class ReportsManagerComponent {
       );
   }
 
+  showReportByApartment() {
+    if (this.buildingSelected == '') {
+      this._toastService.error('Debe seleccionar un edificio');
+      return;
+    }
+    this.isVisibleReportApartment = true;
+    this.getReportTicketsByApartment();
+  }
+
+
+  getReportTicketsByApartment() {
+    this._loadingService.loadingOn();
+    this._reportService.getReportTicketsByApartment(this.buildingSelected)
+      .subscribe((response : TicketsByApartmentsModel[]) => {
+        this.ticketsByApartment = response;
+        console.log(response);
+        this._loadingService.loadingOff();
+      },
+        (error) => {
+          console.log(error);
+          this._loadingService.loadingOff();
+        }
+      );
+  }
 
 }

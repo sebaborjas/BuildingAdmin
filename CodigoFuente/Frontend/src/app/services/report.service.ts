@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ReportEndpoint } from '../../networking/endpoints';
 import { Observable } from 'rxjs';
-import { TicketsByCategoriesModel } from './types';
+import { TicketsByApartmentsModel, TicketsByBuildingModel, TicketsByCategoriesModel } from './types';
 import { environment } from '../../environments/environment.development';
 
 const BASE_URL = environment.API_URL;
@@ -26,34 +26,34 @@ export class ReportService {
     );
   }
 
-  getReportBuildings(building?: string): Observable<TicketsByCategoriesModel[]> {
+  getReportBuildings(building?: string): Observable<TicketsByBuildingModel[]> {
 
     if (building) {
       let params = new HttpParams().set('building', building);
 
-      return this._httpClient.get<TicketsByCategoriesModel[]>(
+      return this._httpClient.get<TicketsByBuildingModel[]>(
         `${BASE_URL}${ReportEndpoint.REPORTS}/buildings`,
         { params: params }
       );
     }
 
-    return this._httpClient.get<TicketsByCategoriesModel[]>(
+    return this._httpClient.get<TicketsByBuildingModel[]>(
       `${BASE_URL}${ReportEndpoint.REPORTS}/buildings`
     );
   }
 
-  getReportTicketsByApartment(building?: string): Observable<TicketsByCategoriesModel[]> {
+  getReportTicketsByApartment(building?: string): Observable<TicketsByApartmentsModel[]> {
 
     if (building) {
       let params = new HttpParams().set('building', building);
 
-      return this._httpClient.get<TicketsByCategoriesModel[]>(
+      return this._httpClient.get<TicketsByApartmentsModel[]>(
         `${BASE_URL}${ReportEndpoint.REPORTS}/tickets-by-apartment`,
         { params: params }
       );
     }
 
-    return this._httpClient.get<TicketsByCategoriesModel[]>(
+    return this._httpClient.get<TicketsByApartmentsModel[]>(
       `${BASE_URL}${ReportEndpoint.REPORTS}/tickets-by-apartment`
     );
   }
