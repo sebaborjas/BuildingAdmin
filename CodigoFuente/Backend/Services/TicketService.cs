@@ -92,7 +92,7 @@ namespace Services
             }
             try
             {
-                ticket.AssignedTo = maintenance;
+                ticket.IdOperatorAssigned = maintenance.Id;
                 _ticketRepository.Update(ticket);
                 return ticket;
             }
@@ -115,7 +115,7 @@ namespace Services
             {
                 throw new InvalidDataException("Invalid ticket status");
             }
-            if (!currentUser.Equals(ticket.AssignedTo))
+            if (currentUser.Id != ticket.IdOperatorAssigned)
             {
                 throw new InvalidDataException("Invalid maintenance operator");
             }
@@ -158,7 +158,7 @@ namespace Services
             {
                 MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
                 var allTickets = _ticketRepository.GetAll<Ticket>();
-                return allTickets.Where(ticket => currentUser.Equals(ticket.AssignedTo)).ToList();
+                return allTickets.Where(ticket => currentUser.Id == ticket.IdOperatorAssigned).ToList();
             }
             catch (Exception e)
             {
@@ -171,7 +171,7 @@ namespace Services
 
             MaintenanceOperator currentUser = (MaintenanceOperator)_sessionService.GetCurrentUser();
             var ticket = _ticketRepository.Get(id);
-            if (ticket == null || !currentUser.Equals(ticket.AssignedTo) || ticket.Status != Domain.DataTypes.Status.Open)
+            if (ticket == null || currentUser.Id != ticket.IdOperatorAssigned || ticket.Status != Domain.DataTypes.Status.Open)
             {
                 throw new InvalidDataException("Invalid ticket data");
             }

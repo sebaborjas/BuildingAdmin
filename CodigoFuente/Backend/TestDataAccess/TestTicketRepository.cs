@@ -62,7 +62,7 @@ namespace TestDataAccess
             var newTicket = new Ticket
             {
                 Apartment = new Apartment(),
-                AssignedTo = null,
+                IdOperatorAssigned = null,
                 Category = new Category(),
                 Id = 5,
                 Description = "Descripcion ticket 5",
@@ -90,7 +90,7 @@ namespace TestDataAccess
             ticketToUpdate.Description = "Descripcion del ticket modificada";
             ticketToUpdate.Apartment = new Apartment();
             ticketToUpdate.Status = Domain.DataTypes.Status.InProgress;
-            ticketToUpdate.AssignedTo = new MaintenanceOperator();
+            ticketToUpdate.IdOperatorAssigned = 1;
             _repository.Update(ticketToUpdate);
 
             var retrievedTicket = _context.Tickets.Find(2);
@@ -105,7 +105,7 @@ namespace TestDataAccess
                 {
                     Id = 1,
                     Apartment = new Apartment(),
-                    AssignedTo = new MaintenanceOperator(),
+                    IdOperatorAssigned = 1,
                     Category = new Category(),
                     CreatedBy = new Manager(),
                     Description = "Descripcion ticket 2",
@@ -115,7 +115,7 @@ namespace TestDataAccess
                 {
                     Id = 2,
                     Apartment = new Apartment(),
-                    AssignedTo = new MaintenanceOperator(),
+                    IdOperatorAssigned = 1,
                     Category = new Category(),
                     CreatedBy = new Manager(),
                     Description = "Descripcion ticket 1",
