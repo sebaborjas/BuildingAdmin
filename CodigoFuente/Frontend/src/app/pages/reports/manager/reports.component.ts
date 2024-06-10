@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoadingService } from '../../../services/loading.service';
 import { BuildingsService } from '../../../services/buildings.service';
-import { CategoryService } from '../../../services/category.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { BuildingModel, ApartmentModel, TicketsByBuildingModel, TicketsByApartmentsModel } from '../../../services/types';
+import { BuildingModel, ApartmentTicketModel, TicketsByBuildingModel, TicketsByApartmentsModel, TicketsByMaintenanceOperatorModel, MaintenanceOperatorModelOut } from '../../../services/types';
 import { ReportService } from '../../../services/report.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-manager-reports',
@@ -21,23 +21,30 @@ export class ReportsManagerComponent {
     private _loadingService: LoadingService,
     private _toastService: HotToastService,
     private _buildingService: BuildingsService,
-    private _categoryService: CategoryService,
-    private _reportService: ReportService
+    private _reportService: ReportService,
+    private _userService: UserService
 
   ) { }
 
   isVisibleReportBuilding: boolean = false;
   isVisibleReportApartment: boolean = false;
+  isVisibleReportMaintenanceOperator: boolean = false;
+
   apartmentSelected: number = 0;
   buildingSelected: string = '';
+  maintenanceOperatorSelected: string = '';
 
   buildings: BuildingModel[] = [];
-  apartments: ApartmentModel[] = [];
+  apartments: ApartmentTicketModel[] = [];
+  maintenanceOperators: MaintenanceOperatorModelOut[] = [];
+
   ticketsByBuilding: TicketsByBuildingModel[] = [];
   ticketsByApartment: TicketsByApartmentsModel[] = [];
+  ticketsByMaintenanceOperator: TicketsByMaintenanceOperatorModel[] = [];
 
   ngOnInit(): void {
     this.getBuilings();
+    this.getMaintenanceOperators();
   }
 
   onBuildingChange(event: Event) {
@@ -60,7 +67,6 @@ export class ReportsManagerComponent {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
@@ -91,11 +97,9 @@ export class ReportsManagerComponent {
     this._reportService.getReportBuildings(this.buildingSelected)
       .subscribe((response) => {
         this.ticketsByBuilding = response;
-        console.log(response);
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
@@ -118,16 +122,67 @@ export class ReportsManagerComponent {
   getReportTicketsByApartment() {
     this._loadingService.loadingOn();
     this._reportService.getReportTicketsByApartment(this.buildingSelected)
-      .subscribe((response : TicketsByApartmentsModel[]) => {
+      .subscribe((response: TicketsByApartmentsModel[]) => {
         this.ticketsByApartment = response;
-        console.log(response);
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
   }
-  
+
+  setMaintenanceOperator(event: Event) {
+    const maintenanceOperatorName = (event.target as HTMLSelectElement).value;
+    this.maintenanceOperatorSelected = maintenanceOperatorName;
+  }
+
+  showReportByMaintenanceOperator() {
+    if (this.buildingSelected == '') {
+      this._toastService.error('Debe seleccionar un edificio');
+      return;
+    }
+    this.isVisibleReportMaintenanceOperator = true;
+    this.getReportOperators();
+  }
+
+  clearReportByMaintenanceOperator() {
+    this.isVisibleReportMaintenanceOperator = false;
+    this.ticketsByMaintenanceOperator = [];
+  }
+
+  getReportOperators() {
+    this._loadingService.loadingOn();
+    this._reportService.getReportOperators(this.buildingSelected, this.maintenanceOperatorSelected)
+      .subscribe((response: TicketsByMaintenanceOperatorModel[]) => {
+        this.ticketsByMaintenanceOperator = response;
+        this._loadingService.loadingOff();
+      },
+        (error) => {
+          this._loadingService.loadingOff();
+        }
+      );
+  }
+  getMaintenanceOperators() {
+    this._loadingService.loadingOn();
+    this._userService.getMaintenanceOperators()
+      .pipe(
+        this._toastService.observe({
+          loading: 'Obteniendo operadores de mantenimiento',
+          success: 'Operadores de mantenimiento obtenidos con éxito',
+          error: 'Error al obtener operadores de mantenimiento'
+        })
+      )
+      .subscribe((response: MaintenanceOperatorModelOut[]) => {
+        this.maintenanceOperators = response;
+        this._loadingService.loadingOff();
+      },
+        (error) => {
+          this._loadingService.loadingOff();
+        }
+      );
+  }
+
+
+
 }

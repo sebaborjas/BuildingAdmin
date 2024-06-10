@@ -73,7 +73,6 @@ export class ReportsAdminComponent {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
 
@@ -88,7 +87,6 @@ export class ReportsAdminComponent {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );
@@ -102,7 +100,6 @@ export class ReportsAdminComponent {
         this._loadingService.loadingOff();
       },
         (error) => {
-          console.log(error);
           this._loadingService.loadingOff();
         }
       );

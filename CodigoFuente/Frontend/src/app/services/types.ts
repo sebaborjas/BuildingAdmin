@@ -32,6 +32,11 @@ export interface BuildingModel {
   apartments: ApartmentModel[];
 }
 
+export interface ApartmentTicketModel {
+  id?: number;
+  doorNumber: number;
+}
+
 export interface ApartmentModel {
   id?: number;
   floor: number;
@@ -119,14 +124,14 @@ export interface TicketModel {
   id: number;
   description: string;
   creationDate: string;
-  apartment: ApartmentModel;
+  apartment: ApartmentTicketModel;
   totalCost: number;
   createdBy: string | null;
   category: Category;
   status: string;
   attentionDate: string;
   closingDate: string;
-  assignedTo: AssignedTo;
+  idOperatorAssignedTo: number | null;
 }
 
 export interface EditInvitationModel {
