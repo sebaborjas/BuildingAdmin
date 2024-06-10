@@ -9,6 +9,7 @@ RUN mkdir -p /Backups
 
 COPY levantarBase.sh /Backups/
 COPY DbInitialize.bak /Backups/
+COPY DbInitialize-WithData.bak /Backups/
 
 RUN chmod +x /Backups/levantarBase.sh
 
