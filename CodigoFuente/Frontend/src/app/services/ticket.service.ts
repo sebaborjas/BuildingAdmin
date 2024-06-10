@@ -39,5 +39,10 @@ export class TicketService {
       { ticket }
     );
   }
-  
+
+  GetTickets(): Observable<TicketModel[]> {
+    return this._httpClient.get<TicketModel[]>(
+      `${BASE_URL}${TicketEndpoint.TICKETS}`
+    );
+  }
 }
