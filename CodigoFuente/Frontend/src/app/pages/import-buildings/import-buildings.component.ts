@@ -38,7 +38,7 @@ export class ImportBuildingsComponent implements OnInit {
       this._toastService.observe({
         loading: 'Importando edificios',
         success: 'Importación completada',
-        error: 'Error al importar',
+        error: (e) => e?.error || 'Error al importar',
       })
     ).subscribe(result=>{
       this.importedBuildings = result.createdBuildings;

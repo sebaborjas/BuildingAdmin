@@ -415,6 +415,7 @@ public class TestUserController
         Assert.AreEqual(maintenanceOperatorModel, expectedContent);
     }
 
+    [TestMethod]
     public void TestCreateCompanyAdministrator()
     {
 
@@ -580,6 +581,7 @@ public class TestUserController
         Assert.IsNotNull(result);
     }
 
+    [TestMethod]
     public void TestGetUserByToken(){
         var user = new Administrator
         {

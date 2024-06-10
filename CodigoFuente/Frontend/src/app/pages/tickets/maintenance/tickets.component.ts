@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { LoadingService } from '../../services/loading.service';
+import { LoadingService } from '../../../services/loading.service';
 import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TicketService } from '../../services/ticket.service';
+import { TicketService } from '../../../services/ticket.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { StatusTypes } from './statusTypes';
-import { TicketModel, Category, AssignedTo } from '../../services/types';
+import { StatusTypes } from '../statusTypes';
+import { TicketModel, Category, AssignedTo } from '../../../services/types';
 
 @Component({
-  selector: 'app-tickets',
+  selector: 'app-maintenance-tickets',
   standalone: true,
   imports: [NgIf, FormsModule, NgFor, CommonModule],
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.css'
 })
-export class TicketsComponent {
+export class TicketsMaintenanceComponent {
   constructor(
     private _loadingService: LoadingService,
     private _ticketService: TicketService,
@@ -32,7 +32,17 @@ export class TicketsComponent {
     id: 0,
     description: '',
     creationDate: '',
-    apartment: null,
+    apartment: {
+      id: 0,
+      floor: 0,
+      doorNumber: 0,
+      ownerName: '',
+      ownerLastName: '',
+      ownerEmail: '',
+      rooms: 0,
+      bathrooms: 0,
+      hasTerrace: false
+    },
     totalCost: 0,
     createdBy: null,
     category: {
@@ -87,7 +97,7 @@ export class TicketsComponent {
         this._toastService.observe({
           loading: 'Cargando tickets asignados',
           success: 'Tickets asignados cargados con exito',
-          error: 'Error al cargar los tickets asignados',
+          error: (e) => e?.error || 'Error al cargar los tickets asignados',
         })
       )
       .subscribe(
@@ -112,7 +122,7 @@ export class TicketsComponent {
         this._toastService.observe({
           loading: 'Atendiendo ticket',
           success: 'Ticket atendido con exito',
-          error: 'Error al atender ticket',
+          error: (e) => e?.error || 'Error al atender ticket',
         })
       )
       .subscribe(
@@ -137,7 +147,7 @@ export class TicketsComponent {
         this._toastService.observe({
           loading: 'Finalizando ticket',
           success: 'Ticket finalizado con exito',
-          error: 'Error al finalizar ticket',
+          error: (e) => e?.error || 'Error al finalizar ticket',
         })
       )
       .subscribe(

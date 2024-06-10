@@ -206,5 +206,55 @@ namespace TestWebApi
 
             Assert.AreEqual(expectedResult, result.Value);
         }
+
+        [TestMethod]
+        public void TestGetTicketsByBuildingReportForBuilding()
+        {
+            var expectedResult = new List<TicketByBuilding>
+            {
+                new TicketByBuilding
+                {
+                    BuildingName = "Building1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3
+                },
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByBuilding(It.IsAny<string?>())).Returns(expectedResult);
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByBuilding("Building1") as OkObjectResult;
+
+            _reportServicesMock.VerifyAll();
+
+            Assert.AreEqual(expectedResult, result.Value);
+        }
+
+        [TestMethod]
+        public void TestGetTicketsCategoryForCategory()
+        {
+            var expectedResult = new List<TicketsByCategory>
+            {
+                new TicketsByCategory
+                {
+                    CategoryName = "Category1",
+                    TicketsOpen = 1,
+                    TicketsInProgress = 2,
+                    TicketsClosed = 3
+                },
+            };
+
+            _reportServicesMock.Setup(s => s.GetTicketsByCategory(It.IsAny<string>(), It.IsAny<string?>())).Returns(expectedResult);
+
+            _reportController = new ReportController(_reportServicesMock.Object);
+
+            var result = _reportController.GetTicketsByCategory("Building1", "Category1") as OkObjectResult;
+
+            _reportServicesMock.VerifyAll();
+
+            Assert.AreEqual(expectedResult, result.Value);
+        }
     }
 }

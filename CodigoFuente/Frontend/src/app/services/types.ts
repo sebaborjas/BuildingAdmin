@@ -119,7 +119,7 @@ export interface TicketModel {
   id: number;
   description: string;
   creationDate: string;
-  apartment: string | null;
+  apartment: ApartmentModel;
   totalCost: number;
   createdBy: string | null;
   category: Category;
@@ -141,6 +141,20 @@ export interface TicketsByCategoriesModel {
   ticketsClosed: number;
 }
 
+export interface TicketsByBuildingModel {
+  buildingName: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
+}
+
+export interface TicketsByApartmentsModel {
+  apartmentAndOwner: string;
+  ticketsOpen: number;
+  ticketsInProgress: number;
+  ticketsClosed: number;
+}
+
 export interface CategoryModel {
   id: number;
   name: string;
@@ -149,10 +163,6 @@ export interface CategoryModel {
 
 export interface CreateCategoryModel {
   name: string;
-}
-
-export interface BuildingModel {
-  buildings: Object[];
 }
 
 export interface AdminModel {
@@ -173,4 +183,18 @@ export interface RejectInvitationModel {
 
 export interface AcceptInvitationOutputModel{
   userId: number;
+}
+
+export interface TicketCreateModel {
+  description: string;
+  apartmentId: number;
+  categoryId: number;
+}
+
+export interface MaintenanceOperatorModel {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+  buildings: number[];
 }

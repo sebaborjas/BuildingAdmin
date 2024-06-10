@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
-import { AdminService } from '../../services/admin.service';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 import { LoadingService } from '../../services/loading.service';
 import { CategoryModel } from '../../services/types';
-
-
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-categories',
@@ -18,7 +16,11 @@ import { CategoryModel } from '../../services/types';
 
 export class CategoriesComponent {
 
-  constructor(private _adminService: AdminService, private _toastService: HotToastService, private _loadingService: LoadingService) { }
+  constructor(
+    private _categoryService : CategoryService, 
+    private _toastService: HotToastService, 
+    private _loadingService: LoadingService
+  ) { }
 
   modalVisible: boolean = false;
   name: string = '';
@@ -68,8 +70,8 @@ export class CategoriesComponent {
 
   getCategories() {
     this._loadingService.loadingOn();
-    this._adminService.getCategories()
-      .subscribe((response: CategoryModel[]) => {
+    this._categoryService.getCategories()
+      .subscribe((response) => {
         this.categories = response;
 
         this._loadingService.loadingOff();
@@ -82,7 +84,7 @@ export class CategoriesComponent {
   }
 
   createCategory(relatedCategory?: number) {
-    this._adminService.createCategory(this.name, relatedCategory)
+    this._categoryService.createCategory(this.name, relatedCategory)
       .pipe(
         this._toastService.observe({
           loading: 'Creando categoria',
