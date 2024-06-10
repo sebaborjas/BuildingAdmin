@@ -55,7 +55,7 @@ public class UserService : IUserServices
         }
         catch (Exception e)
         {
-            throw new Exception("Error creating administrator", e);
+            throw new InvalidOperationException("Error creating administrator", e);
         }
     }
 
@@ -103,7 +103,7 @@ public class UserService : IUserServices
         }
         catch (Exception e)
         {
-            throw new Exception("Error creating maintenance operator", e);
+            throw new InvalidOperationException("Error creating maintenance operator", e);
         }
     }
 
@@ -123,7 +123,7 @@ public class UserService : IUserServices
         }
         catch (Exception e)
         {
-            throw new Exception("Error deleting manager", e);
+            throw new InvalidOperationException("Error deleting manager", e);
         }
     }
 
@@ -154,7 +154,7 @@ public class UserService : IUserServices
         }
         catch (Exception e)
         {
-            throw new Exception("Error creating company administrator", e);
+            throw new InvalidOperationException("Error creating company administrator", e);
         }
     }
 

@@ -65,7 +65,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw new Exception("Error creating ticket", e);
+                throw new InvalidOperationException("Error creating ticket", e);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw new Exception("Error assigning ticket", e);
+                throw new InvalidOperationException("Error assigning ticket", e);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw new Exception("Error completing ticket", e);
+                throw new InvalidOperationException("Error completing ticket", e);
             }
         }
 
@@ -148,7 +148,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw new Exception("Error getting tickets", e);
+                throw new InvalidOperationException("Error getting tickets", e);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw new Exception("Error getting assigned tickets", e);
+                throw new InvalidOperationException("Error getting assigned tickets", e);
             }
         }
 

@@ -600,5 +600,251 @@ namespace TestServices
 
             _managerRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestCreateBuildingWithNoCompanyAdminUser()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new Manager());
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            _buildingService.CreateBuilding(new Building());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestCreateBuildingWithoutConstructionCompany()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new CompanyAdministrator() { ConstructionCompany = null });
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            
+            _buildingService.CreateBuilding(new Building());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestCreateInvalidBuilding()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new CompanyAdministrator() { ConstructionCompany = new ConstructionCompany() });
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns((Building)null);
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            
+            _buildingService.CreateBuilding(new Building());
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestCreateBuildingWithoutApartments()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new CompanyAdministrator() { ConstructionCompany = new ConstructionCompany() });
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns((Building)null);
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            var building = new Building()
+            {
+                Name = "Edificio nuevo",
+                Address = "Calle, 123, esquina",
+                Location = "111,111",
+                ConstructionCompany = new ConstructionCompany() { Name = "Construction" },
+                Expenses = 1000,
+                Apartments = []
+            };
+            _buildingService.CreateBuilding(building);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestErrorCreatingBuilding()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new CompanyAdministrator() { ConstructionCompany = new ConstructionCompany() });
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns((Building)null);
+            _buildingRepositoryMock.Setup(r => r.Insert(It.IsAny<Building>())).Throws(new Exception());
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            var building = new Building()
+            {
+                Name = "Edificio nuevo",
+                Address = "Calle, 123, esquina",
+                Location = "111,111",
+                ConstructionCompany = new ConstructionCompany() { Name = "Construction" },
+                Expenses = 1000,
+                Apartments = [_apartment]
+            };
+            _buildingService.CreateBuilding(building);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestErrorDeletingBuilding()
+        {
+            // Create test for deleting a non existent building
+            _buildingRepositoryMock.Setup(r => r.Delete(It.IsAny<Building>())).Throws(new Exception());
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_companyAdministrator);
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns(_building);
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            _buildingService.DeleteBuilding(1);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestErrorModifyingBuilding()
+        {
+            var existingBuilding = new Building()
+            {
+                Id = 1,
+                Address = "Rivera, 1111, Soca",
+                ConstructionCompany = new ConstructionCompany() { Name = "Constructora" },
+                Expenses = 2000,
+                Location = "111,111",
+                Name = "Edificio Las Delicias",
+                Apartments = new List<Apartment>() { _apartment }
+            };
+
+            var modifiedBuilding = new Building()
+            {
+                Id = existingBuilding.Id,
+                Address = existingBuilding.Address,
+                ConstructionCompany = existingBuilding.ConstructionCompany,
+                Expenses = 1000,
+                Location = existingBuilding.Location,
+                Name = existingBuilding.Name,
+                Apartments = new List<Apartment>()
+                {
+                    new Apartment()
+                    {
+                        Owner = new Owner() { Email = "newOwner@test.com", Name = "Nuevo", LastName = "Owner" },
+                        Id = 1
+                    }
+                }
+            };
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_companyAdministrator);
+            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Throws(new Exception());
+            _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns(_apartment.Owner);
+            _constructionCompanyMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>())).Returns(existingBuilding.ConstructionCompany);
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns(existingBuilding);
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            var result = _buildingService.ModifyBuilding(1, modifiedBuilding);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestGetBuildingsWithoutUser()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns((User)null);
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            _buildingService.Get(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestModifyManagerWithNoCompanyAdministrator()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_manager);
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+            _buildingService.ChangeBuildingManager(1,1);
+        }
+
+        [TestMethod]
+        public void ModifyBuildingApartmentWithNewOwner()
+        {
+            var existingBuilding = new Building()
+            {
+                Id = 1,
+                Address = "Rivera, 1111, Soca",
+                ConstructionCompany = new ConstructionCompany() { Name = "Constructora" },
+                Expenses = 2000,
+                Location = "111,111",
+                Name = "Edificio Las Delicias",
+                Apartments = new List<Apartment>() { _apartment }
+            };
+
+            var modifiedBuilding = new Building()
+            {
+                Id = existingBuilding.Id,
+                Address = existingBuilding.Address,
+                ConstructionCompany = existingBuilding.ConstructionCompany,
+                Expenses = 1000,
+                Location = existingBuilding.Location,
+                Name = existingBuilding.Name,
+                Apartments = new List<Apartment>()
+                {
+                    new Apartment()
+                    {
+                        Owner = new Owner() { Email = "newOwner@test.com", Name = "Nuevo", LastName = "Owner" },
+                        Id = 1
+                    }
+                }
+            };
+
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(_companyAdministrator);
+            _buildingRepositoryMock.Setup(r => r.Update(It.IsAny<Building>())).Verifiable();
+            _ownerRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Owner, bool>>>(), It.IsAny<List<string>>())).Returns((Owner)null);
+            _ownerRepositoryMock.Setup(r => r.Insert(It.IsAny<Owner>())).Verifiable();
+            _constructionCompanyMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<ConstructionCompany, bool>>>(), It.IsAny<List<string>>())).Returns(existingBuilding.ConstructionCompany);
+            _buildingRepositoryMock.Setup(r => r.GetByCondition(It.IsAny<Expression<Func<Building, bool>>>(), It.IsAny<List<string>>())).Returns(existingBuilding);
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            var result = _buildingService.ModifyBuilding(1, modifiedBuilding);
+
+            Assert.AreEqual(modifiedBuilding, result);
+            _buildingRepositoryMock.Verify(r => r.Update(It.IsAny<Building>()), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetBuildingForManagerWithoutBuildings()
+        {
+            var manager = new Manager
+            {
+                Name = "Manager",
+                LastName = "Manager",
+                Email = "test@mail.com",
+                Password = "Test.1234!",
+                Buildings = new List<Building>()
+            };
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(manager);
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            var result = _buildingService.Get(1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetBuildingForCompanyAdminWithoutCompany()
+        {
+            var companyAdmin = new CompanyAdministrator()
+            {
+                Email = "company@admin.com",
+                Name = "Admin",
+                LastName = "Company",
+                Password = "Test.1234!",
+                ConstructionCompany = null
+            };
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(companyAdmin);
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            var result = _buildingService.Get(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetBuildingForAdministratorError()
+        {
+            _sessionServiceMock.Setup(r => r.GetCurrentUser(It.IsAny<Guid?>())).Returns(new Administrator());
+            _buildingRepositoryMock.Setup(r => r.GetAll<Building>()).Throws(new InvalidOperationException());
+
+            _buildingService = new BuildingService(_buildingRepositoryMock.Object, _sessionServiceMock.Object, _ownerRepositoryMock.Object, _managerRepositoryMock.Object, _constructionCompanyMock.Object);
+
+            var result = _buildingService.Get(null);
+        }
+
     }
 }

@@ -150,6 +150,59 @@ namespace TestServices
 
             _categoryRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestCreateCategoryError()
+        {
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+            _categoryRepositoryMock.Setup(r => r.Insert(It.IsAny<Category>())).Throws(new InvalidOperationException());
+
+            var category = _service.CreateCategory("Test");
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestGetAllWithoutCategories()
+        {
+            _categoryRepositoryMock.Setup(r => r.GetAll<Category>()).Returns(new List<Category>());
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.GetAll();
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestGetAllCategoriesError()
+        {
+            _categoryRepositoryMock.Setup(r => r.GetAll<Category>()).Throws(new InvalidOperationException());
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.GetAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestGetOneWithoutCategories()
+        {
+            _categoryRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Returns((Category)null);
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.Get(1);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TestGetOneCategoriesError()
+        {
+            _categoryRepositoryMock.Setup(r => r.Get(It.IsAny<int>())).Throws(new InvalidOperationException());
+            _service = new CategoryService(_categoryRepositoryMock.Object);
+
+            var result = _service.Get(1);
+        }
     }
 
 }
